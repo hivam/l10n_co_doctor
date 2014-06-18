@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Patient Form View -->
+        <record id="view_doctor_patient_form_inherit" model="ir.ui.view">
+            <field name="name">Patient</field>
+            <field name="model">doctor.patient</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_patient_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form/group/group/group/field[@name='patient']" position="replace">
+                    <field name="patient" on_change="onchange_patient_data(patient,photo,ref,dpto,mun,direccion)"/>
+                </xpath>
+
+                <xpath expr="//form/group/group/group" position="after">
+
+                    <group col="3" colspan="4">
+                        <field name="tdoc" string='Doc'/>
+                        <field name="ref" nolabel='1'/>
+                    </group>
+                </xpath>
+
+                <field name="insurer" position="before" >
+                    <field name="tipo_usuario"/>
+                </field>
+
+                <xpath expr="//form/group/group[3]" position="after">
+
+                <fieldset class="fieldset_margen">
+                    <legend class="texto_legend">Dirección</legend>
+                    <group >
+                        <field name="dpto"/>
+                        <field name="mun"/>
+                        <field name="direccion"/>
+                        <field name="zona" style="width: 45%%"/>
+                    </group>
+                </fieldset>
+
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Patient Tree View -->
+        <record id="view_doctor_patient_tree_inherit" model="ir.ui.view">
+            <field name="name">Patient</field>
+            <field name="model">doctor.patient</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_patient_tree"/>
+            <field name="arch" type="xml">
+                <field name="patient" position="before">
+                    <field name="tdoc" string="Tipo doc"/>
+                    <field name="ref" string="Nº doc"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- appointment Form View -->
+        <record id="view_doctor_appointment_form_inherit" model="ir.ui.view">
+            <field name="name">Appointment</field>
+            <field name="model">doctor.appointment</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_appointment_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form/group/field[@name='patient_id']" position="replace">
+                    <field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id,ref)"/>
+                </xpath>
+
+                <field name="patient_id" position="after" >
+                    <field name="ref"/>
+                </field>
+
+                <field name="insurer_id" position="after" >
+                    <field name="tipo_usuario_id"/>
+                </field>
+
+            </field>
+        </record>
+
+        <!-- schedule Form View -->
+        <record id="view_doctor_schedule_form_inherit" model="ir.ui.view">
+            <field name="name">Schedule</field>
+            <field name="model">doctor.schedule</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_schedule_form"/>
+            <field name="arch" type="xml">
+
+                <field name="patient_id" position="replace">
+                    <field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id)"/>
+                </field>
+
+                <field name="patient_id" position="after" >
+                    <field name="ref"/>
+                </field>
+
+                <field name="insurer_id" position="after" >
+                    <field name="tipo_usuario_id"/>
+                </field>
+
+            </field>
+        </record>
+
+        <!-- Attentions Form View -->
+        <record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
+            <field name="name">Attentions</field>
+            <field name="model">doctor.attentions</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_attentions_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form/group/group" position="after">
+                <group colspan='1' col='2'>
+                    <field name="finalidad_consulta"/>
+                </group>
+                </xpath>
+
+            </field>
+        </record>
+
+    <!-- invoice Form View -->
+        <record id="invoice_form_view_inherit_doctor_co_invoice" model="ir.ui.view">
+            <field name="name">Doctor Invoice</field>
+            <field name="model">account.invoice</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.invoice_form_view_inherit_doctor_invoice"/>
+            <field name="arch" type="xml">
+
+                <field name="patient_id" position="after">
+                    <field name="ref"/>
+                    <field name="tipo_usuario_id"/>
+                </field>
+
+            </field>
+        </record>
+
+    <!-- sales order Form View -->
+        <record id="sales_order_form_view_inherit_doctor_co_sales_order" model="ir.ui.view">
+            <field name="name">Doctor Sales Order</field>
+            <field name="model">sale.order</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.sales_order_form_view_inherit_doctor_sales_order"/>
+            <field name="arch" type="xml">
+
+                <field name="patient_id" position="after">
+                    <field name="ref"/>
+                    <field name="tipo_usuario_id"/>
+                </field>
+
+            </field>
+        </record>
+
+    </data>
+</openerp>

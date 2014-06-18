@@ -1,0 +1,1622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record model='doctor.atc' id='A01AA01'>
+                <field name='code'>A01AA01</field>
+                <field name='name'>FLUORURO DE SODIO</field>
+        </record> 
+        <record model='doctor.atc' id='A02AB01'>
+                <field name='code'>A02AB01</field>
+                <field name='name'>HIDROXIDO DE ALUMINIO</field>
+        </record> 
+        <record model='doctor.atc' id='A02AB10'>
+                <field name='code'>A02AB10</field>
+                <field name='name'>COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='A02BA02'>
+                <field name='code'>A02BA02</field>
+                <field name='name'>RANITIDINA</field>
+        </record> 
+        <record model='doctor.atc' id='A02BC01'>
+                <field name='code'>A02BC01</field>
+                <field name='name'>OMEPRAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='A02BC05'>
+                <field name='code'>A02BC05</field>
+                <field name='name'>ESOMEPRAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='A02BX02'>
+                <field name='code'>A02BX02</field>
+                <field name='name'>SUCRALFATE</field>
+        </record> 
+        <record model='doctor.atc' id='A03BA01'>
+                <field name='code'>A03BA01</field>
+                <field name='name'>ATROPINA</field>
+        </record> 
+        <record model='doctor.atc' id='A03BB01'>
+                <field name='code'>A03BB01</field>
+                <field name='name'>BUTILESCOPOLAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='A03DB04'>
+                <field name='code'>A03DB04</field>
+                <field name='name'>BUTILESCOPOLAMINA Y ANALGESICOS</field>
+        </record> 
+        <record model='doctor.atc' id='A03FA01'>
+                <field name='code'>A03FA01</field>
+                <field name='name'>METOCLOPRAMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='A04AA01'>
+                <field name='code'>A04AA01</field>
+                <field name='name'>ONDANSETRON</field>
+        </record> 
+        <record model='doctor.atc' id='A06AB02'>
+                <field name='code'>A06AB02</field>
+                <field name='name'>BISACODIL</field>
+        </record> 
+        <record model='doctor.atc' id='A06AB05'>
+                <field name='code'>A06AB05</field>
+                <field name='name'>ACEITE DE CASTOR</field>
+        </record> 
+        <record model='doctor.atc' id='A06AX01'>
+                <field name='code'>A06AX01</field>
+                <field name='name'>GLICEROL</field>
+        </record> 
+        <record model='doctor.atc' id='A07AA02'>
+                <field name='code'>A07AA02</field>
+                <field name='name'>NISTATINA</field>
+        </record> 
+        <record model='doctor.atc' id='A07BA01'>
+                <field name='code'>A07BA01</field>
+                <field name='name'>CARBON MEDICINAL</field>
+        </record> 
+        <record model='doctor.atc' id='A07CA99'>
+                <field name='code'>A07CA99</field>
+                <field name='name'>ELECTROLITOS CON CARBOHIDRATOS REHIDRATACION ORAL</field>
+        </record> 
+        <record model='doctor.atc' id='A07DA03'>
+                <field name='code'>A07DA03</field>
+                <field name='name'>LOPERAMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='A07EC01'>
+                <field name='code'>A07EC01</field>
+                <field name='name'>SULFASALAZINA</field>
+        </record> 
+        <record model='doctor.atc' id='A07EC02'>
+                <field name='code'>A07EC02</field>
+                <field name='name'>MESALAZINA</field>
+        </record> 
+        <record model='doctor.atc' id='A10AB01'>
+                <field name='code'>A10AB01</field>
+                <field name='name'>INSULINA (HUMANA)</field>
+        </record> 
+        <record model='doctor.atc' id='A10AB04'>
+                <field name='code'>A10AB04</field>
+                <field name='name'>INSULINA LISPRO</field>
+        </record> 
+        <record model='doctor.atc' id='A10AB05'>
+                <field name='code'>A10AB05</field>
+                <field name='name'>INSULINA ASPARTATO</field>
+        </record> 
+        <record model='doctor.atc' id='A10AB06'>
+                <field name='code'>A10AB06</field>
+                <field name='name'>INSULINA GLULISINA</field>
+        </record> 
+        <record model='doctor.atc' id='A10AC01'>
+                <field name='code'>A10AC01</field>
+                <field name='name'>INSULINA (HUMANA)</field>
+        </record> 
+        <record model='doctor.atc' id='A10AD01'>
+                <field name='code'>A10AD01</field>
+                <field name='name'>INSULINA (HUMANA)</field>
+        </record> 
+        <record model='doctor.atc' id='A10AE01'>
+                <field name='code'>A10AE01</field>
+                <field name='name'>INSULINA (HUMANA)</field>
+        </record> 
+        <record model='doctor.atc' id='A10AE04'>
+                <field name='code'>A10AE04</field>
+                <field name='name'>INSULINA GLARGINA</field>
+        </record> 
+        <record model='doctor.atc' id='A10AE05'>
+                <field name='code'>A10AE05</field>
+                <field name='name'>INSULIN DETEMIR</field>
+        </record> 
+        <record model='doctor.atc' id='A10BA02'>
+                <field name='code'>A10BA02</field>
+                <field name='name'>METFORMINA</field>
+        </record> 
+        <record model='doctor.atc' id='A10BB01'>
+                <field name='code'>A10BB01</field>
+                <field name='name'>GLIBENCLAMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='A11CA01'>
+                <field name='code'>A11CA01</field>
+                <field name='name'>RETINOL ( VIT A)</field>
+        </record> 
+        <record model='doctor.atc' id='A11CC04'>
+                <field name='code'>A11CC04</field>
+                <field name='name'>CALCITRIOL</field>
+        </record> 
+        <record model='doctor.atc' id='A11DA01'>
+                <field name='code'>A11DA01</field>
+                <field name='name'>TIAMINA (VIT B1)</field>
+        </record> 
+        <record model='doctor.atc' id='A11GA01'>
+                <field name='code'>A11GA01</field>
+                <field name='name'>ACIDO ASCORBICO (VIT C)</field>
+        </record> 
+        <record model='doctor.atc' id='A11HA02'>
+                <field name='code'>A11HA02</field>
+                <field name='name'>PIRIDOXINA (VIT B6)</field>
+        </record> 
+        <record model='doctor.atc' id='A12AA03'>
+                <field name='code'>A12AA03</field>
+                <field name='name'>CALCIO GLUCONATO</field>
+        </record> 
+        <record model='doctor.atc' id='A12AA04'>
+                <field name='code'>A12AA04</field>
+                <field name='name'>CALCIO CARBONATO</field>
+        </record> 
+        <record model='doctor.atc' id='A12AA20'>
+                <field name='code'>A12AA20</field>
+                <field name='name'>CALCIO (DIFERENTES SALES EN COMBINACION)</field>
+        </record> 
+        <record model='doctor.atc' id='A12BA05'>
+                <field name='code'>A12BA05</field>
+                <field name='name'>POTASIO GLUCONATO</field>
+        </record> 
+        <record model='doctor.atc' id='B01AA03'>
+                <field name='code'>B01AA03</field>
+                <field name='name'>WARFARINA</field>
+        </record> 
+        <record model='doctor.atc' id='B01AB01'>
+                <field name='code'>B01AB01</field>
+                <field name='name'>HEPARINA</field>
+        </record> 
+        <record model='doctor.atc' id='B01AC04'>
+                <field name='code'>B01AC04</field>
+                <field name='name'>CLOPIDOGREL</field>
+        </record> 
+        <record model='doctor.atc' id='B01AC06'>
+                <field name='code'>B01AC06</field>
+                <field name='name'>ACETILSALICILICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='B01AC17'>
+                <field name='code'>B01AC17</field>
+                <field name='name'>TIROFIBAN</field>
+        </record> 
+        <record model='doctor.atc' id='B01AD01'>
+                <field name='code'>B01AD01</field>
+                <field name='name'>ESTREPTOKINASA</field>
+        </record> 
+        <record model='doctor.atc' id='B01AD02'>
+                <field name='code'>B01AD02</field>
+                <field name='name'>ALTEPLASE</field>
+        </record> 
+        <record model='doctor.atc' id='B02AA02'>
+                <field name='code'>B02AA02</field>
+                <field name='name'>TRANEXAMICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='B02BA01'>
+                <field name='code'>B02BA01</field>
+                <field name='name'>FITOMENADIONA</field>
+        </record> 
+        <record model='doctor.atc' id='B02BD02'>
+                <field name='code'>B02BD02</field>
+                <field name='name'>COAGULACION FACTORES VIII</field>
+        </record> 
+        <record model='doctor.atc' id='B02BD04'>
+                <field name='code'>B02BD04</field>
+                <field name='name'>COAGULACION FACTOR IX</field>
+        </record> 
+        <record model='doctor.atc' id='B03AA07'>
+                <field name='code'>B03AA07</field>
+                <field name='name'>FERROSO SULFATO</field>
+        </record> 
+        <record model='doctor.atc' id='B03AC02'>
+                <field name='code'>B03AC02</field>
+                <field name='name'>HIERRO OXIDO SACARATADO</field>
+        </record> 
+        <record model='doctor.atc' id='B03BA01'>
+                <field name='code'>B03BA01</field>
+                <field name='name'>CIANOCOBALAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='B03BA03'>
+                <field name='code'>B03BA03</field>
+                <field name='name'>HIDROXICOBALAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='B03BB01'>
+                <field name='code'>B03BB01</field>
+                <field name='name'>FOLICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='B03XA01'>
+                <field name='code'>B03XA01</field>
+                <field name='name'>ERITROPOYETINA</field>
+        </record> 
+        <record model='doctor.atc' id='B05AA01'>
+                <field name='code'>B05AA01</field>
+                <field name='name'>ALBUMINA</field>
+        </record> 
+        <record model='doctor.atc' id='B05AA02'>
+                <field name='code'>B05AA02</field>
+                <field name='name'>OTRAS FRACCIONES PROTEICAS PLASMATICAS</field>
+        </record> 
+        <record model='doctor.atc' id='B05BA01'>
+                <field name='code'>B05BA01</field>
+                <field name='name'>AMINOACIDOS</field>
+        </record> 
+        <record model='doctor.atc' id='B05BA02'>
+                <field name='code'>B05BA02</field>
+                <field name='name'>EMULSIONES LIPIDAS</field>
+        </record> 
+        <record model='doctor.atc' id='B05BA03'>
+                <field name='code'>B05BA03</field>
+                <field name='name'>CARBOHIDRATOS</field>
+        </record> 
+        <record model='doctor.atc' id='B05BA10'>
+                <field name='code'>B05BA10</field>
+                <field name='name'>COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='B05BB01'>
+                <field name='code'>B05BB01</field>
+                <field name='name'>ELECTROLITOS</field>
+        </record> 
+        <record model='doctor.atc' id='B05BC01'>
+                <field name='code'>B05BC01</field>
+                <field name='name'>MANITOL</field>
+        </record> 
+        <record model='doctor.atc' id='B05DA99'>
+                <field name='code'>B05DA99</field>
+                <field name='name'>SOLUCION ISOTONICA PARA DIALISIS PERITONEAL</field>
+        </record> 
+        <record model='doctor.atc' id='B05XA01'>
+                <field name='code'>B05XA01</field>
+                <field name='name'>POTASIO CLORURO</field>
+        </record> 
+        <record model='doctor.atc' id='B05XA02'>
+                <field name='code'>B05XA02</field>
+                <field name='name'>SODIO BICARBONATO</field>
+        </record> 
+        <record model='doctor.atc' id='B05XA03'>
+                <field name='code'>B05XA03</field>
+                <field name='name'>SODIO CLORURO</field>
+        </record> 
+        <record model='doctor.atc' id='B05XA05'>
+                <field name='code'>B05XA05</field>
+                <field name='name'>MAGNESIO SULFATO</field>
+        </record> 
+        <record model='doctor.atc' id='B05XA06'>
+                <field name='code'>B05XA06</field>
+                <field name='name'>POTASIO FOSFATO INCL COMBINACIONES CON OTRAS SALES DE POTASIO</field>
+        </record> 
+        <record model='doctor.atc' id='B05XA30'>
+                <field name='code'>B05XA30</field>
+                <field name='name'>ELECTROLITOS COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='B05ZA98'>
+                <field name='code'>B05ZA98</field>
+                <field name='name'>CONCENTRADO PARA HEMODIALISIS</field>
+        </record> 
+        <record model='doctor.atc' id='C01AA08'>
+                <field name='code'>C01AA08</field>
+                <field name='name'>METILDIGOXINA</field>
+        </record> 
+        <record model='doctor.atc' id='C01BD01'>
+                <field name='code'>C01BD01</field>
+                <field name='name'>AMIODARONA</field>
+        </record> 
+        <record model='doctor.atc' id='C01CA03'>
+                <field name='code'>C01CA03</field>
+                <field name='name'>NOREPINEFRINA</field>
+        </record> 
+        <record model='doctor.atc' id='C01CA04'>
+                <field name='code'>C01CA04</field>
+                <field name='name'>DOPAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='C01CA07'>
+                <field name='code'>C01CA07</field>
+                <field name='name'>DOBUTAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='C01CA24'>
+                <field name='code'>C01CA24</field>
+                <field name='name'>EPINEFRINA</field>
+        </record> 
+        <record model='doctor.atc' id='C01CE02'>
+                <field name='code'>C01CE02</field>
+                <field name='name'>MILRINONA</field>
+        </record> 
+        <record model='doctor.atc' id='C01DA02'>
+                <field name='code'>C01DA02</field>
+                <field name='name'>GLICERIL TRINITRATO</field>
+        </record> 
+        <record model='doctor.atc' id='C01DA08'>
+                <field name='code'>C01DA08</field>
+                <field name='name'>ISOSORBIDE DINITRATO</field>
+        </record> 
+        <record model='doctor.atc' id='C02AB01'>
+                <field name='code'>C02AB01</field>
+                <field name='name'>METILDOPA (LEVOROTATORIA)</field>
+        </record> 
+        <record model='doctor.atc' id='C02AC01'>
+                <field name='code'>C02AC01</field>
+                <field name='name'>CLONIDINA</field>
+        </record> 
+        <record model='doctor.atc' id='C02CA01'>
+                <field name='code'>C02CA01</field>
+                <field name='name'>PRAZOSIN</field>
+        </record> 
+        <record model='doctor.atc' id='C02CA04'>
+                <field name='code'>C02CA04</field>
+                <field name='name'>DOXAZOSINA</field>
+        </record> 
+        <record model='doctor.atc' id='C02DB02'>
+                <field name='code'>C02DB02</field>
+                <field name='name'>HIDRALAZINA</field>
+        </record> 
+        <record model='doctor.atc' id='C02DC01'>
+                <field name='code'>C02DC01</field>
+                <field name='name'>MINOXIDIL</field>
+        </record> 
+        <record model='doctor.atc' id='C02DD01'>
+                <field name='code'>C02DD01</field>
+                <field name='name'>NITROPRUSIATO</field>
+        </record> 
+        <record model='doctor.atc' id='C02KX01'>
+                <field name='code'>C02KX01</field>
+                <field name='name'>BOSENTAN</field>
+        </record> 
+        <record model='doctor.atc' id='C03AA03'>
+                <field name='code'>C03AA03</field>
+                <field name='name'>HIDROCLOROTIAZIDA</field>
+        </record> 
+        <record model='doctor.atc' id='C03CA01'>
+                <field name='code'>C03CA01</field>
+                <field name='name'>FUROSEMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='C03DA01'>
+                <field name='code'>C03DA01</field>
+                <field name='name'>ESPIRONOLACTONA</field>
+        </record> 
+        <record model='doctor.atc' id='C05AA01'>
+                <field name='code'>C05AA01</field>
+                <field name='name'>HIDROCORTISONA</field>
+        </record> 
+        <record model='doctor.atc' id='C07AA05'>
+                <field name='code'>C07AA05</field>
+                <field name='name'>PROPRANOLOL</field>
+        </record> 
+        <record model='doctor.atc' id='C07AB02'>
+                <field name='code'>C07AB02</field>
+                <field name='name'>METOPROLOL</field>
+        </record> 
+        <record model='doctor.atc' id='C07AG01'>
+                <field name='code'>C07AG01</field>
+                <field name='name'>LABETALOL</field>
+        </record> 
+        <record model='doctor.atc' id='C07AG02'>
+                <field name='code'>C07AG02</field>
+                <field name='name'>CARVEDILOL</field>
+        </record> 
+        <record model='doctor.atc' id='C08CA01'>
+                <field name='code'>C08CA01</field>
+                <field name='name'>AMLODIPINO</field>
+        </record> 
+        <record model='doctor.atc' id='C08CA05'>
+                <field name='code'>C08CA05</field>
+                <field name='name'>NIFEDIPINA</field>
+        </record> 
+        <record model='doctor.atc' id='C08CA06'>
+                <field name='code'>C08CA06</field>
+                <field name='name'>NIMODIPINA</field>
+        </record> 
+        <record model='doctor.atc' id='C08DA01'>
+                <field name='code'>C08DA01</field>
+                <field name='name'>VERAPAMIL</field>
+        </record> 
+        <record model='doctor.atc' id='C09AA01'>
+                <field name='code'>C09AA01</field>
+                <field name='name'>CAPTOPRIL</field>
+        </record> 
+        <record model='doctor.atc' id='C09AA02'>
+                <field name='code'>C09AA02</field>
+                <field name='name'>ENALAPRIL</field>
+        </record> 
+        <record model='doctor.atc' id='C09CA01'>
+                <field name='code'>C09CA01</field>
+                <field name='name'>LOSARTAN</field>
+        </record> 
+        <record model='doctor.atc' id='C09DA01'>
+                <field name='code'>C09DA01</field>
+                <field name='name'>LOSARTAN Y DIURETICOS</field>
+        </record> 
+        <record model='doctor.atc' id='C10AA02'>
+                <field name='code'>C10AA02</field>
+                <field name='name'>LOVASTATINA</field>
+        </record> 
+        <record model='doctor.atc' id='C10AA05'>
+                <field name='code'>C10AA05</field>
+                <field name='name'>ATORVASTATIN</field>
+        </record> 
+        <record model='doctor.atc' id='C10AB04'>
+                <field name='code'>C10AB04</field>
+                <field name='name'>GEMFIBROZIL</field>
+        </record> 
+        <record model='doctor.atc' id='C10AC01'>
+                <field name='code'>C10AC01</field>
+                <field name='name'>COLESTYRAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='D01AA01'>
+                <field name='code'>D01AA01</field>
+                <field name='name'>NISTATINA</field>
+        </record> 
+        <record model='doctor.atc' id='D01AC01'>
+                <field name='code'>D01AC01</field>
+                <field name='name'>CLOTRIMAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='D02AX99'>
+                <field name='code'>D02AX99</field>
+                <field name='name'>ACETATO DE ALUMINIO</field>
+        </record> 
+        <record model='doctor.atc' id='D04AX99'>
+                <field name='code'>D04AX99</field>
+                <field name='name'>OXIDO DE ZINC,CALAMINA,ALCOHOL BENCILICO</field>
+        </record> 
+        <record model='doctor.atc' id='D05BA02'>
+                <field name='code'>D05BA02</field>
+                <field name='name'>METOXSALEN</field>
+        </record> 
+        <record model='doctor.atc' id='D06BA01'>
+                <field name='code'>D06BA01</field>
+                <field name='name'>SULFADIAZINA DE PLATA</field>
+        </record> 
+        <record model='doctor.atc' id='D07AA02'>
+                <field name='code'>D07AA02</field>
+                <field name='name'>HIDROCORTISONA</field>
+        </record> 
+        <record model='doctor.atc' id='D07AC01'>
+                <field name='code'>D07AC01</field>
+                <field name='name'>BETAMETASONA</field>
+        </record> 
+        <record model='doctor.atc' id='D08AG02'>
+                <field name='code'>D08AG02</field>
+                <field name='name'>YODOPOVIDONA</field>
+        </record> 
+        <record model='doctor.atc' id='D10AD02'>
+                <field name='code'>D10AD02</field>
+                <field name='name'>RETINOL</field>
+        </record> 
+        <record model='doctor.atc' id='D10AF01'>
+                <field name='code'>D10AF01</field>
+                <field name='name'>CLINDAMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='D10AX95'>
+                <field name='code'>D10AX95</field>
+                <field name='name'>PODOFILINA RESINA</field>
+        </record> 
+        <record model='doctor.atc' id='G01AA01'>
+                <field name='code'>G01AA01</field>
+                <field name='name'>NISTATINA</field>
+        </record> 
+        <record model='doctor.atc' id='G01AF01'>
+                <field name='code'>G01AF01</field>
+                <field name='name'>METRONIDAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='G01AF02'>
+                <field name='code'>G01AF02</field>
+                <field name='name'>CLOTRIMAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='G01AX06'>
+                <field name='code'>G01AX06</field>
+                <field name='name'>FURAZOLIDONA</field>
+        </record> 
+        <record model='doctor.atc' id='G02AD02'>
+                <field name='code'>G02AD02</field>
+                <field name='name'>DINOPROSTONE</field>
+        </record> 
+        <record model='doctor.atc' id='G02CB01'>
+                <field name='code'>G02CB01</field>
+                <field name='name'>BROMOCRIPTINA</field>
+        </record> 
+        <record model='doctor.atc' id='G03AA07'>
+                <field name='code'>G03AA07</field>
+                <field name='name'>LEVONORGESTREL Y ESTROGENO</field>
+        </record> 
+        <record model='doctor.atc' id='G03AA08'>
+                <field name='code'>G03AA08</field>
+                <field name='name'>MEDROXIPROGESTERONA Y ESTROGENO</field>
+        </record> 
+        <record model='doctor.atc' id='G03AC03'>
+                <field name='code'>G03AC03</field>
+                <field name='name'>LEVONORGESTREL</field>
+        </record> 
+        <record model='doctor.atc' id='G03AC06'>
+                <field name='code'>G03AC06</field>
+                <field name='name'>MEDROXIPROGESTERONA</field>
+        </record> 
+        <record model='doctor.atc' id='G03BA03'>
+                <field name='code'>G03BA03</field>
+                <field name='name'>TESTOSTERONA</field>
+        </record> 
+        <record model='doctor.atc' id='G03CA03'>
+                <field name='code'>G03CA03</field>
+                <field name='name'>ESTRADIOL</field>
+        </record> 
+        <record model='doctor.atc' id='G03CA57'>
+                <field name='code'>G03CA57</field>
+                <field name='name'>ESTROGENOS CONJUGADOS</field>
+        </record> 
+        <record model='doctor.atc' id='G03DA03'>
+                <field name='code'>G03DA03</field>
+                <field name='name'>HIDROXIPROGESTERONA</field>
+        </record> 
+        <record model='doctor.atc' id='G03FA01'>
+                <field name='code'>G03FA01</field>
+                <field name='name'>NORETISTERONA Y ESTROGENO</field>
+        </record> 
+        <record model='doctor.atc' id='G03GA01'>
+                <field name='code'>G03GA01</field>
+                <field name='name'>GONADOTROPINA CORIONICA</field>
+        </record> 
+        <record model='doctor.atc' id='G03HA01'>
+                <field name='code'>G03HA01</field>
+                <field name='name'>CIPROTERONE</field>
+        </record> 
+        <record model='doctor.atc' id='G03XA01'>
+                <field name='code'>G03XA01</field>
+                <field name='name'>DANAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='H01BA02'>
+                <field name='code'>H01BA02</field>
+                <field name='name'>DESMOPRESINA</field>
+        </record> 
+        <record model='doctor.atc' id='H01BB02'>
+                <field name='code'>H01BB02</field>
+                <field name='name'>OXITOCINA</field>
+        </record> 
+        <record model='doctor.atc' id='H02AB01'>
+                <field name='code'>H02AB01</field>
+                <field name='name'>BETAMETASONA</field>
+        </record> 
+        <record model='doctor.atc' id='H02AB02'>
+                <field name='code'>H02AB02</field>
+                <field name='name'>DEXAMETASONA</field>
+        </record> 
+        <record model='doctor.atc' id='H02AB04'>
+                <field name='code'>H02AB04</field>
+                <field name='name'>METILPREDNISOLONA</field>
+        </record> 
+        <record model='doctor.atc' id='H02AB06'>
+                <field name='code'>H02AB06</field>
+                <field name='name'>PREDNISOLONA</field>
+        </record> 
+        <record model='doctor.atc' id='H02AB07'>
+                <field name='code'>H02AB07</field>
+                <field name='name'>PREDNISONA</field>
+        </record> 
+        <record model='doctor.atc' id='H02AB09'>
+                <field name='code'>H02AB09</field>
+                <field name='name'>HIDROCORTISONA</field>
+        </record> 
+        <record model='doctor.atc' id='H03AA01'>
+                <field name='code'>H03AA01</field>
+                <field name='name'>LEVOTIROXINA DE SODIO</field>
+        </record> 
+        <record model='doctor.atc' id='H03BA02'>
+                <field name='code'>H03BA02</field>
+                <field name='name'>PROPILTIOURACILO</field>
+        </record> 
+        <record model='doctor.atc' id='H03BB02'>
+                <field name='code'>H03BB02</field>
+                <field name='name'>TIAMAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='H04AA01'>
+                <field name='code'>H04AA01</field>
+                <field name='name'>GLUCAGON</field>
+        </record> 
+        <record model='doctor.atc' id='J01AA02'>
+                <field name='code'>J01AA02</field>
+                <field name='name'>DOXICICLINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01AA07'>
+                <field name='code'>J01AA07</field>
+                <field name='name'>TETRACICLINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01BA01'>
+                <field name='code'>J01BA01</field>
+                <field name='name'>CLORAMFENICOL</field>
+        </record> 
+        <record model='doctor.atc' id='J01CA01'>
+                <field name='code'>J01CA01</field>
+                <field name='name'>AMPICILINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01CA04'>
+                <field name='code'>J01CA04</field>
+                <field name='name'>AMOXICILINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01CA51'>
+                <field name='code'>J01CA51</field>
+                <field name='name'>AMPICILINA COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='J01CE01'>
+                <field name='code'>J01CE01</field>
+                <field name='name'>BENZILPENICILINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01CE02'>
+                <field name='code'>J01CE02</field>
+                <field name='name'>FENOXIMETILPENICILINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01CE08'>
+                <field name='code'>J01CE08</field>
+                <field name='name'>BENCILPENICILINA BENZATINICA</field>
+        </record> 
+        <record model='doctor.atc' id='J01CE09'>
+                <field name='code'>J01CE09</field>
+                <field name='name'>BENCILPENICILINA PROCAINICA</field>
+        </record> 
+        <record model='doctor.atc' id='J01CF01'>
+                <field name='code'>J01CF01</field>
+                <field name='name'>DICLOXACILINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01CF04'>
+                <field name='code'>J01CF04</field>
+                <field name='name'>OXACILINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01CR02'>
+                <field name='code'>J01CR02</field>
+                <field name='name'>AMOXICILINA E INHIBIDOR ENZIMATICO</field>
+        </record> 
+        <record model='doctor.atc' id='J01CR05'>
+                <field name='code'>J01CR05</field>
+                <field name='name'>PIPERACILINA E INHIBIDOR ENZIMATICO</field>
+        </record> 
+        <record model='doctor.atc' id='J01DB01'>
+                <field name='code'>J01DB01</field>
+                <field name='name'>CEFALEXINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01DB03'>
+                <field name='code'>J01DB03</field>
+                <field name='name'>CEFALOTINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01DB04'>
+                <field name='code'>J01DB04</field>
+                <field name='name'>CEFAZOLINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01DB09'>
+                <field name='code'>J01DB09</field>
+                <field name='name'>CEFRADINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01DC02'>
+                <field name='code'>J01DC02</field>
+                <field name='name'>CEFUROXIMA</field>
+        </record> 
+        <record model='doctor.atc' id='J01DE01'>
+                <field name='code'>J01DE01</field>
+                <field name='name'>CEFEPIMA</field>
+        </record> 
+        <record model='doctor.atc' id='J01DF01'>
+                <field name='code'>J01DF01</field>
+                <field name='name'>AZTREONAM</field>
+        </record> 
+        <record model='doctor.atc' id='J01DH02'>
+                <field name='code'>J01DH02</field>
+                <field name='name'>MEROPENEM</field>
+        </record> 
+        <record model='doctor.atc' id='J01DH51'>
+                <field name='code'>J01DH51</field>
+                <field name='name'>IMIPENEM E INHIBIDOR DE ENZIMA</field>
+        </record> 
+        <record model='doctor.atc' id='J01EE01'>
+                <field name='code'>J01EE01</field>
+                <field name='name'>SULFAMETOXAZOL Y TRIMETOPRIM</field>
+        </record> 
+        <record model='doctor.atc' id='J01FA01'>
+                <field name='code'>J01FA01</field>
+                <field name='name'>ERITROMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01FA02'>
+                <field name='code'>J01FA02</field>
+                <field name='name'>ESPIRAMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01FA09'>
+                <field name='code'>J01FA09</field>
+                <field name='name'>CLARITROMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01FA10'>
+                <field name='code'>J01FA10</field>
+                <field name='name'>AZITROMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01FF01'>
+                <field name='code'>J01FF01</field>
+                <field name='name'>CLINDAMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01GA01'>
+                <field name='code'>J01GA01</field>
+                <field name='name'>ESTREPTOMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01GB03'>
+                <field name='code'>J01GB03</field>
+                <field name='name'>GENTAMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01GB06'>
+                <field name='code'>J01GB06</field>
+                <field name='name'>AMIKACINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01MA02'>
+                <field name='code'>J01MA02</field>
+                <field name='name'>CIPROFLOXACINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01MA06'>
+                <field name='code'>J01MA06</field>
+                <field name='name'>NORFLOXACINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01XA01'>
+                <field name='code'>J01XA01</field>
+                <field name='name'>VANCOMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J01XD01'>
+                <field name='code'>J01XD01</field>
+                <field name='name'>METRONIDAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='J01XE01'>
+                <field name='code'>J01XE01</field>
+                <field name='name'>NITROFURANTOINA</field>
+        </record> 
+        <record model='doctor.atc' id='J02AA01'>
+                <field name='code'>J02AA01</field>
+                <field name='name'>ANFOTERICINA B</field>
+        </record> 
+        <record model='doctor.atc' id='J02AB02'>
+                <field name='code'>J02AB02</field>
+                <field name='name'>KETOCONAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='J02AC01'>
+                <field name='code'>J02AC01</field>
+                <field name='name'>FLUCONAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='J02AX04'>
+                <field name='code'>J02AX04</field>
+                <field name='name'>CASPOFUNGIN</field>
+        </record> 
+        <record model='doctor.atc' id='J04AB02'>
+                <field name='code'>J04AB02</field>
+                <field name='name'>RIFAMPICINA</field>
+        </record> 
+        <record model='doctor.atc' id='J04AC01'>
+                <field name='code'>J04AC01</field>
+                <field name='name'>ISONIAZIDA</field>
+        </record> 
+        <record model='doctor.atc' id='J04AD03'>
+                <field name='code'>J04AD03</field>
+                <field name='name'>ETIONAMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='J04AK01'>
+                <field name='code'>J04AK01</field>
+                <field name='name'>PIRAZINAMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='J04AK02'>
+                <field name='code'>J04AK02</field>
+                <field name='name'>ETMABUTOL</field>
+        </record> 
+        <record model='doctor.atc' id='J04AM05'>
+                <field name='code'>J04AM05</field>
+                <field name='name'>RIFAMPICINA PIRAZINAMIDA ISONIAZIDA</field>
+        </record> 
+        <record model='doctor.atc' id='J04AM06'>
+                <field name='code'>J04AM06</field>
+                <field name='name'>RIFAMPICINA PIRAZINAMIDA ETAMBUTOL ISONIAZIDA</field>
+        </record> 
+        <record model='doctor.atc' id='J05AB01'>
+                <field name='code'>J05AB01</field>
+                <field name='name'>ACICLOVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AB11'>
+                <field name='code'>J05AB11</field>
+                <field name='name'>VALACICLOVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AE01'>
+                <field name='code'>J05AE01</field>
+                <field name='name'>SAQUINAVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AE02'>
+                <field name='code'>J05AE02</field>
+                <field name='name'>INDINAVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AE03'>
+                <field name='code'>J05AE03</field>
+                <field name='name'>RITONAVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AE04'>
+                <field name='code'>J05AE04</field>
+                <field name='name'>NELFINAVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AE07'>
+                <field name='code'>J05AE07</field>
+                <field name='name'>FOSAMPRENAVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AE08'>
+                <field name='code'>J05AE08</field>
+                <field name='name'>ATAZANAVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AE11'>
+                <field name='code'>J05AE11</field>
+                <field name='name'>TELAPREVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AF01'>
+                <field name='code'>J05AF01</field>
+                <field name='name'>ZIDOVUDINA</field>
+        </record> 
+        <record model='doctor.atc' id='J05AF02'>
+                <field name='code'>J05AF02</field>
+                <field name='name'>DIDANOSINA</field>
+        </record> 
+        <record model='doctor.atc' id='J05AF04'>
+                <field name='code'>J05AF04</field>
+                <field name='name'>ESTAVUDINA</field>
+        </record> 
+        <record model='doctor.atc' id='J05AF05'>
+                <field name='code'>J05AF05</field>
+                <field name='name'>LAMIVUDINA</field>
+        </record> 
+        <record model='doctor.atc' id='J05AF06'>
+                <field name='code'>J05AF06</field>
+                <field name='name'>ABACAVIR</field>
+        </record> 
+        <record model='doctor.atc' id='J05AG01'>
+                <field name='code'>J05AG01</field>
+                <field name='name'>NEVIRAPINA</field>
+        </record> 
+        <record model='doctor.atc' id='J05AG03'>
+                <field name='code'>J05AG03</field>
+                <field name='name'>EFAVIRENZ</field>
+        </record> 
+        <record model='doctor.atc' id='J05AR01'>
+                <field name='code'>J05AR01</field>
+                <field name='name'>LAMIVUDINA Y ZIDOVUDINA</field>
+        </record> 
+        <record model='doctor.atc' id='J05AR03'>
+                <field name='code'>J05AR03</field>
+                <field name='name'>TENOFOVIR DISOPROXIL Y EMTRICITABINA</field>
+        </record> 
+        <record model='doctor.atc' id='J06AA03'>
+                <field name='code'>J06AA03</field>
+                <field name='name'>SUERO ANTIOFÍDICO</field>
+        </record> 
+        <record model='doctor.atc' id='J06BB01'>
+                <field name='code'>J06BB01</field>
+                <field name='name'>INMUNOGLOBULINA ANTI D (RH)</field>
+        </record> 
+        <record model='doctor.atc' id='J07AG01'>
+                <field name='code'>J07AG01</field>
+                <field name='name'>HEMOFILUS INFLUENZA B ANTIGENO PURIFICADO CONJUGADO</field>
+        </record> 
+        <record model='doctor.atc' id='J07AL01'>
+                <field name='code'>J07AL01</field>
+                <field name='name'>NEUMOCOCO ANTIGENOS POLISACARIDOS PURIFICADOS</field>
+        </record> 
+        <record model='doctor.atc' id='J07AM01'>
+                <field name='code'>J07AM01</field>
+                <field name='name'>TETANOS TOXOIDE</field>
+        </record> 
+        <record model='doctor.atc' id='J07AM51'>
+                <field name='code'>J07AM51</field>
+                <field name='name'>TETANOS TOXOIDE COMBINADO CON DIFTERIA TOXOIDE</field>
+        </record> 
+        <record model='doctor.atc' id='J07BC01'>
+                <field name='code'>J07BC01</field>
+                <field name='name'>HEPATITIS B ANTIGENO PURIFICADO</field>
+        </record> 
+        <record model='doctor.atc' id='J07BD52'>
+                <field name='code'>J07BD52</field>
+                <field name='name'>VACUNA VIRUS VIVOS ATENUADOS DE SARAMPION, PAROTIDITIS Y RUBEOLA</field>
+        </record> 
+        <record model='doctor.atc' id='J07BF02'>
+                <field name='code'>J07BF02</field>
+                <field name='name'>POLIOMIELITIS ORAL TRIVALENTE VIVO ATENUADO</field>
+        </record> 
+        <record model='doctor.atc' id='J07BG01'>
+                <field name='code'>J07BG01</field>
+                <field name='name'>RABIA INACTIVADA</field>
+        </record> 
+        <record model='doctor.atc' id='J07BH01'>
+                <field name='code'>J07BH01</field>
+                <field name='name'>ROTAVIRUS VIVO ATENUADO</field>
+        </record> 
+        <record model='doctor.atc' id='J07BL01'>
+                <field name='code'>J07BL01</field>
+                <field name='name'>FIEBRE AMARILLA VIVA ATENUADA</field>
+        </record> 
+        <record model='doctor.atc' id='J07CA99'>
+                <field name='code'>J07CA99</field>
+                <field name='name'>TETANO-TOSFERINA-DIFTERIA</field>
+        </record> 
+        <record model='doctor.atc' id='L01AA01'>
+                <field name='code'>L01AA01</field>
+                <field name='name'>CICLOFOSFAMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='L01AA02'>
+                <field name='code'>L01AA02</field>
+                <field name='name'>CLORAMBUCIL</field>
+        </record> 
+        <record model='doctor.atc' id='L01AA03'>
+                <field name='code'>L01AA03</field>
+                <field name='name'>MELPHALAN</field>
+        </record> 
+        <record model='doctor.atc' id='L01AB01'>
+                <field name='code'>L01AB01</field>
+                <field name='name'>BUSULFAN</field>
+        </record> 
+        <record model='doctor.atc' id='L01AX04'>
+                <field name='code'>L01AX04</field>
+                <field name='name'>DACARBAZINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01BA01'>
+                <field name='code'>L01BA01</field>
+                <field name='name'>METROTEXATE</field>
+        </record> 
+        <record model='doctor.atc' id='L01BB02'>
+                <field name='code'>L01BB02</field>
+                <field name='name'>MERCAPTOPURINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01BC01'>
+                <field name='code'>L01BC01</field>
+                <field name='name'>CITARABINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01BC02'>
+                <field name='code'>L01BC02</field>
+                <field name='name'>FLUOROURACILO</field>
+        </record> 
+        <record model='doctor.atc' id='L01BC05'>
+                <field name='code'>L01BC05</field>
+                <field name='name'>GEMCITABINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01BC06'>
+                <field name='code'>L01BC06</field>
+                <field name='name'>CAPECITABINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01CA01'>
+                <field name='code'>L01CA01</field>
+                <field name='name'>VINBLASTINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01CA02'>
+                <field name='code'>L01CA02</field>
+                <field name='name'>VINCRISTINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01CB01'>
+                <field name='code'>L01CB01</field>
+                <field name='name'>ETOPOSIDO</field>
+        </record> 
+        <record model='doctor.atc' id='L01CD01'>
+                <field name='code'>L01CD01</field>
+                <field name='name'>PACLITAXEL</field>
+        </record> 
+        <record model='doctor.atc' id='L01DB01'>
+                <field name='code'>L01DB01</field>
+                <field name='name'>DOXORUBICINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01DC01'>
+                <field name='code'>L01DC01</field>
+                <field name='name'>BLEOMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='L01XA01'>
+                <field name='code'>L01XA01</field>
+                <field name='name'>CISPLATINO</field>
+        </record> 
+        <record model='doctor.atc' id='L01XA02'>
+                <field name='code'>L01XA02</field>
+                <field name='name'>CARBOPLATINO</field>
+        </record> 
+        <record model='doctor.atc' id='L01XC02'>
+                <field name='code'>L01XC02</field>
+                <field name='name'>RITUXIMAB</field>
+        </record> 
+        <record model='doctor.atc' id='L01XC03'>
+                <field name='code'>L01XC03</field>
+                <field name='name'>TRASTUZUMAB</field>
+        </record> 
+        <record model='doctor.atc' id='L01XE01'>
+                <field name='code'>L01XE01</field>
+                <field name='name'>IMATINIB</field>
+        </record> 
+        <record model='doctor.atc' id='L01XX02'>
+                <field name='code'>L01XX02</field>
+                <field name='name'>ASPARAGINASA</field>
+        </record> 
+        <record model='doctor.atc' id='L01XX09'>
+                <field name='code'>L01XX09</field>
+                <field name='name'>MILTEFOSINA</field>
+        </record> 
+        <record model='doctor.atc' id='L02BA01'>
+                <field name='code'>L02BA01</field>
+                <field name='name'>TAMOXIFENO</field>
+        </record> 
+        <record model='doctor.atc' id='L03AA13'>
+                <field name='code'>L03AA13</field>
+                <field name='name'>PEGFILGRASTIM</field>
+        </record> 
+        <record model='doctor.atc' id='L03AX03'>
+                <field name='code'>L03AX03</field>
+                <field name='name'>BCG VACUNA</field>
+        </record> 
+        <record model='doctor.atc' id='L04AA06'>
+                <field name='code'>L04AA06</field>
+                <field name='name'>MICOFENOLICO  ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='L04AA13'>
+                <field name='code'>L04AA13</field>
+                <field name='name'>LEFLUNOMIDE</field>
+        </record> 
+        <record model='doctor.atc' id='L04AB01'>
+                <field name='code'>L04AB01</field>
+                <field name='name'>ETANERCEPT</field>
+        </record> 
+        <record model='doctor.atc' id='L04AD01'>
+                <field name='code'>L04AD01</field>
+                <field name='name'>CICLOSPORINA</field>
+        </record> 
+        <record model='doctor.atc' id='L04AX01'>
+                <field name='code'>L04AX01</field>
+                <field name='name'>AZATIOPRINA</field>
+        </record> 
+        <record model='doctor.atc' id='L04AX02'>
+                <field name='code'>L04AX02</field>
+                <field name='name'>TALIDOMIDE</field>
+        </record> 
+        <record model='doctor.atc' id='M01AB05'>
+                <field name='code'>M01AB05</field>
+                <field name='name'>DICLOFENACO</field>
+        </record> 
+        <record model='doctor.atc' id='M01AE01'>
+                <field name='code'>M01AE01</field>
+                <field name='name'>IBUPROFENO</field>
+        </record> 
+        <record model='doctor.atc' id='M01AE02'>
+                <field name='code'>M01AE02</field>
+                <field name='name'>NAPROXENO</field>
+        </record> 
+        <record model='doctor.atc' id='M01CC01'>
+                <field name='code'>M01CC01</field>
+                <field name='name'>PENICILAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='M03AB01'>
+                <field name='code'>M03AB01</field>
+                <field name='name'>SUXAMETONIO</field>
+        </record> 
+        <record model='doctor.atc' id='M03AC01'>
+                <field name='code'>M03AC01</field>
+                <field name='name'>PANCURONIO</field>
+        </record> 
+        <record model='doctor.atc' id='M03AC03'>
+                <field name='code'>M03AC03</field>
+                <field name='name'>VECURONIO</field>
+        </record> 
+        <record model='doctor.atc' id='M03BA03'>
+                <field name='code'>M03BA03</field>
+                <field name='name'>METOCARBAMOL</field>
+        </record> 
+        <record model='doctor.atc' id='M04AA01'>
+                <field name='code'>M04AA01</field>
+                <field name='name'>ALOPURINOL</field>
+        </record> 
+        <record model='doctor.atc' id='M04AC01'>
+                <field name='code'>M04AC01</field>
+                <field name='name'>COLCHICINA</field>
+        </record> 
+        <record model='doctor.atc' id='M05BA02'>
+                <field name='code'>M05BA02</field>
+                <field name='name'>CLODRONICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='M05BA03'>
+                <field name='code'>M05BA03</field>
+                <field name='name'>PAMIDRONICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='M05BA04'>
+                <field name='code'>M05BA04</field>
+                <field name='name'>ALENDRONICO  ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='M05BA06'>
+                <field name='code'>M05BA06</field>
+                <field name='name'>IBANDRONICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='M05BA08'>
+                <field name='code'>M05BA08</field>
+                <field name='name'>ZOLEDRONICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='N01AB01'>
+                <field name='code'>N01AB01</field>
+                <field name='name'>HALOTANO</field>
+        </record> 
+        <record model='doctor.atc' id='N01AB04'>
+                <field name='code'>N01AB04</field>
+                <field name='name'>ENFLURANO</field>
+        </record> 
+        <record model='doctor.atc' id='N01AB06'>
+                <field name='code'>N01AB06</field>
+                <field name='name'>ISOFLURANO</field>
+        </record> 
+        <record model='doctor.atc' id='N01AF03'>
+                <field name='code'>N01AF03</field>
+                <field name='name'>TIOPENTAL</field>
+        </record> 
+        <record model='doctor.atc' id='N01AH01'>
+                <field name='code'>N01AH01</field>
+                <field name='name'>FENTANYL</field>
+        </record> 
+        <record model='doctor.atc' id='N01BB01'>
+                <field name='code'>N01BB01</field>
+                <field name='name'>BUPIVACAINA</field>
+        </record> 
+        <record model='doctor.atc' id='N01BB02'>
+                <field name='code'>N01BB02</field>
+                <field name='name'>LIDOCAINA</field>
+        </record> 
+        <record model='doctor.atc' id='N01BB51'>
+                <field name='code'>N01BB51</field>
+                <field name='name'>BUPIVACAINA COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='N01BB52'>
+                <field name='code'>N01BB52</field>
+                <field name='name'>LIDOCAINA COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='N02AA01'>
+                <field name='code'>N02AA01</field>
+                <field name='name'>MORFINA</field>
+        </record> 
+        <record model='doctor.atc' id='N02AA03'>
+                <field name='code'>N02AA03</field>
+                <field name='name'>HIDROMORFONA</field>
+        </record> 
+        <record model='doctor.atc' id='N02AA05'>
+                <field name='code'>N02AA05</field>
+                <field name='name'>OXICODONA</field>
+        </record> 
+        <record model='doctor.atc' id='N02AA08'>
+                <field name='code'>N02AA08</field>
+                <field name='name'>DIHIDROCODEINA</field>
+        </record> 
+        <record model='doctor.atc' id='N02AB02'>
+                <field name='code'>N02AB02</field>
+                <field name='name'>PETIDINA</field>
+        </record> 
+        <record model='doctor.atc' id='N02AB03'>
+                <field name='code'>N02AB03</field>
+                <field name='name'>FENTANYL</field>
+        </record> 
+        <record model='doctor.atc' id='N02AC52'>
+                <field name='code'>N02AC52</field>
+                <field name='name'>METADONA COMB. EXCLUYENDO SICOLEPTICOS</field>
+        </record> 
+        <record model='doctor.atc' id='N02AX02'>
+                <field name='code'>N02AX02</field>
+                <field name='name'>TRAMADOL</field>
+        </record> 
+        <record model='doctor.atc' id='N02BA01'>
+                <field name='code'>N02BA01</field>
+                <field name='name'>ACETILSALICILICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='N02BB02'>
+                <field name='code'>N02BB02</field>
+                <field name='name'>METAMIZOL SODIO</field>
+        </record> 
+        <record model='doctor.atc' id='N02BE01'>
+                <field name='code'>N02BE01</field>
+                <field name='name'>PARACETAMOL</field>
+        </record> 
+        <record model='doctor.atc' id='N02CA52'>
+                <field name='code'>N02CA52</field>
+                <field name='name'>ERGOTAMINA COMBINACIONES EXCLUYENDO SICOLEPTICOS</field>
+        </record> 
+        <record model='doctor.atc' id='N03AA02'>
+                <field name='code'>N03AA02</field>
+                <field name='name'>FENOBARBITAL</field>
+        </record> 
+        <record model='doctor.atc' id='N03AB02'>
+                <field name='code'>N03AB02</field>
+                <field name='name'>FENITOINA</field>
+        </record> 
+        <record model='doctor.atc' id='N03AE01'>
+                <field name='code'>N03AE01</field>
+                <field name='name'>CLONAZEPAM</field>
+        </record> 
+        <record model='doctor.atc' id='N03AF01'>
+                <field name='code'>N03AF01</field>
+                <field name='name'>CARBAMAZEPINA</field>
+        </record> 
+        <record model='doctor.atc' id='N03AG01'>
+                <field name='code'>N03AG01</field>
+                <field name='name'>VALPROICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='N03AX09'>
+                <field name='code'>N03AX09</field>
+                <field name='name'>LAMOTRIGINA</field>
+        </record> 
+        <record model='doctor.atc' id='N04AA02'>
+                <field name='code'>N04AA02</field>
+                <field name='name'>BIPERIDENO</field>
+        </record> 
+        <record model='doctor.atc' id='N04BA02'>
+                <field name='code'>N04BA02</field>
+                <field name='name'>LEVODOPA E INHIBIDOR DE DECARBOXILASA</field>
+        </record> 
+        <record model='doctor.atc' id='N04BA03'>
+                <field name='code'>N04BA03</field>
+                <field name='name'>LEVODOPA INHIBIDOR DE DECARBOXILASA E INHIBIDOR COMT</field>
+        </record> 
+        <record model='doctor.atc' id='N04BB01'>
+                <field name='code'>N04BB01</field>
+                <field name='name'>AMANTADINA</field>
+        </record> 
+        <record model='doctor.atc' id='N04BC01'>
+                <field name='code'>N04BC01</field>
+                <field name='name'>BROMOCRIPTINA</field>
+        </record> 
+        <record model='doctor.atc' id='N05AA02'>
+                <field name='code'>N05AA02</field>
+                <field name='name'>LEVOMEPROMAZINA</field>
+        </record> 
+        <record model='doctor.atc' id='N05AC02'>
+                <field name='code'>N05AC02</field>
+                <field name='name'>TIORIDAZINA</field>
+        </record> 
+        <record model='doctor.atc' id='N05AC04'>
+                <field name='code'>N05AC04</field>
+                <field name='name'>PIPOTIAZINA</field>
+        </record> 
+        <record model='doctor.atc' id='N05AD01'>
+                <field name='code'>N05AD01</field>
+                <field name='name'>HALOPERIDOL</field>
+        </record> 
+        <record model='doctor.atc' id='N05AH02'>
+                <field name='code'>N05AH02</field>
+                <field name='name'>CLOZAPINA</field>
+        </record> 
+        <record model='doctor.atc' id='N05AH03'>
+                <field name='code'>N05AH03</field>
+                <field name='name'>OLANZAPINA</field>
+        </record> 
+        <record model='doctor.atc' id='N05AN01'>
+                <field name='code'>N05AN01</field>
+                <field name='name'>LITIO</field>
+        </record> 
+        <record model='doctor.atc' id='N05AX08'>
+                <field name='code'>N05AX08</field>
+                <field name='name'>RISPERIDONA</field>
+        </record> 
+        <record model='doctor.atc' id='N05BA01'>
+                <field name='code'>N05BA01</field>
+                <field name='name'>DIAZEPAM</field>
+        </record> 
+        <record model='doctor.atc' id='N05BA06'>
+                <field name='code'>N05BA06</field>
+                <field name='name'>LORAZEPAM</field>
+        </record> 
+        <record model='doctor.atc' id='N05BA12'>
+                <field name='code'>N05BA12</field>
+                <field name='name'>ALPRAZOLAM</field>
+        </record> 
+        <record model='doctor.atc' id='N05BB01'>
+                <field name='code'>N05BB01</field>
+                <field name='name'>HIDROXIZINA</field>
+        </record> 
+        <record model='doctor.atc' id='N05CD08'>
+                <field name='code'>N05CD08</field>
+                <field name='name'>MIDAZOLAM</field>
+        </record> 
+        <record model='doctor.atc' id='N06AA02'>
+                <field name='code'>N06AA02</field>
+                <field name='name'>IMIPRAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='N06AA09'>
+                <field name='code'>N06AA09</field>
+                <field name='name'>AMITRIPTILINA</field>
+        </record> 
+        <record model='doctor.atc' id='N06AB03'>
+                <field name='code'>N06AB03</field>
+                <field name='name'>FLUOXETINA</field>
+        </record> 
+        <record model='doctor.atc' id='N06AB06'>
+                <field name='code'>N06AB06</field>
+                <field name='name'>SERTRALINA</field>
+        </record> 
+        <record model='doctor.atc' id='N06AX05'>
+                <field name='code'>N06AX05</field>
+                <field name='name'>TRAZODONA</field>
+        </record> 
+        <record model='doctor.atc' id='N06BA04'>
+                <field name='code'>N06BA04</field>
+                <field name='name'>METILFENIDATO</field>
+        </record> 
+        <record model='doctor.atc' id='N06DA03'>
+                <field name='code'>N06DA03</field>
+                <field name='name'>RIVASTIGMINA</field>
+        </record> 
+        <record model='doctor.atc' id='N07AA01'>
+                <field name='code'>N07AA01</field>
+                <field name='name'>NEOSTIGMINA</field>
+        </record> 
+        <record model='doctor.atc' id='N07AA02'>
+                <field name='code'>N07AA02</field>
+                <field name='name'>PIRIDOSTIGMINA</field>
+        </record> 
+        <record model='doctor.atc' id='N07CA91'>
+                <field name='code'>N07CA91</field>
+                <field name='name'>DIMENHIDRINATO</field>
+        </record> 
+        <record model='doctor.atc' id='P01AB01'>
+                <field name='code'>P01AB01</field>
+                <field name='name'>METRONIDAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='P01AB02'>
+                <field name='code'>P01AB02</field>
+                <field name='name'>TINIDAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='P01AC04'>
+                <field name='code'>P01AC04</field>
+                <field name='name'>TECLOZAN</field>
+        </record> 
+        <record model='doctor.atc' id='P01BA01'>
+                <field name='code'>P01BA01</field>
+                <field name='name'>CLOROQUINA</field>
+        </record> 
+        <record model='doctor.atc' id='P01BA03'>
+                <field name='code'>P01BA03</field>
+                <field name='name'>PRIMAQUINA</field>
+        </record> 
+        <record model='doctor.atc' id='P01BC02'>
+                <field name='code'>P01BC02</field>
+                <field name='name'>MEFLOQUINA</field>
+        </record> 
+        <record model='doctor.atc' id='P01BD01'>
+                <field name='code'>P01BD01</field>
+                <field name='name'>PIRIMETAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='P01BD51'>
+                <field name='code'>P01BD51</field>
+                <field name='name'>PIRIMETAMINA COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='P01BE03'>
+                <field name='code'>P01BE03</field>
+                <field name='name'>ARTESUNATO</field>
+        </record> 
+        <record model='doctor.atc' id='P01BE52'>
+                <field name='code'>P01BE52</field>
+                <field name='name'>ARTEMETER COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='P01CB01'>
+                <field name='code'>P01CB01</field>
+                <field name='name'>MEGLUMINA ANTIMONATO</field>
+        </record> 
+        <record model='doctor.atc' id='P01CB02'>
+                <field name='code'>P01CB02</field>
+                <field name='name'>SODIO ESTIBOGLUCONATO</field>
+        </record> 
+        <record model='doctor.atc' id='P01CX01'>
+                <field name='code'>P01CX01</field>
+                <field name='name'>PENTAMIDINA ISETIONATO</field>
+        </record> 
+        <record model='doctor.atc' id='P02BA01'>
+                <field name='code'>P02BA01</field>
+                <field name='name'>PRAZIQUANTEL</field>
+        </record> 
+        <record model='doctor.atc' id='P02CA01'>
+                <field name='code'>P02CA01</field>
+                <field name='name'>MEBENDAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='P02CA03'>
+                <field name='code'>P02CA03</field>
+                <field name='name'>ALBENDAZOL</field>
+        </record> 
+        <record model='doctor.atc' id='P02CB01'>
+                <field name='code'>P02CB01</field>
+                <field name='name'>PIPERAZINA</field>
+        </record> 
+        <record model='doctor.atc' id='P02CC01'>
+                <field name='code'>P02CC01</field>
+                <field name='name'>PIRANTEL</field>
+        </record> 
+        <record model='doctor.atc' id='P03AX01'>
+                <field name='code'>P03AX01</field>
+                <field name='name'>BENZIL BENZOATO</field>
+        </record> 
+        <record model='doctor.atc' id='R01AA05'>
+                <field name='code'>R01AA05</field>
+                <field name='name'>OXIMETAZOLINA</field>
+        </record> 
+        <record model='doctor.atc' id='R01AC01'>
+                <field name='code'>R01AC01</field>
+                <field name='name'>CROMOGLICATO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='R01AD01'>
+                <field name='code'>R01AD01</field>
+                <field name='name'>BECLOMETASONA</field>
+        </record> 
+        <record model='doctor.atc' id='R01AX03'>
+                <field name='code'>R01AX03</field>
+                <field name='name'>IPRATROPIO BROMURO</field>
+        </record> 
+        <record model='doctor.atc' id='R03AC02'>
+                <field name='code'>R03AC02</field>
+                <field name='name'>SALBUTAMOL</field>
+        </record> 
+        <record model='doctor.atc' id='R03AC03'>
+                <field name='code'>R03AC03</field>
+                <field name='name'>TERBUTALINA</field>
+        </record> 
+        <record model='doctor.atc' id='R03BA01'>
+                <field name='code'>R03BA01</field>
+                <field name='name'>BECLOMETASONA</field>
+        </record> 
+        <record model='doctor.atc' id='R03CC02'>
+                <field name='code'>R03CC02</field>
+                <field name='name'>SALBUTAMOL</field>
+        </record> 
+        <record model='doctor.atc' id='R03CC03'>
+                <field name='code'>R03CC03</field>
+                <field name='name'>TERBUTALINA</field>
+        </record> 
+        <record model='doctor.atc' id='R03DA04'>
+                <field name='code'>R03DA04</field>
+                <field name='name'>TEOFILINA</field>
+        </record> 
+        <record model='doctor.atc' id='R03DA05'>
+                <field name='code'>R03DA05</field>
+                <field name='name'>AMINOFILINA</field>
+        </record> 
+        <record model='doctor.atc' id='R05CB01'>
+                <field name='code'>R05CB01</field>
+                <field name='name'>ACETILCISTEINA</field>
+        </record> 
+        <record model='doctor.atc' id='R06AA02'>
+                <field name='code'>R06AA02</field>
+                <field name='name'>DIFENHIDRAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='R06AB04'>
+                <field name='code'>R06AB04</field>
+                <field name='name'>CLORFENAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='R06AX13'>
+                <field name='code'>R06AX13</field>
+                <field name='name'>LORATADINA</field>
+        </record> 
+        <record model='doctor.atc' id='R06AX17'>
+                <field name='code'>R06AX17</field>
+                <field name='name'>KETOTIFENO</field>
+        </record> 
+        <record model='doctor.atc' id='S01AA01'>
+                <field name='code'>S01AA01</field>
+                <field name='name'>CLORAMFENICOL</field>
+        </record> 
+        <record model='doctor.atc' id='S01AA11'>
+                <field name='code'>S01AA11</field>
+                <field name='name'>GENTAMICINA</field>
+        </record> 
+        <record model='doctor.atc' id='S01AB04'>
+                <field name='code'>S01AB04</field>
+                <field name='name'>SULFACETAMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='S01AD03'>
+                <field name='code'>S01AD03</field>
+                <field name='name'>ACICLOVIR</field>
+        </record> 
+        <record model='doctor.atc' id='S01BA07'>
+                <field name='code'>S01BA07</field>
+                <field name='name'>FLUOROMETOLONA</field>
+        </record> 
+        <record model='doctor.atc' id='S01CA02'>
+                <field name='code'>S01CA02</field>
+                <field name='name'>PREDNISOLONA Y ANTIINFECCIOSOS</field>
+        </record> 
+        <record model='doctor.atc' id='S01EA05'>
+                <field name='code'>S01EA05</field>
+                <field name='name'>BRIMONIDINA</field>
+        </record> 
+        <record model='doctor.atc' id='S01EB01'>
+                <field name='code'>S01EB01</field>
+                <field name='name'>PILOCARPINA</field>
+        </record> 
+        <record model='doctor.atc' id='S01EC01'>
+                <field name='code'>S01EC01</field>
+                <field name='name'>ACETAZOLAMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='S01ED01'>
+                <field name='code'>S01ED01</field>
+                <field name='name'>TIMOLOL</field>
+        </record> 
+        <record model='doctor.atc' id='S01EE01'>
+                <field name='code'>S01EE01</field>
+                <field name='name'>LATANOPROST</field>
+        </record> 
+        <record model='doctor.atc' id='S01FA01'>
+                <field name='code'>S01FA01</field>
+                <field name='name'>ATROPINA</field>
+        </record> 
+        <record model='doctor.atc' id='S01FA56'>
+                <field name='code'>S01FA56</field>
+                <field name='name'>TROPICAMIDA COMBINACIONES</field>
+        </record> 
+        <record model='doctor.atc' id='S01GX01'>
+                <field name='code'>S01GX01</field>
+                <field name='name'>CROMOGLICATO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='S01JA01'>
+                <field name='code'>S01JA01</field>
+                <field name='name'>FLUORESCEINA</field>
+        </record> 
+        <record model='doctor.atc' id='S02CA06'>
+                <field name='code'>S02CA06</field>
+                <field name='name'>DEXAMETASONA Y ANTIINFECCIOSOS</field>
+        </record> 
+        <record model='doctor.atc' id='S03CA01'>
+                <field name='code'>S03CA01</field>
+                <field name='name'>DEXAMETASONA Y ANTIINFECCIOSOS</field>
+        </record> 
+        <record model='doctor.atc' id='V03AB04'>
+                <field name='code'>V03AB04</field>
+                <field name='name'>PRALIDOXIMA</field>
+        </record> 
+        <record model='doctor.atc' id='V03AB14'>
+                <field name='code'>V03AB14</field>
+                <field name='name'>PROTAMINA</field>
+        </record> 
+        <record model='doctor.atc' id='V03AB15'>
+                <field name='code'>V03AB15</field>
+                <field name='name'>NALOXONA</field>
+        </record> 
+        <record model='doctor.atc' id='V03AB23'>
+                <field name='code'>V03AB23</field>
+                <field name='name'>ACETILCISTEINA</field>
+        </record> 
+        <record model='doctor.atc' id='V03AE01'>
+                <field name='code'>V03AE01</field>
+                <field name='name'>POLIESTIRENO SULFONATO</field>
+        </record> 
+        <record model='doctor.atc' id='V03AE02'>
+                <field name='code'>V03AE02</field>
+                <field name='name'>SEVELAMER</field>
+        </record> 
+        <record model='doctor.atc' id='V03AF03'>
+                <field name='code'>V03AF03</field>
+                <field name='name'>CALCIO FOLINATO</field>
+        </record> 
+        <record model='doctor.atc' id='V03AN01'>
+                <field name='code'>V03AN01</field>
+                <field name='name'>OXIGENO</field>
+        </record> 
+        <record model='doctor.atc' id='V07AB99'>
+                <field name='code'>V07AB99</field>
+                <field name='name'>AGUA DESTILADA</field>
+        </record> 
+        <record model='doctor.atc' id='V08AA01'>
+                <field name='code'>V08AA01</field>
+                <field name='name'>DIATRIZOICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='V08AA04'>
+                <field name='code'>V08AA04</field>
+                <field name='name'>IOTALAMICO ACIDO</field>
+        </record> 
+        <record model='doctor.atc' id='V08AB02'>
+                <field name='code'>V08AB02</field>
+                <field name='name'>IOHEXOL</field>
+        </record> 
+        <record model='doctor.atc' id='V08AB04'>
+                <field name='code'>V08AB04</field>
+                <field name='name'>IOPAMIDOL</field>
+        </record> 
+        <record model='doctor.atc' id='V08AB05'>
+                <field name='code'>V08AB05</field>
+                <field name='name'>IOPROMIDA</field>
+        </record> 
+        <record model='doctor.atc' id='V08AB07'>
+                <field name='code'>V08AB07</field>
+                <field name='name'>IOVERSOL</field>
+        </record> 
+        <record model='doctor.atc' id='V08BA01'>
+                <field name='code'>V08BA01</field>
+                <field name='name'>BARIO SULFATO CON AGENTES SUSPENDIDOS</field>
+        </record> 
+        <record model='doctor.atc' id='V08CA01'>
+                <field name='code'>V08CA01</field>
+                <field name='name'>GADOPENTETICO ACIDO</field>
+        </record> 
+    </data>
+</openerp>
+        

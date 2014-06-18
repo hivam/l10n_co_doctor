@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record model='doctor.pharmaceutical.form' id='AE'>
+                <field name='code'>AE</field>
+                <field name='name'>AEROSOLES</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='BS'>
+                <field name='code'>BS</field>
+                <field name='name'>SOLUCION BUCOFARINGUEA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='CB'>
+                <field name='code'>CB</field>
+                <field name='name'>CAPSULA BLANDA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='CD'>
+                <field name='code'>CD</field>
+                <field name='name'>CAPSULA DURA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='CE'>
+                <field name='code'>CE</field>
+                <field name='name'>CAPSULA CON CUBIERTA ENTERICA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='CM'>
+                <field name='code'>CM</field>
+                <field name='name'>CAPSULA DE LIBERACION PROLONGADA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='CR'>
+                <field name='code'>CR</field>
+                <field name='name'>CREMAS, GELES, UNGUENTOS Y PASTAS</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='CS'>
+                <field name='code'>CS</field>
+                <field name='name'>SUSPENSION TOPICA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='CT'>
+                <field name='code'>CT</field>
+                <field name='name'>CREMA TOPICA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='CV'>
+                <field name='code'>CV</field>
+                <field name='name'>CAPSULA VAGINAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='DT'>
+                <field name='code'>DT</field>
+                <field name='name'>TRANSDERMICOS</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='EI'>
+                <field name='code'>EI</field>
+                <field name='name'>EMULSION INYECTABLE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='EL'>
+                <field name='code'>EL</field>
+                <field name='name'>ELIXIR</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='EO'>
+                <field name='code'>EO</field>
+                <field name='name'>EMULSION ORAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='ES'>
+                <field name='code'>ES</field>
+                <field name='name'>SUSPENSION INYECTABLE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='FS'>
+                <field name='code'>FS</field>
+                <field name='name'>SOLUCIÓN CONCENTRADA PARA INFUSIÓN</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='GA'>
+                <field name='code'>GA</field>
+                <field name='name'>GAS</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='GE'>
+                <field name='code'>GE</field>
+                <field name='name'>GRANULOS EFERVESCENTES</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='GN'>
+                <field name='code'>GN</field>
+                <field name='name'>GRANULOS</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='GT'>
+                <field name='code'>GT</field>
+                <field name='name'>GEL TOPICO</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='GV'>
+                <field name='code'>GV</field>
+                <field name='name'>GEL VAGINAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='IN'>
+                <field name='code'>IN</field>
+                <field name='name'>INYECTABLES</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='IP'>
+                <field name='code'>IP</field>
+                <field name='name'>IMPLANTES Y SISTEMAS INTRAUTERINOS E INTRAOCULARES</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='IS'>
+                <field name='code'>IS</field>
+                <field name='name'>SUSPENSION OTICA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='JA'>
+                <field name='code'>JA</field>
+                <field name='name'>JALEA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='JL'>
+                <field name='code'>JL</field>
+                <field name='name'>JABON LIQUIDO</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='JR'>
+                <field name='code'>JR</field>
+                <field name='name'>JARABE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='LA'>
+                <field name='code'>LA</field>
+                <field name='name'>LIQUIDO OLEOSO (Aceite)</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='LC'>
+                <field name='code'>LC</field>
+                <field name='name'>LOCION</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='LD'>
+                <field name='code'>LD</field>
+                <field name='name'>LAMINAS DISPERSABLES</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='LE'>
+                <field name='code'>LE</field>
+                <field name='name'>LIQUIDO ESTERIL PARA INYECCION (AGUA)</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='LO'>
+                <field name='code'>LO</field>
+                <field name='name'>LIOFILIZADO ORAL DE DISPERSION RAPIDA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='MO'>
+                <field name='code'>MO</field>
+                <field name='name'>OVULO</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='MS'>
+                <field name='code'>MS</field>
+                <field name='name'>SUPOSITORIO</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='NE'>
+                <field name='code'>NE</field>
+                <field name='name'>MEDICAMENTOS NO ESTERILES SOLIDOS - POLVOS Y GRANULADOS</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='NS'>
+                <field name='code'>NS</field>
+                <field name='name'>SOLUCION NASAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='OP'>
+                <field name='code'>OP</field>
+                <field name='name'>POLVO PARA RECONSTITUIR A SUSPENSION ORAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='OS'>
+                <field name='code'>OS</field>
+                <field name='name'>SOLUCION ORAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='PL'>
+                <field name='code'>PL</field>
+                <field name='name'>POLVO LIOFILIZADO PARA RECONSTITUIR A SOLUCION INYECTABLE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='PM'>
+                <field name='code'>PM</field>
+                <field name='name'>POMADA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='PO'>
+                <field name='code'>PO</field>
+                <field name='name'>POLVO PARA RECONSTITUIR A SOLUCION ORAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='PS'>
+                <field name='code'>PS</field>
+                <field name='name'>POLVO ESTERIL PARA RECONSTITUIR A SOLUCION INYECTABLE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='PT'>
+                <field name='code'>PT</field>
+                <field name='name'>POLVO MEDICADO PARA USO TOPICO</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='RS'>
+                <field name='code'>RS</field>
+                <field name='name'>SUSPENSION PARA ADMINISTRAR POR VIA RECTAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SA'>
+                <field name='code'>SA</field>
+                <field name='name'>SUSPENSION NASAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SB'>
+                <field name='code'>SB</field>
+                <field name='name'>SOLUCION BUCAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SC'>
+                <field name='code'>SC</field>
+                <field name='name'>SOLUCION TOPICA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SD'>
+                <field name='code'>SD</field>
+                <field name='name'>SOLUCION PARA USO TRANSDERMICO(PARCHE)</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SE'>
+                <field name='code'>SE</field>
+                <field name='name'>SOLUCION ESTERIL PARA IRRIGACION</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SF'>
+                <field name='code'>SF</field>
+                <field name='name'>SUSPENSION OFTALMICA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SI'>
+                <field name='code'>SI</field>
+                <field name='name'>SUSPENSION PARA INHALACION</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SL'>
+                <field name='code'>SL</field>
+                <field name='name'>SISTEMAS DE LIBERACION</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SN'>
+                <field name='code'>SN</field>
+                <field name='name'>SOLUCION PARA INHALACION</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SO'>
+                <field name='code'>SO</field>
+                <field name='name'>SOLUCION OFTALMICA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SP'>
+                <field name='code'>SP</field>
+                <field name='name'>SOLUCION PARA PRESERVACION DE ORGANOS EN TRANSPLANTES</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SR'>
+                <field name='code'>SR</field>
+                <field name='name'>SUSPENSION ORAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SS'>
+                <field name='code'>SS</field>
+                <field name='name'>SUSPENSIONES</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='ST'>
+                <field name='code'>ST</field>
+                <field name='name'>SOLUCION OTICA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SU'>
+                <field name='code'>SU</field>
+                <field name='name'>SOLUCION PARA NEBULIZACION</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='SY'>
+                <field name='code'>SY</field>
+                <field name='name'>POLVO ESTERIL PARA RECONSTITUIR A SUSPENSION INYECTABLE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TB'>
+                <field name='code'>TB</field>
+                <field name='name'>TABLETA BUCAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TC'>
+                <field name='code'>TC</field>
+                <field name='name'>TABLETA CON CUBIERTA ENTERICA CON PELICULA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TD'>
+                <field name='code'>TD</field>
+                <field name='name'>TABLETA DISPERSABLE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TE'>
+                <field name='code'>TE</field>
+                <field name='name'>TABLETA EFERVESCENTE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TG'>
+                <field name='code'>TG</field>
+                <field name='name'>TABLETA CON CUBIERTA ENTERICA(GRAGEA)</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TI'>
+                <field name='code'>TI</field>
+                <field name='name'>TABLETA CUBIERTA (GRAGEA)</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TM'>
+                <field name='code'>TM</field>
+                <field name='name'>TABLETA MASTICABLE</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TN'>
+                <field name='code'>TN</field>
+                <field name='name'>TABLETA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TP'>
+                <field name='code'>TP</field>
+                <field name='name'>TABLETA CUBIERTA CON PELICULA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TR'>
+                <field name='code'>TR</field>
+                <field name='name'>TABLETA RECUBIERTA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TS'>
+                <field name='code'>TS</field>
+                <field name='name'>TABLETA DE LIBERACION PROLONGADA</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TU'>
+                <field name='code'>TU</field>
+                <field name='name'>TABLETA SUBLINGUAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='TV'>
+                <field name='code'>TV</field>
+                <field name='name'>TABLETA VAGINAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='UO'>
+                <field name='code'>UO</field>
+                <field name='name'>UNGUENTO OFTALMICO</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='UP'>
+                <field name='code'>UP</field>
+                <field name='name'>UNGUENTO PROCTOLOGICO</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='UT'>
+                <field name='code'>UT</field>
+                <field name='name'>UNGUENTO TOPICO</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='VC'>
+                <field name='code'>VC</field>
+                <field name='name'>CREMA VAGINAL</field>
+        </record> 
+        <record model='doctor.pharmaceutical.form' id='YS'>
+                <field name='code'>YS</field>
+                <field name='name'>SOLUCION INYECTABLE</field>
+        </record> 
+    </data>
+</openerp>
+        

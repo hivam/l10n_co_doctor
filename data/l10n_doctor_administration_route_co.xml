@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record model='doctor.administration.route' id='BU'>
+                <field name='code'>BU</field>
+                <field name='name'>BUCAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='CO'>
+                <field name='code'>CO</field>
+                <field name='name'>CONJUNTIVAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='DT'>
+                <field name='code'>DT</field>
+                <field name='name'>DENTAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='EP'>
+                <field name='code'>EP</field>
+                <field name='name'>EPIDURAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='HE'>
+                <field name='code'>HE</field>
+                <field name='name'>HEMODIALISIS</field>
+        </record> 
+        <record model='doctor.administration.route' id='IH'>
+                <field name='code'>IH</field>
+                <field name='name'>INHALACION</field>
+        </record> 
+        <record model='doctor.administration.route' id='IA'>
+                <field name='code'>IA</field>
+                <field name='name'>INTRA-ARTERIAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='IR'>
+                <field name='code'>IR</field>
+                <field name='name'>INTRA-ARTICULAR</field>
+        </record> 
+        <record model='doctor.administration.route' id='IC'>
+                <field name='code'>IC</field>
+                <field name='name'>INTRA-CARDIAC</field>
+        </record> 
+        <record model='doctor.administration.route' id='IB'>
+                <field name='code'>IB</field>
+                <field name='name'>INTRACAVERNOSA</field>
+        </record> 
+        <record model='doctor.administration.route' id='ID'>
+                <field name='code'>ID</field>
+                <field name='name'>INTRADERMAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='IE'>
+                <field name='code'>IE</field>
+                <field name='name'>INTRAESPINAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='IL'>
+                <field name='code'>IL</field>
+                <field name='name'>INTRALESIONAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='IM'>
+                <field name='code'>IM</field>
+                <field name='name'>INTRAMUSCULAR</field>
+        </record> 
+        <record model='doctor.administration.route' id='IN'>
+                <field name='code'>IN</field>
+                <field name='name'>INTRANASAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='IO'>
+                <field name='code'>IO</field>
+                <field name='name'>INTRAOCULAR</field>
+        </record> 
+        <record model='doctor.administration.route' id='IP'>
+                <field name='code'>IP</field>
+                <field name='name'>INTRAPERITONEAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='IT'>
+                <field name='code'>IT</field>
+                <field name='name'>INTRATECAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='IU'>
+                <field name='code'>IU</field>
+                <field name='name'>INTRAUTERINA</field>
+        </record> 
+        <record model='doctor.administration.route' id='IV'>
+                <field name='code'>IV</field>
+                <field name='name'>INTRAVENOSA</field>
+        </record> 
+        <record model='doctor.administration.route' id='IS'>
+                <field name='code'>IS</field>
+                <field name='name'>INTRAVESICAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='PO'>
+                <field name='code'>PO</field>
+                <field name='name'>ORAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='OA'>
+                <field name='code'>OA</field>
+                <field name='name'>OTICO AURICULAR</field>
+        </record> 
+        <record model='doctor.administration.route' id='PA'>
+                <field name='code'>PA</field>
+                <field name='name'>PARENTERAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='PR'>
+                <field name='code'>PR</field>
+                <field name='name'>RECTAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='SC'>
+                <field name='code'>SC</field>
+                <field name='name'>SUBCUTANEA</field>
+        </record> 
+        <record model='doctor.administration.route' id='SL'>
+                <field name='code'>SL</field>
+                <field name='name'>SUBLINGUAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='TP'>
+                <field name='code'>TP</field>
+                <field name='name'>TOPICA EXTERNA</field>
+        </record> 
+        <record model='doctor.administration.route' id='TD'>
+                <field name='code'>TD</field>
+                <field name='name'>TRANSDERMAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='UR'>
+                <field name='code'>UR</field>
+                <field name='name'>URETRAL</field>
+        </record> 
+        <record model='doctor.administration.route' id='VG'>
+                <field name='code'>VG</field>
+                <field name='name'>VAGINAL</field>
+        </record>
+        <record model='doctor.administration.route' id='OT'>
+                <field name='code'>OT</field>
+                <field name='name'>OTRA</field>
+        </record> 
+    </data>
+</openerp>
+        

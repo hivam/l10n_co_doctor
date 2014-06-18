@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record model='doctor.speciality' id='001'>
+                <field name='code'>001</field>
+                <field name='name'>ACTIVIDAD FISICO TERAPEUTICA</field>
+        </record> 
+        <record model='doctor.speciality' id='020'>
+                <field name='code'>020</field>
+                <field name='name'>ANESTESIA CARDIOTORAXICA</field>
+        </record> 
+        <record model='doctor.speciality' id='021'>
+                <field name='code'>021</field>
+                <field name='name'>ANESTESIOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='022'>
+                <field name='code'>022</field>
+                <field name='name'>ANESTESIOLOGIA Y REANIMACION</field>
+        </record> 
+        <record model='doctor.speciality' id='023'>
+                <field name='code'>023</field>
+                <field name='name'>ANESTESIOLOGIA, CUIDADOS INTENSIVOS Y REANIMACION</field>
+        </record> 
+        <record model='doctor.speciality' id='040'>
+                <field name='code'>040</field>
+                <field name='name'>ATENCION DE ENFERMERIA EN QUIROFANOS Y CENTROS DE ESTERILIZACION</field>
+        </record> 
+        <record model='doctor.speciality' id='041'>
+                <field name='code'>041</field>
+                <field name='name'>ATENCION DE ENFERMERIA EN URGENCIAS</field>
+        </record> 
+        <record model='doctor.speciality' id='042'>
+                <field name='code'>042</field>
+                <field name='name'>ENFERMERIA CARDIORESPIRATORIA</field>
+        </record> 
+        <record model='doctor.speciality' id='043'>
+                <field name='code'>043</field>
+                <field name='name'>ENFERMERIA EN CUIDADO AL NIÑO</field>
+        </record> 
+        <record model='doctor.speciality' id='044'>
+                <field name='code'>044</field>
+                <field name='name'>ENFERMERIA EN CUIDADO CRITICO</field>
+        </record> 
+        <record model='doctor.speciality' id='045'>
+                <field name='code'>045</field>
+                <field name='name'>ENFERMERIA EN CUIDADO DEL ADULTO EN ESTADO CRITICO DE SALUD</field>
+        </record> 
+        <record model='doctor.speciality' id='046'>
+                <field name='code'>046</field>
+                <field name='name'>ENFERMERIA EN CUIDADO INTENSIVO</field>
+        </record> 
+        <record model='doctor.speciality' id='047'>
+                <field name='code'>047</field>
+                <field name='name'>ENFERMERIA EN GERONTOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='048'>
+                <field name='code'>048</field>
+                <field name='name'>ENFERMERIA EN SALUD FAMILIAR</field>
+        </record> 
+        <record model='doctor.speciality' id='049'>
+                <field name='code'>049</field>
+                <field name='name'>ENFERMERIA EN SALUD MENTAL</field>
+        </record> 
+        <record model='doctor.speciality' id='050'>
+                <field name='code'>050</field>
+                <field name='name'>ENFERMERIA EN SALUD OCUPACIONAL</field>
+        </record> 
+        <record model='doctor.speciality' id='051'>
+                <field name='code'>051</field>
+                <field name='name'>ENFERMERIA MATERNO-PERINATAL</field>
+        </record> 
+        <record model='doctor.speciality' id='052'>
+                <field name='code'>052</field>
+                <field name='name'>ENFERMERIA MEDICO-QUIRURGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='053'>
+                <field name='code'>053</field>
+                <field name='name'>ENFERMERIA NEFROLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='054'>
+                <field name='code'>054</field>
+                <field name='name'>ENFERMERIA NEFROLOGICA Y UROLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='055'>
+                <field name='code'>055</field>
+                <field name='name'>ENFERMERIA NEONATAL</field>
+        </record> 
+        <record model='doctor.speciality' id='056'>
+                <field name='code'>056</field>
+                <field name='name'>ENFERMERIA NEUROLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='057'>
+                <field name='code'>057</field>
+                <field name='name'>ENFERMERIA NEUROLOGICA Y NEUROCIRUGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='058'>
+                <field name='code'>058</field>
+                <field name='name'>ENFERMERIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='059'>
+                <field name='code'>059</field>
+                <field name='name'>ENFERMERIA PERINATAL</field>
+        </record> 
+        <record model='doctor.speciality' id='080'>
+                <field name='code'>080</field>
+                <field name='name'>ATENCION EN DESASTRES Y EMERGENCIAS</field>
+        </record> 
+        <record model='doctor.speciality' id='090'>
+                <field name='code'>090</field>
+                <field name='name'>ATENCION FARMACEUTICA</field>
+        </record> 
+        <record model='doctor.speciality' id='100'>
+                <field name='code'>100</field>
+                <field name='name'>AUDIOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='101'>
+                <field name='code'>101</field>
+                <field name='name'>AUDIOPROTESIS</field>
+        </record> 
+        <record model='doctor.speciality' id='110'>
+                <field name='code'>110</field>
+                <field name='name'>BIOMATERIALES, OPERATORIA DENTAL Y ESTETICA</field>
+        </record> 
+        <record model='doctor.speciality' id='120'>
+                <field name='code'>120</field>
+                <field name='name'>CARDIOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='121'>
+                <field name='code'>121</field>
+                <field name='name'>CARDIOLOGIA INTERVENCIONISTA Y HEMODINAMICA</field>
+        </record> 
+        <record model='doctor.speciality' id='122'>
+                <field name='code'>122</field>
+                <field name='name'>CARDIOLOGIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='130'>
+                <field name='code'>130</field>
+                <field name='name'>CIRUGIA CARDIOVASCULAR</field>
+        </record> 
+        <record model='doctor.speciality' id='131'>
+                <field name='code'>131</field>
+                <field name='name'>CIRUGIA DE CABEZA Y CUELLO</field>
+        </record> 
+        <record model='doctor.speciality' id='132'>
+                <field name='code'>132</field>
+                <field name='name'>CIRUGIA DE LA MAMA Y TUMORES DE TEJIDOS BLANDOS</field>
+        </record> 
+        <record model='doctor.speciality' id='133'>
+                <field name='code'>133</field>
+                <field name='name'>CIRUGIA DE LA MANO</field>
+        </record> 
+        <record model='doctor.speciality' id='134'>
+                <field name='code'>134</field>
+                <field name='name'>CIRUGIA DEL TORAX</field>
+        </record> 
+        <record model='doctor.speciality' id='135'>
+                <field name='code'>135</field>
+                <field name='name'>CIRUGIA DERMATOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='136'>
+                <field name='code'>136</field>
+                <field name='name'>CIRUGIA GASTROINTESTINAL Y ENDOSCOPIA DIGESTIVA</field>
+        </record> 
+        <record model='doctor.speciality' id='137'>
+                <field name='code'>137</field>
+                <field name='name'>CIRUGIA GENERAL</field>
+        </record> 
+        <record model='doctor.speciality' id='138'>
+                <field name='code'>138</field>
+                <field name='name'>CIRUGIA MAXILOFACIAL</field>
+        </record> 
+        <record model='doctor.speciality' id='139'>
+                <field name='code'>139</field>
+                <field name='name'>CIRUGIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='140'>
+                <field name='code'>140</field>
+                <field name='name'>CIRUGIA ORAL Y MAXILOFACIAL</field>
+        </record> 
+        <record model='doctor.speciality' id='141'>
+                <field name='code'>141</field>
+                <field name='name'>CIRUGIA ORTOPEDICA Y TRAUMATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='142'>
+                <field name='code'>142</field>
+                <field name='name'>CIRUGIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='143'>
+                <field name='code'>143</field>
+                <field name='name'>CIRUGIA PLASTICA</field>
+        </record> 
+        <record model='doctor.speciality' id='144'>
+                <field name='code'>144</field>
+                <field name='name'>CIRUGIA PLASTICA ESTETICA, MAXILOFACIAL Y DE LA MANO</field>
+        </record> 
+        <record model='doctor.speciality' id='145'>
+                <field name='code'>145</field>
+                <field name='name'>CIRUGIA PLASTICA FACIAL</field>
+        </record> 
+        <record model='doctor.speciality' id='146'>
+                <field name='code'>146</field>
+                <field name='name'>CIRUGIA PLASTICA MAXILOFACIAL Y DE LA MANO</field>
+        </record> 
+        <record model='doctor.speciality' id='147'>
+                <field name='code'>147</field>
+                <field name='name'>CIRUGIA PLASTICA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='148'>
+                <field name='code'>148</field>
+                <field name='name'>CIRUGIA VASCULAR Y ANGIOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='149'>
+                <field name='code'>149</field>
+                <field name='name'>CIRUGIA, IMPLANTOLOGIA Y PATOLOGIA ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='160'>
+                <field name='code'>160</field>
+                <field name='name'>COLOPROCTOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='170'>
+                <field name='code'>170</field>
+                <field name='name'>COMUNICACIÓN EDUCATIVA PARA LA SALUD Y EL BIENESTAR</field>
+        </record> 
+        <record model='doctor.speciality' id='180'>
+                <field name='code'>180</field>
+                <field name='name'>CORNEA Y ENFERMEDADES EXTERNAS</field>
+        </record> 
+        <record model='doctor.speciality' id='190'>
+                <field name='code'>190</field>
+                <field name='name'>CUIDADO DEL PACIENTE EN ESTADO CRITICO</field>
+        </record> 
+        <record model='doctor.speciality' id='195'>
+                <field name='code'>195</field>
+                <field name='name'>CUIDADO RESPIRATORIO</field>
+        </record> 
+        <record model='doctor.speciality' id='200'>
+                <field name='code'>200</field>
+                <field name='name'>DERMATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='201'>
+                <field name='code'>201</field>
+                <field name='name'>DERMATOLOGIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='210'>
+                <field name='code'>210</field>
+                <field name='name'>DESARROLLO DEL LENGUAJE Y SU PATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='220'>
+                <field name='code'>220</field>
+                <field name='name'>DIAGNOSTICO Y MEDICINA ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='230'>
+                <field name='code'>230</field>
+                <field name='name'>DOLOR Y CUIDADOS PALEATIVOS</field>
+        </record> 
+        <record model='doctor.speciality' id='240'>
+                <field name='code'>240</field>
+                <field name='name'>ENDOCRINOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='250'>
+                <field name='code'>250</field>
+                <field name='name'>ENDODONCIA</field>
+        </record> 
+        <record model='doctor.speciality' id='260'>
+                <field name='code'>260</field>
+                <field name='name'>EPIDEMIOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='270'>
+                <field name='code'>270</field>
+                <field name='name'>ERGONOMIA</field>
+        </record> 
+        <record model='doctor.speciality' id='280'>
+                <field name='code'>280</field>
+                <field name='name'>ESTOMATOLOGIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='281'>
+                <field name='code'>281</field>
+                <field name='name'>ESTOMATOLOGIA Y CIRUGIA ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='282'>
+                <field name='code'>282</field>
+                <field name='name'>ESTOMATOLOGIA Y SALUD ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='290'>
+                <field name='code'>290</field>
+                <field name='name'>FISIOTERAPIA EN CUIDADO CRITICO</field>
+        </record> 
+        <record model='doctor.speciality' id='300'>
+                <field name='code'>300</field>
+                <field name='name'>FONIATRIA</field>
+        </record> 
+        <record model='doctor.speciality' id='310'>
+                <field name='code'>310</field>
+                <field name='name'>GASTROENTEROLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='311'>
+                <field name='code'>311</field>
+                <field name='name'>GASTROENTEROLOGIA Y ENDOSCOPIA DIGESTIVA</field>
+        </record> 
+        <record model='doctor.speciality' id='320'>
+                <field name='code'>320</field>
+                <field name='name'>GERIATRIA CLINICA</field>
+        </record> 
+        <record model='doctor.speciality' id='330'>
+                <field name='code'>330</field>
+                <field name='name'>GERONTOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='331'>
+                <field name='code'>331</field>
+                <field name='name'>GERONTOLOGIA SOCIAL</field>
+        </record> 
+        <record model='doctor.speciality' id='340'>
+                <field name='code'>340</field>
+                <field name='name'>GINECOLOGIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='341'>
+                <field name='code'>341</field>
+                <field name='name'>GINECOLOGIA Y OBSTETRICIA</field>
+        </record> 
+        <record model='doctor.speciality' id='350'>
+                <field name='code'>350</field>
+                <field name='name'>HEMATO ONCOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='351'>
+                <field name='code'>351</field>
+                <field name='name'>HEMATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='352'>
+                <field name='code'>352</field>
+                <field name='name'>HEMATOLOGIA EN EL LABORATORIO CLINICO Y MANEJO DEL BANCO DE SANGRE</field>
+        </record> 
+        <record model='doctor.speciality' id='353'>
+                <field name='code'>353</field>
+                <field name='name'>LABORATORIO CLINICO DE HEMATOLOGIA Y BANCO DE SANGRE</field>
+        </record> 
+        <record model='doctor.speciality' id='360'>
+                <field name='code'>360</field>
+                <field name='name'>IMÁGENES DIAGNOSTICAS</field>
+        </record> 
+        <record model='doctor.speciality' id='361'>
+                <field name='code'>361</field>
+                <field name='name'>IMAGENOLOGIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='370'>
+                <field name='code'>370</field>
+                <field name='name'>IMPLANTOLOGIA ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='371'>
+                <field name='code'>371</field>
+                <field name='name'>IMPLANTOLOGIA ORALY RECONSTRUCTIVA</field>
+        </record> 
+        <record model='doctor.speciality' id='380'>
+                <field name='code'>380</field>
+                <field name='name'>MEDICINA APLICADA A LA ACTIVIDAD FISICA Y AL DEPORTE</field>
+        </record> 
+        <record model='doctor.speciality' id='381'>
+                <field name='code'>381</field>
+                <field name='name'>MEDICINA DE LABORATORIO</field>
+        </record> 
+        <record model='doctor.speciality' id='382'>
+                <field name='code'>382</field>
+                <field name='name'>MEDICINA DE URGENCIAS Y DOMICILIARIA</field>
+        </record> 
+        <record model='doctor.speciality' id='383'>
+                <field name='code'>383</field>
+                <field name='name'>MEDICINA DEL DEPORTE</field>
+        </record> 
+        <record model='doctor.speciality' id='384'>
+                <field name='code'>384</field>
+                <field name='name'>MEDICINA DEL TRABAJO</field>
+        </record> 
+        <record model='doctor.speciality' id='385'>
+                <field name='code'>385</field>
+                <field name='name'>MEDICINA FAMILIAR</field>
+        </record> 
+        <record model='doctor.speciality' id='386'>
+                <field name='code'>386</field>
+                <field name='name'>MEDICINA FISICA Y REHABILITACION</field>
+        </record> 
+        <record model='doctor.speciality' id='387'>
+                <field name='code'>387</field>
+                <field name='name'>MEDICINA INTERNA</field>
+        </record> 
+        <record model='doctor.speciality' id='388'>
+                <field name='code'>388</field>
+                <field name='name'>MEDICINA NUCLEAR</field>
+        </record> 
+        <record model='doctor.speciality' id='400'>
+                <field name='code'>400</field>
+                <field name='name'>MICROBIOLOGIA MEDICA</field>
+        </record> 
+        <record model='doctor.speciality' id='401'>
+                <field name='code'>401</field>
+                <field name='name'>MICROBIOLOGIA Y PARASITOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='410'>
+                <field name='code'>410</field>
+                <field name='name'>NEFROLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='420'>
+                <field name='code'>420</field>
+                <field name='name'>NEONATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='430'>
+                <field name='code'>430</field>
+                <field name='name'>NEUMOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='431'>
+                <field name='code'>431</field>
+                <field name='name'>NEUMOLOGIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='440'>
+                <field name='code'>440</field>
+                <field name='name'>NEUROCIRUGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='441'>
+                <field name='code'>441</field>
+                <field name='name'>NEUROLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='442'>
+                <field name='code'>442</field>
+                <field name='name'>NEUROLOGIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='443'>
+                <field name='code'>443</field>
+                <field name='name'>NEUROPSICOPEDAGOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='450'>
+                <field name='code'>450</field>
+                <field name='name'>NUTRICION CLINICA</field>
+        </record> 
+        <record model='doctor.speciality' id='451'>
+                <field name='code'>451</field>
+                <field name='name'>NUTRICION HUMANA</field>
+        </record> 
+        <record model='doctor.speciality' id='460'>
+                <field name='code'>460</field>
+                <field name='name'>ODONTOLOGIA INTEGRAL DEL ADOLESCENTE Y ORTODONCIA</field>
+        </record> 
+        <record model='doctor.speciality' id='461'>
+                <field name='code'>461</field>
+                <field name='name'>ODONTOLOGIA INTEGRAL DEL ADULTO</field>
+        </record> 
+        <record model='doctor.speciality' id='462'>
+                <field name='code'>462</field>
+                <field name='name'>ODONTOLOGIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='463'>
+                <field name='code'>463</field>
+                <field name='name'>ODONTOLOGIA PEDIATRICA Y ORTOPEDIA MAXILAR</field>
+        </record> 
+        <record model='doctor.speciality' id='464'>
+                <field name='code'>464</field>
+                <field name='name'>ODONTOPEDIATRIA CLINICA Y ORTODONCIA PREVENTIVA</field>
+        </record> 
+        <record model='doctor.speciality' id='480'>
+                <field name='code'>480</field>
+                <field name='name'>OFTALMOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='481'>
+                <field name='code'>481</field>
+                <field name='name'>OFTALMOLOGIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='490'>
+                <field name='code'>490</field>
+                <field name='name'>ONCO-HEMATOLOGIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='491'>
+                <field name='code'>491</field>
+                <field name='name'>ONCOLOGIA CLINICA</field>
+        </record> 
+        <record model='doctor.speciality' id='492'>
+                <field name='code'>492</field>
+                <field name='name'>ONCOLOGIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='500'>
+                <field name='code'>500</field>
+                <field name='name'>OPTOMETRIA</field>
+        </record> 
+        <record model='doctor.speciality' id='510'>
+                <field name='code'>510</field>
+                <field name='name'>ORTODONCIA</field>
+        </record> 
+        <record model='doctor.speciality' id='511'>
+                <field name='code'>511</field>
+                <field name='name'>ORTOPEDIA FUNCIONAL Y ORTODONCIA</field>
+        </record> 
+        <record model='doctor.speciality' id='512'>
+                <field name='code'>512</field>
+                <field name='name'>ORTOPEDIA MAXILAR</field>
+        </record> 
+        <record model='doctor.speciality' id='513'>
+                <field name='code'>513</field>
+                <field name='name'>ORTOPEDIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='514'>
+                <field name='code'>514</field>
+                <field name='name'>ORTOPEDIA Y TRAUMATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='520'>
+                <field name='code'>520</field>
+                <field name='name'>OTOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='521'>
+                <field name='code'>521</field>
+                <field name='name'>OTORRINOLARINGOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='522'>
+                <field name='code'>522</field>
+                <field name='name'>OTORRINOLARINGOLOGIA Y CIRUGIA DE CABEZA Y CUELLO</field>
+        </record> 
+        <record model='doctor.speciality' id='530'>
+                <field name='code'>530</field>
+                <field name='name'>PATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='531'>
+                <field name='code'>531</field>
+                <field name='name'>PATOLOGIA ANATOMICA Y CLINICA</field>
+        </record> 
+        <record model='doctor.speciality' id='532'>
+                <field name='code'>532</field>
+                <field name='name'>PATOLOGIA INFECCIOSA</field>
+        </record> 
+        <record model='doctor.speciality' id='533'>
+                <field name='code'>533</field>
+                <field name='name'>PATOLOGIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='534'>
+                <field name='code'>534</field>
+                <field name='name'>PATOLOGIA ORAL Y MEDIOS DIAGNOSTICOS</field>
+        </record> 
+        <record model='doctor.speciality' id='535'>
+                <field name='code'>535</field>
+                <field name='name'>PATOLOGIA Y CIRUGIA BUCAL</field>
+        </record> 
+        <record model='doctor.speciality' id='536'>
+                <field name='code'>536</field>
+                <field name='name'>PATOLOGIA Y MEDICINA DE LABORATORIO</field>
+        </record> 
+        <record model='doctor.speciality' id='550'>
+                <field name='code'>550</field>
+                <field name='name'>PEDIATRIA</field>
+        </record> 
+        <record model='doctor.speciality' id='551'>
+                <field name='code'>551</field>
+                <field name='name'>PEDIATRIA PERINATAL Y NEONATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='560'>
+                <field name='code'>560</field>
+                <field name='name'>PERIODONCIA</field>
+        </record> 
+        <record model='doctor.speciality' id='561'>
+                <field name='code'>561</field>
+                <field name='name'>PERIODONCIA Y BIOLOGIA ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='562'>
+                <field name='code'>562</field>
+                <field name='name'>PERIODONCIA Y MEDICINA ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='563'>
+                <field name='code'>563</field>
+                <field name='name'>PERIODONCIA Y OSEOINTEGRACION</field>
+        </record> 
+        <record model='doctor.speciality' id='570'>
+                <field name='code'>570</field>
+                <field name='name'>PROSTODONCIA</field>
+        </record> 
+        <record model='doctor.speciality' id='571'>
+                <field name='code'>571</field>
+                <field name='name'>PROSTODONCIA, OCLUSION Y ARTICULACION TEMPOROMANDIBULAR</field>
+        </record> 
+        <record model='doctor.speciality' id='580'>
+                <field name='code'>580</field>
+                <field name='name'>PROTESIS PERIODONTAL</field>
+        </record> 
+        <record model='doctor.speciality' id='590'>
+                <field name='code'>590</field>
+                <field name='name'>PSIQUIATRIA</field>
+        </record> 
+        <record model='doctor.speciality' id='600'>
+                <field name='code'>600</field>
+                <field name='name'>RADIODIAGNOSTICO</field>
+        </record> 
+        <record model='doctor.speciality' id='601'>
+                <field name='code'>601</field>
+                <field name='name'>RADIOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='602'>
+                <field name='code'>602</field>
+                <field name='name'>RADIOLOGIA E IMÁGENES DIAGNOSTICAS</field>
+        </record> 
+        <record model='doctor.speciality' id='603'>
+                <field name='code'>603</field>
+                <field name='name'>RADIOTERAPIA</field>
+        </record> 
+        <record model='doctor.speciality' id='610'>
+                <field name='code'>610</field>
+                <field name='name'>REHABILITACION CARDIOPULMONAR</field>
+        </record> 
+        <record model='doctor.speciality' id='611'>
+                <field name='code'>611</field>
+                <field name='name'>REHABILITACION DEL MIEMBRO SUPERIOR</field>
+        </record> 
+        <record model='doctor.speciality' id='612'>
+                <field name='code'>612</field>
+                <field name='name'>REHABILITACION EN ENFERMERIA</field>
+        </record> 
+        <record model='doctor.speciality' id='613'>
+                <field name='code'>613</field>
+                <field name='name'>REHABILITACION ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='614'>
+                <field name='code'>614</field>
+                <field name='name'>REHABILITACION ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='615'>
+                <field name='code'>615</field>
+                <field name='name'>REHABILITACION Y EDUCACION VOCAL</field>
+        </record> 
+        <record model='doctor.speciality' id='620'>
+                <field name='code'>620</field>
+                <field name='name'>REUMATOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='630'>
+                <field name='code'>630</field>
+                <field name='name'>SALUD AMBIENTAL</field>
+        </record> 
+        <record model='doctor.speciality' id='631'>
+                <field name='code'>631</field>
+                <field name='name'>SALUD Y MEDIO AMBIENTE</field>
+        </record> 
+        <record model='doctor.speciality' id='640'>
+                <field name='code'>640</field>
+                <field name='name'>SALUD PUBLICA</field>
+        </record> 
+        <record model='doctor.speciality' id='650'>
+                <field name='code'>650</field>
+                <field name='name'>SALUD COMUNITARIA</field>
+        </record> 
+        <record model='doctor.speciality' id='660'>
+                <field name='code'>660</field>
+                <field name='name'>SALUD FAMILIAR</field>
+        </record> 
+        <record model='doctor.speciality' id='661'>
+                <field name='code'>661</field>
+                <field name='name'>SALUD FAMILIAR Y COMUNITARIA</field>
+        </record> 
+        <record model='doctor.speciality' id='670'>
+                <field name='code'>670</field>
+                <field name='name'>SALUD MATERNO INFANTIL</field>
+        </record> 
+        <record model='doctor.speciality' id='680'>
+                <field name='code'>680</field>
+                <field name='name'>SALUD MENTAL Y FARMACODEPENDENCIA</field>
+        </record> 
+        <record model='doctor.speciality' id='690'>
+                <field name='code'>690</field>
+                <field name='name'>SALUD OCUPACIONAL</field>
+        </record> 
+        <record model='doctor.speciality' id='691'>
+                <field name='code'>691</field>
+                <field name='name'>SALUD OCUPACIONAL Y PROTECCION DE RIESGOS LABORALES</field>
+        </record> 
+        <record model='doctor.speciality' id='700'>
+                <field name='code'>700</field>
+                <field name='name'>SEMIOLOGIA Y CIRUGIA ORAL</field>
+        </record> 
+        <record model='doctor.speciality' id='710'>
+                <field name='code'>710</field>
+                <field name='name'>TERAPIA FAMILIAR</field>
+        </record> 
+        <record model='doctor.speciality' id='720'>
+                <field name='code'>720</field>
+                <field name='name'>TERAPIA MANUAL</field>
+        </record> 
+        <record model='doctor.speciality' id='730'>
+                <field name='code'>730</field>
+                <field name='name'>TERAPIA RESPIRATORIA PEDIATRICA</field>
+        </record> 
+        <record model='doctor.speciality' id='740'>
+                <field name='code'>740</field>
+                <field name='name'>TOXICOLOGIA CLINICA</field>
+        </record> 
+        <record model='doctor.speciality' id='750'>
+                <field name='code'>750</field>
+                <field name='name'>UROLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='751'>
+                <field name='code'>751</field>
+                <field name='name'>UROLOGIA ONCOLOGICA</field>
+        </record> 
+        <record model='doctor.speciality' id='760'>
+                <field name='code'>760</field>
+                <field name='name'>GENETICA HUMANA</field>
+        </record> 
+        <record model='doctor.speciality' id='770'>
+                <field name='code'>770</field>
+                <field name='name'>INMUNOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='780'>
+                <field name='code'>780</field>
+                <field name='name'>VIROLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='999'>
+                <field name='code'>999</field>
+                <field name='name'>OTRA ESPECIALIDAD NO CLASIFICADA</field>
+        </record> 
+    </data>
+</openerp>
+        
