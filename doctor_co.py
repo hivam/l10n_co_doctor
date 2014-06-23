@@ -26,7 +26,7 @@ from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
 import time
-import pooler
+from openerp import pooler
 from datetime import date, datetime, timedelta
 
 import openerp.addons.decimal_precision as dp
@@ -41,8 +41,8 @@ import math
 
 from openerp import SUPERUSER_ID, tools
 
-import sale
-import netsvc
+#import sale
+#import netsvc
 import doctor
 
 class doctor_patient_co(osv.osv):

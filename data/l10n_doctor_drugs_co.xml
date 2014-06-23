@@ -7,7 +7,7 @@
                 <field name='code'>D-1</field>
                 <field name='administration_route' ref='BU'/>
                 <field name='pharmaceutical_form' ref='AE'/>
-        </record> 
+        </record>
         <record model='doctor.drugs' id='D-2'>
                 <field name='atc_id' ref='R03BA01'/>
                 <field name='drugs_concentration'>0,329 g/100 g</field>

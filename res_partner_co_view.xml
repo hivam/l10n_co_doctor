@@ -138,7 +138,8 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_tree"/>
             <field name="arch" type="xml">
-                <field name="name" position="before">
+                <!--Element '<field name="name">' cannot be located in parent view change to display_name-->
+                <field name="display_name" position="before">
                     <field name="ref" string="Identification"/>
                 </field>
             </field>
