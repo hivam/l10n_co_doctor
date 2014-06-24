@@ -45,7 +45,8 @@ Location change for "Doctor" module in Colombia
               'data/l10n_doctor_administration_route_co.xml',
               'data/l10n_doctor_dose_unit_co_data.xml', 
               'data/l10n_doctor_drugs_co.xml',
-              'data/l10n_doctor_health_procedures_co.xml',             
+              'data/l10n_doctor_health_procedures_co.xml',  
+              'doctor_report.xml',           
     ],            
     'installable': True,                    
 }

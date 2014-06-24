@@ -18,6 +18,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import res_partner_co
-import doctor_co
-import report
+import doctor_precription
