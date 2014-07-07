@@ -17,12 +17,23 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
-import doctor_precription
-import doctor_clinical_laboratory
-import doctor_diagnostic_images
-import doctor_surgical
-import doctor_therapeutic
-import doctor_other_procedures
-import doctor_referral
-import doctor_disability
+###############################################################################
+
+import time
+from openerp.report import report_sxw
+from openerp import pooler
+
+class doctor_therapeutic(report_sxw.rml_parse):
+    def __init__(self, cr, uid, name, context):
+        super(doctor_therapeutic, self).__init__(cr, uid, name, context=context)
+        self.localcontext.update({
+                                  'time': time,                              
+                                  })        
+    
+report_sxw.report_sxw('report.doctor_therapeutic', 'doctor.attentions',
+                      'addons/l10n_co_doctor/report/doctor_therapeutic.rml',
+                      parser=doctor_therapeutic)
+        
+        
+        
+        
