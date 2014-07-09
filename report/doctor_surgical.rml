@@ -133,7 +133,11 @@
       </tr>   
       <tr>
         <td>
-          <para style="P6">User type: [[ (o.patient_id.tipo_usuario or (removeParentNode('para'))) ]]</para>
+          <para style="P6">User type: Contributivo[[ ((o.patient_id.tipo_usuario == '1') or removeParentNode('para')) and ""]]</para>
+          <para style="P6">User type: Subsidiado[[ ((o.patient_id.tipo_usuario == '2') or removeParentNode('para')) and ""]]</para>
+          <para style="P6">User type: Vinculado[[ ((o.patient_id.tipo_usuario == '3') or removeParentNode('para')) and ""]]</para>
+          <para style="P6">User type: Particular[[ ((o.patient_id.tipo_usuario == '4') or removeParentNode('para')) and ""]]</para>
+          <para style="P6">User type: Otro[[ ((o.patient_id.tipo_usuario == '5') or removeParentNode('para')) and ""]]</para>
         </td>  
         <td>
           <para style="P6">Age: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (o.age_unit or (removeParentNode('para'))) ]]</para>

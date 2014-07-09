@@ -45,6 +45,7 @@ import sale
 import netsvc
 import doctor
 
+
 class doctor_patient_co(osv.osv):
     _name = "doctor.patient"
     _inherit = 'doctor.patient'
@@ -259,7 +260,7 @@ class doctor_sales_order_co (osv.osv):
             'invoice_line': [(6, 0, lines)],
             'currency_id': order.pricelist_id.currency_id.id,
             'amount_patient': order.amount_patient,
-            'amount_partner':  order.amount_partner,            
+            'amount_partner':  order.amount_partner,
             'comment': order.note,
             'payment_term': order.payment_term and order.payment_term.id or False,
             'fiscal_position': order.fiscal_position.id or order.partner_id.property_account_position.id,
