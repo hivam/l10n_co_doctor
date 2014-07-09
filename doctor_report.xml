@@ -6,18 +6,18 @@
                 rml="l10n_co_doctor/report/doctor_prescription.rml" string="Prescription"
                 usage="default"/>
 
-		<report auto="False" id="doctor_clinical_laboratory" model="doctor.attentions" name="doctor_clinical_laboratory"
+        <report auto="False" id="doctor_clinical_laboratory" model="doctor.attentions" name="doctor_clinical_laboratory"
                 rml="l10n_co_doctor/report/doctor_clinical_laboratory.rml" string="Clinical Laboratory"
                 usage="default"/>
-        
+
         <report auto="False" id="doctor_diagnostic_images" model="doctor.attentions" name="doctor_diagnostic_images"
                 rml="l10n_co_doctor/report/doctor_diagnostic_images.rml" string="Diagnostic Images"
                 usage="default"/>
-        
+
         <report auto="False" id="doctor_surgical" model="doctor.attentions" name="doctor_surgical"
                 rml="l10n_co_doctor/report/doctor_surgical.rml" string="Surgical"
-                usage="default"/>        
-        
+                usage="default"/>
+
         <report auto="False" id="doctor_therapeutic" model="doctor.attentions" name="doctor_therapeutic"
                 rml="l10n_co_doctor/report/doctor_therapeutic.rml" string="Therapeutic"
                 usage="default"/>
@@ -28,11 +28,15 @@
 
         <report auto="False" id="doctor_referral" model="doctor.attentions" name="doctor_referral"
                 rml="l10n_co_doctor/report/doctor_referral.rml" string="Referral"
-                usage="default"/>                
+                usage="default"/>
 
         <report auto="False" id="doctor_disability" model="doctor.attentions" name="doctor_disability"
                 rml="l10n_co_doctor/report/doctor_disability.rml" string="Disability"
-                usage="default"/>                
+                usage="default"/>
+
+        <report auto="False" id="doctor_attention" model="doctor.attentions" name="doctor_attention"
+                rml="l10n_co_doctor/report/doctor_attention.rml" string="HC-Atención"
+                usage="default"/>
 
     </data>
 </openerp>
