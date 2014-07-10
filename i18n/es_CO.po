@@ -4,11 +4,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0-20130608-231017\n"
+"Project-Id-Version: OpenERP Server 7.0-20140121-002442\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-05 12:27+0000\n"
-"PO-Revision-Date: 2013-11-05 08:45-0500\n"
-"Last-Translator: Hector Ivan Valencia Muñoz <hvalencia@opuslibertati.org>\n"
+"POT-Creation-Date: 2014-07-10 16:14+0000\n"
+"PO-Revision-Date: 2014-07-10 12:33-0500\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,12 +16,773 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "User type:"
+msgstr "Tipo de usuario:"
+
+#. module: l10n_co_doctor
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "User type: Particular"
+msgstr "Tipo de usuario: Particular"
+
+#. module: l10n_co_doctor
+#: selection:account.invoice,tipo_usuario_id:0
+#: selection:doctor.appointment,tipo_usuario_id:0
+#: selection:doctor.patient,tipo_usuario:0
+#: selection:sale.order,tipo_usuario_id:0
+msgid "Subsidiado"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: field:doctor.attentions,finalidad_consulta:0
+msgid "Finalidad de la consulta"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,tdoc:0
+#: selection:res.partner,tdoc:0
+msgid "Número único de identificación"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: constraint:res.partner:0
+msgid "Error !El número de identificación sólo permite números"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_referral:0
+msgid "INTER"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_therapeutic:0
+msgid "THERAPEUTIC"
+msgstr "PROCEDIMIENTOS TERAPÉUTICOS"
+
+#. module: l10n_co_doctor
+#: constraint:res.partner:0
+msgid "¡Error! Número de identificación debe tener entre 6 y 11 dígitos"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: field:account.invoice,tipo_usuario_id:0
+#: field:doctor.appointment,tipo_usuario_id:0
+#: field:doctor.patient,tipo_usuario:0
+#: field:sale.order,tipo_usuario_id:0
+msgid "Tipo de usuario"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "User type: Otro"
+msgstr "Tipo de usuario: Otro"
+
+#. module: l10n_co_doctor
+#: selection:doctor.attentions,finalidad_consulta:0
+msgid "Detección de alteración del desarrollo joven"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Signature:"
+msgstr "Firma:"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "DRUGS PRESCRIPTION"
+msgstr "PRESCRIPCIÓN DE MEDICAMENTOS"
+
+#. module: l10n_co_doctor
+#: field:doctor.patient,dpto:0
+#: view:res.partner:0
+msgid "Departamento"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: field:doctor.patient,mun:0
+msgid "Municipio"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: view:res.partner:0
+msgid "SEGUNDO APELLIDO"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: view:doctor.patient:0
+#: field:doctor.patient,direccion:0
+msgid "Dirección"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: selection:account.invoice,tipo_usuario_id:0
+#: selection:doctor.appointment,tipo_usuario_id:0
+#: selection:doctor.patient,tipo_usuario:0
+#: selection:sale.order,tipo_usuario_id:0
+msgid "Particular"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "PAST"
+msgstr "ANTECEDENTES"
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/doctor_co.py:247
+#, python-format
+msgid "Error!"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: field:res.country.state.city,state_id:0
+msgid "State"
+msgstr "Estado"
+
+#. module: l10n_co_doctor
+#: view:res.partner:0
+#: field:res.partner,dv:0
+msgid "dv"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_disability:0
+msgid "DISABILITY ORDER"
+msgstr "ORDEN DE INCAPACIDAD"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Stamp:"
+msgstr "Sello:"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_therapeutic
+msgid "Therapeutic"
+msgstr "Procedimientos Terapéuticos"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Attention N°:"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Height and weight"
+msgstr "Talla y Peso"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_therapeutic:0
+msgid "THERAPEUTIC ORDER"
+msgstr "ORDEN PROCEDIMIENTOS TERAPÉUTICOS"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Heart rate:"
+msgstr "Frecuencia Cardiaca"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "REVIEW SYSTEMS"
+msgstr "REVISIÓN POR SISTEMAS"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,tdoc:0
+#: selection:res.partner,tdoc:0
+msgid "Adulto sin identificaciómn"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: constraint:doctor.patient:0
+msgid "¡Error! Número de intentificación ya existe en el sistema"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: selection:doctor.attentions,finalidad_consulta:0
+msgid "No aplica"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_surgical
+msgid "Surgical"
+msgstr "Procedimiento Quirúrgico"
+
+#. module: l10n_co_doctor
+#: help:res.country.state.city,code:0
+msgid "Código DANE -5 dígitos-"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_res_partner
+msgid "Partner"
+msgstr "Tercero"
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_sale_order
+msgid "Sales Order"
+msgstr "Orden de venta"
+
+#. module: l10n_co_doctor
+#: constraint:res.partner:0
+msgid "¡Error! Número de identificación ya existe en el sistema"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: field:doctor.patient,zona:0
+msgid "Zona de residencia"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: selection:res.partner,tdoc:0
+msgid "NIT"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "START DATE:"
+msgstr "FECHA DE INICIO:"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Blood pressure"
+msgstr "Presión sanguínea:"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Date:"
+msgstr "Fecha:"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_disability
+msgid "Disability"
+msgstr "Incapacidad"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "PATIENT DATA"
+msgstr "DATOS DEL PACIENTE"
+
+#. module: l10n_co_doctor
+#: selection:doctor.attentions,finalidad_consulta:0
+msgid "Detección de alteraciones del crecimiento y desarrollo del menor de diez años"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: selection:account.invoice,tipo_usuario_id:0
+#: selection:doctor.appointment,tipo_usuario_id:0
+#: selection:doctor.patient,tipo_usuario:0
+#: selection:sale.order,tipo_usuario_id:0
+msgid "Vinculado"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "PATHOLOGICAL PAST"
+msgstr "ANTECEDENTES PATOLÓGICOS"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,tdoc:0
+#: selection:res.partner,tdoc:0
+msgid "Menor sin identificación"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "User type: Vinculado"
+msgstr "Tipo de usuario: Vinculado"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+msgid "CLINICAL LABORATORY ORDER"
+msgstr "ORDEN DE EXÁMENES DE LABORATORIO CLÍNICO"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Temperature:"
+msgstr "Temperatura:"
+
+#. module: l10n_co_doctor
+#: report:doctor_clinical_laboratory:0
+msgid "CLINICAL LABORATORY"
+msgstr "EXÁMENES DE LABORATORIO CLÍNICO"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,tdoc:0
+#: selection:res.partner,tdoc:0
+msgid "Tarjeta de identidad"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_referral:0
+msgid "SPECIALITY"
+msgstr "ESPECIALIDAD"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_referral:0
+msgid "REFERRAL ORDER"
+msgstr "ORDEN DE REMISIÓN O INTERCONSULTA"
+
+#. module: l10n_co_doctor
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "User type: Contributivo"
+msgstr "Tipo de usuario: Contributivo"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Age:"
+msgstr "Edad:"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_surgical:0
+msgid "SURGICAL ORDER"
+msgstr "ORDEN DE PROCEDIMIENTOS QUIRÚRGICOS"
+
+#. module: l10n_co_doctor
+#: field:res.country.state.city,code:0
+msgid "City Code"
+msgstr "Código ciudad"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_clinical_laboratory
+msgid "Clinical Laboratory"
+msgstr "Exámen de Laboratorio Clínico"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Diastolic:"
+msgstr "Distólica:"
+
+#. module: l10n_co_doctor
+#: constraint:res.partner:0
+msgid "¡Error! - El nombre no ha sido actualizado, escriba nuevamente el primer apellido"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: selection:doctor.attentions,finalidad_consulta:0
+msgid "Atención del recién nacido"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: field:doctor.patient,tdoc:0
+#: field:res.partner,tdoc:0
+msgid "Tipo de Documento"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_doctor_patient
+msgid "Information about the patient"
+msgstr "Información acerca del paciente"
+
+#. module: l10n_co_doctor
+#: field:res.partner,middlename:0
+msgid "middlename"
+msgstr "Segundo nombre"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Document:"
+msgstr "Documento:"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_precription:0
+msgid "vía"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/doctor_co.py:248
+#, python-format
+msgid "Please define sales journal for this company: \"%s\" (id:%d)."
+msgstr "Por favor defina un Diario de Ventas para esta Compañía: \"%s\" (id:%d)."
+
+#. module: l10n_co_doctor
+#: field:res.partner,firtsname:0
+msgid "firtsname"
+msgstr "Primer nombre"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Body mass:"
+msgstr "Índice de Masa Corporal"
+
+#. module: l10n_co_doctor
+#: selection:doctor.attentions,finalidad_consulta:0
+msgid "Detección de alteración del adulto"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Pulsioximetry:"
+msgstr "Pulsioximetría:"
+
+#. module: l10n_co_doctor
+#: report:doctor_disability:0
+msgid "DURATION IN DAYS"
+msgstr "DURACIÓN (En días)"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_other_procedures
+msgid "Other Procedures"
+msgstr "Otros Procedimientos"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,tdoc:0
+#: selection:res.partner,tdoc:0
+msgid "Cédula de ciudadanía"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "MEDICAL RECORD"
+msgstr "REGISTROS CLÍNICOS"
+
+#. module: l10n_co_doctor
+#: help:res.partner,dv:0
+msgid "Digito de verificación"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Temperature"
+msgstr "Temperatura"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_referral:0
+msgid "SERVICE"
+msgstr "SERVICIO"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,zona:0
+msgid "Urbana"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_precription:0
+msgid "durante"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_diagnostic_images
+msgid "Diagnostic Images"
+msgstr "Imágenes diagnósticas"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_precription:0
+msgid "cada"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: view:res.partner:0
+msgid "SEGUNDO NOMBRE"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: view:res.partner:0
+msgid "Identification"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "VITAL SIGNS"
+msgstr "SIGNOS VITALES"
+
+#. module: l10n_co_doctor
+#: selection:doctor.attentions,finalidad_consulta:0
+msgid "Detección de alteraciones del embarazo"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "PHYSICIAN DATA"
+msgstr "DATOS DEL MÉDICO"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_other_procedures:0
+msgid "HEALTH PROCEDURES ORDER"
+msgstr "ORDEN DE OTROS PROCEDIMIENTOS"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Systolic:"
+msgstr "Sistólica:"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,tdoc:0
+#: selection:res.partner,tdoc:0
+msgid "Cédula de extranjería"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: view:doctor.patient:0
+msgid "Tipo doc"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: selection:doctor.attentions,finalidad_consulta:0
+msgid "Atención del parto -puerperio"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: field:res.partner,lastname:0
+msgid "lastname"
+msgstr "Primer apellido"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "REASON CONSULTATION"
+msgstr "MOTIVO DE CONSULTA"
+
+#. module: l10n_co_doctor
+#: view:res.partner:0
+msgid "Pais"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: model:ir.actions.act_window,name:l10n_co_doctor.action_country_city
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_country_city_partner
+msgid "Cities"
+msgstr "Ciudades"
+
+#. module: l10n_co_doctor
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "QUANTITY"
+msgstr "CANTIDAD"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,tdoc:0
+#: selection:res.partner,tdoc:0
+msgid "Pasaporte"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Register N°:"
+msgstr "Registro N°:"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_prescription
+msgid "Prescription"
+msgstr "Prescripción"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "EXAM"
+msgstr "EXÁMEN FÍSICO"
+
+#. module: l10n_co_doctor
+#: report:doctor_precription:0
+msgid "DRUG PRESCRIPTION"
+msgstr "PRESCRIPCIÓN DE MEDICAMENTOS"
+
+#. module: l10n_co_doctor
+#: view:res.partner:0
+msgid "ej. Calle 48 No. 45 - 49"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: constraint:res.partner:0
+msgid "¡Error! El digito de verificación es incorrecto"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Insurer:"
+msgstr "Asegurador:"
+
+#. module: l10n_co_doctor
+#: field:res.country.state.city,name:0
+msgid "City Name"
+msgstr "Ciudad"
+
+#. module: l10n_co_doctor
+#: selection:doctor.attentions,finalidad_consulta:0
+msgid "Detección de enfermedad profesional"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_doctor_attentions
+msgid "doctor.attentions"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Vital signs"
+msgstr "Signos vitales"
+
+#. module: l10n_co_doctor
+#: selection:res.partner,tdoc:0
+msgid "Tipo de documento extranjero"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: view:res.partner:0
+msgid "PRIMER NOMBRE"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "ANALYSIS"
+msgstr "ANÁLISIS"
+
+#. module: l10n_co_doctor
+#: field:res.partner,city_id:0
+msgid "Ciudad"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: view:res.partner:0
+msgid "Personal data"
+msgstr "Datos personales"
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_account_invoice
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: l10n_co_doctor
+#: selection:res.partner,tdoc:0
+msgid "Para uso definido por la DIAN"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: selection:res.partner,tdoc:0
+msgid "Tarjeta de extranjería"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_diagnostic_images:0
+msgid "DIAGNOSTIC IMAGES ORDER"
+msgstr "ORDEN DE IMÁGENES DIAGNÓSTICAS"
+
+#. module: l10n_co_doctor
 #: selection:account.invoice,tipo_usuario_id:0
 #: selection:doctor.appointment,tipo_usuario_id:0
 #: selection:doctor.patient,tipo_usuario:0
 #: selection:sale.order,tipo_usuario_id:0
 msgid "Otro"
-msgstr "Otro"
+msgstr ""
 
 #. module: l10n_co_doctor
 #: view:res.country.state.city:0
@@ -31,132 +792,114 @@ msgstr "Ciudad"
 #. module: l10n_co_doctor
 #: selection:doctor.attentions,finalidad_consulta:0
 msgid "Atención en planificación familiar"
-msgstr "Atención en planificación familiar"
+msgstr ""
 
 #. module: l10n_co_doctor
 #: field:res.partner,surname:0
 msgid "surname"
-msgstr "SEGUNDO APELLIDO"
+msgstr "Segundo apellido"
 
 #. module: l10n_co_doctor
-#: model:ir.model,name:l10n_co_doctor.model_doctor_appointment
-msgid "doctor.appointment"
-msgstr "doctor.appointment"
-
-#. module: l10n_co_doctor
-#: selection:doctor.patient,tdoc:0
-#: selection:res.partner,tdoc:0
-msgid "Cédula de extranjería"
-msgstr "Cédula de extranjería"
-
-#. module: l10n_co_doctor
-#: code:addons/l10n_co_doctor/doctor_co.py:260
-#, python-format
-msgid "Please define sales journal for this company: \"%s\" (id:%d)."
-msgstr "Por favor defina un Diario de ventas para esta compañía : \"%s\" (id:%d)."
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "DISEASES"
+msgstr "DIAGNÓSTICOS"
 
 #. module: l10n_co_doctor
 #: view:res.partner:0
 msgid "Cuidad"
-msgstr "Cuidad"
-
-#. module: l10n_co_doctor
-#: selection:doctor.patient,zona:0
-msgid "Urbana"
-msgstr "Urbana"
+msgstr ""
 
 #. module: l10n_co_doctor
 #: selection:doctor.attentions,finalidad_consulta:0
 msgid "Detección de alteración de agudeza visual"
-msgstr "Detección de alteración de agudeza visual"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: selection:account.invoice,tipo_usuario_id:0
-#: selection:doctor.appointment,tipo_usuario_id:0
-#: selection:doctor.patient,tipo_usuario:0
-#: selection:sale.order,tipo_usuario_id:0
-msgid "Subsidiado"
-msgstr "Subsidiado"
+#: report:doctor_diagnostic_images:0
+msgid "DIAGNOSTIC IMAGES"
+msgstr "IMÁGENES DIAGNÓSTICAS"
 
 #. module: l10n_co_doctor
-#: selection:doctor.attentions,finalidad_consulta:0
-msgid "Detección de alteraciones del crecimiento y desarrollo del menor de diez años"
-msgstr "Detección de alteraciones del crecimiento y desarrollo del menor de diez años"
+#: report:doctor_attention:0
+msgid "Finalidad:"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: constraint:doctor.patient:0
-msgid "¡Error! Número de intentificación ya existe en el sistema"
-msgstr "¡Error! Número de intentificación ya existe en el sistema"
-
-#. module: l10n_co_doctor
-#: selection:account.invoice,tipo_usuario_id:0
-#: selection:doctor.appointment,tipo_usuario_id:0
-#: selection:doctor.patient,tipo_usuario:0
-#: selection:sale.order,tipo_usuario_id:0
-msgid "Vinculado"
-msgstr "Vinculado"
-
-#. module: l10n_co_doctor
-#: view:res.partner:0
-msgid "SEGUNDO NOMBRE"
-msgstr "SEGUNDO NOMBRE"
-
-#. module: l10n_co_doctor
-#: field:doctor.attentions,finalidad_consulta:0
-msgid "Finalidad de la consulta"
-msgstr "Finalidad de la consulta"
-
-#. module: l10n_co_doctor
-#: view:res.partner:0
-msgid "Identification"
-msgstr "Identification"
-
-#. module: l10n_co_doctor
-#: model:ir.model,name:l10n_co_doctor.model_doctor_attentions
-msgid "doctor.attentions"
-msgstr "doctor.attentions"
-
-#. module: l10n_co_doctor
-#: selection:doctor.attentions,state:0
-msgid "Closed"
-msgstr "Cerrada"
-
-#. module: l10n_co_doctor
-#: constraint:res.partner:0
-msgid "Error !El número de identificación sólo permite números"
-msgstr "Error !El número de identificación sólo permite números"
-
-#. module: l10n_co_doctor
-#: selection:doctor.patient,tdoc:0
-#: selection:res.partner,tdoc:0
-msgid "Menor sin identificación"
-msgstr "Menor sin identificación"
+#: report:doctor_surgical:0
+msgid "SURGICAL"
+msgstr "PROCEDIMIENTOS QUIRÚRGICOS"
 
 #. module: l10n_co_doctor
 #: model:ir.model,name:l10n_co_doctor.model_res_country_state_city
 msgid "Model to manipulate Cities"
-msgstr "Modelo para manipular ciudades"
+msgstr "Modelo para gestionar ciudades"
+
+#. module: l10n_co_doctor
+#: report:doctor_disability:0
+msgid "START DATE"
+msgstr "FECHA DE INICIO"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_attention
+msgid "HC-Atención"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: model:ir.actions.act_window,name:l10n_co_doctor.action_partner_formco
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_partner_formco
+msgid "Tercero"
+msgstr ""
+
+#. module: l10n_co_doctor
+#: report:doctor_precription:0
+msgid "DRUG"
+msgstr "MEDICAMENTO"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_referral:0
+msgid "REFERRAL CAUSE"
+msgstr "CAUSA DE REMISIÓN O INTERCONSULTA"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "DURATION IN DAYS:"
+msgstr "DURACIÓN (En días)"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "Name:"
+msgstr "Nombre:"
 
 #. module: l10n_co_doctor
 #: view:res.partner:0
-msgid "ej. Calle 48 No. 45 - 49"
-msgstr "Ej: Calle 48 No. 45 - 49"
+msgid "PRIMER APELLIDO"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: selection:res.partner,tdoc:0
-msgid "Tarjeta de extranjería"
-msgstr "Tarjeta de extranjería"
+#: report:doctor_other_procedures:0
+msgid "HEALTH PROCEDURES"
+msgstr "OTROS PROCEDIMIENTOS"
 
 #. module: l10n_co_doctor
-#: selection:doctor.attentions,finalidad_consulta:0
-msgid "Detección de alteraciones del embarazo"
-msgstr "Detección de alteraciones del embarazo"
-
-#. module: l10n_co_doctor
-#: selection:doctor.patient,tdoc:0
-#: selection:res.partner,tdoc:0
-msgid "Tarjeta de identidad"
-msgstr "Tarjeta de identidad"
+#: report:doctor_attention:0
+msgid "Weight (kg):"
+msgstr "Peso (kg):"
 
 #. module: l10n_co_doctor
 #: field:account.invoice,ref:0
@@ -165,250 +908,75 @@ msgstr "Tarjeta de identidad"
 #: view:res.partner:0
 #: field:sale.order,ref:0
 msgid "Nº de identificación"
-msgstr "Nº de identificación"
-
-#. module: l10n_co_doctor
-#: field:doctor.appointment,number:0
-msgid "Appointment number"
-msgstr "Nº de cita"
-
-#. module: l10n_co_doctor
-#: selection:doctor.attentions,finalidad_consulta:0
-msgid "No aplica"
-msgstr "No aplica"
-
-#. module: l10n_co_doctor
-#: field:account.invoice,tipo_usuario_id:0
-#: field:doctor.appointment,tipo_usuario_id:0
-#: field:doctor.patient,tipo_usuario:0
-#: field:sale.order,tipo_usuario_id:0
-msgid "Tipo de usuario"
-msgstr "Tipo de usuario"
-
-#. module: l10n_co_doctor
-#: selection:doctor.attentions,finalidad_consulta:0
-msgid "Detección de alteración del desarrollo joven"
-msgstr "Detección de alteración del desarrollo joven"
-
-#. module: l10n_co_doctor
-#: help:doctor.appointment,number:0
-msgid "Number of appointment. Keep empty to get the number assigned by a sequence."
-msgstr "Número de cita asignado automáticamente por una secuencia."
-
-#. module: l10n_co_doctor
-#: view:doctor.patient:0
-msgid "Tipo doc"
-msgstr "Tipo doc"
-
-#. module: l10n_co_doctor
-#: field:res.country.state.city,code:0
-msgid "City Code"
-msgstr "Código de la ciudad "
-
-#. module: l10n_co_doctor
-#: field:doctor.patient,dpto:0
-#: view:res.partner:0
-msgid "Departamento"
-msgstr "Departamento"
-
-#. module: l10n_co_doctor
-#: selection:doctor.attentions,finalidad_consulta:0
-msgid "Atención del parto -puerperio"
-msgstr "Atención del parto - puerperio"
-
-#. module: l10n_co_doctor
-#: selection:res.partner,tdoc:0
-msgid "Para uso definido por la DIAN"
-msgstr "Para uso definido por la DIAN"
-
-#. module: l10n_co_doctor
-#: constraint:res.partner:0
-msgid "¡Error! - El nombre no ha sido actualizado, escriba nuevamente el primer apellido"
-msgstr "¡Error! - El nombre no ha sido actualizado, escriba nuevamente el primer apellido"
-
-#. module: l10n_co_doctor
-#: field:res.partner,lastname:0
-msgid "lastname"
-msgstr "PRIMER APELLIDO"
-
-#. module: l10n_co_doctor
-#: view:doctor.patient:0
-msgid "Doc"
-msgstr "Doc"
-
-#. module: l10n_co_doctor
-#: view:res.partner:0
-msgid "Pais"
-msgstr "Pais"
-
-#. module: l10n_co_doctor
-#: model:ir.actions.act_window,name:l10n_co_doctor.action_country_city
-#: model:ir.ui.menu,name:l10n_co_doctor.menu_country_city_partner
-msgid "Cities"
-msgstr "Ciudades"
-
-#. module: l10n_co_doctor
-#: field:doctor.patient,mun:0
-msgid "Municipio"
-msgstr "Municipio"
-
-#. module: l10n_co_doctor
-#: view:res.partner:0
-msgid "Personal data"
-msgstr "Datos personales"
-
-#. module: l10n_co_doctor
-#: selection:doctor.patient,tdoc:0
-#: selection:res.partner,tdoc:0
-msgid "Pasaporte"
-msgstr "Pasaporte"
-
-#. module: l10n_co_doctor
-#: field:doctor.attentions,state:0
-msgid "Status"
-msgstr "Estados"
-
-#. module: l10n_co_doctor
-#: view:res.partner:0
-msgid "SEGUNDO APELLIDO"
-msgstr "SEGUNDO APELLIDO"
-
-#. module: l10n_co_doctor
-#: model:ir.model,name:l10n_co_doctor.model_account_invoice
-msgid "Invoice"
-msgstr "Factura"
+msgstr ""
 
 #. module: l10n_co_doctor
 #: selection:doctor.patient,tdoc:0
 #: selection:res.partner,tdoc:0
 msgid "Registro civil"
-msgstr "Registro civil"
+msgstr ""
 
 #. module: l10n_co_doctor
 #: view:doctor.patient:0
-#: field:doctor.patient,direccion:0
-msgid "Dirección"
-msgstr "Dirección"
+msgid "Doc"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: selection:doctor.attentions,finalidad_consulta:0
-msgid "Atención del recién nacido"
-msgstr "Atención del recién nacido"
+#: report:doctor_attention:0
+msgid "SpO2"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: selection:account.invoice,tipo_usuario_id:0
-#: selection:doctor.appointment,tipo_usuario_id:0
-#: selection:doctor.patient,tipo_usuario:0
-#: selection:sale.order,tipo_usuario_id:0
-msgid "Particular"
-msgstr "Particular"
+#: report:doctor_attention:0
+msgid "Height (cm):"
+msgstr "Talla (cm):"
 
 #. module: l10n_co_doctor
-#: help:res.partner,dv:0
-msgid "Digito de verificación"
-msgstr "Digito de verificación"
+#: report:doctor_attention:0
+msgid "DRUGS PAST"
+msgstr "ANTECEDENTES FARMACOLÓGICOS"
 
 #. module: l10n_co_doctor
-#: constraint:res.partner:0
-msgid "¡Error! El digito de verificación es incorrecto"
-msgstr "¡Error! El digito de verificación es incorrecto"
-
-#. module: l10n_co_doctor
-#: selection:doctor.patient,tdoc:0
-#: selection:res.partner,tdoc:0
-msgid "Cédula de ciudadanía"
-msgstr "Cédula de ciudadanía"
-
-#. module: l10n_co_doctor
-#: field:res.country.state.city,name:0
-msgid "City Name"
-msgstr "Nombre de la ciudad"
-
-#. module: l10n_co_doctor
-#: selection:doctor.attentions,finalidad_consulta:0
-msgid "Detección de enfermedad profesional"
-msgstr "Detección de enfermedad profesional"
-
-#. module: l10n_co_doctor
-#: model:ir.actions.act_window,name:l10n_co_doctor.action_partner_formco
-#: model:ir.model,name:l10n_co_doctor.model_res_partner
-#: model:ir.ui.menu,name:l10n_co_doctor.menu_partner_formco
-msgid "Partner"
-msgstr "Empresa/Cliente"
-
-#. module: l10n_co_doctor
-#: view:res.partner:0
-#: field:res.partner,dv:0
-msgid "dv"
-msgstr "dv"
+#: report:doctor_attention:0
+msgid "CONDUCT"
+msgstr "CONDUCTA"
 
 #. module: l10n_co_doctor
 #: selection:doctor.patient,zona:0
 msgid "Rural"
-msgstr "Rural"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: field:res.partner,middlename:0
-msgid "middlename"
-msgstr "SEGUNDO NOMBRE"
-
-#. module: l10n_co_doctor
-#: selection:doctor.attentions,finalidad_consulta:0
-msgid "Detección de alteración del adulto"
-msgstr "Detección de alteración del adulto"
-
-#. module: l10n_co_doctor
-#: field:res.partner,firtsname:0
-msgid "firtsname"
-msgstr "PRIMER NOMBRE"
+#: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_referral
+msgid "Referral"
+msgstr "Remisión o Interconsulta"
 
 #. module: l10n_co_doctor
 #: view:doctor.patient:0
 msgid "Nº doc"
-msgstr "Nº doc"
+msgstr ""
 
 #. module: l10n_co_doctor
 #: view:res.partner:0
 msgid "NOMBRE O RAZON SOCIAL"
-msgstr "NOMBRE O RAZON SOCIAL"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: selection:res.partner,tdoc:0
-msgid "Tipo de documento extranjero"
-msgstr "Tipo de documento extranjero"
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
+msgid "User type: Subsidiado"
+msgstr "Tipo de usuario: Subsidiado"
 
 #. module: l10n_co_doctor
-#: field:res.country.state.city,state_id:0
-msgid "State"
-msgstr "Estado"
-
-#. module: l10n_co_doctor
-#: code:addons/l10n_co_doctor/doctor_co.py:259
-#, python-format
-msgid "Error!"
-msgstr "Error!"
-
-#. module: l10n_co_doctor
-#: constraint:res.partner:0
-msgid "¡Error! Número de identificación ya existe en el sistema"
-msgstr "¡Error! Número de identificación ya existe en el sistema"
-
-#. module: l10n_co_doctor
-#: field:doctor.patient,tdoc:0
-#: field:res.partner,tdoc:0
-msgid "Tipo de Documento"
-msgstr "Tipo de Documento"
-
-#. module: l10n_co_doctor
-#: selection:doctor.patient,tdoc:0
-#: selection:res.partner,tdoc:0
-msgid "Adulto sin identificaciómn"
-msgstr "Adulto sin identificaciómn"
-
-#. module: l10n_co_doctor
-#: view:res.partner:0
-msgid "PRIMER NOMBRE"
-msgstr "PRIMER NOMBRE"
+#: report:doctor_attention:0
+msgid "Respiratory:"
+msgstr "Frecuencia respiratoria:"
 
 #. module: l10n_co_doctor
 #: selection:account.invoice,tipo_usuario_id:0
@@ -416,56 +984,15 @@ msgstr "PRIMER NOMBRE"
 #: selection:doctor.patient,tipo_usuario:0
 #: selection:sale.order,tipo_usuario_id:0
 msgid "Contributivo"
-msgstr "Contributivo"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: field:res.partner,city_id:0
-msgid "Ciudad"
-msgstr "Ciudad"
+#: model:ir.model,name:l10n_co_doctor.model_doctor_appointment
+msgid "doctor.appointment"
+msgstr ""
 
 #. module: l10n_co_doctor
-#: view:res.partner:0
-msgid "PRIMER APELLIDO"
-msgstr "PRIMER APELLIDO"
-
-#. module: l10n_co_doctor
-#: model:ir.model,name:l10n_co_doctor.model_doctor_patient
-msgid "Information about the patient"
-msgstr "Información acerca del paciente"
-
-#. module: l10n_co_doctor
-#: constraint:res.partner:0
-msgid "¡Error! Número de identificación debe tener entre 6 y 11 dígitos"
-msgstr "¡Error! Número de identificación debe tener entre 6 y 11 dígitos"
-
-#. module: l10n_co_doctor
-#: help:res.country.state.city,code:0
-msgid "Código DANE -5 dígitos-"
-msgstr "Código DANE -5 dígitos-"
-
-#. module: l10n_co_doctor
-#: selection:doctor.patient,tdoc:0
-#: selection:res.partner,tdoc:0
-msgid "Número único de identificación"
-msgstr "Número único de identificación"
-
-#. module: l10n_co_doctor
-#: model:ir.model,name:l10n_co_doctor.model_sale_order
-msgid "Sales Order"
-msgstr "Pedido de venta"
-
-#. module: l10n_co_doctor
-#: selection:doctor.attentions,state:0
-msgid "Open"
-msgstr "Abierta"
-
-#. module: l10n_co_doctor
-#: field:doctor.patient,zona:0
-msgid "Zona de residencia"
-msgstr "Zona de residencia"
-
-#. module: l10n_co_doctor
-#: selection:res.partner,tdoc:0
-msgid "NIT"
-msgstr "NIT"
+#: report:doctor_attention:0
+msgid "ACTUAL DISEASE"
+msgstr "ENFERMEDAD ACTUAL"
 
