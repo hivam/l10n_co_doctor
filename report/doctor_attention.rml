@@ -136,8 +136,12 @@
       </tr>   
       <tr>
         <td>
-          <para style="P6">User type: [[ (o.patient_id.tipo_usuario or (removeParentNode('para'))) ]]</para>
-        </td>  
+          <para style="P6">User type: Contributivo [[ ((o.patient_id.tipo_usuario == '1') or removeParentNode('para')) and ""]]</para>
+          <para style="P6">User type: Subsidiado[[ ((o.patient_id.tipo_usuario == '2') or removeParentNode('para')) and ""]]</para>
+          <para style="P6">User type: Vinculado[[ ((o.patient_id.tipo_usuario == '3') or removeParentNode('para')) and ""]]</para>
+          <para style="P6">User type: Particular [[ ((o.patient_id.tipo_usuario == '4') or removeParentNode('para')) and ""]]</para>
+          <para style="P6">User type: Otro[[ ((o.patient_id.tipo_usuario == '5') or removeParentNode('para')) and ""]]</para>
+        </td>
         <td>
           <para style="P6">Age: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (o.age_unit or (removeParentNode('para'))) ]]</para>
 		</td>
@@ -150,31 +154,30 @@
           <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>                    
 		</td>
      </tr>
-    </blockTable> 
-
-    <blockTable colWidths="534.0" style="Table6">
-      <tr>
-        <td>
-          <para style="P2">REASON CONSULTATION</para>
-        </td>		
-     </tr>
     </blockTable>
-
     <section>
-      <para style="P4">[[ repeatIn(o.reason_consultation, 'line') ]]</para>
+        <blockTable colWidths="534.0" style="Table6">
+          <tr>
+            <td>
+              <para style="P2">REASON CONSULTATION</para>
+            </td>
+         </tr>
+        </blockTable>
+           [[ o.reason_consultation or removeParentNode('section') ]]
+          <para style="P4">[[ repeatIn(o.reason_consultation, 'line') ]]</para>
 
-    <blockTable colWidths="84.0,450.0" style="Table6">
-        <tr>
-		 <td>
-            <para style="terp_default_8">[[ (line.code) ]]</para>
-          </td>	
-          <td>
-            <para style="terp_default_8">[[ (line.name) ]] </para>
-          </td>            
-        </tr>               
-      </blockTable>
+        <blockTable colWidths="84.0,450.0" style="Table6">
+            <tr>
+             <td>
+                <para style="terp_default_8">[[ (line.code) ]]</para>
+              </td>
+              <td>
+                <para style="terp_default_8">[[ (line.name) ]] </para>
+              </td>
+            </tr>
+          </blockTable>
     </section>
-
+    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -186,11 +189,12 @@
     <blockTable colWidths="534.0" style="Table6">
         <tr>
 		 <td>
-            <para style="P3">[[ (o.actual_disease) ]]</para>
-         </td>	            
-        </tr>               
+            <para style="P3">[[ o.actual_disease or removeParentNode('section') ]]</para>
+         </td>
+        </tr>
       </blockTable>
-
+     </section>
+    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -198,8 +202,8 @@
         </td>		
      </tr>
     </blockTable>
+    [[ o.review_systems_id or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.review_systems_id, 'line') ]]</para>
 
     <blockTable colWidths="84.0,450.0" style="Table6">
@@ -214,6 +218,7 @@
       </blockTable>
     </section>
 
+    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -221,8 +226,8 @@
         </td>		
      </tr>
     </blockTable>
+        [[ o.past_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.past_ids, 'line') ]]</para>
 
     <blockTable colWidths="84.0,450.0" style="Table6">
@@ -237,6 +242,7 @@
       </blockTable>
     </section>
 
+    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -244,8 +250,8 @@
         </td>		
      </tr>
     </blockTable>
+        [[ o.pathological_past_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.pathological_past_ids, 'line') ]]</para>
 
     <blockTable colWidths="84.0,450.0" style="Table6">
@@ -259,7 +265,7 @@
         </tr>               
       </blockTable>
     </section>
-
+    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -267,8 +273,8 @@
         </td>		
      </tr>
     </blockTable>
+    [[ o.drugs_past_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.drugs_past_ids, 'line') ]]</para>
 
     <blockTable colWidths="84.0,450.0" style="Table6">
@@ -350,6 +356,7 @@
         </tr>        
       </blockTable>
 
+    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -357,8 +364,9 @@
         </td>		
      </tr>
     </blockTable>
+        [[ o.attentions_exam_ids or removeParentNode('section') ]]
 
-    <section>
+
       <para style="P4">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>
 
     <blockTable colWidths="84.0,450.0" style="Table6">
@@ -372,7 +380,7 @@
         </tr>               
       </blockTable>
     </section>
-
+    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -384,11 +392,13 @@
     <blockTable colWidths="534.0" style="Table6">
         <tr>
 		 <td>
-            <para style="P3">[[ (o.analysis) ]]</para>
+            <para style="P3">[[ o.analysis or removeParentNode('section') ]]</para>
          </td>	            
         </tr>               
       </blockTable>
+    </section>
 
+    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -400,11 +410,13 @@
     <blockTable colWidths="534.0" style="Table6">
         <tr>
 		 <td>
-            <para style="P3">[[ (o.conduct) ]]</para>
+            <para style="P3">[[ o.conduct or removeParentNode('section') ]]</para>
          </td>	            
         </tr>               
       </blockTable>
+    </section>
 
+    <section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -412,8 +424,8 @@
         </td>		
      </tr>     
     </blockTable>
-    
-    <section>
+    [[ o.diseases_ids or removeParentNode('section') ]]
+
       <para style="P4">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
     
       <blockTable colWidths="384.0,150.0" style="Table6">
@@ -428,6 +440,7 @@
       </blockTable>
     </section>
 
+    <section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -435,8 +448,8 @@
         </td>		
      </tr>     
     </blockTable>
+    [[ o.drugs_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.drugs_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
@@ -467,6 +480,7 @@
       </blockTable>
     </section>
 
+    <section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -475,7 +489,8 @@
      </tr>     
     </blockTable>
 
-    <section>
+    [[ o.diagnostic_images_ids or removeParentNode('section') ]]
+
       <para style="P4">[[ repeatIn(o.diagnostic_images_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
@@ -490,6 +505,7 @@
       </blockTable>
     </section>
 
+    <section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -497,8 +513,8 @@
         </td>		
      </tr>     
     </blockTable>
+    [[ o.clinical_laboratory_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.clinical_laboratory_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
@@ -513,6 +529,7 @@
       </blockTable>
     </section>
 
+    <section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -520,8 +537,8 @@
         </td>		
      </tr>     
     </blockTable>
+    [[ o.surgical_procedure_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.surgical_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
@@ -535,7 +552,7 @@
         </tr>               
       </blockTable>
     </section>
-
+    <section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -543,8 +560,8 @@
         </td>		
      </tr>     
     </blockTable>
+    [[ o.therapeutic_procedure_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.therapeutic_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
@@ -559,6 +576,7 @@
       </blockTable>
     </section>
 
+    <section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -566,8 +584,8 @@
         </td>		
      </tr>     
     </blockTable>
+    [[ o.other_procedure_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.other_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
@@ -628,6 +646,7 @@
       </blockTable>
     </section>    
 
+    <section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -635,8 +654,8 @@
         </td>		
      </tr>     
     </blockTable>
+    [[ o.disability_ids or removeParentNode('section') ]]
 
-    <section>
       <para style="P4">[[ repeatIn(o.disability_ids, 'line') ]]</para>
 
     <blockTable colWidths="267.0,267.0" style="Table6">
@@ -650,7 +669,8 @@
         </tr>               
       </blockTable>
     </section>
-   
+
+   <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -658,7 +678,7 @@
         </td>		
      </tr>     
     </blockTable>
-
+    [[ o.professional_id or removeParentNode('section') ]]
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
 		<td>
@@ -677,6 +697,7 @@
 		</td>
       </tr>         
     </blockTable>
+    </section>
 <!--
     <para style="P7">
       <font color="white"> </font>
