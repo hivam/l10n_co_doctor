@@ -27,9 +27,16 @@ class doctor_diagnostic_images(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(doctor_diagnostic_images, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
-                                  'time': time,                              
-                                  })        
-    
+            'time': time,
+            'select_type': self.select_type,
+        })
+
+    def select_type(self, tipo_usuario):
+        patient = self.pool.get('doctor.patient')
+        tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario').get('tipo_usuario').get('selection')).get(
+            str(tipo_usuario))
+        return tipo
+
 report_sxw.report_sxw('report.doctor_diagnostic_images', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_diagnostic_images.rml',
                       parser=doctor_diagnostic_images)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+# #############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
@@ -23,13 +23,22 @@ import time
 from openerp.report import report_sxw
 from openerp import pooler
 
+
 class doctor_attention(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(doctor_attention, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
-                                  'time': time,                              
-                                  })        
-    
+            'time': time,
+            'select_type': self.select_type,
+        })
+
+    def select_type(self, tipo_usuario):
+        patient = self.pool.get('doctor.patient')
+        tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario').get('tipo_usuario').get('selection')).get(
+            str(tipo_usuario))
+        return tipo
+
+
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_attention.rml',
                       parser=doctor_attention)

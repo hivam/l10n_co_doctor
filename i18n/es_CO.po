@@ -45,6 +45,9 @@ msgstr ""
 msgid "Finalidad de la consulta"
 msgstr ""
 
+msgid "urgency"
+msgstr "Urgencias"
+
 #. module: l10n_co_doctor
 #: selection:doctor.patient,tdoc:0
 #: selection:res.partner,tdoc:0
