@@ -627,13 +627,13 @@
     <blockTable colWidths="100.0,150.0,50.0,234.0" style="Table6">
         <tr>
 		 <td>
-            <para style="terp_default_8">[[ line.referral_ids ]] </para>
+            <para style="terp_default_8">[[ select_type_attention(line.referral_ids) ]] </para>
           </td>	
           <td>
             <para style="terp_default_8">[[ (line.speciality_id.name or "") ]] </para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.interconsultation or "") ]] </para>
+            <para style="terp_default_8">[[ (select_type_interconsultation(line.interconsultation) or "") ]] </para>
           </td>	
           <td>
             <para style="terp_default_8">[[ (line.cause or "") ]] </para>

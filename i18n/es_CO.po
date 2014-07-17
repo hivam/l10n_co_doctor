@@ -45,7 +45,9 @@ msgstr ""
 msgid "Finalidad de la consulta"
 msgstr ""
 
-msgid "urgency"
+#. module: l10n_co_doctor
+#: selection:doctor.attentions.referral,referral_ids:0
+msgid "Urgency"
 msgstr "Urgencias"
 
 #. module: l10n_co_doctor

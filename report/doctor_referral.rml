@@ -172,13 +172,13 @@
     <blockTable colWidths="100.0,150.0,50.0,234.0" style="Table6">
         <tr>
 		 <td>
-            <para style="P6">[[ (line.referral_ids) ]] </para>
+            <para style="P6">[[ select_type_attention(line.referral_ids) ]] </para>
           </td>	
           <td>
             <para style="P7">[[ (line.speciality_id.name or (removeParentNode('para'))) ]] </para>
           </td>
           <td>
-            <para style="P7">[[ (line.interconsultation or (removeParentNode('para'))) ]] </para>
+            <para style="P7">[[ (select_type_interconsultation(line.interconsultation)) ]] </para>
           </td>	
           <td>
             <para style="P7">[[ (line.cause or (removeParentNode('para'))) ]] </para>

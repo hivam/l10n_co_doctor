@@ -30,6 +30,8 @@ class doctor_attention(report_sxw.rml_parse):
         self.localcontext.update({
             'time': time,
             'select_type': self.select_type,
+            'select_type_attention': self.select_type_attention,
+            'select_type_interconsultation': self.select_type_interconsultation,
         })
 
     def select_type(self, tipo_usuario):
@@ -38,6 +40,19 @@ class doctor_attention(report_sxw.rml_parse):
             str(tipo_usuario))
         return tipo
 
+    def select_type_attention(self, type_atention):
+        context = {}
+        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+
+        patient = self.pool.get('doctor.attentions.referral')
+        type = dict(patient.fields_get(self.cr, self.uid, 'referral_ids',context=context).get('referral_ids').get('selection')).get(
+            str(type_atention))
+        return type
+
+    def select_type_interconsultation(self, type_interconsultation):
+        if type_interconsultation:
+            return "Si"
+        return "No"
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_attention.rml',
