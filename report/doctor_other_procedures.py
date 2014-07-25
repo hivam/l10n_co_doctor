@@ -32,8 +32,10 @@ class doctor_other_procedures(report_sxw.rml_parse):
         })
 
     def select_type(self, tipo_usuario):
+        context = {}
+        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
         patient = self.pool.get('doctor.patient')
-        tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario').get('tipo_usuario').get('selection')).get(
+        tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario',context=context).get('tipo_usuario').get('selection')).get(
             str(tipo_usuario))
         return tipo
 

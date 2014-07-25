@@ -206,11 +206,11 @@
         <tr>
 		 <td>
             <para style="terp_default_8">[[ (line.system_category.name) ]]</para>
-          </td>	
+          </td>
           <td>
             <para style="terp_default_8">[[ (line.review_systems) ]] </para>
-          </td>            
-        </tr>               
+          </td>
+        </tr>
       </blockTable>
     </section>
 
@@ -230,11 +230,11 @@
         <tr>
 		 <td>
             <para style="terp_default_8">[[ (line.past_category.name) ]]</para>
-          </td>	
+          </td>
           <td>
             <para style="terp_default_8">[[ (line.past) ]] </para>
-          </td>            
-        </tr>               
+          </td>
+        </tr>
       </blockTable>
     </section>
 
@@ -254,11 +254,11 @@
         <tr>
 		 <td>
             <para style="terp_default_8">[[ (line.diseases_id.code) ]]</para>
-          </td>	
+          </td>
           <td>
             <para style="terp_default_8">[[ (line.diseases_id.name) ]] </para>
-          </td>            
-        </tr>               
+          </td>
+        </tr>
       </blockTable>
     </section>
     <section>
@@ -277,11 +277,11 @@
         <tr>
 		 <td>
             <para style="terp_default_8">[[ (line.atc_id.code) ]]</para>
-          </td>	
+          </td>
           <td>
             <para style="terp_default_8">[[ (line.atc_id.name) ]] </para>
-          </td>            
-        </tr>               
+          </td>
+        </tr>
       </blockTable>
     </section>
 
@@ -369,11 +369,11 @@
         <tr>
 		 <td>
             <para style="terp_default_8">[[ (line.exam_category.name) ]]</para>
-          </td>	
+          </td>
           <td>
             <para style="terp_default_8">[[ (line.exam) ]] </para>
-          </td>            
-        </tr>               
+          </td>
+        </tr>
       </blockTable>
     </section>
     <section>
@@ -517,11 +517,11 @@
         <tr>
 		 <td>
             <para style="terp_default_8">[[ (line.procedures_id.procedure_code) ]] [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
-          </td>	
+          </td>
           <td>
             <para style="terp_default_8">[[ (line.quantity) ]] </para>
-          </td>            
-        </tr>               
+          </td>
+        </tr>
       </blockTable>
     </section>
 
@@ -541,11 +541,11 @@
         <tr>
 		 <td>
             <para style="terp_default_8">[[ (line.procedures_id.procedure_code) ]] [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
-          </td>	
+          </td>
           <td>
             <para style="terp_default_8">[[ (line.quantity) ]] </para>
-          </td>            
-        </tr>               
+          </td>
+        </tr>
       </blockTable>
     </section>
     <section>
