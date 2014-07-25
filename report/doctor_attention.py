@@ -32,6 +32,7 @@ class doctor_attention(report_sxw.rml_parse):
             'select_type': self.select_type,
             'select_type_attention': self.select_type_attention,
             'select_type_interconsultation': self.select_type_interconsultation,
+            'select_age': self.select_age,
         })
 
     def select_type(self, tipo_usuario):
@@ -53,6 +54,14 @@ class doctor_attention(report_sxw.rml_parse):
         if type_interconsultation:
             return "Si"
         return "No"
+
+    def select_age(self, age):
+        context = {}
+        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+        attentions = self.pool.get('doctor.attentions')
+        age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
+            str(age))
+        return age_unit
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_attention.rml',

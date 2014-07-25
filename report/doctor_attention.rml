@@ -139,7 +139,7 @@
           <para style="P6">User type: [[ select_type(o.patient_id.tipo_usuario) or removeParentNode('para')]]</para>
         </td>
         <td>
-          <para style="P6">Age: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (o.age_unit or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Age: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
 		</td>
      </tr>
      <tr>

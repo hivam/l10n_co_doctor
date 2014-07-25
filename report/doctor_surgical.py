@@ -29,6 +29,7 @@ class doctor_surgical(report_sxw.rml_parse):
         self.localcontext.update({
             'time': time,
             'select_type': self.select_type,
+            'select_age': self.select_age,
         })
 
     def select_type(self, tipo_usuario):
@@ -38,6 +39,14 @@ class doctor_surgical(report_sxw.rml_parse):
         tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario',context=context).get('tipo_usuario').get('selection')).get(
             str(tipo_usuario))
         return tipo
+
+    def select_age(self, age):
+        context = {}
+        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+        attentions = self.pool.get('doctor.attentions')
+        age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
+            str(age))
+        return age_unit
 
 report_sxw.report_sxw('report.doctor_surgical', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_surgical.rml',

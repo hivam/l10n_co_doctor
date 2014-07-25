@@ -166,7 +166,7 @@
         </tr>
         <tr>
 		 <td>
-            <para style="P6">[[ (line.action_id) ]] [[ (line.quantity) ]] [[ (line.measuring_unit_q.name) ]] cada [[ (line.frequency) ]] [[ (line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ (line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
+            <para style="P6">[[ select_type_action(line.action_id) ]] [[ (line.quantity) ]] [[ (line.measuring_unit_q.name) ]] cada [[ (line.frequency) ]] [[ select_type_unit(line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ select_type_period(line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
           </td>	
           <td>
             <para style="P6">[[ '' ]] </para>

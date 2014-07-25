@@ -29,6 +29,9 @@ class doctor_precription(report_sxw.rml_parse):
         self.localcontext.update({
             'time': time,
             'select_type': self.select_type,
+            'select_type_action': self.select_type_action,
+            'select_type_unit': self.select_type_unit,
+            'select_type_period': self.select_type_period,
         })
 
     def select_type(self, tipo_usuario):
@@ -38,6 +41,32 @@ class doctor_precription(report_sxw.rml_parse):
         tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario',context=context).get('tipo_usuario').get('selection')).get(
             str(tipo_usuario))
         return tipo
+
+    def select_type_action(self, action):
+        context = {}
+        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+        presciption = self.pool.get('doctor.prescription')
+        tipo = dict(presciption.fields_get(self.cr, self.uid, 'action_id',context=context).get('action_id').get('selection')).get(
+            str(action))
+        return tipo
+
+    def select_type_unit(self, unit):
+        context = {}
+        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+        prescription = self.pool.get('doctor.prescription')
+        tipo = dict(prescription.fields_get(self.cr, self.uid, 'frequency_unit_n',context=context).get('frequency_unit_n').get('selection')).get(
+            str(unit))
+        return tipo
+
+    def select_type_period(self, period):
+        context = {}
+        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+        prescription = self.pool.get('doctor.prescription')
+        tipo = dict(prescription.fields_get(self.cr, self.uid, 'dutation_period_n',context=context).get('dutation_period_n').get('selection')).get(
+            str(period))
+        return tipo
+
+
 
 report_sxw.report_sxw('report.doctor_precription', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_prescription.rml',
