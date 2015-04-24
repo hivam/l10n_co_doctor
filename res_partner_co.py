@@ -64,7 +64,7 @@ class res_partner_co(osv.osv):
                                   ('22','Cédula de extranjería'), ('31','NIT'),
                                   ('41','Pasaporte'), ('42','Tipo de documento extranjero'),
                                   ('43','Para uso definido por la DIAN'), ('NU','Número único de identificación'),
-                                  ('AS','Adulto sin identificaciómn'), ('MS','Menor sin identificación')),
+                                  ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
                                   'Tipo de Documento'),
         'dv': fields.char('dv', size=1, help='Digito de verificación'),
         'lastname': fields.char('lastname', size=25),

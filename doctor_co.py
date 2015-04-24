@@ -53,9 +53,9 @@ class doctor_patient_co(osv.osv):
     _columns = {
         'tdoc': fields.selection((('RC','Registro civil'), ('TI','Tarjeta de identidad'),
                                   ('CC','Cédula de ciudadanía'), ('CE','Cédula de extranjería'), ('PA','Pasaporte'),
-                                  ('NU','Número único de identificación'), ('AS','Adulto sin identificaciómn'), ('MS','Menor sin identificación')),
+                                  ('NU','Número único de identificación'), ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
                                   'Tipo de Documento', required=True),
-        'ref' :  fields.related ('patient', 'ref', type="char", relation="res.partner", string="Nº de identificación", required=True, readonly= True),
+        'ref' :  fields.related ('patient', 'ref', type="char", relation="res.partner", string="Identificación", required=True, readonly= True, nolabel="1"),
         'tipo_usuario':  fields.selection((('1','Contributivo'), ('2','Subsidiado'),
                                            ('3','Vinculado'), ('4','Particular'),
                                            ('5','Otro')), 'Tipo de usuario', required=True),

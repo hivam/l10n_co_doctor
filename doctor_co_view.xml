@@ -10,15 +10,18 @@
             <field name="inherit_id" ref="doctor.view_doctor_patient_form"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//form/group/group/group/field[@name='patient']" position="replace">
+                <xpath expr="//field[@name='patient']" position="replace">
                     <field name="patient" on_change="onchange_patient_data(patient,photo,ref,dpto,mun,direccion)"/>
                 </xpath>
 
-                <xpath expr="//form/group/group/group" position="after">
 
+                <xpath expr="//label[@string='Paciente']" position="before">
+
+                    <label string="Número Identificación" />
                     <group col="3" colspan="4">
-                        <field name="tdoc" string='Doc'/>
-                        <field name="ref" nolabel='1'/>
+
+                        <field name="ref" nolabel='1' class="texto_destacado"/>
+                        <!--<field name="tdoc" nolabel='1'/>-->
                     </group>
                 </xpath>
 
@@ -26,7 +29,7 @@
                     <field name="tipo_usuario"/>
                 </field>
 
-                <xpath expr="//form/group/group[3]" position="after">
+                <xpath expr="//form/sheet/group/group[3]" position="after">
 
                 <fieldset class="fieldset_margen">
                     <legend class="texto_legend">Dirección</legend>

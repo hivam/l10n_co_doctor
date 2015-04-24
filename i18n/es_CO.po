@@ -233,7 +233,7 @@ msgstr "REVISIÓN POR SISTEMAS"
 #. module: l10n_co_doctor
 #: selection:doctor.patient,tdoc:0
 #: selection:res.partner,tdoc:0
-msgid "Adulto sin identificaciómn"
+msgid "Adulto sin identificación"
 msgstr ""
 
 #. module: l10n_co_doctor
@@ -1000,4 +1000,3 @@ msgstr ""
 #: report:doctor_attention:0
 msgid "ACTUAL DISEASE"
 msgstr "ENFERMEDAD ACTUAL"
-
