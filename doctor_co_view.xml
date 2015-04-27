@@ -18,11 +18,15 @@
                 <xpath expr="//label[@string='Paciente']" position="before">
 
                     <label string="Número Identificación" />
-                    <group col="3" colspan="4">
+                    <group>
 
-                        <field name="ref" nolabel='1' class="texto_destacado"/>
-                        <!--<field name="tdoc" nolabel='1'/>-->
+                        <field name="ref" class="texto_destacado" nolabel="1"/>
                     </group>
+                </xpath>
+                <xpath expr="//group[@name='datos_personales']" position="before">
+                  <group>
+                    <field name="tdoc"/>
+                  </group>
                 </xpath>
 
                 <field name="insurer" position="before" >
