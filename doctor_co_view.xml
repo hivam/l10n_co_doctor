@@ -33,18 +33,16 @@
                     <field name="tipo_usuario"/>
                 </field>
 
-                <xpath expr="//form/sheet/group/group[3]" position="after">
-
+                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
                 <fieldset class="fieldset_margen">
-                    <legend class="texto_legend">Dirección</legend>
-                    <group >
-                        <field name="dpto"/>
-                        <field name="mun"/>
-                        <field name="direccion"/>
-                        <field name="zona" style="width: 45%%"/>
-                    </group>
+                  <legend class="texto_legend">Datos de residencia</legend>
+                        <group col="2">
+                          <field name="dpto"/>
+                          <field name="mun"/>
+                          <field name="direccion"/>
+                          <field name="zona" style="width: 45%%"/>
+                      </group>
                 </fieldset>
-
                 </xpath>
 
             </field>
