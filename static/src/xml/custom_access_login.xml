@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="Login">
+    	<t t-jquery="div[class=oe_login_bottom]" t-operation="replace">
+    		<div class="oe_login_bottom_custom"> </div>
+    	</t>
+    	<t t-jquery="div[class=oe_login_logo]" t-operation="replace">
+    		<div class="oe_login_logo"><img src='/l10n_co_doctor/static/src/img/clinicaDigital.png'/></div>
+    	</t>
+        <t t-jquery="div[class=oe_login_footer]" t-operation="replace">
+            <div class="oe_login_footer">
+                <a href="#" class="oe_login_manage_db">Administrar Instancias</a> |
+                <a href="http://www.openerp.com" target="_blank"><span>Odoo</span></a>
+            </div>
+        </t>
+    </t>
+</templates>

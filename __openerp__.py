@@ -47,8 +47,10 @@ Location change for "Doctor" module in Colombia
               'data/l10n_doctor_drugs_co.xml',
               'data/l10n_doctor_health_procedures_co.xml',
               'doctor_report.xml',
+
     ],
     'installable': True,
+    'qweb': ['static/src/xml/custom_access_login.xml'],
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
