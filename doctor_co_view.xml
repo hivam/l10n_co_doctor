@@ -11,18 +11,17 @@
             <field name="arch" type="xml">
                 <field name="id" invisible="1"/>
                 <xpath expr="//field[@name='patient']" position="replace">
-                    <label string="Número de Identificación" for="ref" class="texto"/>
-                    <field name="ref" nolabel="1" default_focus="1" />
+                    <label string="Número de Identifiacion" for="ref" style="width:50%%" class="texto"/>
+                    <br></br>
+		    <field name="ref" nolabel="1" default_focus="1" style="width:50%%" />
+                    <br></br>
                     <label string="Nombre Paciente" for="nombre" class="texto"/>
-
-                  <h2>
-                    <group>
-                    <field name="lastname" nolabel="1" class= "oe_inline" placeholder="Primer Apellido" style="width: 20%%"/>
-                    <field name="surname" nolabel="1" class= "oe_inline" placeholder="Segundo Apellido" style="width: 20%%"/>
-                    <field name="firstname" nolabel="1" class= "oe_inline" placeholder="Primer Nombre" style="width: 20%%"/>
-                    <field name="middlename" nolabel="1" class= "oe_inline" placeholder="Segundo Nombre" style="width: 20%%"/>
-                    </group>
-
+	            <br></br>
+		  <h2>
+                    <field name="lastname" nolabel="1" placeholder="Primer Apellido" style="width:20%%"/>
+                    <field name="surname" nolabel="1"  placeholder="Segundo Apellido" style="width:20%%"/>
+                    <field name="firstname" nolabel="1" placeholder="Primer Nombre" style="width:20%%"/>
+                    <field name="middlename" nolabel="1" placeholder="Segundo Nombre" style="width:20%%"/>
                   </h2>
                 </xpath>
 
