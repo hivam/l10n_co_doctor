@@ -9,20 +9,24 @@
             <field eval="7" name="priority"/>
             <field name="inherit_id" ref="doctor.view_doctor_patient_form"/>
             <field name="arch" type="xml">
-
+                <field name="id" invisible="1"/>
                 <xpath expr="//field[@name='patient']" position="replace">
-                    <field name="patient" on_change="onchange_patient_data(patient,photo,ref,dpto,mun,direccion)" style="width: 65%%"/>
-                </xpath>
+                    <label string="Número de Identificación" for="ref" class="texto"/>
+                    <field name="ref" nolabel="1" default_focus="1" />
+                    <label string="Nombre Paciente" for="nombre" class="texto"/>
 
-
-                <xpath expr="//label[@string='Paciente']" position="before">
-
-                    <label string="Número Identificación" />
+                  <h2>
                     <group>
-
-                        <field name="ref" class="texto_destacado" nolabel="1"/>
+                    <field name="lastname" nolabel="1" class= "oe_inline" placeholder="Primer Apellido" style="width: 20%%"/>
+                    <field name="surname" nolabel="1" class= "oe_inline" placeholder="Segundo Apellido" style="width: 20%%"/>
+                    <field name="firstname" nolabel="1" class= "oe_inline" placeholder="Primer Nombre" style="width: 20%%"/>
+                    <field name="middlename" nolabel="1" class= "oe_inline" placeholder="Segundo Nombre" style="width: 20%%"/>
                     </group>
+
+                  </h2>
                 </xpath>
+
+
                 <xpath expr="//group[@name='datos_personales']" position="before">
                   <group>
                     <field name="tdoc"/>
@@ -37,9 +41,9 @@
                 <fieldset class="fieldset_margen">
                   <legend class="texto_legend">Datos de residencia</legend>
                         <group col="2">
-                          <field name="dpto"/>
-                          <field name="mun"/>
-                          <field name="direccion"/>
+                          <field name="state_id"/>
+                          <field name="city_id"/>
+                          <field name="street"/>
                           <field name="zona" style="width: 45%%"/>
                       </group>
                 </fieldset>
@@ -55,10 +59,13 @@
             <field eval="7" name="priority"/>
             <field name="inherit_id" ref="doctor.view_doctor_patient_tree"/>
             <field name="arch" type="xml">
-                <field name="patient" position="before">
+              <field name="sex" position="before">
                     <field name="tdoc" string="Tipo doc"/>
                     <field name="ref" string="Nº doc"/>
-                </field>
+              </field>
+              <field name="ref" position="after">
+                <field name="nombre" string="Nombre Paciente"/>
+              </field>
             </field>
         </record>
 

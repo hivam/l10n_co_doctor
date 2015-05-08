@@ -51,17 +51,18 @@ class doctor_patient_co(osv.osv):
     _inherit = 'doctor.patient'
     _description = "Information about the patient"
     _columns = {
-        'tdoc': fields.selection((('RC','Registro civil'), ('TI','Tarjeta de identidad'),
-                                  ('CC','Cédula de ciudadanía'), ('CE','Cédula de extranjería'), ('PA','Pasaporte'),
+        'nombre': fields.char('Primer Nombre'),
+        'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
+                                  ('13','Cédula de ciudadanía'), ('21','Cédula de extranjería'), ('41','Pasaporte'),
                                   ('NU','Número único de identificación'), ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
                                   'Tipo de Documento', required=True),
-        'ref' :  fields.related ('patient', 'ref', type="char", relation="res.partner", string="Identificación", required=True, readonly= True, nolabel="1"),
+        'ref' :  fields.char('Identificación', required=True ),
         'tipo_usuario':  fields.selection((('1','Contributivo'), ('2','Subsidiado'),
                                            ('3','Vinculado'), ('4','Particular'),
                                            ('5','Otro')), 'Tipo de usuario', required=True),
-        'dpto' : fields.related ('patient', 'state_id', type="many2one", relation="res.country.state", string="Departamento", readonly= True),
-        'mun' : fields.related ('patient', 'city_id', type="many2one", relation="res.country.state.city", string="Municipio", readonly= True),
-        'direccion' : fields.related ('patient', 'street', type="char", relation="res.partner", string="Dirección", readonly= True),
+        'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
+        'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
+        'street' :  fields.char('Dirección', required=False),
         'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
         }
 
