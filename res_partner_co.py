@@ -59,6 +59,7 @@ class res_partner_co(osv.osv):
     _name = 'res.partner'
     _inherit = 'res.partner'
     _columns = {
+        'es_paciente':fields.boolean('Es paciente'),
         'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
                                   ('13','Cédula de ciudadanía'), ('21','Tarjeta de extranjería'),
                                   ('22','Cédula de extranjería'), ('31','NIT'),
@@ -89,6 +90,7 @@ class res_partner_co(osv.osv):
         'tdoc' : '13',
         'country_id': lambda self, cr, uid, context: self.pool.get('res.country').browse(cr, uid, self.pool.get('res.country').search(cr, uid, [('code','=','CO')]))[0].id,
         'state_id': lambda self, cr, uid, context: self.pool.get('res.country.state').browse(cr, uid, self.pool.get('res.country.state').search(cr, uid, [('code','=','63')]))[0].id,
+        'es_paciente': False,
         }
 
 # Función para concatenar los apellidos y nombres y almacenarlos en el campo name

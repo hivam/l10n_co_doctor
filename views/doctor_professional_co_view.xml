@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+
+  <record model="ir.ui.view" id="view_doctor_professional_co">
+    <field name="name">Profesional de la salud Colombia</field>
+    <field name="model">doctor.professional</field>
+    <field name="inherit_id" ref="doctor.view_doctor_professional_form"/>
+    <field name="priority" eval="2"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//field[@name='professional']" position="replace">
+
+          <field name="lastname" placeholder="Primer Apellido" nolabel="1" />
+          <field name="surname" placeholder="Segundo Apellido" nolabel="1" />
+          <field name="firtsname" placeholder="Primer Nombre" nolabel="1"/>
+          <field name="middlename" placeholder="Segundo Nombre" nolabel="1"/>
+
+      </xpath>
+      <xpath expr="//field[@name='username']" position="attributes">
+        <attribute name="string">Nombre Usuario</attribute>
+      </xpath>
+      <xpath expr="//field[@name='middlename']" position="after">
+        <field name="tdoc"/>
+        <field name="ref" />
+      </xpath>
+
+
+
+    </field>
+</record>
+</data>
+</openerp>

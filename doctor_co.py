@@ -51,12 +51,15 @@ class doctor_patient_co(osv.osv):
     _inherit = 'doctor.patient'
     _description = "Information about the patient"
     _columns = {
-        'nombre': fields.char('Primer Nombre'),
+        'nombre': fields.char('Nombre', size=70),
         'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
                                   ('13','Cédula de ciudadanía'), ('21','Cédula de extranjería'), ('41','Pasaporte'),
                                   ('NU','Número único de identificación'), ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
                                   'Tipo de Documento', required=True),
         'ref' :  fields.char('Identificación', required=True ),
+        'telefono' : fields.char('Teléfono', size=12),
+        'email' : fields.char('Email'),
+        'movil' :fields.char('Móvil', size=12),
         'tipo_usuario':  fields.selection((('1','Contributivo'), ('2','Subsidiado'),
                                            ('3','Vinculado'), ('4','Particular'),
                                            ('5','Otro')), 'Tipo de usuario', required=True),
@@ -65,6 +68,7 @@ class doctor_patient_co(osv.osv):
         'street' :  fields.char('Dirección', required=False),
         'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
         }
+
 
     def onchange_patient_data(self, cr, uid, ids, patient, photo, ref, dpto, mun, direccion, context=None):
         values = {}
@@ -98,8 +102,20 @@ class doctor_patient_co(osv.osv):
             if ref_ids:
                 return False
         return True
+# Función para validar Email
+    def _check_email(self, cr, uid, ids, context=None):
+        for record in self.browse(cr, uid, ids):
+            if record.email:
+                email= record.email
+                if (email.find("@") == -1)  :
+                    return False
+                elif (email.find(".") == -1):
+                    return False
+
+            return True
 
     _constraints = [(_check_unique_ident, '¡Error! Número de intentificación ya existe en el sistema', ['ref']),
+                    (_check_email, 'El formato es inválido.', ['email']),
                ]
 
 doctor_patient_co()

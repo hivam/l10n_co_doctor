@@ -11,7 +11,7 @@
             <field name="arch" type="xml">
                 <field name="id" invisible="1"/>
                 <xpath expr="//field[@name='patient']" position="replace">
-                    <label string="Número de Identifiacion" for="ref" style="width:50%%" class="texto"/>
+                    <label string="Número de Identificación" for="ref" style="width:50%%" class="texto"/>
                     <br></br>
 		    <field name="ref" nolabel="1" default_focus="1" style="width:50%%" />
                     <br></br>
@@ -34,6 +34,12 @@
 
                 <field name="insurer" position="before" >
                     <field name="tipo_usuario"/>
+                </field>
+
+                <field name="sex" position="after" >
+                  <field name="email"/>
+                  <field name="telefono"/>
+                  <field name="movil"/>
                 </field>
 
                 <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
@@ -65,8 +71,10 @@
               <field name="ref" position="after">
                 <field name="nombre" string="Nombre Paciente"/>
               </field>
+
+
             </field>
-        </record>
+          </record>
 
         <!-- appointment Form View -->
         <record id="view_doctor_appointment_form_inherit" model="ir.ui.view">
