@@ -10,7 +10,7 @@
     <field name="priority" eval="2"/>
     <field name="arch" type="xml">
 
-      <xpath expr="//field[@name='professional']" position="replace">
+      <!-- <xpath expr="//field[@name='professional']" position="replace">
 
           <field name="lastname" placeholder="Primer Apellido" nolabel="1" />
           <field name="surname" placeholder="Segundo Apellido" nolabel="1" />
@@ -26,7 +26,37 @@
         <field name="ref" />
       </xpath>
 
+      <xpath expr="//field[@name='photo']" position="replace">
+      </xpath>
 
+      <xpath expr="/form/group" position="inside">
+        <field name="photo" widget="image" nolabel="1" options="{&quot;size&quot;:&quot;image_medium&quot;}" />
+      </xpath> -->
+
+      <xpath expr="//group[@name='global']" position="replace">
+
+        <group name="globalCo" col="4">
+        </group>
+
+      </xpath>
+
+      <xpath expr="//group[@name='globalCo']" position="before">
+        <group name="cabecera" col="1">
+        </group>
+      </xpath>
+
+      <xpath expr="//group[@name='cabecera']" position="inside">
+        <field name="photo" widget="image" nolabel="1" options="{&quot;size&quot;: [170, 150]}" />
+      </xpath>
+
+      <xpath expr="//group[@name='globalCo']" position="inside">
+        <field name="tdoc"/>
+        <field name="ref" />
+        <field name="lastname" placeholder="Primer Apellido" nolabel="1" />
+        <field name="surname" placeholder="Segundo Apellido" nolabel="1" />
+        <field name="firtsname" placeholder="Primer Nombre" nolabel="1"/>
+        <field name="middlename" placeholder="Segundo Nombre" nolabel="1"/>
+      </xpath>
 
     </field>
 </record>

@@ -137,6 +137,8 @@
         Inherits the tree view to add to the list identification
         -->
 
+
+        <!--Patient tree filters-->
         <record id="vista_partner_tree_co" model="ir.ui.view">
             <field name="name">Partner Colombia</field>
             <field name="model">res.partner</field>
