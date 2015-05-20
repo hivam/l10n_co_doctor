@@ -10,32 +10,10 @@
     <field name="priority" eval="2"/>
     <field name="arch" type="xml">
 
-      <!-- <xpath expr="//field[@name='professional']" position="replace">
-
-          <field name="lastname" placeholder="Primer Apellido" nolabel="1" />
-          <field name="surname" placeholder="Segundo Apellido" nolabel="1" />
-          <field name="firtsname" placeholder="Primer Nombre" nolabel="1"/>
-          <field name="middlename" placeholder="Segundo Nombre" nolabel="1"/>
-
-      </xpath>
-      <xpath expr="//field[@name='username']" position="attributes">
-        <attribute name="string">Nombre Usuario</attribute>
-      </xpath>
-      <xpath expr="//field[@name='middlename']" position="after">
-        <field name="tdoc"/>
-        <field name="ref" />
-      </xpath>
-
-      <xpath expr="//field[@name='photo']" position="replace">
-      </xpath>
-
-      <xpath expr="/form/group" position="inside">
-        <field name="photo" widget="image" nolabel="1" options="{&quot;size&quot;:&quot;image_medium&quot;}" />
-      </xpath> -->
 
       <xpath expr="//group[@name='global']" position="replace">
 
-        <group name="globalCo" col="4">
+        <group name="globalCo" col="2">
         </group>
 
       </xpath>
@@ -50,15 +28,44 @@
       </xpath>
 
       <xpath expr="//group[@name='globalCo']" position="inside">
-        <field name="tdoc"/>
-        <field name="ref" />
         <field name="lastname" placeholder="Primer Apellido" nolabel="1" />
         <field name="surname" placeholder="Segundo Apellido" nolabel="1" />
-        <field name="firtsname" placeholder="Primer Nombre" nolabel="1"/>
-        <field name="middlename" placeholder="Segundo Nombre" nolabel="1"/>
+        <field name="tdoc"/>
+        <field name="professional_card"/>
+        <field name="authority"/>
+        <field name="city_id"/>
+        <field name="street"/>
+        <field name="work_phone"/>
+      </xpath>
+
+      <xpath expr="//group[@name='globalCo']" position="after">
+        <group>
+          <field name="firtsname" placeholder="Primer Nombre" nolabel="1"/>
+          <field name="middlename" placeholder="Segundo Nombre" nolabel="1"/>
+          <field name="ref" />
+          <field name="speciality_id"/>
+          <field name="state_id"/>
+          <field name="zona"/>
+          <field name="work_email"/>
+          <field name="work_mobile"/>
+
+        </group>
       </xpath>
 
     </field>
 </record>
+  <record model="ir.ui.view" id="view_doctor_professional_co_tree">
+    <field name="name">Profesional de la salud Colombia</field>
+    <field name="model">doctor.professional</field>
+    <field name="inherit_id" ref="doctor.view_doctor_professional_tree"/>
+    <field name="priority" eval="2"/>
+    <field name="arch" type="xml">
+      <field name="professional" position="replace" >
+        <field name="nombreUsuario" />
+      </field>
+    </field>
+  </record>
+
+
 </data>
 </openerp>
