@@ -112,9 +112,13 @@ class doctor_professional_co(osv.osv):
         vals.update({'lastname': vals['lastname'].upper() })
         vals.update({'firtsname': vals['firtsname'].upper() })
         vals.update({'name' : "%s %s %s %s" % (vals['lastname'] , vals['surname'] or '' , vals['firtsname'] , vals['middlename'] or '')})
+        login= vals['firtsname'][:2]+vals['lastname'][:2] #login por defecto (primeras dos letras de nombre y apellido)
+        user = self.pool.get('res.users').read(cr, uid, uid, ["company_id"]) #obteniendo compania actual
+        company_id = user['company_id'][0]
+        group_id = self.pool.get('res.groups').search(cr, uid,[('name','=', 'Profesional en salud')], context=context)
 
-        self.pool.get('res.partner').create(cr, uid, {'ref': vals['ref'], 'tdoc': vals['tdoc'], 'middlename' : vals['middlename'] or '', 'surname' : vals['surname'] or '',  'lastname': vals['lastname'], 'firtsname': vals['firtsname'], 'image': vals['photo'], 'city_id': vals['city_id'], 'state_id': vals['state_id'], 'street': vals['street'], 'phone': vals['work_phone'], 'mobile': vals['work_mobile'], 'email': vals['work_email'], 'name': vals['name']}, context)
-
+        partner=self.pool.get('res.partner').create(cr, uid, {'ref': vals['ref'], 'tdoc': vals['tdoc'], 'middlename' : vals['middlename'] or '', 'surname' : vals['surname'] or '',  'lastname': vals['lastname'], 'firtsname': vals['firtsname'], 'image': vals['photo'], 'city_id': vals['city_id'], 'state_id': vals['state_id'], 'street': vals['street'], 'phone': vals['work_phone'], 'mobile': vals['work_mobile'], 'email': vals['work_email'], 'name': vals['name']}, context)
+        self.pool.get('res.users').create(cr, uid, {'partner_id': partner, 'login': login, 'password': 'admin', 'company_id': company_id, 'groups_id': group_id}, context )
         return super(doctor_professional_co, self).create(cr, uid, vals, context=context)
 
     _constraints = [
