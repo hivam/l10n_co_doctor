@@ -22,4 +22,3 @@ import res_partner_co
 import doctor_co
 import report
 import doctor_professional_co
-import utilities
