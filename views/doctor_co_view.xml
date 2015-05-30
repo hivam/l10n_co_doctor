@@ -13,16 +13,24 @@
                 <xpath expr="//field[@name='patient']" position="replace">
                     <label string="Número de Identificación" for="ref" style="width:50%%" class="texto"/>
                     <br></br>
-		    <field name="ref" nolabel="1" default_focus="1" style="width:50%%" />
+		                  <field name="ref" on_change="onchange_existe(ref)" nolabel="1" default_focus="1" style="width:50%%" />
                     <br></br>
+
+
                     <label string="Nombre Paciente" for="nombre" class="texto"/>
 	            <br></br>
-		  <h2>
+		              <h2>
                     <field name="lastname" nolabel="1" placeholder="Primer Apellido" style="width:20%%"/>
                     <field name="surname" nolabel="1"  placeholder="Segundo Apellido" style="width:20%%"/>
                     <field name="firstname" nolabel="1" placeholder="Primer Nombre" style="width:20%%"/>
                     <field name="middlename" nolabel="1" placeholder="Segundo Nombre" style="width:20%%"/>
                   </h2>
+                </xpath>
+
+                <xpath expr="//div[@name='div_atenderpaciente']" position="after">
+                  <div class="oe_form_box_info oe_text_center" attrs="{'invisible': [('ref','!=',False)]}">
+                    <b> <span class="oe_e">c</span>Presione ENTER al escribir la identificacion. Si esta registrada, los datos seran cargados.</b>
+                  </div>
                 </xpath>
 
 
