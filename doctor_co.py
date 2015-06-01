@@ -68,6 +68,7 @@ class doctor_patient_co(osv.osv):
 		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
 		'street' :  fields.char('Dirección', required=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
+		'es_profesionalsalud': fields.boolean('Es profesional de la salud?', help="Marcar cuando el paciente a crear ya existe como profesional de la salud."),
 		}
 
 	def onchange_existe(self, cr, uid, ids, ref, context=None):
@@ -91,6 +92,8 @@ class doctor_patient_co(osv.osv):
 						res['value']['state_id'] =record.state_id.id
 						res['value']['city_id'] =record.city_id.id
 						res['value']['street'] =record.street
+						res['value']['photo']= record.image
+						res['value']['es_profesionalsalud'] = True
 						return res
 					else:
 						raise osv.except_osv(_('Error!'),

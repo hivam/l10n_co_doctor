@@ -121,11 +121,7 @@ class doctor_professional_co(osv.osv):
         partner=self.pool.get('res.partner').create(cr, uid, {'ref': vals['ref'], 'tdoc': vals['tdoc'], 'middlename' : vals['middlename'] or '', 'surname' : vals['surname'] or '',  'lastname': vals['lastname'], 'firtsname': vals['firtsname'], 'image': vals['photo'], 'city_id': vals['city_id'], 'state_id': vals['state_id'], 'street': vals['street'], 'phone': vals['work_phone'], 'mobile': vals['work_mobile'], 'email': vals['work_email'], 'name': vals['name']}, context)
         usuario_sistema= self.pool.get('res.users').create(cr, uid, {'partner_id': partner, 'login': login, 'password': 'admin', 'company_id': company_id} , context )
         vals.update({'user_id': usuario_sistema})
-        self.notificar(cr, uid, ids)
         return super(doctor_professional_co, self).create(cr, uid, vals, context=context)
-
-    def notificar(cr, uid, ids):
-        return self.pool.get('doctor.utilities').growl('Patient Saved' , 'The patient has been successfully created.', True)
 
 
     _constraints = [
