@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="radicacion_cuentas_form_view" model="ir.ui.view">
+      <field name="name">sac.reportes.variables.form.view</field>
+      <field name="model">rips.radicacioncuentas</field>
+      <field name="arch" type="xml">
+        <form string="Radicacion Cuentas" version="7.0">
+          <header>
+            <button name="validar" string="Validar" type="object" class="oe_highlight"/>
+            <button name="generar_rips" string="Generar RIPS" type="object" class="oe_highlight"/>
+            <button name="confirmar" string="Confirmar" type="object"/>
+          </header>
+          <br></br>
+          <div>
+            <label for="secuencia" string="Cuenta N°"/>
+            <field name="secuencia" style="width: 50%%" class="oe_inline"/>
+            <label for="f_radicacion" string="Fecha Radicación" class="left-margin10"/>
+            <field name="f_radicacion" class="oe_inline"/>
+          </div>
+
+          <group>
+
+          <h2>
+            <label for="secuencia" string="Cliente"/>
+            <field name="cliente" style="width: 30%%"/>
+          </h2>
+          </group>
+
+          <group col="1">
+            <group col="4">
+            <fieldset>
+              <legend class="texto_legend">Rango de Facturas</legend>
+              <label for="rangofacturas_desde" string="Desde"/>
+              <field name="rangofacturas_desde" class="oe_inline"/>
+              <label for="rangofacturas_hasta" string="Hasta"/>
+              <field name="rangofacturas_hasta" class="oe_inline" />
+            </fieldset>
+            <group col="4">
+              <field name="cantidad_factura"/>
+              <field name="numero_radicado"/>
+              <field name="valor_total"/>
+              <field name="saldo"/>
+            </group>
+            </group>
+
+          </group>
+          <notebook>
+            <page string="Facturas"  attrs="">
+              <group>
+              </group>
+            </page>
+
+            <page string="Rips"  attrs="">
+              <group>
+              </group>
+            </page>
+
+            <page string="Glosas"  attrs="">
+              <group>
+              </group>
+            </page>
+
+            <page string="Pagos"  attrs="">
+              <group>
+              </group>
+            </page>
+
+          </notebook>
+
+        </form>
+      </field>
+    </record>
+
+
+
+
+    <record id="radicacion_cuentas_tree_view" model="ir.ui.view">
+      <field name="name">radicacion_cuentas.tree.view</field>
+      <field name="model">rips.radicacioncuentas</field>
+      <field name="arch" type="xml">
+        <tree string="Radicacion Cuentas">
+          <field name="secuencia"/>
+          <field name="f_radicacion"/>
+          <field name="cliente"/>
+          <field name="rangofacturas_desde"/>
+          <field name="cantidad_factura"/>
+          <field name="numero_radicado"/>
+          <field name="valor_total"/>
+          <field name="saldo"/>
+        </tree>
+      </field>
+    </record>
+
+
+
+    <record id="action_radicacion_cuentas" model="ir.actions.act_window">
+      <field name="name">Radicacion Cuentas</field>
+      <field name="res_model">rips.radicacioncuentas</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_radicacion_cuentas" id="item_radicacion_cuentas" name="Radicacion Cuentas" parent="account.menu_finance_receivables" />
+  </data>
+</openerp>

@@ -18,8 +18,31 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import res_partner_co
-import doctor_co
-import report
-import doctor_professional_co
-import rips_radicacion_cuentas
+import openerp
+import re
+import codecs
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
+class radicacion_cuentas(osv.osv):
+    '''
+    ABOUT RIPS.
+    '''
+    _description='Modelo para la radicacion de cuentas de RIPS'
+    _name ='rips.radicacioncuentas'
+    _rec_name = 'secuencia'
+
+    _columns = {
+        'secuencia' : fields.char("Cuenta N°", size=200 ),
+        'cliente': fields.many2one('doctor.insurer', 'Cliente', required=True, help='Aseguradora'),
+        'f_radicacion' : fields.date('Fecha Radicación', required=True),
+        'rangofacturas_desde' : fields.date('Desde', required=True),
+        'rangofacturas_hasta' : fields.date('Hasta', required=True),
+        'numero_radicado' : fields.char("N° Radicado", size=200 ),
+        'cantidad_factura' : fields.integer('Cantidad Facturas'),
+        'valor_total' : fields.float('Valor Total'),
+        'saldo' : fields.float('Saldo'),
+
+    }
+
+radicacion_cuentas()

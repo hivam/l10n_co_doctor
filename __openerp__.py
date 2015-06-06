@@ -34,6 +34,7 @@ Location change for "Doctor" module in Colombia
     'license': 'AGPL-3',
     'depends' : ['doctor'],
     'data' : [
+              'views/rips_radicacion_cuentas_view.xml',
               'views/res_partner_co_view.xml',
               'views/doctor_professional_co_view.xml',
               'views/doctor_co_view.xml',

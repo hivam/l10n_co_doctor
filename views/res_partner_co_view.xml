@@ -158,8 +158,8 @@
             <field name="view_id" ref="vista_partner_tree_co"/>
         </record>
 
-        <!--DesComentar la linea 156 para mostrar menú de partner-->
-       <menuitem action="action_partner_formco" id="menu_partner_formco" parent="doctor.menu_doctor_config"/>
+
+       <menuitem action="action_partner_formco" id="menu_partner_formco" parent="doctor.menu_doctor_process"/>
 
     </data>
 </openerp>
