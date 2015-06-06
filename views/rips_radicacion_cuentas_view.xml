@@ -34,7 +34,7 @@
               <legend class="texto_legend">Rango de Facturas</legend>
               <label for="rangofacturas_desde" string="Desde"/>
               <field name="rangofacturas_desde" class="oe_inline"/>
-              <label for="rangofacturas_hasta" string="Hasta"/>
+              <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
               <field name="rangofacturas_hasta" class="oe_inline" />
             </fieldset>
             <group col="4">
@@ -84,7 +84,6 @@
           <field name="secuencia"/>
           <field name="f_radicacion"/>
           <field name="cliente"/>
-          <field name="rangofacturas_desde"/>
           <field name="cantidad_factura"/>
           <field name="numero_radicado"/>
           <field name="valor_total"/>
@@ -102,6 +101,6 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem action="action_radicacion_cuentas" id="item_radicacion_cuentas" name="Radicacion Cuentas" parent="account.menu_finance_receivables" />
+    <menuitem action="action_radicacion_cuentas" id="item_radicacion_cuentas" name="Radicacion Cuentas" parent="account.menu_finance_receivables" sequence="11"/>
   </data>
 </openerp>
