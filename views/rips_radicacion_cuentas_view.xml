@@ -101,6 +101,7 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem action="action_radicacion_cuentas" id="item_radicacion_cuentas" name="Radicacion Cuentas" parent="account.menu_finance_receivables" sequence="11"/>
+
+    <menuitem action="action_radicacion_cuentas" id="item_radicacion_cuentas" name="Radicacion Cuentas" parent="account.menu_finance_receivables" sequence="4"/>
   </data>
 </openerp>
