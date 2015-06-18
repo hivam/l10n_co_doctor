@@ -51,6 +51,8 @@ class doctor_patient_co(osv.osv):
 	_name = "doctor.patient"
 	_inherit = 'doctor.patient'
 	_description = "Information about the patient"
+	_rec_name = 'nombre'
+
 	_columns = {
 		'nombre': fields.char('Nombre', size=70),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
@@ -99,7 +101,6 @@ class doctor_patient_co(osv.osv):
 						raise osv.except_osv(_('Error!'),
 								 _('El paciente %s ya fue registrado.') % record.firtsname)
 		return True
-
 
 	def onchange_patient_data(self, cr, uid, ids, patient, photo, ref, dpto, mun, direccion, context=None):
 		values = {}
