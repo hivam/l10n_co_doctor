@@ -136,9 +136,6 @@
         Hereda la vista arbol para agregar la identificacion en la lista
         Inherits the tree view to add to the list identification
         -->
-
-
-        <!--Patient tree filters-->
         <record id="vista_partner_tree_co" model="ir.ui.view">
             <field name="name">Partner Colombia</field>
             <field name="model">res.partner</field>
@@ -157,6 +154,24 @@
             <field name="view_type">form</field>
             <field name="view_id" ref="vista_partner_tree_co"/>
         </record>
+
+        <!--
+        Hereda la vista búsqueda para agregar y reemplazar los filtros y agrupaciones.
+        -->
+        <record id="res_inherit_partner_filters" model="ir.ui.view">
+          <field name="name">Partner</field>
+          <field name="model">res.partner</field>
+          <field name="arch" type="xml">
+            <search string="Search Appointment" version="7.0">
+              <field name="name" string="Nombre Completo"/>
+              <field name="ref" string="Identificación"/>
+
+              <filter string="Pacientes" name="es_paciente" domain="[('es_paciente','=',True)]" help="Lista de Pacientes."/>
+              <filter string="Profesionales de la salud" name="es_paciente" domain="[('es_profesional_salud','=',True)]" help="Lista de Profesionales de la salud."/>
+            </search>
+          </field>
+        </record>
+
 
 
        <menuitem action="action_partner_formco" id="menu_partner_formco" parent="doctor.menu_doctor_process"/>

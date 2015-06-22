@@ -59,6 +59,7 @@ class res_partner_co(osv.osv):
     _name = 'res.partner'
     _inherit = 'res.partner'
     _columns = {
+        'es_profesional_salud':fields.boolean('Es Profesional de la Salud'),
         'es_paciente':fields.boolean('Es paciente'),
         'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
                                   ('13','Cédula de ciudadanía'), ('21','Tarjeta de extranjería'),
