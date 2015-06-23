@@ -156,7 +156,7 @@
         </record>
 
         <!--
-        Hereda la vista búsqueda para agregar y reemplazar los filtros y agrupaciones.
+        Hereda la vista búsqueda para agregar y reemplazar los filtros y agrupaciones.  base.view_res_partner_filter
         -->
         <record id="res_inherit_partner_filters" model="ir.ui.view">
           <field name="name">Partner</field>
