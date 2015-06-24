@@ -148,7 +148,7 @@
         </record>
 
         <record id="action_partner_formco" model="ir.actions.act_window">
-            <field name="name">Tercero</field>
+            <field name="name">Terceros</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
             <field name="view_type">form</field>
@@ -161,20 +161,31 @@
         <record id="res_inherit_partner_filters" model="ir.ui.view">
           <field name="name">Partner</field>
           <field name="model">res.partner</field>
+          <field name="inherit_id" ref="base.view_res_partner_filter"/>
           <field name="arch" type="xml">
-            <search string="Search Appointment" version="7.0">
-              <field name="name" string="Nombre Completo"/>
-              <field name="ref" string="Identificación"/>
+            <filter string="Suppliers" position="before">
+              <separator />
+              <filter string="Pacientes" name="es_paciente" domain="[('es_paciente','=','1')]" help="Lista de terceros que son pacientes."/>
+              <filter string="Profesionales Salud" name="es_profesional_salud" domain="[('es_profesional_salud','=','1')]" help="Lista de terceros que son profesionales de la salud."/>
+              <separator />
+            </filter>
 
-              <filter string="Pacientes" name="es_paciente" domain="[('es_paciente','=',True)]" help="Lista de Pacientes."/>
-              <filter string="Profesionales de la salud" name="es_paciente" domain="[('es_profesional_salud','=',True)]" help="Lista de Profesionales de la salud."/>
-            </search>
+            <xpath expr="//filter[@string='Persons']" position="replace">
+            </xpath>
+
+            <xpath expr="//filter[@string='Companies']" position="replace">
+            </xpath>
+
+            <xpath expr="//filter[@string='Customers']" position="replace">
+            </xpath>
+
+            <xpath expr="//group[@string='Group By...']" position="replace">
+            </xpath>
+
           </field>
         </record>
 
-
-
-       <menuitem action="action_partner_formco" id="menu_partner_formco" parent="doctor.menu_doctor_process"/>
+       <menuitem action="action_partner_formco" id="menu_partner_formco" parent="doctor.menu_doctor_config"/>
 
     </data>
 </openerp>
