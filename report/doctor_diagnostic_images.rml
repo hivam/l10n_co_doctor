@@ -56,7 +56,7 @@
       <lineStyle kind="LINEABOVE" colorName="#000000" start="3,0" stop="3,0"/>
       <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
     </blockTableStyle>
-    
+
     <initialize>
       <paraStyle name="all" alignment="justify"/>
     </initialize>
@@ -95,42 +95,42 @@
   </stylesheet>
   <story>
 	<para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
-    <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) ]]</para>                 
-    
+    <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) ]]</para>
+
     <para style="Heading"><b>DIAGNOSTIC IMAGES ORDER</b></para>
 <!--
     <para style="P2">
       <font color="white"> </font>
     </para>
---> 
+-->
     <blockTable colWidths="350.0,184.0 " style="Table1">
       <tr>
         <td>
-          <para style="P12">Date: [[ formatLang(o.date_attention,date=True) ]]</para>          
-        </td>		
+          <para style="P12">Date: [[ formatLang(o.date_attention,date=True) ]]</para>
+        </td>
         <td>
-          <para style="P12">Attention N°: [[ (o.number) ]]</para>          
-        </td>        
+          <para style="P12">Atención N°: [[ (o.number) ]]</para>          
+        </td>
      </tr>
-    </blockTable>    
-            
+    </blockTable>
+
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
           <para style="P5">PATIENT DATA</para>
-        </td>		
+        </td>
      </tr>
     </blockTable>
-    
+
     <blockTable colWidths="204.0,330.0" style="Table6">
       <tr>
 		<td>
           <para style="P6">Document: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
-        </td>  
+        </td>
         <td>
           <para style="P6">Name: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
 		</td>
-      </tr>   
+      </tr>
       <tr>
         <td>
           <para style="P6">User type: [[ select_type(o.patient_id.tipo_usuario) or removeParentNode('para')]]</para>
@@ -142,22 +142,22 @@
      <tr>
         <td>
           <para style="P6">[[ '' ]]</para>
-        </td>  
+        </td>
         <td>
-          <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>                    
+          <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
 		</td>
      </tr>
-    </blockTable> 
+    </blockTable>
 
 	<blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
 		 <td>
             <para style="P5">DIAGNOSTIC IMAGES</para>
-          </td>	
+          </td>
           <td>
             <para style="P5">QUANTITY</para>
-          </td>            
-        </tr>    
+          </td>
+        </tr>
     </blockTable>
 
     <section>
@@ -167,11 +167,11 @@
         <tr>
 		 <td>
             <para style="P6">[[ (line.procedures_id.procedure_code) ]] [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
-          </td>	
+          </td>
           <td>
             <para style="P7">[[ (line.quantity) ]] </para>
-          </td>            
-        </tr>               
+          </td>
+        </tr>
       </blockTable>
     </section>
 
@@ -179,35 +179,35 @@
       <tr>
         <td>
           <para style="P5">DISEASES</para>
-        </td>		
-     </tr>     
+        </td>
+     </tr>
     </blockTable>
-    
+
     <section>
       <para style="P4">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
-    
+
       <blockTable colWidths="534.0" style="Table6">
         <tr>
 		 <td>
             <para style="P6">[[ (line.diseases_id.code) ]] [[ (line.status) ]] [[ (line.diseases_type) ]] </para>
-          </td>	                      
-        </tr>        
+          </td>
+        </tr>
       </blockTable>
-    </section>      
-    
+    </section>
+
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
           <para style="P5">PHYSICIAN DATA</para>
-        </td>		
-     </tr>     
+        </td>
+     </tr>
     </blockTable>
 
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
 		<td>
           <para style="P6">Name: [[ (o.professional_id.professional.name or (removeParentNode('para'))) ]]</para>
-        </td>  
+        </td>
         <td>
           <para style="P6">Register N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
 		</td>
@@ -215,11 +215,11 @@
       <tr>
 		<td>
           <para style="P6"><b>Signature: [[ '' 	]] </b></para>
-        </td>  
+        </td>
         <td>
           <para style="P6"><b>Stamp: [[ '' 	]] </b></para>
 		</td>
-      </tr>         
+      </tr>
     </blockTable>
 <!--
     <para style="P7">

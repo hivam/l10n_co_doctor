@@ -17,6 +17,14 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_precription:0
+#: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_therapeutic:0
 msgid "User type:"
 msgstr "Tipo de usuario:"
 
@@ -207,7 +215,7 @@ msgstr "Procedimientos Terapéuticos"
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
 msgid "Attention N°:"
-msgstr ""
+msgstr "Atención N°:"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
