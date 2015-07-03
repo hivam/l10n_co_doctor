@@ -40,6 +40,10 @@
                   </group>
                 </xpath>
 
+                <field name="insurer" position="replace" >
+                  <field name="insurer" attrs="{'invisible': [('tipo_usuario','=','4')]}"/>
+                </field>
+
                 <field name="insurer" position="before" >
                     <field name="tipo_usuario"/>
                 </field>
