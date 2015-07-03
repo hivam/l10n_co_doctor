@@ -185,21 +185,36 @@ class doctor_appointment_co(osv.osv):
 		@param appointment_procedures: Lines that will generate order lines.
 		@confirmed_flag: Confirmed flag in agreement order line will be set to this value.
 		"""
+		insurer = ''
 		order_obj = self.pool.get('sale.order')
 		order_line_obj = self.pool.get('sale.order.line')
 		# Create order object
+
+		if str(doctor_appointment.tipo_usuario_id) != '4' and not doctor_appointment.insurer_id:
+			raise osv.except_osv(_('Error!'),
+			_('Por favor ingrese la aseguradora a la que se le enviará la factura por los servicios prestados al paciente.'))
+
+		if str(doctor_appointment.tipo_usuario_id) == '4':
+			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.patient_id.ref)])[0]
+			for record in self.pool.get('res.partner').browse(cr, uid, [tercero]):
+				user = record.user_id.id
+		else:
+			tercero= doctor_appointment.insurer_id.insurer.id
+			user = doctor_appointment.insurer_id.insurer.user_id.id
+
+
 		order = {
 			'date_order': date.strftime('%Y-%m-%d'),
 			'origin': doctor_appointment.number,
-			'partner_id': doctor_appointment.insurer_id.insurer.id,
+			'partner_id': tercero,
 			'patient_id': doctor_appointment.patient_id.id,
 			'ref': doctor_appointment.ref,
 			'tipo_usuario_id' : doctor_appointment.tipo_usuario_id,
 			'state': 'draft',
 		}
 		# Get other order values from appointment partner
-		order.update(sale.sale.sale_order.onchange_partner_id(order_obj, cr, uid, [], doctor_appointment.insurer_id.insurer.id)['value'])
-		order['user_id'] = doctor_appointment.insurer_id.insurer.user_id.id
+		order.update(sale.sale.sale_order.onchange_partner_id(order_obj, cr, uid, [], tercero)['value'])
+		order['user_id'] = user
 		order_id = order_obj.create(cr, uid, order, context=context)
 		# Create order lines objects
 		appointment_procedures_ids = []
@@ -211,7 +226,7 @@ class doctor_appointment_co(osv.osv):
 			}
 			# get other order line values from appointment procedures line product
 			order_line.update(sale.sale.sale_order_line.product_id_change(order_line_obj, cr, uid, [], order['pricelist_id'], \
-				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=doctor_appointment.insurer_id.insurer.id, fiscal_position=order['fiscal_position'])['value'])
+				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'])
 			# Put line taxes
 			order_line['tax_id'] = [(6, 0, tuple(order_line['tax_id']))]
 			# Put custom description
