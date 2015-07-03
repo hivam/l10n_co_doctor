@@ -156,6 +156,8 @@ class doctor_appointment_co(osv.osv):
 	_name = "doctor.appointment"
 	_inherit = "doctor.appointment"
 	_columns = {
+		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
+                                                 states={'invoiced': [('readonly', True)]}),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
 										   ('3','Vinculado'), ('4','Particular'),
