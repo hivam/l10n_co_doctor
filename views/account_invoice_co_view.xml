@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record model="ir.ui.view" id="account_invoice_co">
+      <field name="name">Account Invoice</field>
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="account.invoice_tree"/>
+      <field name="priority" eval="2"/>
+      <field name="arch" type="xml">
+
+        <xpath expr="//field[@name='state']" position="after">
+          <field name="radicada"/>
+        </xpath>
+
+      </field>
+    </record>
+
+  </data>
+</openerp>

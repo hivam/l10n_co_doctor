@@ -8,12 +8,13 @@
       <field name="arch" type="xml">
         <form string="Radicacion Cuentas" version="7.0">
           <header>
-            <button name="validar" string="Validar" type="object" class="oe_highlight"/>
-            <button name="generar_rips" string="Generar RIPS" type="object" class="oe_highlight"/>
-            <button name="confirmar" string="Confirmar" type="object"/>
+            <button name="validar" string="Validar" type="object"/>
+            <button name="generar_rips" string="Generar RIPS" type="object"/>
+            <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
           </header>
           <br></br>
           <div>
+            <field name="id" invisible="1"/>
             <label for="secuencia" string="Cuenta N°"/>
             <field name="secuencia" style="width: 50%%" class="oe_inline"/>
             <label for="f_radicacion" string="Fecha Radicación" class="left-margin10"/>
@@ -35,7 +36,7 @@
               <label for="rangofacturas_desde" string="Desde"/>
               <field name="rangofacturas_desde" class="oe_inline"/>
               <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
-              <field name="rangofacturas_hasta" class="oe_inline" />
+              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente, rangofacturas_desde, rangofacturas_hasta)" context=""/>
             </fieldset>
             <group col="4">
               <field name="cantidad_factura"/>
@@ -45,10 +46,12 @@
             </group>
             </group>
 
+
           </group>
           <notebook>
             <page string="Facturas"  attrs="">
               <group>
+                <field name="invoices_ids" nolabel="1"/>
               </group>
             </page>
 
