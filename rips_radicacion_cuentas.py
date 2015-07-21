@@ -51,14 +51,14 @@ class radicacion_cuentas(osv.osv):
 		'saldo' : fields.float('Saldo'),
 
 		#facturas
-		'invoices_ids': fields.one2many('account.invoice', 'patient_id', string='Invoices', required=True, ondelete='restrict'),
+		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict'),
 
 	}
 
 	def get_invoices(self, cr, uid, ids, cliente, rangofacturas_desde, rangofacturas_hasta,context=None):
 		id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente).insurer.id
 		id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
-		invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner), ('date_invoice', '>=', rangofacturas_desde),('date_invoice', '<=', rangofacturas_hasta), ('radicada', '=', False)])
+		invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner), ('date_invoice', '>=', rangofacturas_desde),('date_invoice', '<=', rangofacturas_hasta), ('residual', '<>', 0.0), ('radicada', '=', False)])
 		return {'value': {'invoices_ids': invoices}}
 
 

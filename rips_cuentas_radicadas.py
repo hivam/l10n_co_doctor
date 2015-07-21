@@ -18,21 +18,24 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import logging
-_logger = logging.getLogger(__name__)
 import openerp
 import re
 import codecs
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-import time
-import pooler
-from datetime import date, datetime, timedelta
+import logging
+_logger = logging.getLogger(__name__)
 
-class account_invoice(osv.osv):
-    _inherit = "account.invoice"
+class cuentas_radicadas(osv.osv):
+	'''
+	ABOUT RIPS.
+	'''
+	_description='Modelo de RIPS radicados'
+	_name ='rips.cuentasradicadas'
 
-    _columns = {
-        'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Cuenta'),
-        'radicada' : fields.boolean('Radicada')
-    }
+
+	_columns = {
+	   
+	}
+
+cuentas_radicadas()
