@@ -15,18 +15,24 @@
           <br></br>
           <div>
             <field name="id" invisible="1"/>
-            <label for="secuencia" string="Cuenta N°"/>
-            <field name="secuencia" style="width: 50%%" class="oe_inline"/>
+            <label for="secuencia" string="Cuenta N°" attrs="{'invisible': [('id','=', False)]}"/>
+            <field name="secuencia" style="width: 30%%" class="oe_inline" attrs="{'invisible': [('id','=', False)]}"/>
+            <label for="tipo_usuario_id" string="Plan Beneficios" class="left-margin10"/>
+            <field name="tipo_usuario_id" style="width: 50%%" class="oe_inline"/>
             <label for="f_radicacion" string="Fecha Radicación" class="left-margin10"/>
             <field name="f_radicacion" class="oe_inline"/>
+
           </div>
 
-          <group>
+          <group >
 
           <h2>
-            <label for="secuencia" string="Cliente"/>
-            <field name="cliente" style="width: 30%%"/>
+            <label for="cliente" string="Cliente" attrs="{'invisible': [('tipo_usuario_id','=','4')]}"/>
+            <field name="cliente" style="width: 60%%" attrs="{'invisible': [('tipo_usuario_id','=','4')]}"/>
           </h2>
+          <separator/>
+
+
           </group>
 
           <group col="1">
@@ -36,9 +42,10 @@
               <label for="rangofacturas_desde" string="Desde"/>
               <field name="rangofacturas_desde" class="oe_inline"/>
               <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
-              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente, rangofacturas_desde, rangofacturas_hasta)" context=""/>
+              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id)" context=""/>
             </fieldset>
             <group col="4">
+
               <field name="cantidad_factura"/>
               <field name="numero_radicado"/>
               <field name="valor_total"/>
@@ -56,6 +63,23 @@
             </page>
 
             <page string="Rips"  attrs="">
+              <div>
+                <group attrs="{'invisible': [('plano','=',False)]}">
+                  <label for="plano" string="Archivo Plano" class="oe_inline" />
+                  <field name="plano" class="oe_inline" nolabel="1" filename="plano_nombre" />
+                </group>
+                <group>
+                  <field name="rips_ids" nolabel="1">
+                    <tree string="RIPS" create="false" edit="false" delete="false">
+                      <field name="f_generacion"/>
+                      <field name="nombre_archivo"/>
+                      <field name="f_inicio_radicacion"/>
+                      <field name="f_fin_radicacion"/>
+                      <field name="archivo" filename="nombre_archivo" widget="url"/>
+                    </tree>
+                  </field>
+                </group>
+              </div>
               <group>
               </group>
             </page>
@@ -76,9 +100,6 @@
       </field>
     </record>
 
-
-
-
     <record id="radicacion_cuentas_tree_view" model="ir.ui.view">
       <field name="name">radicacion_cuentas.tree.view</field>
       <field name="model">rips.radicacioncuentas</field>
@@ -94,8 +115,6 @@
         </tree>
       </field>
     </record>
-
-
 
     <record id="action_radicacion_cuentas" model="ir.actions.act_window">
       <field name="name">Radicacion Cuentas</field>

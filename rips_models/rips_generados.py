@@ -26,16 +26,23 @@ from openerp.tools.translate import _
 import logging
 _logger = logging.getLogger(__name__)
 
-class cuentas_radicadas(osv.osv):
-	'''
-	ABOUT RIPS.
-	'''
-	_description='Modelo de RIPS radicados'
-	_name ='rips.cuentasradicadas'
 
+class rips_generados(osv.osv):
+	'''
+	This model allows to see in a second page on the notebook (Radicacion Cuentas) all generated files of RIPS.
+	'''
+	_name ='rips.generados'
 
 	_columns = {
-	   
+		'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Rips'),
+		'f_generacion' : fields.date('Fecha Generación Rips', help="Fecha de generación de RIPS"),
+		'nombre_archivo' : fields.char('Nombre Archivo',  40, readonly=True, required=True),
+		'f_inicio_radicacion' : fields.date('Fecha Inicio Radicación'),
+		'f_fin_radicacion' : fields.date('Fecha Fin Radicación'),
+		'archivo' : fields.binary('Archivo'),
+
 	}
 
-cuentas_radicadas()
+	_defaults = {
+
+	}

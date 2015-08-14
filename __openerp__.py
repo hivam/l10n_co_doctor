@@ -32,9 +32,11 @@ Location change for "Doctor" module in Colombia
     'author' : 'TIX SAS',
     'website': 'http://www.tix.com.co',
     'license': 'AGPL-3',
-    'depends' : ['doctor'],
+    'depends' : ['doctor', 'knowledge'],
     'data' : [
-              'views/rips_radicacion_cuentas_view.xml',
+              'views/rips/rips_generados_view.xml',
+              'views/rips/rips_radicacion_cuentas_view.xml',
+              'views/res_company_co_view.xml',
               'views/res_partner_co_view.xml',
               'views/doctor_professional_co_view.xml',
               'views/doctor_co_view.xml',
