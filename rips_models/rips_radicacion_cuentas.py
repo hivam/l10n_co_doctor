@@ -119,29 +119,28 @@ class radicacion_cuentas(osv.osv):
 		return dateuser
 
 	def get_invoices(self, cr, uid, ids, cliente, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, context=None):
-		if cliente:
-			id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente).insurer.id
-			id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
-			invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
-																	('date_invoice', '>=', rangofacturas_desde),
-																	('date_invoice', '<=', rangofacturas_hasta),
-																	('residual', '<>', 0.0),
-																	('tipo_usuario_id', '=', tipo_usuario_id ),
-																	('radicada', '=', False)])
-		else:
-			invoices = self.pool.get('account.invoice').search(cr, uid, [('date_invoice', '>=', rangofacturas_desde),
-																	('date_invoice', '<=', rangofacturas_hasta),
-																	('residual', '<>', 0.0),
-																	('tipo_usuario_id', '=', tipo_usuario_id ),
-																	('radicada', '=', False)])
+		id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente).insurer.id
+		id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
+		invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
+																('date_invoice', '>=', rangofacturas_desde),
+																('date_invoice', '<=', rangofacturas_hasta),
+																('residual', '<>', 0.0),
+																('tipo_usuario_id', '=', tipo_usuario_id ),
+																('radicada', '=', False)])
+
 		return {'value': {'invoices_ids': invoices}}
 
 
 	def getParentid(self, cr, uid, context=None):
 		#searching the parent_id // RIPS's directory
-		parent_id = self.pool.get('document.directory').search(cr, uid, [('name', '=', 'Rips')])
+		try:
+			parent_id = self.pool.get('document.directory').search(cr, uid, [('name', '=', 'Rips')])
+		except Exception as e:
+			raise osv.except_osv(_('Error!'),
+					_('No hay un lugar donde almacenar el archivo RIPS. Habilite la opcion gestion de documentos en el menu Configuracion > Conocimiento o contacte al administrador del sistema.'))
+
 		if not parent_id:
-			parent_id = self.pool.get('document.directory').create(cr, uid, {'name' : 'Rips', 'parent_id' : 1}).id
+			parent_id = self.pool.get('document.directory').create(cr, uid, {'name' : 'Rips', 'parent_id' : 1, 'type': 'directory'})
 		return parent_id
 
 
@@ -157,7 +156,7 @@ class radicacion_cuentas(osv.osv):
 				ultimo_registro = todos[-1]
 				nombre = rips_generados_obj.browse(cr, uid, ultimo_registro).nombre_archivo
 			else:
-				nombre = '000000'
+				nombre = 'XX000000.txt'
 			get_secuencia = int(nombre[2:8])
 			aumentando_secuencia = '{0:06}'.format(get_secuencia + 1)
 			nueva_secuencia = fileType + aumentando_secuencia +'.txt'
@@ -170,7 +169,7 @@ class radicacion_cuentas(osv.osv):
 		for var in self.browse(cr, uid, ids):
 			archivo = StringIO.StringIO()
 			for factura in var.invoices_ids:
-				tipo_archivo = tipo_archivo_rips.get(3)
+				tipo_archivo = tipo_archivo_rips.get('3')
 				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
 				parent_id = self.getParentid(cr,uid,ids)[0]
 
@@ -180,7 +179,12 @@ class radicacion_cuentas(osv.osv):
 				company_id = self.pool.get('res.company').browse(cr, uid, todos[0])
 				cod_prestadorservicio = company_id.cod_prestadorservicio
 				#company_id
-				archivo.write( cod_prestadorservicio + ',')
+				if cod_prestadorservicio:
+					archivo.write( cod_prestadorservicio + ',')
+				else:
+					raise osv.except_osv(_('Error!'),
+							_('El campo codigo prestador de servicio de la compañia está vacío.'))
+
 				#Razon social o apellidos y nombre del prestador de servicios
 				nombre_prestadorservicio = company_id.partner_id.name
 				archivo.write( nombre_prestadorservicio + ',')
@@ -189,7 +193,12 @@ class radicacion_cuentas(osv.osv):
 				tdoc_nombre = tdoc_selection.get(tdoc_prestadorservicio)
 				archivo.write( tdoc_nombre + ',')
 				#Número de identificación
-				nro_identificacion = company_id.partner_id.ref
+				if company_id.partner_id.ref:
+					nro_identificacion = company_id.partner_id.ref
+				else:
+					raise osv.except_osv(_('Error!'),
+							_('El campo N° de Identificacion del tercero que corresponde a la compañia está vacío.'))
+
 				archivo.write( nro_identificacion + ',')
 				#Número de la factura
 				numero_factura = factura.number
@@ -234,5 +243,13 @@ class radicacion_cuentas(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
+
+	def confirmar(self, cr, uid, ids, context=None):
+		raise osv.except_osv(_('Aviso!'),
+				_('Funcionalidad no implementada.'))
+
+	def validar(self, cr, uid, ids, context=None):
+		raise osv.except_osv(_('Aviso!'),
+				_('Funcionalidad no implementada.'))
 
 radicacion_cuentas()
