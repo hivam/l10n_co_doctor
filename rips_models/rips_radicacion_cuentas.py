@@ -101,11 +101,6 @@ class radicacion_cuentas(osv.osv):
 
 	}
 
-	_defaults = {
-		'f_radicacion' : fields.date.context_today,
-
-	}
-
 
 
 	def _date_to_dateuser(self,cr, uid,date,context=None):
