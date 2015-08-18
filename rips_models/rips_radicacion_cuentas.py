@@ -101,6 +101,11 @@ class radicacion_cuentas(osv.osv):
 
 	}
 
+	_defaults = {
+		'f_radicacion' : fields.date.context_today,
+
+	}
+
 
 
 	def _date_to_dateuser(self,cr, uid,date,context=None):
@@ -110,7 +115,7 @@ class radicacion_cuentas(osv.osv):
 		tz = pytz.timezone(user.tz) if user.tz else pytz.utc
 		dateuser = pytz.utc.localize(dateuser).astimezone(tz)
 
-		dateuser = datetime.strftime(dateuser, "%d-%m-%Y %H:%M:%S")
+		dateuser = datetime.strftime(dateuser, "%Y-%m-%d")
 		return dateuser
 
 	def get_invoices(self, cr, uid, ids, cliente, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, context=None):
@@ -229,7 +234,7 @@ class radicacion_cuentas(osv.osv):
 
 		for actual in self.browse(cr, uid, ids):
 			self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
-															  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime('%Y-%m-%d %H:%M:%S')),
+															  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
 															 'nombre_archivo': nombre_archivo,
 															 'f_inicio_radicacion': actual.rangofacturas_desde,
 															 'f_fin_radicacion' : actual.rangofacturas_hasta,
