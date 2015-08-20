@@ -35,26 +35,24 @@ import base64
 _logger = logging.getLogger(__name__)
 
 tdoc_selection = {
-	'11' : 'Registro civil',
-	'12' : 'Tarjeta de identidad',
-	'13' : 'Cédula de ciudadanía',
-	'21' : 'Tarjeta de extranjería',
-	'22' : 'Cédula de extranjería',
+	'11' : 'RC',
+	'12' : 'TI',
+	'13' : 'CC',
+	'21' : 'TE',
+	'22' : 'CE',
 	'31' : 'NIT',
-	'41' : 'Pasaporte',
-	'42' : 'Tipo de documento extranjero',
-	'43' : 'Para uso definido por la DIAN',
-	'NU' : 'Número único de identificación',
-	'AS' : 'Adulto sin identificación',
-	'MS' : 'Menor sin identificación'
+	'41' : 'PA',
+	'42' : 'TDE',
+	'NU' : 'NU',
+	'AS' : 'AS',
+	'MS' : 'MS'
 	}
 
 tipo_cliente = {
 	'1' : 'CONTRIBUTIVO',
 	'2' : 'SUBSIDIADO',
 	'3' : 'VINCULADO',
-	'4' : 'PARTICULAR',
-	'5' : 'OTRO',
+	'4' : 'OTRO',
 }
 
 tipo_archivo_rips = {
@@ -86,14 +84,13 @@ class radicacion_cuentas(osv.osv):
 		'rangofacturas_hasta' : fields.date('Hasta', required=True),
 		'numero_radicado' : fields.char("N° Radicado", size=200 ),
 		'cantidad_factura' : fields.integer('Cantidad Facturas'),
-
+		'confirmada' : fields.boolean('Radicacion confirmada', required=True),
 		'valor_total' : fields.float('Valor Total'),
 		'saldo' : fields.float('Saldo'),
 		'plano' : fields.binary(string='Archivo RIP'),
 		'plano_nombre' : fields.char('File name', 40, readonly=True),
 	 	'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
-										   ('3','Vinculado'), ('4','Particular'),
-										   ('5','Otro')), 'Tipo de usuario', required= True),
+										   ('3','Vinculado'), ('4','Otro')), 'Tipo de usuario', required= True),
 		#Rips
 		'rips_ids': fields.one2many('rips.generados', 'radicacioncuentas_id', string='RIPS', required=True, ondelete='restrict'),
 		#Facturas
@@ -103,6 +100,7 @@ class radicacion_cuentas(osv.osv):
 
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
+		'confirmada'   : False
 
 	}
 
@@ -137,33 +135,37 @@ class radicacion_cuentas(osv.osv):
 			parent_id = self.pool.get('document.directory').search(cr, uid, [('name', '=', 'Rips')])
 		except Exception as e:
 			raise osv.except_osv(_('Error!'),
-					_('No hay un lugar donde almacenar el archivo RIPS. Habilite la opcion gestion de documentos en el menu Configuracion > Conocimiento o contacte al administrador del sistema.'))
+					_('No hay un lugar donde almacenar el archivo RIPS.\n1. Habilite la opcion gestion de documentos en el menu Configuracion > Conocimiento\n2. Ir a Conocimiento (menú superior)> Documentos> Directorios y crear un directorio con el nombre "Rips"'))
 
 		if not parent_id:
 			parent_id = self.pool.get('document.directory').create(cr, uid, {'name' : 'Rips', 'parent_id' : 1, 'type': 'directory'})
 		return parent_id
 
-
 	def getSecuencia(self, cr, uid, context=None):
-
-		return True
+		rips_generados_obj = self.pool.get('rips.generados')
+		todos = rips_generados_obj.search(cr, uid, [])
+		if todos:
+			ultimo_registro = todos[-1]
+			nombre = rips_generados_obj.browse(cr, uid, ultimo_registro).nombre_archivo
+		else:
+			nombre = 'XX000000.txt'
+		get_secuencia = int(nombre[2:8])
+		aumentando_secuencia = '{0:06}'.format(get_secuencia + 1)
+		return aumentando_secuencia
 
 	def getNombreArchivo(self, cr, uid, fileType, context=None):
 		if fileType:
-			rips_generados_obj = self.pool.get('rips.generados')
-			todos = rips_generados_obj.search(cr, uid, [])
-			if todos:
-				ultimo_registro = todos[-1]
-				nombre = rips_generados_obj.browse(cr, uid, ultimo_registro).nombre_archivo
-			else:
-				nombre = 'XX000000.txt'
-			get_secuencia = int(nombre[2:8])
-			aumentando_secuencia = '{0:06}'.format(get_secuencia + 1)
-			nueva_secuencia = fileType + aumentando_secuencia +'.txt'
+			nueva_secuencia = fileType + self.getSecuencia(cr,uid) +'.txt'
 			return nueva_secuencia
 		else:
 			return 'known.txt'
 
+	def contarFacturas(self, cr, uid, vals, context=None):
+		contador = 0
+		for rec in self.browse(cr, uid, vals):
+			_logger.info("-------------")
+			_logger.info(rec)
+		return contador
 
 	def generar_rips(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
@@ -242,6 +244,8 @@ class radicacion_cuentas(osv.osv):
 		return True
 
 	def create(self, cr, uid, vals, context=None):
+		vals.update({'secuencia': self.getSecuencia(cr,uid)})
+		vals.update({'cantidad_factura' : self.contarFacturas(cr, uid, vals)})
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
 
 	def confirmar(self, cr, uid, ids, context=None):
