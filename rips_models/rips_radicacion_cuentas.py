@@ -160,12 +160,9 @@ class radicacion_cuentas(osv.osv):
 		else:
 			return 'known.txt'
 
+	#TODO: contar facturas para agregar al campo de "Cantidad Facturas"
 	def contarFacturas(self, cr, uid, vals, context=None):
-		contador = 0
-		for rec in self.browse(cr, uid, vals):
-			_logger.info("-------------")
-			_logger.info(rec)
-		return contador
+		return True
 
 	def generar_rips(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
