@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record id="tipo_parentezco_01" model="doctor.patient.parentezco">
+      <field name="codigo">01</field>
+      <field name="name">Padre</field>
+    </record>
+    <record id="tipo_parentezco_02" model="doctor.patient.parentezco">
+      <field name="codigo">02</field>
+      <field name="name">Madre</field>
+    </record>
+    <record id="tipo_parentezco_03" model="doctor.patient.parentezco">
+      <field name="codigo">03</field>
+      <field name="name">Hijo</field>
+    </record>
+    <record id="tipo_parentezco_04" model="doctor.patient.parentezco">
+      <field name="codigo">04</field>
+      <field name="name">Hija</field>
+    </record>
+    <record id="tipo_parentezco_05" model="doctor.patient.parentezco">
+      <field name="codigo">05</field>
+      <field name="name">Hermano</field>
+    </record>
+    <record id="tipo_parentezco_06" model="doctor.patient.parentezco">
+      <field name="codigo">06</field>
+      <field name="name">Hermana</field>
+    </record>
+    <record id="tipo_parentezco_07" model="doctor.patient.parentezco">
+      <field name="codigo">07</field>
+      <field name="name">Sobrino</field>
+    </record>
+    <record id="tipo_parentezco_08" model="doctor.patient.parentezco">
+      <field name="codigo">08</field>
+      <field name="name">Sobrina</field>
+    </record>
+    <record id="tipo_parentezco_09" model="doctor.patient.parentezco">
+      <field name="codigo">09</field>
+      <field name="name">Tio</field>
+    </record>
+    <record id="tipo_parentezco_10" model="doctor.patient.parentezco">
+      <field name="codigo">10</field>
+      <field name="name">Tia</field>
+    </record>
+    <record id="tipo_parentezco_11" model="doctor.patient.parentezco">
+      <field name="codigo">11</field>
+      <field name="name">Nieto</field>
+    </record>
+    <record id="tipo_parentezco_12" model="doctor.patient.parentezco">
+      <field name="codigo">12</field>
+      <field name="name">Nieta</field>
+    </record>
+    <record id="tipo_parentezco_13" model="doctor.patient.parentezco">
+      <field name="codigo">13</field>
+      <field name="name">Abuelo</field>
+    </record>
+    <record id="tipo_parentezco_14" model="doctor.patient.parentezco">
+      <field name="codigo">14</field>
+      <field name="name">Abuela</field>
+    </record>
+    <record id="tipo_parentezco_15" model="doctor.patient.parentezco">
+      <field name="codigo">15</field>
+      <field name="name">Primo</field>
+    </record>
+    <record id="tipo_parentezco_16" model="doctor.patient.parentezco">
+      <field name="codigo">16</field>
+      <field name="name">Prima</field>
+    </record>
+    <record id="tipo_parentezco_17" model="doctor.patient.parentezco">
+      <field name="codigo">17</field>
+      <field name="name">Esposo</field>
+    </record>
+    <record id="tipo_parentezco_18" model="doctor.patient.parentezco">
+      <field name="codigo">18</field>
+      <field name="name">Esposa</field>
+    </record>
+    <record id="tipo_parentezco_19" model="doctor.patient.parentezco">
+      <field name="codigo">19</field>
+      <field name="name">Suegro</field>
+    </record>
+    <record id="tipo_parentezco_20" model="doctor.patient.parentezco">
+      <field name="codigo">20</field>
+      <field name="name">Suegra</field>
+    </record>
+    <record id="tipo_parentezco_21" model="doctor.patient.parentezco">
+      <field name="codigo">21</field>
+      <field name="name">Cuñado</field>
+    </record>
+    <record id="tipo_parentezco_22" model="doctor.patient.parentezco">
+      <field name="codigo">22</field>
+      <field name="name">Cuñada</field>
+    </record>
+    <record id="tipo_parentezco_23" model="doctor.patient.parentezco">
+      <field name="codigo">23</field>
+      <field name="name">Yerno</field>
+    </record>
+    <record id="tipo_parentezco_24" model="doctor.patient.parentezco">
+      <field name="codigo">24</field>
+      <field name="name">Nuera</field>
+    </record>
+  </data>
+</openerp>

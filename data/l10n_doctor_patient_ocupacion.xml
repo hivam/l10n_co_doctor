@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record id="tipo_ocupacion_01" model="doctor.patient.estadocivil">
+      <field name="codigo">01</field>
+      <field name="name"></field>
+    </record>
+    <record id="tipo_ocupacion_02" model="doctor.patient.estadocivil">
+      <field name="codigo">02</field>
+      <field name="name"></field>
+    </record>
+  </data>
+</openerp>

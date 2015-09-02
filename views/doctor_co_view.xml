@@ -20,10 +20,12 @@
                     <label string="Nombre Paciente" for="nombre" class="texto"/>
 	            <br></br>
 		              <h2>
-                    <field name="lastname" nolabel="1" placeholder="Primer Apellido" style="width:20%%"/>
-                    <field name="surname" nolabel="1"  placeholder="Segundo Apellido" style="width:20%%"/>
-                    <field name="firstname" nolabel="1" placeholder="Primer Nombre" style="width:20%%"/>
-                    <field name="middlename" nolabel="1" placeholder="Segundo Nombre" style="width:20%%"/>
+                    <group col="2" colspan="6">
+                      <field name="lastname" nolabel="1" placeholder="Primer Apellido" />
+                      <field name="surname" nolabel="1"  placeholder="Segundo Apellido" />
+                      <field name="firstname" nolabel="1" placeholder="Primer Nombre" />
+                      <field name="middlename" nolabel="1" placeholder="Segundo Nombre" />
+                    </group>
                   </h2>
                 </xpath>
 
@@ -53,6 +55,8 @@
                 </field>
 
                 <field name="sex" position="after" >
+                  <field name="estadocivil_id"/>
+                  <field name="ocupacion_id"/>
                   <field name="email"/>
                   <field name="telefono"/>
                   <field name="movil"/>
@@ -68,6 +72,27 @@
                           <field name="zona" style="width: 45%%"/>
                       </group>
                 </fieldset>
+                </xpath>
+
+                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+                  <fieldset class="fieldset_margen">
+                    <legend class="texto_legend">Datos del Acompañante</legend>
+                    <group col="2">
+                      <field name="nombre_acompaniante"/>
+                      <field name="telefono_acompaniante"/>
+                    </group>
+                  </fieldset>
+                </xpath>
+
+                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+                  <fieldset class="fieldset_margen">
+                    <legend class="texto_legend">Datos del Responsable</legend>
+                    <group col="2" colspan="2">
+                      <field name="nombre_responsable"/>
+                      <field name="telefono_responsable"/>
+                      <field name="parentezco_id"/>
+                    </group>
+                  </fieldset>
                 </xpath>
 
             </field>

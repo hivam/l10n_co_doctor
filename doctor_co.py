@@ -60,6 +60,8 @@ class doctor_patient_co(osv.osv):
 								  ('NU','Número único de identificación'), ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
 								  'Tipo de Documento', required=True),
 		'ref' :  fields.char('Identificación', required=True ),
+		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , 'Ocupación' , required=False),
+		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
 		'telefono' : fields.char('Teléfono', size=12),
 		'email' : fields.char('Email'),
 		'movil' :fields.char('Móvil', size=12),
@@ -71,7 +73,16 @@ class doctor_patient_co(osv.osv):
 		'street' :  fields.char('Dirección', required=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		'es_profesionalsalud': fields.boolean('Es profesional de la salud?', help="Marcar cuando el paciente a crear ya existe como profesional de la salud."),
-		}
+
+		#Acompañante
+		'nombre_acompaniante': fields.char('Nombre', size=70),
+		'telefono_acompaniante' : fields.char('Teléfono', size=12),
+
+		#Responsable paciente
+		'nombre_responsable': fields.char('Nombre', size=70),
+		'telefono_responsable' : fields.char('Teléfono', size=12),
+		'parentezco_id': fields.many2one('doctor.patient.parentezco' , 'Parentezco' , required=False),
+	}
 
 	def onchange_existe(self, cr, uid, ids, ref, context=None):
 		res = {'value':{'lastname' : '', 'surnanme' : '', 'firstname' : '', 'middlename' : '', 'tdoc' : '', 'email' : '', 'phone' : '', 'mobile' : '', 'state_id' : '',
@@ -151,6 +162,44 @@ class doctor_patient_co(osv.osv):
 			   ]
 
 doctor_patient_co()
+
+class doctor_patient_co_estadocivil(osv.Model):
+
+	_name = 'doctor.patient.estadocivil'
+
+	_columns = {
+		'codigo' : fields.char('Codigo Estado Civil' ,size = 2 ,required = True ),
+		'name' : fields.char('Descripcion',required = False )
+
+	}
+	_sql_constraints = [('ec_constraint', 'unique(codigo)', 'Estado civil ya existe en la base de datos.')]
+
+doctor_patient_co_estadocivil()
+
+class doctor_patient_co_parentezco(osv.Model):
+
+	_name = 'doctor.patient.parentezco'
+
+	_columns = {
+		'codigo' : fields.char('Codigo Parentezco' ,size = 3 ,required = True ),
+		'name' : fields.char('Descripcion',required = False )
+
+	}
+	_sql_constraints = [('parentezco_constraint', 'unique(codigo)', 'Este parentezco ya existe en la base de datos.')]
+
+doctor_patient_co_parentezco()
+
+class doctor_patient_co_ocupacion(osv.Model):
+
+	_name = 'doctor.patient.ocupacion'
+
+	_columns = {
+		'codigo' : fields.char('Código Ocupación' ,size = 3 ,required = True ),
+		'name' : fields.char('Descripción',required = False )
+	}
+	_sql_constraints = [('ocupacion_constraint', 'unique(codigo)', 'Esta ocupación ya existe en la base de datos.')]
+
+doctor_patient_co_ocupacion()
 
 class doctor_appointment_co(osv.osv):
 	_name = "doctor.appointment"
