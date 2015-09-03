@@ -90,7 +90,7 @@
                     <group col="2" colspan="2">
                       <field name="nombre_responsable"/>
                       <field name="telefono_responsable"/>
-                      <field name="parentezco_id"/>
+                      <field name="parentesco_id"/>
                     </group>
                   </fieldset>
                 </xpath>

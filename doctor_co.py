@@ -81,7 +81,7 @@ class doctor_patient_co(osv.osv):
 		#Responsable paciente
 		'nombre_responsable': fields.char('Nombre', size=70),
 		'telefono_responsable' : fields.char('Teléfono', size=12),
-		'parentezco_id': fields.many2one('doctor.patient.parentezco' , 'Parentezco' , required=False),
+		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 	}
 
 	def onchange_existe(self, cr, uid, ids, ref, context=None):
@@ -176,18 +176,18 @@ class doctor_patient_co_estadocivil(osv.Model):
 
 doctor_patient_co_estadocivil()
 
-class doctor_patient_co_parentezco(osv.Model):
+class doctor_patient_co_parentesco(osv.Model):
 
-	_name = 'doctor.patient.parentezco'
+	_name = 'doctor.patient.parentesco'
 
 	_columns = {
-		'codigo' : fields.char('Codigo Parentezco' ,size = 3 ,required = True ),
+		'codigo' : fields.char('Codigo Parentesco' ,size = 3 ,required = True ),
 		'name' : fields.char('Descripcion',required = False )
 
 	}
-	_sql_constraints = [('parentezco_constraint', 'unique(codigo)', 'Este parentezco ya existe en la base de datos.')]
+	_sql_constraints = [('parentesco_constraint', 'unique(codigo)', 'Este parentesco ya existe en la base de datos.')]
 
-doctor_patient_co_parentezco()
+doctor_patient_co_parentesco()
 
 class doctor_patient_co_ocupacion(osv.Model):
 
