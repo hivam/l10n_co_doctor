@@ -39,6 +39,7 @@ Location change for "Doctor" module in Colombia
               'views/res_company_co_view.xml',
               'views/res_partner_co_view.xml',
               'views/doctor_patient_parentesco_view.xml',
+              'views/doctor_patient_estadocivil_view.xml',
               'views/doctor_professional_co_view.xml',
               'views/doctor_co_view.xml',
               'views/account_invoice_co_view.xml',

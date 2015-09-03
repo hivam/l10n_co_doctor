@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+    <!-- Form View -->
+    <record model="ir.ui.view" id="doctor_patient_estadocivil_form">
+      <field name="name">doctor.patient.estadocivil.form</field>
+      <field name="model">doctor.patient.estadocivil</field>
+      <field name="arch" type="xml">
+        <form string="Sample" version="7.0">
+          <group>
+            <field name="codigo"/>
+            <field name="name"/>
+          </group>
+        </form>
+      </field>
+    </record>
+
+    <!-- Tree View -->
+    <record model="ir.ui.view" id="doctor_patient_estadocivil_tree">
+      <field name="name">doctor.patient.estadocivil.tree</field>
+      <field name="model">doctor.patient.estadocivil</field>
+      <field name="arch" type="xml">
+        <tree string="Sample">
+          <field name="codigo"/>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Action -->
+
+    <record id="doctor_patient_estadocivil_act" model="ir.actions.act_window">
+      <field name="name">Estado civil</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">doctor.patient.estadocivil</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Estado civil" parent="doctor.menu_doctor_config" id="doctor_patient_estadocivil_action" action="doctor_patient_estadocivil_act" />
+
+  </data>
+</openerp>
