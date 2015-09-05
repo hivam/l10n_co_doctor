@@ -299,7 +299,7 @@ class doctor_attentions_co(osv.osv):
 	_name = "doctor.attentions"
 	_inherit = 'doctor.attentions'
 	_columns = {
-		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False),
+		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
 		'finalidad_consulta':fields.selection([('01','Atención del parto -puerperio'),
 												('02','Atención del recién nacido'),
 												('03','Atención en planificación familiar'),
