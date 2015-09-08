@@ -37,7 +37,7 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-      <menuitem name="Parentesco" parent="doctor.menu_doctor_config" id="doctor_patient_parentesco_action" action="doctor_patient_parentesco_act" />
+    <menuitem name="Parentesco" parent="doctor.menu_doctor_config" id="doctor_patient_parentesco_action" action="doctor_patient_parentesco_act" />
 
     </data>
   </openerp>
