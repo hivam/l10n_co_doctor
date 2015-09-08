@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_doctor_city,doctor.city,model_res_country_state_city,doctor.group_doctor_configuration,1,1,1,0
 access_doctor_city_assistant,doctor.city_assistant,model_res_country_state_city,doctor.group_doctor_assistant,1,0,0,0
+access_doctor_patient_estadocivil,doctor.patient.estadocivil,model_doctor_patient_estadocivil,doctor.group_doctor_configuration,1,1,1,1
+access_doctor_patient_parentesco,doctor.patient.parentesco,model_doctor_patient_parentesco,doctor.group_doctor_configuration,1,1,1,1

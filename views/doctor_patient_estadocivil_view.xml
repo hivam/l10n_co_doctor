@@ -37,7 +37,9 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Estado civil" parent="doctor.menu_doctor_config" id="doctor_patient_estadocivil_action" action="doctor_patient_estadocivil_act" />
+    <menuitem name="Estado civil" parent="doctor.menu_doctor_config" id="doctor_patient_estadocivil_action" action="doctor_patient_estadocivil_act"/>
 
+<!--     groups="doctor.group_doctor_configuration" 
+ -->
   </data>
 </openerp>
