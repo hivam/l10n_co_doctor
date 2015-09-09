@@ -160,6 +160,9 @@
                     <field name="tipo_usuario_id"/>
                 </field>
 
+                <field name="professional_id" position="replace" >
+                    <field name="professional_id" required="True"/>
+                </field>
             </field>
         </record>
 
