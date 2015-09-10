@@ -11,6 +11,15 @@
         <xpath expr="//label[@string='Reason consultation']" position="before">
           <field name="motivo_consulta"/>
         </xpath>
+        <xpath expr="//field[@name='height']" position="replace">
+          <field name="height" on_change="onchange_calcularImc(weight, height)"  nolabel="1"/>
+        </xpath>
+        <xpath expr="//field[@name='body_mass_index']" position="after">
+          <field name="interpretacion_imc"/>
+        </xpath>
+         <xpath expr="//field[@name='body_mass_index']" position="replace">
+          <field name="body_mass_index" nolabel="1" on_change="onchange_interpretacionimc(body_mass_index)"/>
+        </xpath>
       </field>
     </record>
 

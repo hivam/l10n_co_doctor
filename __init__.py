@@ -24,3 +24,4 @@ import doctor_co
 import report
 import doctor_professional_co
 import account_invoice_co
+import doctor_attentions_inherit
