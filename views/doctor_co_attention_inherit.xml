@@ -20,6 +20,12 @@
          <xpath expr="//field[@name='body_mass_index']" position="replace">
           <field name="body_mass_index" nolabel="1" on_change="onchange_interpretacionimc(body_mass_index)"/>
         </xpath>
+        <xpath expr="//field[@name='system_category']" position="replace">
+          <field name="system_category" required="False"/>
+        </xpath>
+        <xpath expr="//field[@name='review_systems']" position="replace">
+          <field name="review_systems" required="False"/>
+        </xpath>
       </field>
     </record>
 

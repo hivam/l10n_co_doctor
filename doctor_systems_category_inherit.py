@@ -18,11 +18,26 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from rips_models import *
-import res_partner_co
-import doctor_co
-import report
-import doctor_professional_co
-import account_invoice_co
-import doctor_attentions_inherit
-import doctor_systems_category_inherit
+import logging
+_logger = logging.getLogger(__name__)
+import openerp
+import re
+import codecs
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
+
+class doctor_systems_category(osv.osv):
+	'''
+	Model to change order
+	'''
+	_name = 'doctor.systems.category'
+	_inherit = 'doctor.systems.category'
+	_order = 'name desc'
+
+	_columns = {
+	}
+
+	
+
+doctor_systems_category()
