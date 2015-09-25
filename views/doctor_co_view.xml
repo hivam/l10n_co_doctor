@@ -178,6 +178,9 @@
                 <group colspan='1' col='2'>
                     <field name="finalidad_consulta"/>
                 </group>
+                <group colspan="2">
+                	<field name="causa_externa"/>
+                </group>
                 </xpath>
 
             </field>

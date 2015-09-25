@@ -206,7 +206,7 @@ class doctor_appointment_co(osv.osv):
 	_inherit = "doctor.appointment"
 	_columns = {
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
-                                                 states={'invoiced': [('readonly', True)]}),
+												 states={'invoiced': [('readonly', True)]}),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
 										   ('3','Vinculado'), ('4','Particular'),
@@ -298,6 +298,25 @@ doctor_appointment_co()
 class doctor_attentions_co(osv.osv):
 	_name = "doctor.attentions"
 	_inherit = 'doctor.attentions'
+
+	causa_externa = [
+		('01','Accidente de trabajo'),
+		('02',u'Accidente de tránsito'),
+		('03',u'Accidente rábico'),
+		('04',u'Accidente ofídico'),
+		('05','Otro tipo de accidente'),
+		('06',u'Evento Catastrófico'),
+		('07',u'Lesión por agresión'),
+		('08',u'Lesión auto infligida'),
+		('09',u'Sospecha de maltrato físico'),
+		('10','Sospecha de abuso sexual'),
+		('11','Sospecha de violencia sexual'),
+		('12','Sospecha de maltrato emocional'),
+		('13','Enfermedad general'),
+		('14','Enfermedad profesional'),
+		('15','Otra'),
+	]
+
 	_columns = {
 		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
 		'finalidad_consulta':fields.selection([('01','Atención del parto -puerperio'),
@@ -311,10 +330,13 @@ class doctor_attentions_co(osv.osv):
 												('09','Detección de enfermedad profesional'),
 												('10','No aplica'),
 											   ],'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
+
+		'causa_externa' : fields.selection(causa_externa, 'Causa Externa'),
 		}
 
+
 	_defaults = {
-	'finalidad_consulta': '10',
+		'finalidad_consulta': '10',
 	}
 
 doctor_attentions_co()
