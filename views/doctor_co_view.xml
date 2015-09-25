@@ -172,14 +172,20 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//form/group/group" position="after">
-                <group colspan='1' col='2'>
+                <group colspan='2' >
                     <field name="finalidad_consulta"/>
+                </group>
+                <group colspan="2">
+                	<field name="causa_externa" />
                 </group>
                 </xpath>
 
                 <xpath expr="//notebook/page[@string='Others']" position="after">
-                	<page string="recommendations">
-                    	<button name="action_next" string="Confirm" type="object"/>
+                	<page string="Recomendaciones">
+                		<legend class="texto_legend">Recomendaciones</legend>
+                    	<button
+                            type="object" name="action_next" string="Crear Recomendación" class="oe_link"
+                            help="Save as a new template"/>
             		</page>
                 </xpath>
 
@@ -192,28 +198,33 @@
 		<field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
 		<field name="type">form</field>
 		<field name="arch" type="xml">
+
+
+
 			<field name="partner_ids" position="replace"/>
 
-            <label string="Recipients" position="after">
+			<field name="subject" position="attributes">
+                <attribute name="string">Nombre Plantilla</attribute>
+                <attribute name="placeholder">Nombre Plantilla</attribute>
+            </field>
+
+            <field name="subject" position="after">
+            	<label for="professional_id" string="Doctor"/>
                 <field name="professional_id" nolabel="1"/>
-                <label for="professional_id" string="Doctor"/>
-            </label>
+                
+            </field>
 
            
 
              <field name="professional_id" position="after">
-                <field name="patient_id" nolabel="1"/>
                 <label for="patient_id" string="Paciente"/>
+                <field name="patient_id" nolabel="1"/>
+                
             </field>
 
-            <label string="Recipients" position="attributes">
-	            <attribute name="string">Recomendaciones</attribute>
-	        </label>
             
-
             <div groups="base.group_user" position="replace"/>
-			<field name="subject" position="replace"/>
-
+			<label string="Recipients" position="replace"/>
            
 			
 		</field>

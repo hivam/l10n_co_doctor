@@ -373,6 +373,8 @@ class wizzard(osv.osv):
 		'professional_id': fields.many2one('doctor.professional', 'Doctor'),
 	}
 
+	
+
 
 wizzard()
 
