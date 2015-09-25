@@ -177,8 +177,47 @@
                 </group>
                 </xpath>
 
+                <xpath expr="//notebook/page[@string='Others']" position="after">
+                	<page string="recommendations">
+                    	<button name="action_next" string="Confirm" type="object"/>
+            		</page>
+                </xpath>
+
             </field>
         </record>
+
+        <record model="ir.ui.view" id="wizard_recommendations_form">
+		<field name="name">doctor_attentions_wizzard.form</field>
+		<field name="model">mail.compose.message</field>
+		<field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<field name="partner_ids" position="replace"/>
+
+            <label string="Recipients" position="after">
+                <field name="professional_id" nolabel="1"/>
+                <label for="professional_id" string="Doctor"/>
+            </label>
+
+           
+
+             <field name="professional_id" position="after">
+                <field name="patient_id" nolabel="1"/>
+                <label for="patient_id" string="Paciente"/>
+            </field>
+
+            <label string="Recipients" position="attributes">
+	            <attribute name="string">Recomendaciones</attribute>
+	        </label>
+            
+
+            <div groups="base.group_user" position="replace"/>
+			<field name="subject" position="replace"/>
+
+           
+			
+		</field>
+	</record>    
 
     <!-- invoice Form View -->
         <record id="invoice_form_view_inherit_doctor_co_invoice" model="ir.ui.view">

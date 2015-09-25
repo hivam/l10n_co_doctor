@@ -206,7 +206,7 @@ class doctor_appointment_co(osv.osv):
 	_inherit = "doctor.appointment"
 	_columns = {
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
-                                                 states={'invoiced': [('readonly', True)]}),
+												 states={'invoiced': [('readonly', True)]}),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
 										   ('3','Vinculado'), ('4','Particular'),
@@ -298,6 +298,28 @@ doctor_appointment_co()
 class doctor_attentions_co(osv.osv):
 	_name = "doctor.attentions"
 	_inherit = 'doctor.attentions'
+
+
+	causa_externa = [
+		('01','Accidente de trabajo'),
+		('02',u'Accidente de tránsito'),
+		('03',u'Accidente rábico'),
+		('04',u'Accidente ofídico'),
+		('05','Otro tipo de accidente'),
+		('06',u'Evento Catastrófico'),
+		('07',u'Lesión por agresión'),
+		('08',u'Lesión auto infligida'),
+		('09',u'Sospecha de maltrato físico'),
+		('10','Sospecha de abuso sexual'),
+		('11','Sospecha de violencia sexual'),
+		('12','Sospecha de maltrato emocional'),
+		('13','Enfermedad general'),
+		('14','Enfermedad profesional'),
+		('15','Otra'),
+	]
+
+
+
 	_columns = {
 		'finalidad_consulta':fields.selection([('01','Atención del parto -puerperio'),
 												('02','Atención del recién nacido'),
@@ -310,13 +332,49 @@ class doctor_attentions_co(osv.osv):
 												('09','Detección de enfermedad profesional'),
 												('10','No aplica'),
 											   ],'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
+
+		'causa_externa' : fields.selection(causa_externa, 'Causa Externa'),
+
+
 		}
 
 	_defaults = {
 	'finalidad_consulta': '10',
 	}
 
+	def action_next(self, cr, uid, ids, context=None):
+
+		for record in self.browse(cr,uid,ids,context=context):
+			return {
+				'type': 'ir.actions.act_window',
+				'res_model': 'mail.compose.message',
+				'view_mode': 'form',
+				'view_type': 'form',
+				'views': [(False, 'form')],
+				'target': 'new',
+				'context':  {
+					'default_patient_id' : record.patient_id.id,
+					'default_professional_id' : record.professional_id.id,
+				},
+			}
+
 doctor_attentions_co()
+
+
+class wizzard(osv.osv):
+
+	_name = "mail.compose.message"
+
+	_inherit = 'mail.compose.message'
+
+	_columns = {
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
+		'patient_id': fields.many2one('doctor.patient', 'Patient', ondelete='restrict'),
+		'professional_id': fields.many2one('doctor.professional', 'Doctor'),
+	}
+
+
+wizzard()
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"
