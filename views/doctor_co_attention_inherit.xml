@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <!--doctor attention inherit-->
+    <record id="doctor_co_atention_form" model="ir.ui.view">
+      <field name="name">doctor_co_atention_form_view</field>
+      <field name="model">doctor.attentions</field>
+      <field name="inherit_id" ref="doctor.view_doctor_attentions_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//label[@string='Reason consultation']" position="before">
+          <field name="motivo_consulta"/>
+        </xpath>
+        <xpath expr="//field[@name='height']" position="replace">
+          <field name="height" on_change="onchange_calcularImc(weight, height)"  nolabel="1"/>
+        </xpath>
+        <xpath expr="//field[@name='body_mass_index']" position="after">
+          <field name="interpretacion_imc"/>
+        </xpath>
+         <xpath expr="//field[@name='body_mass_index']" position="replace">
+          <field name="body_mass_index" nolabel="1" on_change="onchange_interpretacionimc(body_mass_index)"/>
+        </xpath>
+        <xpath expr="//field[@name='system_category']" position="replace">
+          <field name="system_category" required="False"/>
+        </xpath>
+        <xpath expr="//field[@name='review_systems']" position="replace">
+          <field name="review_systems" required="False"/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</openerp>

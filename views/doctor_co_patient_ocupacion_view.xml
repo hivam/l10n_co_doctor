@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+    <!-- Form View -->
+    <record model="ir.ui.view" id="doctor_patient_ocupacion_form">
+      <field name="name">doctor.patient.ocupacion.form</field>
+      <field name="model">doctor.patient.ocupacion</field>
+      <field name="arch" type="xml">
+        <form string="Ocupacion" version="7.0">
+          <group>
+            <field name="codigo"/>
+            <field name="name"/>
+          </group>
+        </form>
+      </field>
+    </record>
+
+    <!-- Tree View -->
+    <record model="ir.ui.view" id="doctor_patient_ocupacion_tree">
+      <field name="name">doctor.patient.ocupacion.tree</field>
+      <field name="model">doctor.patient.ocupacion</field>
+      <field name="arch" type="xml">
+        <tree string="Ocupacion">
+          <field name="codigo"/>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Action -->
+
+    <record id="doctor_patient_ocupacion_act" model="ir.actions.act_window">
+      <field name="name">Ocupacion</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">doctor.patient.ocupacion</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Ocupación" parent="doctor.menu_doctor_config" id="doctor_patient_ocupacion_item" action="doctor_patient_ocupacion_act" groups="doctor.group_doctor_configuration" />
+
+  </data>
+</openerp>
