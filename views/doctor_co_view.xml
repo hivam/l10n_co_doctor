@@ -175,13 +175,63 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//form/group/group" position="after">
-                <group colspan='1' col='2'>
+                <group colspan='2' >
                     <field name="finalidad_consulta"/>
                 </group>
+                <group colspan="2">
+                	<field name="causa_externa" />
+                </group>
+                </xpath>
+
+                <xpath expr="//notebook/page[@string='Others']" position="after">
+                	<page string="Recomendaciones">
+                		<legend class="texto_legend">Recomendaciones</legend>
+                    	<button
+                            type="object" name="action_next" string="Crear Recomendación" class="oe_link"
+                            help="Save as a new template"/>
+            		</page>
                 </xpath>
 
             </field>
         </record>
+
+        <record model="ir.ui.view" id="wizard_recommendations_form">
+		<field name="name">doctor_attentions_wizzard.form</field>
+		<field name="model">mail.compose.message</field>
+		<field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+
+
+
+			<field name="partner_ids" position="replace"/>
+
+			<field name="subject" position="attributes">
+                <attribute name="string">Nombre Plantilla</attribute>
+                <attribute name="placeholder">Nombre Plantilla</attribute>
+            </field>
+
+            <field name="subject" position="after">
+            	<label for="professional_id" string="Doctor"/>
+                <field name="professional_id" nolabel="1"/>
+                
+            </field>
+
+           
+
+             <field name="professional_id" position="after">
+                <label for="patient_id" string="Paciente"/>
+                <field name="patient_id" nolabel="1"/>
+                
+            </field>
+
+            
+            <div groups="base.group_user" position="replace"/>
+			<label string="Recipients" position="replace"/>
+           
+			
+		</field>
+	</record>    
 
     <!-- invoice Form View -->
         <record id="invoice_form_view_inherit_doctor_co_invoice" model="ir.ui.view">
