@@ -29,6 +29,16 @@
                   </h2>
                 </xpath>
 
+                <field name="birth_date" position="attributes">
+                    <attribute name="on_change">onchange_calcular_edad(birth_date)</attribute>
+                </field>
+
+
+                <xpath expr="//field[@name='birth_date']" position="after">
+                    <field name="edad"/>
+                </xpath>
+
+
                 <xpath expr="//div[@name='div_atenderpaciente']" position="after">
                   <div name="div_mensaje" class="oe_form_box_info oe_text_center" attrs="{'invisible': [('ref','!=',False)]}">
                     <b> <span class="oe_e">c</span>Presione ENTER al escribir la identificacion. Si esta registrada, los datos seran cargados.</b>
