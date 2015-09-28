@@ -317,6 +317,7 @@ class doctor_attentions_co(osv.osv):
 		('15','Otra'),
 	]
 
+
 	_columns = {
 		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
 		'finalidad_consulta':fields.selection([('01','Atención del parto -puerperio'),
@@ -339,7 +340,41 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta': '10',
 	}
 
+	def action_next(self, cr, uid, ids, context=None):
+
+		for record in self.browse(cr,uid,ids,context=context):
+			return {
+				'type': 'ir.actions.act_window',
+				'res_model': 'mail.compose.message',
+				'view_mode': 'form',
+				'view_type': 'form',
+				'views': [(False, 'form')],
+				'target': 'new',
+				'context':  {
+					'default_patient_id' : record.patient_id.id,
+					'default_professional_id' : record.professional_id.id,
+				},
+			}
+
 doctor_attentions_co()
+
+
+class wizzard(osv.osv):
+
+	_name = "mail.compose.message"
+
+	_inherit = 'mail.compose.message'
+
+	_columns = {
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
+		'patient_id': fields.many2one('doctor.patient', 'Patient', ondelete='restrict'),
+		'professional_id': fields.many2one('doctor.professional', 'Doctor'),
+	}
+
+	
+
+
+wizzard()
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"
