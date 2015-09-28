@@ -77,18 +77,18 @@ class doctor_professional_co(osv.osv):
 
     # Función para validar que la identificación tenga más de 6 y dígitos y menos de 11
     # Function to validate that the identification is more than 6 and less than 11 digits
-    def _check_ident(self, cr, uid, ids, context=None):
-        for record in self.browse(cr, uid, ids, context=context):
+    # def _check_ident(self, cr, uid, ids, context=None):
+    #     for record in self.browse(cr, uid, ids, context=context):
 
-            if record.ref:
-                ref = record.ref
-                if not ref:
-                    return True
-                elif len(str(ref)) <6:
-                    return False
-                elif len(str(ref)) >11:
-                    return False
-        return True
+    #         if record.ref:
+    #             ref = record.ref
+    #             if not ref:
+    #                 return True
+    #             elif len(str(ref)) <6:
+    #                 return False
+    #             elif len(str(ref)) >11:
+    #                 return False
+    #     return True
 
     # Función para evitar número de documento duplicado
     def _check_unique_ident(self, cr, uid, ids, context=None):
@@ -127,7 +127,7 @@ class doctor_professional_co(osv.osv):
 
 
     _constraints = [
-        (_check_ident, '¡Error! Número de identificación debe tener entre 6 y 11 dígitos', ['ref']),
+        # (_check_ident, '¡Error! Número de identificación debe tener entre 6 y 11 dígitos', ['ref']),
         (_check_unique_ident, '¡Error! Número de identificación ya existe en el sistema', ['ref']),
         (_check_ident_num, 'Error !''El número de identificación sólo permite números', ['ref']),
         ]
