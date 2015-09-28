@@ -193,6 +193,17 @@
                 </group>
                 </xpath>
 
+                <field name="pathological_past_ids" position="after">
+                    <label for="otros_antecedentes_patologicos" string="Otros Antecedentes Patológicos"/>
+                    <field name="otros_antecedentes_patologicos" invisible="0"/>
+                </field>
+
+                <field name="drugs_past_ids" position="after">
+                    <label for="otros_antecedentes_patologicos" string="Otros Antecedentes farmacológicos"/>
+                    <field name="otros_antecedentes_farmacologicos" invisible="0"/>
+                </field>
+
+
                 <xpath expr="//notebook/page[@string='Others']" position="after">
                 	<page string="Recomendaciones">
                 		<legend class="texto_legend">Recomendaciones</legend>
