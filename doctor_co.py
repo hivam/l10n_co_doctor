@@ -83,7 +83,7 @@ class doctor_patient_co(osv.osv):
 		'telefono_responsable' : fields.char('Teléfono', size=12),
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 		
-		'edad': fields.integer('Años', readonly=True),
+		'edad': fields.integer('Años'),
 	}
 
 	def onchange_calcular_edad(self,cr,uid,ids,anio_nacimiento,context=None):
