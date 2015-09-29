@@ -18,15 +18,23 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from rips_models import *
-import res_partner_co
-import doctor_co
-import report
-import doctor_professional_co
-import account_invoice_co
-import doctor_attentions_inherit
-import doctor_review_systems_inherit
-import doctor_attentions_past_inherit
-import doctor_attentions_exam_inherit
-import doctor_atc_past_inherit
-import doctor_diseases_past_inherit
+import logging
+_logger = logging.getLogger(__name__)
+import openerp
+import re
+import codecs
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
+
+class doctor_attentions_exam_inherit(osv.osv):
+	_name = "doctor.attentions.exam"
+	_rec_name = 'attentiont_id'
+	_columns = {
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
+		'exam_category': fields.many2one('doctor.exam.category', 'Exam category', required=False, ondelete='restrict'),
+		'exam': fields.text('Exam', required=False),
+	}
+
+
+doctor_attentions_exam_inherit()

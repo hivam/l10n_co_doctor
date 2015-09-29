@@ -20,12 +20,79 @@
          <xpath expr="//field[@name='body_mass_index']" position="replace">
           <field name="body_mass_index" nolabel="1" on_change="onchange_interpretacionimc(body_mass_index)"/>
         </xpath>
-        <xpath expr="//field[@name='system_category']" position="replace">
-          <field name="system_category" required="False"/>
+        <xpath expr="//field[@name='review_systems_id']" position="replace">
+          <field name="review_systems_id" nolabel="1">
+                <tree string="Review systems" editable="bottom">
+                  <field name="system_category"/>
+                  <field name="review_systems"/>
+                </tree>
+                <form string="Review systems">
+                  <group>
+                    <field name="system_category"/>
+                    <field name="review_systems"/>
+                  </group>
+                </form>
+              </field>
         </xpath>
-        <xpath expr="//field[@name='review_systems']" position="replace">
-          <field name="review_systems" required="False"/>
+        <xpath expr="//field[@name='attentions_exam_ids']" position="replace">
+          <field name="attentions_exam_ids" nolabel="1">
+                <tree string="Exam" editable="bottom">
+                  <field name="exam_category"/>
+                  <field name="exam"/>
+                </tree>
+                <form string="Exam">
+                  <group>
+                    <field name="exam_category"/>
+                    <field name="exam"/>
+                  </group>
+                </form>
+          </field>
         </xpath>
+        <xpath expr="//field[@name='attentions_past_ids']" position="replace">
+          <field name="attentions_past_ids" nolabel="1" context="{'patient_id' : patient_id}">
+                <tree string="Add Past" editable="bottom">
+                  <field name="patient_id" invisible="True"/>
+                  <field name="past_category"/>
+                  <field name="past"/>
+                </tree>
+                <form string="Add Past">
+                  <group>
+                    <field name="patient_id" invisible="True"/>
+                    <field name="past_category"/>
+                    <field name="past"/>
+                  </group>
+                </form>
+              </field>
+        </xpath>
+        <xpath expr="//field[@name='pathological_past']" position="replace">
+          <field name="pathological_past" nolabel="1" context="{'patient_id' : patient_id}">
+                <tree string="Add Past" editable="bottom">
+                  <field name="patient_id" invisible="True"/>
+                  <field name="diseases_id"/>
+                </tree>
+                <form string="Add Past">
+                  <group>
+                    <field name="patient_id" invisible="True"/>
+                    <field name="diseases_id"/>
+                  </group>
+                </form>
+              </field>
+        </xpath>
+        <xpath expr="//field[@name='drugs_past']" position="replace">
+          <field name="drugs_past" nolabel="1" context="{'patient_id' : patient_id}">
+                <tree string="Add Past" editable="bottom">
+                  <field name="patient_id" invisible="True"/>
+                  <field name="atc_id"/>
+                </tree>
+                <form string="Add Past">
+                  <group>
+                    <field name="patient_id" invisible="True"/>
+                    <field name="atc_id"/>
+                  </group>
+                </form>
+              </field>
+        </xpath>
+
       </field>
     </record>
 

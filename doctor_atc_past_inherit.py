@@ -18,15 +18,22 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from rips_models import *
-import res_partner_co
-import doctor_co
-import report
-import doctor_professional_co
-import account_invoice_co
-import doctor_attentions_inherit
-import doctor_review_systems_inherit
-import doctor_attentions_past_inherit
-import doctor_attentions_exam_inherit
-import doctor_atc_past_inherit
-import doctor_diseases_past_inherit
+import logging
+_logger = logging.getLogger(__name__)
+import openerp
+import re
+import codecs
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
+class doctor_atc_past_inherit(osv.osv):
+    _name = "doctor.atc.past"
+    _inherit = "doctor.atc.past"
+    _rec_name = 'attentiont_id'
+    _columns = {
+        'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
+        'patient_id': fields.many2one('doctor.patient', 'Patient', required=False, ondelete='restrict'),
+        'atc_id': fields.many2one('doctor.atc', 'Past drugs', required=False, ondelete='restrict'),
+    }
+
+doctor_atc_past_inherit()
