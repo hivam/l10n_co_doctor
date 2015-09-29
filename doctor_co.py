@@ -82,7 +82,34 @@ class doctor_patient_co(osv.osv):
 		'nombre_responsable': fields.char('Nombre', size=70),
 		'telefono_responsable' : fields.char('Teléfono', size=12),
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
+		
+		'edad': fields.integer('Años', readonly=True),
 	}
+
+	def onchange_calcular_edad(self,cr,uid,ids,anio_nacimiento,context=None):
+		res={'value':{}}
+		if anio_nacimiento:
+
+			current_date = time.strftime('%Y-%m-%d')
+			mes_actual = int(str(current_date)[5:7])
+			mes_cumple = int(str(anio_nacimiento)[5:7])
+
+			if anio_nacimiento > current_date:
+				raise osv.except_osv(_('Warning !'), _("Birth Date Can not be a future date "))
+			
+			current_date = int(current_date[0:4])
+			anio = int(str(anio_nacimiento)[0:4])
+
+			if mes_cumple >= mes_actual:
+				anio = current_date - anio - 1 
+			else:
+				anio = current_date - anio
+
+			res['value']['edad']=anio
+
+
+		return res
+
 
 	def onchange_existe(self, cr, uid, ids, ref, context=None):
 		res = {'value':{'lastname' : '', 'surnanme' : '', 'firstname' : '', 'middlename' : '', 'tdoc' : '', 'email' : '', 'phone' : '', 'mobile' : '', 'state_id' : '',
@@ -333,6 +360,8 @@ class doctor_attentions_co(osv.osv):
 											   ],'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
 
 		'causa_externa' : fields.selection(causa_externa, 'Causa Externa'),
+		'otros_antecedentes_patologicos' : fields.text(u'Otros antecedestes patológicos'),
+		'otros_antecedentes_farmacologicos' : fields.text(u'Otros Antecedestes farmacológicos'),
 		}
 
 
