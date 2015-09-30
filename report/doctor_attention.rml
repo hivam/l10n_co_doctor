@@ -212,6 +212,16 @@
           </td>
         </tr>
       </blockTable>
+      <blockTable colWidths="100.0,434.0" style="Table6">
+      <tr>
+        <td>
+          <para style="p1">Otros Síntomas</para>
+        </td>
+        <td>
+          <para style="p1">[[ (o.otro_sintomas_revision_sistema) or removeParentNode('blockTable')]] </para>
+        </td>
+     </tr>
+    </blockTable>
     </section>
 
     <section>
@@ -226,7 +236,7 @@
 
       <para style="P4">[[ repeatIn(o.past_ids, 'line') ]]</para>
 
-    <blockTable colWidths="84.0,450.0" style="Table6">
+    <blockTable colWidths="120,414.0" style="Table6">
         <tr>
 		 <td>
             <para style="terp_default_8">[[ (line.past_category.name) ]]</para>
@@ -236,6 +246,16 @@
           </td>
         </tr>
       </blockTable>
+      <blockTable colWidths="130.0,404.0" style="Table6">
+      <tr>
+        <td>
+          <para style="p1">Otros Antecedentes</para>
+        </td>
+        <td>
+          <para style="p1">[[ (o.otros_antecedentes) or removeParentNode('blockTable')]] </para>
+        </td>
+     </tr>
+    </blockTable>
     </section>
 
     <section>
@@ -260,6 +280,16 @@
           </td>
         </tr>
       </blockTable>
+      <blockTable colWidths="130.0,404.0" style="Table6">
+      <tr>
+        <td>
+          <para style="p1">Otros Antecedentes Patológicos</para>
+        </td>
+        <td>
+          <para style="p1">[[ (o.otros_antecedentes_patologicos) or removeParentNode('blockTable')]] </para>
+        </td>
+     </tr>
+    </blockTable>
     </section>
     <section>
     <blockTable colWidths="534.0" style="Table6">
@@ -283,6 +313,16 @@
           </td>
         </tr>
       </blockTable>
+      <blockTable colWidths="130.0,404.0" style="Table6">
+      <tr>
+        <td>
+          <para style="p1">Otros Antecedentes farmacológicos</para>
+        </td>
+        <td>
+          <para style="p1">[[ (o.otros_antecedentes_farmacologicos) or removeParentNode('blockTable')]] </para>
+        </td>
+     </tr>
+    </blockTable>
     </section>
 
     <blockTable colWidths="534.0" style="Table6">
@@ -375,7 +415,35 @@
           </td>
         </tr>
       </blockTable>
+      <blockTable colWidths="130.0,404.0" style="Table6">
+      <tr>
+        <td>
+          <para style="p1">Otros hallazgos y signos clínicos en el examen físico</para>
+        </td>
+        <td>
+          <para style="p1">[[ (o.otros_hallazgos_examen_fisico) or removeParentNode('blockTable')]] </para>
+        </td>
+     </tr>
+    </blockTable>
     </section>
+
+    <section>
+      <blockTable colWidths="534" style="Table6">
+      <tr>
+        <td>
+          <para style="P2">Reportes de Paraclínicos</para>
+        </td>
+     </tr>
+    </blockTable>
+    <blockTable colWidths="534" style="Table6">
+      <tr>
+        <td>
+          <para style="p1">[[ (o.reportes_paraclinicos) or removeParentNode('section')]] </para>
+        </td>
+      </tr>  
+    </blockTable>
+    </section>
+
     <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
