@@ -258,8 +258,11 @@ class doctor_appointment_co(osv.osv):
 	def onchange_calcular_hora(self,cr,uid,ids,schedule_id,type_id,time_begin,context=None):
 
 		values = {}
+
 		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context)
+		
 		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+
 		duration = appointment_type.duration
 		fecha_usuario = fields.datetime.context_timestamp(cr, uid, datetime.now(), context=context)
 		fecha_usuario_ini = fecha_usuario.strftime('%Y-%m-%d 00:00:00')
@@ -269,13 +272,17 @@ class doctor_appointment_co(osv.osv):
 		
 		if ids_ingresos_diarios:
 
+
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				
 				nueva_hora = datetime.strptime(fecha_agenda.time_begin,'%Y-%m-%d %H:%M:%S') + timedelta(minutes=fecha_agenda.type_id.duration)
+				hora_fin = nueva_hora + timedelta(minutes=duration)
+				hora_fin = hora_fin.strftime("%Y-%m-%d %H:%M:%S")
 				nueva_hora = nueva_hora.strftime('%Y-%m-%d %H:%M:%S')
 				
 				values.update({
 					'time_begin': nueva_hora,
+					'time_end' : hora_fin,
 				})
 		else:
 			hora_fin = time_begin + timedelta(minutes=duration)
