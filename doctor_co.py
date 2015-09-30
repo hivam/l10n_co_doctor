@@ -255,6 +255,41 @@ class doctor_appointment_co(osv.osv):
 		})
 		return {'value' : values}
 
+	def onchange_calcular_hora(self,cr,uid,ids,schedule_id,type_id,time_begin,context=None):
+
+		values = {}
+		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context)
+		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		duration = appointment_type.duration
+		fecha_usuario = fields.datetime.context_timestamp(cr, uid, datetime.now(), context=context)
+		fecha_usuario_ini = fecha_usuario.strftime('%Y-%m-%d 00:00:00')
+		fecha_usuario_fin = fecha_usuario.strftime('%Y-%m-%d 23:59:59')
+
+		ids_ingresos_diarios = self.search(cr, uid, [('time_begin', '>=', fecha_usuario_ini ),('time_end','<=', fecha_usuario_fin),('appointment_today', '=', True),('schedule_id', '=', schedule_id)],context=context)
+		
+		if ids_ingresos_diarios:
+
+			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
+				
+				nueva_hora = datetime.strptime(fecha_agenda.time_begin,'%Y-%m-%d %H:%M:%S') + timedelta(minutes=fecha_agenda.type_id.duration)
+				nueva_hora = nueva_hora.strftime('%Y-%m-%d %H:%M:%S')
+				
+				values.update({
+					'time_begin': nueva_hora,
+				})
+		else:
+			hora_fin = time_begin + timedelta(minutes=duration)
+			hora_fin + timedelta(minutes=duration)
+			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
+			values.update({
+				'time_end' : hora_fin
+			})
+
+
+		return {'value': values}
+
+
+
 	def create_order(self, cr, uid, doctor_appointment, date, appointment_procedures, confirmed_flag, context={}):
 		"""
 		Method that creates an order from given data.
