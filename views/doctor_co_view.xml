@@ -193,15 +193,38 @@
                 </group>
                 </xpath>
 
-                <field name="pathological_past_ids" position="after">
-                    <label for="otros_antecedentes_patologicos" string="Otros Antecedentes Patológicos"/>
-                    <field name="otros_antecedentes_patologicos" invisible="0"/>
+                <field name="review_systems_id" position="after">
+                    <label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
+                    <field name="otro_sintomas_revision_sistema"/>
                 </field>
 
-                <field name="drugs_past_ids" position="after">
-                    <label for="otros_antecedentes_patologicos" string="Otros Antecedentes farmacológicos"/>
-                    <field name="otros_antecedentes_farmacologicos" invisible="0"/>
+                <field name="attentions_past_ids" position="after">
+                    <label for="otros_antecedentes" string="Otros Antecedentes"/>
+                    <field name="otros_antecedentes" />
                 </field>
+
+
+                <field name="pathological_past" position="after">
+                    <label for="otros_antecedentes_patologicos" string="Otros Antecedentes Patológicos"/>
+                    <field name="otros_antecedentes_patologicos"/>
+                </field>
+
+                <field name="drugs_past" position="after">
+                    <label for="otros_antecedentes_patologicos" string="Otros Antecedentes farmacológicos"/>
+                    <field name="otros_antecedentes_farmacologicos"/>
+                </field>
+
+                
+                <field name="attentions_exam_ids" position="after">
+                    <label for="otros_hallazgos_examen_fisico" string="Otros hallazgos y signos clínicos en el examen físico"/>
+                    <field name="otros_hallazgos_examen_fisico" />
+                </field>
+
+                <field name="otros_hallazgos_examen_fisico" position="after">
+                    <label for="reportes_paraclinicos" string="Reportes de Paraclínicos"/>
+                    <field name="reportes_paraclinicos" />
+                </field>
+
 
 
                 <xpath expr="//notebook/page[@string='Others']" position="after">
