@@ -201,7 +201,7 @@ class res_partner_co(osv.osv):
         (_check_ident, '¡Error! Número de identificación debe tener entre 2 y 10 dígitos', ['ref']),
         (_check_unique_ident, '¡Error! Número de identificación ya existe en el sistema', ['ref']),
         (_check_dv, '¡Error! El digito de verificación es incorrecto',['dv']),
-        (_check_ident_num, 'Error !''El número de identificación sólo permite números', ['ref']),
+        (_check_ident_num, '¡Error! El número de identificación sólo permite números', ['ref']),
         ]
 
 res_partner_co()

@@ -66,7 +66,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: constraint:res.partner:0
-msgid "Error !El número de identificación sólo permite números"
+msgid "¡Error! El número de identificación sólo permite números"
 msgstr ""
 
 #. module: l10n_co_doctor
