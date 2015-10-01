@@ -82,7 +82,7 @@ msgstr "PROCEDIMIENTOS TERAPÉUTICOS"
 
 #. module: l10n_co_doctor
 #: constraint:res.partner:0
-msgid "¡Error! Número de identificación debe tener entre 6 y 11 dígitos"
+msgid "¡Error! Número de identificación debe tener entre 2 y 10 dígitos"
 msgstr ""
 
 #. module: l10n_co_doctor
