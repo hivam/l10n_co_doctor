@@ -129,35 +129,32 @@ class res_partner_co(osv.osv):
                 return self.write(cr, uid, ids, {'lastname': '', 'surname': '', 'firtsname': '', 'middlename':  ''}, context=context)
         return True
 
-# Función para validar que la identificación sea sólo numerica
-# Function to validate the numerical identification is only
-
+    # Función para validar que la identificación sea sólo numerica
+    # Function to validate the numerical identification is only
     def _check_ident_num(self, cr, uid, ids, context=None):
         for record in self.browse(cr, uid, ids, context=context):
             ref = record.ref
-            if ref != False:
+            tdoc = record.tdoc
+            if ref != False and tdoc != '22' and tdoc != '21':
                 if re.match("^[0-9]+$", ref) == None:
                     return False
         return True
 
-# Función para validar que la identificación tenga más de 6 y dígitos y menos de 11
-# Function to validate that the identification is more than 6 and less than 11 digits
 
-    # def _check_ident(self, cr, uid, ids, context=None):
-    #     for record in self.browse(cr, uid, ids, context=context):
-    #         # Si utiliza la direccion de la Empresa el ref viene vacio.
-    #         # Evitar esto con break al for.
-    #         if record.use_parent_address:
-    #             break
-    #         else:
-    #             ref = record.ref
-    #             if not ref:
-    #                 return True
-    #             elif len(str(ref)) <6:
-    #                 return False
-    #             elif len(str(ref)) >11:
-    #                 return False
-    #     return True
+    # Función para validar que la identificación tenga dos o más 2 dígitos y al menos 10
+    # Function to validate that the identification is more than 1 and less than 11 digits
+    def _check_ident(self, cr, uid, ids, context=None):
+        for record in self.browse(cr, uid, ids, context=context):
+
+            if record.ref:
+                ref = record.ref
+                if not ref:
+                    return True
+                elif len(str(ref)) < 2:
+                    return False
+                elif len(str(ref)) > 10:
+                    return False
+        return True
 
 # Función para evitar número de documento duplicado
 
