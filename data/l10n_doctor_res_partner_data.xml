@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record id="res_partner_id_01" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">830113831</field>
+      <field name="dv">0</field>
+      <field name="name">SSS COLMEDICA ENTIDAD PROMOTORA DE SALUD S.A.</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Avenida Eldorado #69C-03 P-3</field>
+      <field name="phone">3240290</field>
+    </record>
+    <record id="res_partner_id_02" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">860066942</field>
+      <field name="dv">7</field>
+      <field name="name">SSS CAJA DE COMPENSACION FAMILIAR COMPENSAR</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Avenida 68 #49A-47</field>
+      <field name="phone">4280666-4285244</field>
+    </record>
+    <record id="res_partner_id_03" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">890303093</field>
+      <field name="dv">5</field>
+      <field name="name">SSS COMFENALCO VALLE</field>
+      <field name="state_id">75</field>
+      <field name="city_id">1006</field>
+      <field name="street">Calle 5 # 6-63</field>
+      <field name="phone">(092) 8854444-8830747-8803910-8862727</field>
+    </record>
+    <record id="res_partner_id_04" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">860512237</field>
+      <field name="dv">6</field>
+      <field name="name">SSS SALUD COLPATRIA S.A.</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Avenida 19 #114-65 Piso 3</field>
+      <field name="phone">6400310/11</field>
+    </record>
+    <record id="res_partner_id_05" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">800140949</field>
+      <field name="dv">6</field>
+      <field name="name">SSS CAFESALUD EPS</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Calle 73 #12-02 Piso 7º</field>
+      <field name="phone">3171820-2188977-2182892-2565543-2557885-2570579</field>
+    </record>
+    <record id="res_partner_id_06" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">830009783</field>
+      <field name="dv">0</field>
+      <field name="name">SSS CRUZBLANCA S.A.</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Calle 86 A #14-17</field>
+      <field name="phone">6446000-6446100 Ext. 1700</field>
+    </record>
+    <record id="res_partner_id_07" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">830003564</field>
+      <field name="dv">7</field>
+      <field name="name">SSS E.P.S. FAMISANAR LTDA. CAFAM COLSUBSIDIO</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Carrera 13A #77A-63</field>
+      <field name="phone">6500200</field>
+    </record>
+    <record id="res_partner_id_08" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">800251440</field>
+      <field name="dv">6</field>
+      <field name="name">SSS E.P.S. SANITAS S.A.</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Calle 100 #11B-95</field>
+      <field name="phone">6466080</field>
+    </record>
+    <record id="res_partner_id_09" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">805021984</field>
+      <field name="dv">2</field>
+      <field name="name">SSS SALUDCOLOMBIA EPS S.A.</field>
+      <field name="state_id">75</field>
+      <field name="city_id">1006</field>
+      <field name="street">Carrera 44 #5E-47 Barrio Tequendama</field>
+      <field name="phone">(092)5529364 (091)2889409-2889465</field>
+    </record>
+    <record id="res_partner_id_10" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">800250119</field>
+      <field name="dv">1</field>
+      <field name="name">SSS SALUDCOOP EPS</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Avenida 13 #109-20</field>
+      <field name="phone">6001050 Ext. 1701 - 6290634</field>
+    </record>
+    <record id="res_partner_id_11" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">830074184</field>
+      <field name="dv">5</field>
+      <field name="name">SSS SALUDVIDA S.A. EPS</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Av. Calle 40 A #13-06</field>
+      <field name="phone">3274141-3203860</field>
+    </record>
+    <record id="res_partner_id_12" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">805001157</field>
+      <field name="dv">2</field>
+      <field name="name">SSS SERVICIO OCCIDENTAL DE SALUD S.A. S.O.S.</field>
+      <field name="state_id">75</field>
+      <field name="city_id">1006</field>
+      <field name="street">Avenida de las Américas #23N-55</field>
+      <field name="phone">(092) 6848686 Ext. 300 ó 306- 6614353</field>
+    </record>
+    <record id="res_partner_id_13" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">804001273</field>
+      <field name="dv">5</field>
+      <field name="name">SSS SOLIDARIA DE SALUD SOLSALUD S.A.</field>
+      <field name="state_id">72</field>
+      <field name="city_id">846</field>
+      <field name="street">Carrera 26 #30-70</field>
+      <field name="phone">(976) 352211 Ext. 122 ó 123 - 6350074</field>
+    </record>
+    <record id="res_partner_id_14" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">805000427</field>
+      <field name="dv">1</field>
+      <field name="name">SSS COOMEVA EPS S.A.</field>
+      <field name="state_id">75</field>
+      <field name="city_id">1006</field>
+      <field name="street">Carrera 13 #57-50 Piso 2</field>
+      <field name="phone">(092) 3330000 Ext. 2708</field>
+    </record>
+    <record id="res_partner_id_15" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">860013816</field>
+      <field name="dv">1</field>
+      <field name="name">SSS INSTITUTO DE SEGUROS SOCIALES</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Carrera 10 #64-28</field>
+      <field name="phone">3437655 - 3437653</field>
+    </record>
+    <record id="res_partner_id_16" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">899999026</field>
+      <field name="dv">0</field>
+      <field name="name">SSS CAPRECOM</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Avenida Eldorado #57-90</field>
+      <field name="phone">2943080-2943004-2943131</field>
+    </record>
+    <record id="res_partner_id_17" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">800130907</field>
+      <field name="dv">4</field>
+      <field name="name">SSS SALUD TOTAL S.A. EPS ARS</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Carrera 20 #109 -15</field>
+      <field name="phone">6296660 al 70</field>
+    </record>
+    <record id="res_partner_id_18" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">890900842</field>
+      <field name="dv">6</field>
+      <field name="name">SSS CAJA DE COMPENSACION FAMILIAR COMFENALCO ANTIOQUIA</field>
+      <field name="state_id">52</field>
+      <field name="city_id">1</field>
+      <field name="street">Carrera 50 #53-43</field>
+      <field name="phone">(094) 5128363-5113133</field>
+    </record>
+    <record id="res_partner_id_19" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">800088702</field>
+      <field name="dv">2</field>
+      <field name="name">SSS COMPAÑIA SURAMERICANA DE SERVICIOS DE SALUD S.A. SUSALUD</field>
+      <field name="state_id">52</field>
+      <field name="city_id">1</field>
+      <field name="street">Calle 54 #46-27 P-9 Torre Fundadores Clínica Medellín</field>
+      <field name="phone">(094) 4938600-5110499-5132051</field>
+    </record>
+    <record id="res_partner_id_20" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">830006404</field>
+      <field name="dv">0</field>
+      <field name="name">SSS HUMANA VIVIR S.A. EPS</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Calle 76 #11-52</field>
+      <field name="phone">5460920-5462016-3133050/60/47</field>
+    </record>
+    <record id="res_partner_id_21" model="res.partner">
+      <field name="is_company">True</field>
+      <field name="tdoc">31</field>
+      <field name="ref">830096513</field>
+      <field name="dv">1</field>
+      <field name="name">SSS REDSALUD ATENCION HUMANA EPS S.A.</field>
+      <field name="state_id">54</field>
+      <field name="city_id">149</field>
+      <field name="street">Calle 100 #19-61 Piso 8</field>
+      <field name="phone">6353459 - 6353538</field>
+    </record>
+    
+  </data>
+</openerp>
