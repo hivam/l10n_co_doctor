@@ -271,8 +271,7 @@ class doctor_appointment_co(osv.osv):
 		ids_ingresos_diarios = self.search(cr, uid, [('time_begin', '>=', fecha_usuario_ini ),('time_end','<=', fecha_usuario_fin),('appointment_today', '=', True),('schedule_id', '=', schedule_id)],context=context)
 		
 		if ids_ingresos_diarios:
-
-
+			
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				
 				nueva_hora = datetime.strptime(fecha_agenda.time_begin,'%Y-%m-%d %H:%M:%S') + timedelta(minutes=fecha_agenda.type_id.duration)
