@@ -135,7 +135,7 @@ class res_partner_co(osv.osv):
         for record in self.browse(cr, uid, ids, context=context):
             ref = record.ref
             tdoc = record.tdoc
-            if ref != False and tdoc != '22':
+            if ref != False and tdoc != '21':
                 if re.match("^[0-9]+$", ref) == None:
                     return False
         return True
