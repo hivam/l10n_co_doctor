@@ -30,3 +30,4 @@ import doctor_attentions_past_inherit
 import doctor_attentions_exam_inherit
 import doctor_atc_past_inherit
 import doctor_diseases_past_inherit
+import doctor_co_prescription_inherit
