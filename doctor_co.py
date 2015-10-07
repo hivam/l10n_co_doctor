@@ -256,36 +256,54 @@ class doctor_appointment_co(osv.osv):
 		return {'value' : values}
 
 	def onchange_calcular_hora(self,cr,uid,ids,schedule_id,type_id,time_begin,context=None):
-
 		values = {}
 
-		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context)
+		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
+		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
+		#hora inicia la agenda
+		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S")
+		horarios = []
+		horario_cadena = []
+		horarios.append(time_begin) 
+		#tener un rango de horas para poder decirle cual puede ser la proxima cita
+		horarios_disponibles = (agenda_duracion.schedule_duration * 60 ) / 5
+		for i in range(0,horarios_disponibles,1):
+			horarios.append(horarios[i] + timedelta(minutes=5)) 	
+		for i in horarios:
+			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:%S'))
 		
-		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
-
-		duration = appointment_type.duration
-		fecha_usuario = fields.datetime.context_timestamp(cr, uid, datetime.now(), context=context)
-		fecha_usuario_ini = fecha_usuario.strftime('%Y-%m-%d 00:00:00')
-		fecha_usuario_fin = fecha_usuario.strftime('%Y-%m-%d 23:59:59')
-
-		ids_ingresos_diarios = self.search(cr, uid, [('time_begin', '>=', fecha_usuario_ini ),('time_end','<=', fecha_usuario_fin),('appointment_today', '=', True),('schedule_id', '=', schedule_id)],context=context)
-		
+		ids_ingresos_diarios = self.search(cr, uid, [('appointment_today', '=', True),('schedule_id', '=', schedule_id)],context=context)
 		if ids_ingresos_diarios:
 			
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
-				
-				nueva_hora = datetime.strptime(fecha_agenda.time_begin,'%Y-%m-%d %H:%M:%S') + timedelta(minutes=fecha_agenda.type_id.duration)
-				hora_fin = nueva_hora + timedelta(minutes=duration)
-				hora_fin = hora_fin.strftime("%Y-%m-%d %H:%M:%S")
-				nueva_hora = nueva_hora.strftime('%Y-%m-%d %H:%M:%S')
-				
-				values.update({
-					'time_begin': nueva_hora,
-					'time_end' : hora_fin,
-				})
+				#con esto sabemos cuantos campos de la lista podemos quitar
+				duracion = fecha_agenda.type_id.duration / 5
+
+				if fecha_agenda.time_begin in horario_cadena:
+					del horario_cadena[horario_cadena.index(fecha_agenda.time_begin)]	
+
+				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
+				test = inicio
+				for i in range(1,duracion,1):
+					inicio = inicio + timedelta(minutes=5)
+					inicio_cadena = inicio.strftime('%Y-%m-%d %H:%M:%S')
+					if inicio_cadena in horario_cadena:
+						del horario_cadena[horario_cadena.index(inicio_cadena)]		
+
+				if len(horario_cadena) > 1:
+					if len(horario_cadena) > (appointment_type/5):
+						values.update({
+							'time_begin' : horario_cadena[0],
+							'time_end' : horario_cadena[appointment_type/5]
+						})
+					else:
+						raise osv.except_osv(_('Error!'),
+                                 _('No se puede asignar la cita con este tiempo %s minutos' %(appointment_type)))
+				else:
+					raise osv.except_osv(_('Error!'),
+                                 _('Las agenda ya esta toda asignada'))
 		else:
-			hora_fin = time_begin + timedelta(minutes=duration)
-			hora_fin + timedelta(minutes=duration)
+			hora_fin = time_begin + timedelta(minutes=appointment_type)
 			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
 			values.update({
 				'time_end' : hora_fin
