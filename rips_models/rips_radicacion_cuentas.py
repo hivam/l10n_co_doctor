@@ -120,6 +120,7 @@ class radicacion_cuentas(osv.osv):
 		id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente).insurer.id
 		id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
 		invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
+																('state', '=', 'open'),
 																('date_invoice', '>=', rangofacturas_desde),
 																('date_invoice', '<=', rangofacturas_hasta),
 																('residual', '<>', 0.0),
