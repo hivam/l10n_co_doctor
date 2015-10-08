@@ -123,7 +123,14 @@
       <field name="view_mode">tree,form</field>
     </record>
 
+    <menuitem action="action_radicacion_cuentas" id="item_radicacion_cuentas" name="Radicacion Cuentas" parent="account.menu_finance_receivables" sequence="10" />
 
-    <menuitem action="action_radicacion_cuentas" id="item_radicacion_cuentas" name="Radicacion Cuentas" parent="account.menu_finance_receivables" sequence="4"/>
+    <menuitem id="account_voucher.menu_action_sale_receipt" icon="STOCK_JUSTIFY_FILL"
+            action="account_voucher.action_sale_receipt"
+            parent="account.menu_finance_receivables"
+            sequence="11"/>
+
+    <menuitem action="account_voucher.action_vendor_receipt" icon="STOCK_JUSTIFY_FILL" sequence="12"
+            id="account_voucher.menu_action_vendor_receipt"  parent="account.menu_finance_receivables"/>
   </data>
 </openerp>
