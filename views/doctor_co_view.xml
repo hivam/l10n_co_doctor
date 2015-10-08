@@ -147,8 +147,15 @@
                     <field name="tipo_usuario_id"/>
                 </field>
 
+
+                <field name="type_id" position="attributes">
+                    <attribute name="on_change">onchange_calcular_hora(schedule_id,type_id,time_begin)</attribute>
+                </field>
+
             </field>
         </record>
+
+
 
         <!-- schedule Form View -->
         <record id="view_doctor_schedule_form_inherit" model="ir.ui.view">
