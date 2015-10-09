@@ -191,6 +191,7 @@
       </blockTable>
      </section>
     <section>
+    [[o.review_systems_id or o.otro_sintomas_revision_sistema or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -198,13 +199,11 @@
         </td>
      </tr>
     </blockTable>
-    [[ o.review_systems_id or removeParentNode('section') ]]
-
-      <para style="P4">[[ repeatIn(o.review_systems_id, 'line') ]]</para>
-
     <blockTable colWidths="84.0,450.0" style="Table6">
+        [[ o.review_systems_id or removeParentNode('blockTable') ]]
         <tr>
-		 <td>
+		      <td>
+            <para style="P4">[[ repeatIn(o.review_systems_id, 'line') ]]</para>
             <para style="terp_default_8">[[ (line.system_category.name) ]]</para>
           </td>
           <td>
@@ -225,6 +224,7 @@
     </section>
 
     <section>
+    [[o.past_ids or o.otros_antecedentes or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -232,13 +232,12 @@
         </td>
      </tr>
     </blockTable>
-        [[ o.past_ids or removeParentNode('section') ]]
-
-      <para style="P4">[[ repeatIn(o.past_ids, 'line') ]]</para>
-
+        
     <blockTable colWidths="120,414.0" style="Table6">
+        [[ o.past_ids or removeParentNode('blockTable') ]]
         <tr>
-		 <td>
+		      <td>
+            <para style="P4">[[ repeatIn(o.past_ids, 'line') ]]</para>
             <para style="terp_default_8">[[ (line.past_category.name) ]]</para>
           </td>
           <td>
@@ -259,6 +258,7 @@
     </section>
 
     <section>
+    [[o.pathological_past_ids or o.otros_antecedentes_patologicos or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -266,14 +266,13 @@
         </td>
      </tr>
     </blockTable>
-        [[ o.pathological_past_ids or removeParentNode('section') ]]
-
-      <para style="P4">[[ repeatIn(o.pathological_past_ids, 'line') ]]</para>
-
+       
     <blockTable colWidths="84.0,450.0" style="Table6">
+        [[ o.pathological_past_ids or removeParentNode('blockTable') ]]
         <tr>
-		 <td>
-            <para style="terp_default_8">[[ (line.diseases_id.code) ]]</para>
+		    <td>
+          <para style="P4">[[ repeatIn(o.pathological_past_ids, 'line') ]]</para>
+          <para style="terp_default_8">[[ (line.diseases_id.code) ]]</para>
           </td>
           <td>
             <para style="terp_default_8">[[ (line.diseases_id.name) ]] </para>
@@ -292,6 +291,7 @@
     </blockTable>
     </section>
     <section>
+    [[o.drugs_past_ids or o.otros_antecedentes_farmacologicos or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -299,14 +299,13 @@
         </td>
      </tr>
     </blockTable>
-    [[ o.drugs_past_ids or removeParentNode('section') ]]
-
-      <para style="P4">[[ repeatIn(o.drugs_past_ids, 'line') ]]</para>
 
     <blockTable colWidths="84.0,450.0" style="Table6">
+        [[ o.drugs_past_ids or removeParentNode('blockTable') ]]
         <tr>
-		 <td>
-            <para style="terp_default_8">[[ (line.atc_id.code) ]]</para>
+		      <td>
+          <para style="P4">[[ repeatIn(o.drugs_past_ids, 'line') ]]</para>
+          <para style="terp_default_8">[[ (line.atc_id.code) ]]</para>
           </td>
           <td>
             <para style="terp_default_8">[[ (line.atc_id.name) ]] </para>
@@ -393,6 +392,7 @@
       </blockTable>
 
     <section>
+    [[o.attentions_exam_ids or o.otros_hallazgos_examen_fisico or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -400,14 +400,12 @@
         </td>
      </tr>
     </blockTable>
-        [[ o.attentions_exam_ids or removeParentNode('section') ]]
-
-
-      <para style="P4">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>
 
     <blockTable colWidths="84.0,450.0" style="Table6">
+        [[ o.attentions_exam_ids or removeParentNode('blockTable') ]]
         <tr>
-		 <td>
+		      <td>
+            <para style="P4">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>
             <para style="terp_default_8">[[ (line.exam_category.name) ]]</para>
           </td>
           <td>
