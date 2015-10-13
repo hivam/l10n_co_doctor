@@ -266,7 +266,7 @@ class doctor_appointment_co(osv.osv):
 		horario_cadena = []
 		horarios.append(time_begin) 
 		#tener un rango de horas para poder decirle cual puede ser la proxima cita
-		horarios_disponibles = (agenda_duracion.schedule_duration * 60 ) / 5
+		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 5)
 		for i in range(0,horarios_disponibles,1):
 			horarios.append(horarios[i] + timedelta(minutes=5)) 	
 		for i in horarios:
@@ -277,7 +277,7 @@ class doctor_appointment_co(osv.osv):
 			
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
-				duracion = fecha_agenda.type_id.duration / 5
+				duracion = int(fecha_agenda.type_id.duration / 5)
 
 				if fecha_agenda.time_begin in horario_cadena:
 					del horario_cadena[horario_cadena.index(fecha_agenda.time_begin)]	
@@ -290,11 +290,11 @@ class doctor_appointment_co(osv.osv):
 					if inicio_cadena in horario_cadena:
 						del horario_cadena[horario_cadena.index(inicio_cadena)]		
 
-				if len(horario_cadena) > 1:
-					if len(horario_cadena) > (appointment_type/5):
+				if int(len(horario_cadena)) > 1:
+					if int(len(horario_cadena)) > int((appointment_type/5)):
 						values.update({
 							'time_begin' : horario_cadena[0],
-							'time_end' : horario_cadena[appointment_type/5]
+							'time_end' : horario_cadena[int(appointment_type/5)]
 						})
 					else:
 						raise osv.except_osv(_('Error!'),
