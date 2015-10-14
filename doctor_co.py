@@ -298,10 +298,10 @@ class doctor_appointment_co(osv.osv):
 						})
 					else:
 						raise osv.except_osv(_('Error!'),
-                                 _('No se puede asignar la cita con este tiempo %s minutos' %(appointment_type)))
+								 _('No se puede asignar la cita con este tiempo %s minutos' %(appointment_type)))
 				else:
 					raise osv.except_osv(_('Error!'),
-                                 _('Las agenda ya esta toda asignada'))
+								 _('Las agenda ya esta toda asignada'))
 		else:
 			hora_fin = time_begin + timedelta(minutes=appointment_type)
 			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
@@ -424,8 +424,8 @@ class doctor_attentions_co(osv.osv):
 		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas'),
 		'otros_antecedentes': fields.text('Otros Antecedentes'),
 		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico'),
-		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos')
-
+		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos'),
+		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
 		}
 
 
@@ -433,8 +433,66 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta': '10',
 	}
 
+
+	def llamar_wizzard(self,cr,uid,ids,context=None):
+		for record in self.browse(cr,uid,ids,context=context):
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Crear Recomendaciones',
+				'view_type': 'form',
+				'view_mode': 'form',
+				'res_model': 'doctor.attentions.recomendaciones',
+				'target': 'new',
+				'context':  {
+					'default_patient_id' : record.patient_id.id,
+					'default_professional_id' : record.professional_id.id,
+				},
+			}
+
 doctor_attentions_co()
 
+
+class doctor_recomendaciones(osv.osv):
+
+	_name = 'doctor.attentions.recomendaciones'
+
+
+
+	_columns = {
+		'name' : fields.char('Nombre Plantilla', required=True),
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
+		'patient_id': fields.many2one('doctor.patient', 'Paciente', readonly=True),
+		'professional_id': fields.many2one('doctor.professional', 'Doctor', readonly=True),
+		'cuerpo' : fields.text(),
+		'active' : fields.boolean('Active'),
+	}
+
+	_defaults = {
+		'active' : True
+	}
+
+
+	def onchange_traer_plantillas(self,cr,uid,ids,nombre_plantilla,context=None):
+		res = {'value':{}}
+		if nombre_plantilla:
+			registros_ids = self.search(cr,uid,[('name', '=', nombre_plantilla)],context=context)
+			for datos in self.browse(cr, uid, registros_ids):
+				res['value']['name']=datos.name
+				res['value']['cuerpo']=datos.cuerpo
+			return res
+		return res	
+
+	def create(self, cr, user, vals, context=None):
+
+		vals['name'] = vals['name']
+		vals['cuerpo'] = vals['cuerpo']
+
+		super(doctor_recomendaciones,self).create(cr, user, vals, context)
+
+
+	_sql_constraints = [('name_uniq', 'unique (name)', 'Ya existe una plantilla con este nombre')]
+
+doctor_recomendaciones()
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"

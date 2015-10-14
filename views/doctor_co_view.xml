@@ -232,8 +232,40 @@
                     <field name="reportes_paraclinicos" />
                 </field>
 
+                <xpath expr="//notebook/page[@string='Others']" position="after">
+                    <page string="Recomendaciones">
+                    <separator string="Crear Recomendaciones" colspan="4"/>
+                        <button
+                            type="object" name="llamar_wizzard" string="Crear Recomendación" class="oe_link"
+                            help="Crear Recomendaciones"/>
+                    <separator string="Añadir Recomendaciones" colspan="4"/>       
+                    <field name='recomendaciones_ids' nolabel="1" placeholder="Plantilla" widget="many2many_tags"/>
+                    </page>
+                </xpath>
             </field>
         </record>  
+
+        <record model="ir.ui.view" id="wizard_recomendaciones_form">
+        <field name="name">wizard_recomendaciones.form</field>
+        <field name="model">doctor.attentions.recomendaciones</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Recomendaciones" version="7.0">          
+            
+                <group colspan='1' col='2'>
+                    <field name="name" />
+                    <field name="patient_id" /> 
+                    <field name="professional_id" /> 
+                </group>
+                <field name="cuerpo" /> 
+                <footer>
+          <group class="oe_right" col="1">
+            <button type="object" name="create" string="Save as new template" class="oe_link" help="Save as a new template"/>
+          </group>
+                </footer>
+            </form>
+        </field>
+        </record>
 
     <!-- invoice Form View -->
         <record id="invoice_form_view_inherit_doctor_co_invoice" model="ir.ui.view">
@@ -266,6 +298,5 @@
 
             </field>
         </record>
-
     </data>
 </openerp>

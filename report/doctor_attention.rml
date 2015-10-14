@@ -738,7 +738,24 @@
         </tr>
       </blockTable>
     </section>
-
+    <section>
+    <blockTable colWidths="534.0" style="Table6">
+      <tr>
+        <td>
+          <para style="P5">Recomendaciones</para>
+        </td>
+     </tr>
+    </blockTable>
+    [[ o.recomendaciones_ids or removeParentNode('section') ]]
+    <para style="P4">[[ repeatIn(o.recomendaciones_ids, 'line') ]]</para>
+    <blockTable colWidths="534.0" style="Table6">
+      <tr>
+      <td>
+          <para style="P6">Name: [[ (line.cuerpo or (removeParentNode('para'))) ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    </section>
    <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
