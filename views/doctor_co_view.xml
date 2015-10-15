@@ -200,6 +200,21 @@
                 </group>
                 </xpath>
 
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[2]//page[@string='Add Past']" position="attributes">
+                    <attribute name="string">Past</attribute>
+                </xpath>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[3]//page[@string='Add past']" position="attributes">
+                    <attribute name="string">Pathological past</attribute>
+                </xpath>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[4]//page[@string='Add Past']" position="attributes">
+                    <attribute name="string">Drugs past</attribute>
+                </xpath>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[2]//page[1]" position="replace"/>
+
+
                 <field name="review_systems_id" position="after">
                     <label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
                     <field name="otro_sintomas_revision_sistema"/>
@@ -234,14 +249,20 @@
 
                 <xpath expr="//notebook/page[@string='Others']" position="after">
                     <page string="Recomendaciones">
+                    <separator string="Añadir Recomendaciones" colspan="4"/>       
+                    <field name='recomendaciones_ids' nolabel="1" placeholder="Plantilla" widget="many2many_tags"/>
                     <separator string="Crear Recomendaciones" colspan="4"/>
                         <button
                             type="object" name="llamar_wizzard" string="Crear Recomendación" class="oe_link"
                             help="Crear Recomendaciones"/>
-                    <separator string="Añadir Recomendaciones" colspan="4"/>       
-                    <field name='recomendaciones_ids' nolabel="1" placeholder="Plantilla" widget="many2many_tags"/>
                     </page>
                 </xpath>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[3]//page[1]" position="replace"/>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[4]//page[1]" position="replace"/>
+
+
             </field>
         </record>  
 
@@ -251,7 +272,6 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Recomendaciones" version="7.0">          
-            
                 <group colspan='1' col='2'>
                     <field name="name" />
                     <field name="patient_id" /> 
@@ -260,7 +280,7 @@
                 <field name="cuerpo" /> 
                 <footer>
           <group class="oe_right" col="1">
-            <button type="object" name="create" string="Save as new template" class="oe_link" help="Save as a new template"/>
+            <button type="object" name="create" string="Guardar como una nueva Plantilla" class="oe_link" help="Save as a new template"/>
           </group>
                 </footer>
             </form>
