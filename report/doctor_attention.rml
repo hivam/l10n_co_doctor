@@ -751,7 +751,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
       <td>
-          <para style="P6">Name: [[ (line.cuerpo or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Name: [[ (line.cuerpo) ]]</para>
         </td>
       </tr>
     </blockTable>
