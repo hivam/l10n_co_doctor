@@ -486,7 +486,6 @@ class doctor_recomendaciones(osv.osv):
 
 		vals['name'] = vals['name']
 		vals['cuerpo'] = vals['cuerpo']
-
 		super(doctor_recomendaciones,self).create(cr, user, vals, context)
 
 

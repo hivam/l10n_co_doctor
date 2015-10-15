@@ -257,12 +257,8 @@
                             help="Crear Recomendaciones"/>
                     </page>
                 </xpath>
-
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[3]//page[1]" position="replace"/>
-
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[4]//page[1]" position="replace"/>
-
-
             </field>
         </record>  
 
@@ -279,9 +275,9 @@
                 </group>
                 <field name="cuerpo" /> 
                 <footer>
-          <group class="oe_right" col="1">
-            <button type="object" name="create" string="Guardar como una nueva Plantilla" class="oe_link" help="Save as a new template"/>
-          </group>
+                    <group class="oe_right" col="1">
+                        <button type="object" name="create" string="Guardar como una nueva Plantilla" class="oe_link" help="Save as a new template"/>
+                    </group>
                 </footer>
             </form>
         </field>
@@ -294,12 +290,10 @@
             <field eval="7" name="priority"/>
             <field name="inherit_id" ref="doctor.invoice_form_view_inherit_doctor_invoice"/>
             <field name="arch" type="xml">
-
                 <field name="patient_id" position="after">
                     <field name="ref"/>
                     <field name="tipo_usuario_id"/>
                 </field>
-
             </field>
         </record>
 
