@@ -191,21 +191,6 @@
                 </group>
                 </xpath>
 
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[2]//page[@string='Add Past']" position="attributes">
-                    <attribute name="string">Past</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[3]//page[@string='Add past']" position="attributes">
-                    <attribute name="string">Pathological past</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[4]//page[@string='Add Past']" position="attributes">
-                    <attribute name="string">Drugs past</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[2]//page[1]" position="replace"/>
-
-
                 <field name="review_systems_id" position="after">
                     <label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
                     <field name="otro_sintomas_revision_sistema"/>
@@ -246,10 +231,8 @@
                         <button
                             type="object" name="llamar_wizzard" string="Crear Recomendación" class="oe_link"
                             help="Crear Recomendaciones"/>
-                    </page>
+                    </page> 
                 </xpath>
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[3]//page[1]" position="replace"/>
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[4]//page[1]" position="replace"/>
             </field>
         </record>  
 
