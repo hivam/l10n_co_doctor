@@ -425,7 +425,7 @@ class doctor_attentions_co(osv.osv):
 doctor_attentions_co()
 
 
-class doctor_recomendaciones(osv.osv):
+class doctor_attentions_recomendaciones(osv.osv):
 
 	_name = 'doctor.attentions.recomendaciones'
 
@@ -444,19 +444,7 @@ class doctor_recomendaciones(osv.osv):
 		'active' : True
 	}
 
-
-	def onchange_traer_plantillas(self,cr,uid,ids,nombre_plantilla,context=None):
-		res = {'value':{}}
-		if nombre_plantilla:
-			registros_ids = self.search(cr,uid,[('name', '=', nombre_plantilla)],context=context)
-			for datos in self.browse(cr, uid, registros_ids):
-				res['value']['name']=datos.name
-				res['value']['cuerpo']=datos.cuerpo
-			return res
-		return res	
-
 	def create(self, cr, user, vals, context=None):
-
 		vals['name'] = vals['name']
 		vals['cuerpo'] = vals['cuerpo']
 		super(doctor_recomendaciones,self).create(cr, user, vals, context)
@@ -464,7 +452,7 @@ class doctor_recomendaciones(osv.osv):
 
 	_sql_constraints = [('name_uniq', 'unique (name)', 'Ya existe una plantilla con este nombre')]
 
-doctor_recomendaciones()
+doctor_attentions_recomendaciones()
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"
