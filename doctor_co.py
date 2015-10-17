@@ -447,7 +447,7 @@ class doctor_attentions_recomendaciones(osv.osv):
 	def create(self, cr, user, vals, context=None):
 		vals['name'] = vals['name']
 		vals['cuerpo'] = vals['cuerpo']
-		super(doctor_recomendaciones,self).create(cr, user, vals, context)
+		super(doctor_attentions_recomendaciones,self).create(cr, user, vals, context)
 
 
 	_sql_constraints = [('name_uniq', 'unique (name)', 'Ya existe una plantilla con este nombre')]
