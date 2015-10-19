@@ -391,13 +391,13 @@ class doctor_attentions_co(osv.osv):
 												('10','No aplica'),
 											   ],'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
 
-		'causa_externa' : fields.selection(causa_externa, 'Causa Externa'),
-		'otros_antecedentes_patologicos' : fields.text(u'Otros antecedentes patológicos'),
-		'otros_antecedentes_farmacologicos' : fields.text(u'Otros Antecedentes farmacológicos'),
-		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas'),
-		'otros_antecedentes': fields.text('Otros Antecedentes'),
-		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico'),
-		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos'),
+		'causa_externa' : fields.selection(causa_externa, 'Causa Externa',states={'closed': [('readonly', True)]}),
+		'otros_antecedentes_patologicos' : fields.text(u'Otros antecedentes patológicos',states={'closed': [('readonly', True)]}),
+		'otros_antecedentes_farmacologicos' : fields.text(u'Otros Antecedentes farmacológicos',states={'closed': [('readonly', True)]}),
+		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas',states={'closed': [('readonly', True)]}),
+		'otros_antecedentes': fields.text('Otros Antecedentes',states={'closed': [('readonly', True)]}),
+		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico',states={'closed': [('readonly', True)]}),
+		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
 		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
 		}
 

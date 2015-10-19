@@ -218,9 +218,9 @@
                     <field name="otros_hallazgos_examen_fisico" />
                 </field>
 
-                <field name="otros_hallazgos_examen_fisico" position="after">
+                <field name="analysis" position="after">
                     <label for="reportes_paraclinicos" string="Reportes de Paraclínicos"/>
-                    <field name="reportes_paraclinicos" />
+                    <field name="reportes_paraclinicos" nolabel="1"/>
                 </field>
 
                 <xpath expr="//notebook/page[@string='Others']" position="after">
