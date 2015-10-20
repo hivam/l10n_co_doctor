@@ -82,34 +82,7 @@ class doctor_patient_co(osv.osv):
 		'nombre_responsable': fields.char('Nombre', size=70),
 		'telefono_responsable' : fields.char('Teléfono', size=12),
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
-		
-		'edad': fields.integer('Años'),
 	}
-
-	def onchange_calcular_edad(self,cr,uid,ids,anio_nacimiento,context=None):
-		res={'value':{}}
-		if anio_nacimiento:
-
-			current_date = time.strftime('%Y-%m-%d')
-			mes_actual = int(str(current_date)[5:7])
-			mes_cumple = int(str(anio_nacimiento)[5:7])
-
-			if anio_nacimiento > current_date:
-				raise osv.except_osv(_('Warning !'), _("Birth Date Can not be a future date "))
-			
-			current_date = int(current_date[0:4])
-			anio = int(str(anio_nacimiento)[0:4])
-
-			if mes_cumple >= mes_actual:
-				anio = current_date - anio - 1 
-			else:
-				anio = current_date - anio
-
-			res['value']['edad']=anio
-
-
-		return res
-
 
 	def onchange_existe(self, cr, uid, ids, ref, context=None):
 		res = {'value':{'lastname' : '', 'surnanme' : '', 'firstname' : '', 'middlename' : '', 'tdoc' : '', 'email' : '', 'phone' : '', 'mobile' : '', 'state_id' : '',
@@ -266,7 +239,7 @@ class doctor_appointment_co(osv.osv):
 		horario_cadena = []
 		horarios.append(time_begin) 
 		#tener un rango de horas para poder decirle cual puede ser la proxima cita
-		horarios_disponibles = (agenda_duracion.schedule_duration * 60 ) / 5
+		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 5)
 		for i in range(0,horarios_disponibles,1):
 			horarios.append(horarios[i] + timedelta(minutes=5)) 	
 		for i in horarios:
@@ -277,7 +250,7 @@ class doctor_appointment_co(osv.osv):
 			
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
-				duracion = fecha_agenda.type_id.duration / 5
+				duracion = int(fecha_agenda.type_id.duration / 5)
 
 				if fecha_agenda.time_begin in horario_cadena:
 					del horario_cadena[horario_cadena.index(fecha_agenda.time_begin)]	
@@ -290,18 +263,18 @@ class doctor_appointment_co(osv.osv):
 					if inicio_cadena in horario_cadena:
 						del horario_cadena[horario_cadena.index(inicio_cadena)]		
 
-				if len(horario_cadena) > 1:
-					if len(horario_cadena) > (appointment_type/5):
+				if int(len(horario_cadena)) > 1:
+					if int(len(horario_cadena)) > int((appointment_type/5)):
 						values.update({
 							'time_begin' : horario_cadena[0],
-							'time_end' : horario_cadena[appointment_type/5]
+							'time_end' : horario_cadena[int(appointment_type/5)]
 						})
 					else:
 						raise osv.except_osv(_('Error!'),
-                                 _('No se puede asignar la cita con este tiempo %s minutos' %(appointment_type)))
+								 _('No se puede asignar la cita con este tiempo %s minutos' %(appointment_type)))
 				else:
 					raise osv.except_osv(_('Error!'),
-                                 _('Las agenda ya esta toda asignada'))
+								 _('Las agenda ya esta toda asignada'))
 		else:
 			hora_fin = time_begin + timedelta(minutes=appointment_type)
 			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
@@ -418,14 +391,14 @@ class doctor_attentions_co(osv.osv):
 												('10','No aplica'),
 											   ],'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
 
-		'causa_externa' : fields.selection(causa_externa, 'Causa Externa'),
-		'otros_antecedentes_patologicos' : fields.text(u'Otros antecedentes patológicos'),
-		'otros_antecedentes_farmacologicos' : fields.text(u'Otros Antecedentes farmacológicos'),
-		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas'),
-		'otros_antecedentes': fields.text('Otros Antecedentes'),
-		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico'),
-		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos')
-
+		'causa_externa' : fields.selection(causa_externa, 'Causa Externa',states={'closed': [('readonly', True)]}),
+		'otros_antecedentes_patologicos' : fields.text(u'Otros antecedentes patológicos',states={'closed': [('readonly', True)]}),
+		'otros_antecedentes_farmacologicos' : fields.text(u'Otros Antecedentes farmacológicos',states={'closed': [('readonly', True)]}),
+		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas',states={'closed': [('readonly', True)]}),
+		'otros_antecedentes': fields.text('Otros Antecedentes',states={'closed': [('readonly', True)]}),
+		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico',states={'closed': [('readonly', True)]}),
+		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
+		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
 		}
 
 
@@ -433,8 +406,53 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta': '10',
 	}
 
+
+	def llamar_wizzard(self,cr,uid,ids,context=None):
+		for record in self.browse(cr,uid,ids,context=context):
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Crear Recomendaciones',
+				'view_type': 'form',
+				'view_mode': 'form',
+				'res_model': 'doctor.attentions.recomendaciones',
+				'target': 'new',
+				'context':  {
+					'default_patient_id' : record.patient_id.id,
+					'default_professional_id' : record.professional_id.id,
+				},
+			}
+
 doctor_attentions_co()
 
+
+class doctor_attentions_recomendaciones(osv.osv):
+
+	_name = 'doctor.attentions.recomendaciones'
+
+
+
+	_columns = {
+		'name' : fields.char('Nombre Plantilla', required=True),
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
+		'patient_id': fields.many2one('doctor.patient', 'Paciente', readonly=True),
+		'professional_id': fields.many2one('doctor.professional', 'Doctor', readonly=True),
+		'cuerpo' : fields.text(),
+		'active' : fields.boolean('Active'),
+	}
+
+	_defaults = {
+		'active' : True
+	}
+
+	def create(self, cr, user, vals, context=None):
+		vals['name'] = vals['name']
+		vals['cuerpo'] = vals['cuerpo']
+		super(doctor_attentions_recomendaciones,self).create(cr, user, vals, context)
+
+
+	_sql_constraints = [('name_uniq', 'unique (name)', 'Ya existe una plantilla con este nombre')]
+
+doctor_attentions_recomendaciones()
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"

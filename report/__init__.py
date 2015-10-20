@@ -27,3 +27,4 @@ import doctor_other_procedures
 import doctor_referral
 import doctor_disability
 import doctor_attention
+import doctor_attentions_recomendaciones
