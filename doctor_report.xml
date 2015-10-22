@@ -42,5 +42,9 @@
                 rml="l10n_co_doctor/report/doctor_attentions_recomendaciones.rml" string="Recomendaciones"
                 usage="default"/>
 
+        <report auto="False" id="doctor_attentions_certificado" model="doctor.attentions" name="doctor_attentions_certificado"
+                rml="l10n_co_doctor/report/doctor_attentions_certificado.rml" string="Certificados"
+                usage="default"/>
+
     </data>
 </openerp>

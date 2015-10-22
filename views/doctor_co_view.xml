@@ -233,6 +233,24 @@
                             help="Crear Recomendaciones"/>
                     </page> 
                 </xpath>
+
+                <xpath expr="//notebook/page[@string='Others']" position="inside">
+                    <page string="Certificados">
+                        <separator string="Certificados" colspan="4"/>
+                        <field name="certificados_ids" nolabel="1" context="{'professional_id' : professional_id}">
+                            <form string="Certificados">
+                                <group colspan='3' col='2'>
+                                    <field name="name"/>
+                                     <field name="expedicion_certificado"/>
+                                     <field name="asunto" placeholder="El Dr. Certifica Qué"/>
+                                     <field name="professional_id"/>
+                                     <field name="cuerpo"/>
+                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)"/>
+                                </group>   
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
             </field>
         </record>  
 

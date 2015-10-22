@@ -399,6 +399,7 @@ class doctor_attentions_co(osv.osv):
 		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico',states={'closed': [('readonly', True)]}),
 		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
 		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
+		'certificados_ids': fields.one2many('doctor.attentions.certificado', 'attentiont_id', 'Certificados',states={'closed': [('readonly', True)]}),
 		}
 
 
@@ -429,8 +430,6 @@ class doctor_attentions_recomendaciones(osv.osv):
 
 	_name = 'doctor.attentions.recomendaciones'
 
-
-
 	_columns = {
 		'name' : fields.char('Nombre Plantilla', required=True),
 		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
@@ -453,6 +452,40 @@ class doctor_attentions_recomendaciones(osv.osv):
 	_sql_constraints = [('name_uniq', 'unique (name)', 'Ya existe una plantilla con este nombre')]
 
 doctor_attentions_recomendaciones()
+
+class doctor_attentions_certificado(osv.osv):
+
+	_name = 'doctor.attentions.certificado'
+
+	_columns = {
+		'name' : fields.char('Titulo', required=True),
+		'expedicion_certificado' : fields.datetime(u'Fecha de Expedición'),
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
+		'patient_id': fields.many2one('doctor.patient', 'Paciente', readonly=True),
+		'professional_id': fields.many2one('doctor.professional', 'Doctor',readonly=True),
+		'asunto' : fields.char('Asunto'),
+		'cuerpo' : fields.text(u'Certificación'),
+		'active' : fields.boolean('Active'),
+		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+	}
+
+	def onchange_plantillas(self, cr, uid, ids, plantilla_id, context=None):
+		res={'value':{}}
+		if plantilla_id:
+			cuerpo = self.pool.get('doctor.attentions.recomendaciones').browse(cr,uid,plantilla_id,context=context).cuerpo
+			res['value']['cuerpo']=cuerpo
+		else:
+			res['value']['cuerpo']=''
+		return res
+
+	_defaults = {
+		'name' : 'Certificado',
+		'active' : True,
+		'expedicion_certificado' : lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+		'professional_id': lambda self, cr, uid, context: context.get('professional_id', False),
+	}
+
+doctor_attentions_certificado()
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"

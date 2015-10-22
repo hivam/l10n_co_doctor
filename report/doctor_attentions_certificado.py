@@ -23,10 +23,10 @@ import time
 from openerp.report import report_sxw
 from openerp import pooler
 
-class doctor_attentions_certificado(report_sxw.rml_parse):
+class doctor_attentions_recomendaciones(report_sxw.rml_parse):
     
     def __init__(self, cr, uid, name, context):
-        super(doctor_attentions_certificado, self).__init__(cr, uid, name, context=context)
+        super(doctor_attentions_recomendaciones, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
             'time': time,
             'select_type': self.select_type,
@@ -49,7 +49,7 @@ class doctor_attentions_certificado(report_sxw.rml_parse):
             str(age))
         return age_unit
 
-report_sxw.report_sxw('report.doctor_attentions_certificado', 'doctor.attentions',
-                      'addons/l10n_co_doctor/report/doctor_attentions_certificado.rml',
-                      parser=doctor_attentions_certificado)
+report_sxw.report_sxw('report.doctor_attentions_recomendaciones', 'doctor.attentions',
+                      'addons/l10n_co_doctor/report/doctor_attentions_recomendaciones.rml',
+                      parser=doctor_attentions_recomendaciones)
         
