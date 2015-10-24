@@ -411,20 +411,6 @@ class doctor_attentions_co(osv.osv):
 	}
 
 
-	def llamar_wizzard(self,cr,uid,ids,context=None):
-		for record in self.browse(cr,uid,ids,context=context):
-			return {
-				'type': 'ir.actions.act_window',
-				'name': 'Crear Recomendaciones',
-				'view_type': 'form',
-				'view_mode': 'form',
-				'res_model': 'doctor.attentions.recomendaciones',
-				'target': 'new',
-				'context':  {
-					'default_patient_id' : record.patient_id.id,
-					'default_professional_id' : record.professional_id.id,
-				},
-			}
 
 doctor_attentions_co()
 
@@ -438,18 +424,15 @@ class doctor_attentions_recomendaciones(osv.osv):
 		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
 		'patient_id': fields.many2one('doctor.patient', 'Paciente', readonly=True),
 		'professional_id': fields.many2one('doctor.professional', 'Doctor', readonly=True),
-		'cuerpo' : fields.text(),
+		'cuerpo' : fields.text(u'Recomendación Texto'),
 		'active' : fields.boolean('Active'),
 	}
 
 	_defaults = {
-		'active' : True
+		'active' : True,
+		'professional_id': lambda self, cr, uid, context: context.get('professional_id', False),
+		'patient_id': lambda self, cr, uid, context: context.get('patient_id', False),
 	}
-
-	def create(self, cr, user, vals, context=None):
-		vals['name'] = vals['name']
-		vals['cuerpo'] = vals['cuerpo']
-		super(doctor_attentions_recomendaciones,self).create(cr, user, vals, context)
 
 
 	_sql_constraints = [('name_uniq', 'unique (name)', 'Ya existe una plantilla con este nombre')]

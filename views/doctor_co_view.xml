@@ -268,12 +268,20 @@
 
                 <xpath expr="//notebook/page[@string='Others']" position="after">
                     <page string="Recomendaciones">
-                    <separator string="Añadir Recomendaciones" colspan="4"/>       
-                    <field name='recomendaciones_ids' nolabel="1" placeholder="Plantilla" widget="many2many_tags"/>
-                    <separator string="Crear Recomendaciones" colspan="4"/>
-                        <button
-                            type="object" name="llamar_wizzard" string="Crear Recomendación" class="oe_link"
-                            help="Crear Recomendaciones"/>
+                    <separator string="Recomendaciones" colspan="4"/>       
+                    <field name="recomendaciones_ids" colspan="4" nolabel="1" context="{'professional_id' : professional_id, 'patient_id' : patient_id}">
+                        <tree string="Recomendaciones" >
+                            <field name="name"/>
+                        </tree>
+                        <form string="Recomendaciones">
+                            <group colspan='3' col='2'>
+                                <field name="name"/>
+                                <field name="patient_id"/>
+                                <field name="professional_id" />
+                                <field name="cuerpo"/>
+                            </group>
+                        </form>
+                    </field>
                     </page> 
                 </xpath>
 
