@@ -28,3 +28,4 @@ import doctor_referral
 import doctor_disability
 import doctor_attention
 import doctor_attentions_recomendaciones
+import doctor_attentions_certificado

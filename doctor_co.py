@@ -356,6 +356,9 @@ doctor_appointment_co()
 
 class doctor_attentions_co(osv.osv):
 	_name = "doctor.attentions"
+	
+	_rec_name = 'patient_id'
+
 	_inherit = 'doctor.attentions'
 
 	causa_externa = [

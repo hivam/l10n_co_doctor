@@ -94,7 +94,7 @@
     <images/>
   </stylesheet>
   <story>
-	<para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
+  <para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
     <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) ]]</para>
 
     <para style="Heading"><b>CERTIFICADO MÉDICO</b></para>
@@ -120,12 +120,12 @@
 
     <blockTable colWidths="204.0,330.0" style="Table6">
       <tr>
-		    <td>
+        <td>
             <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
           </td>
           <td>
             <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
-		      </td>
+          </td>
       </tr>
       <tr>
         <td>
@@ -133,7 +133,7 @@
         </td>
         <td>
           <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
-		</td>
+    </td>
      </tr>
      <tr>
         <td>
@@ -141,7 +141,7 @@
         </td>
         <td>
           <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
-		</td>
+    </td>
      </tr>
     </blockTable>
 
@@ -167,20 +167,20 @@
 
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
-		<td>
+    <td>
           <para style="P6">Nombre: [[ (o.professional_id.professional.name or (removeParentNode('para'))) ]]</para>
         </td>
         <td>
           <para style="P6">Registro N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
-		</td>
+    </td>
       </tr>
       <tr>
-		<td>
-          <para style="P6"><b>Firma: [[ '' 	]] </b></para>
+    <td>
+          <para style="P6"><b>Firma: [[ ''  ]] </b></para>
         </td>
         <td>
-          <para style="P6"><b>Sello: [[ '' 	]] </b></para>
-		</td>
+          <para style="P6"><b>Sello: [[ ''  ]] </b></para>
+    </td>
       </tr>
     </blockTable>
   </story>

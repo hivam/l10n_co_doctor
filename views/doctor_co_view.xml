@@ -96,6 +96,8 @@
                   </fieldset>
                 </xpath>
 
+                <xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@string='Attentions']" position="replace"/>
+
             </field>
         </record>
 
@@ -113,7 +115,6 @@
               <field name="ref" position="after">
                 <field name="nombre" string="Nombre Paciente"/>
               </field>
-
 
             </field>
           </record>
@@ -173,6 +174,7 @@
                 </field>
             </field>
         </record>
+
 
         <!-- Attentions Form View -->
         <record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
