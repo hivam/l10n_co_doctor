@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        
+        <!-- Modificando la busqueda de los pacientes anadiendo filtros-->
+        <record id="patient_filter" model="ir.ui.view">
+        <field name="name">Patient</field>
+        <field name="model">doctor.patient</field>
+        <field name="arch" type="xml">
+        <search string="Search Patient" version="7.0">
+            <field name="patient"/>
+            <field name="ref"/>
+            <field name="insurer"/>
+            <separator/>
+            <filter name="patient" string="Nombre" domain="[('patient','=',patient)]" help="Nombre" />
+            <filter name="ref" string="Identificacion" domain="[('ref','=',ref)]" help="Identificacion" />
+            <filter name="insurer" string="Aseguradora" domain="[('insurer','=',insurer)]" help="Aseguradora" />
+        </search>
+        </field>
+        </record>
 
         <!-- Patient Form View -->
         <record id="view_doctor_patient_form_inherit" model="ir.ui.view">
@@ -175,6 +192,30 @@
             </field>
         </record>
 
+
+        <!-- Modificando la busqueda en atencion anadiendo cambios -->
+        <record id="attentions_filter" model="ir.ui.view">
+        <field name="name">Attentions</field>
+        <field name="model">doctor.attentions</field>
+        <field name="arch" type="xml">
+        <search string="Search Attentions" version="7.0">
+            <field name="patient_id"/>
+            <field name="professional_id"/>
+            <field name="speciality"/>
+            <field name="diseases_ids"/>
+            
+            <separator/>
+            <filter name="patient_id" string="Nombre" domain="[('patient_id','=',patient_id)]" help="Nombre" />
+
+            <filter name="professional_id" string="Doctor" domain="[('professional_id','=',professional_id)]" help="Doctor" />
+
+            <filter name="speciality" string="Especialidad" domain="[('speciality','=',speciality)]" help="Especialidad" />
+
+            <filter name="diseases_ids" string="Diagnostico" domain="[('diseases_idsdiseases_ids','=',diseases_ids)]" help="Diagnostico" />
+
+        </search>
+        </field>
+        </record>
 
         <!-- Attentions Form View -->
         <record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
