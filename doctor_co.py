@@ -473,6 +473,92 @@ class doctor_attentions_certificado(osv.osv):
 
 doctor_attentions_certificado()
 
+
+class doctor_drugs(osv.osv):
+
+	_name = 'doctor.drugs'
+
+	_inherit = 'doctor.drugs'
+
+	_columns = {
+
+	}
+
+	def name_get(self, cr, uid, ids, context={}):
+		if not len(ids):
+			return []
+		reads = self.read(cr, uid, ids,
+						  ['atc_id', 'pharmaceutical_form', 'drugs_concentration', 'administration_route'], context)
+		res = []
+		for record in reads:
+			name = record['atc_id'][1]
+			if record['pharmaceutical_form'] and record['drugs_concentration'] and record['administration_route']:
+				name = name[9:] + ' (' + record['drugs_concentration'] + ' - ' + record['pharmaceutical_form'][1] + ' - ' + \
+					   record['administration_route'][1] + ')'
+			res.append((record['id'], name))
+		return res
+
+
+class doctor_prescription(osv.osv):
+
+	_name = 'doctor.prescription'
+	_inherit = 'doctor.prescription'
+
+	_columns = {
+		'dose_float' : fields.float('Dose',digits=(3,3)),
+	}
+
+	def onchange_medicamento(self, cr, uid, ids, drugs_id, context=None):
+		vals = {'value':{}}
+		res={'value':{}}
+
+		modelo_buscar = self.pool.get('doctor.drugs')
+		modelo_crear = self.pool.get('doctor.measuring.unit')
+		numero = ''
+
+		if drugs_id:
+			for medicamento in modelo_buscar.browse(cr,uid,[drugs_id],context=None):
+				
+				forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)	
+				
+				via = medicamento.administration_route.id
+				concentracion = medicamento.drugs_concentration
+
+				if not forma_farmaceutica_id:
+					vals['code'] = ('%s' %medicamento.pharmaceutical_form.id)
+					vals['name'] = medicamento.pharmaceutical_form.name
+					modelo_crear.create(cr,uid,vals,context=context)
+
+				forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)
+
+			for x in concentracion:
+				if x == ' ':
+					break
+				numero = numero + x
+
+			_logger.info(len(concentracion[len(numero):].strip()))
+
+			if len(concentracion[len(numero):].strip()) <= 3:
+				unidad_dosis = concentracion[len(numero):].strip()
+			else:
+				unidad_dosis = concentracion[len(numero):len(numero)+2].strip()
+			
+			unidad_dosis_id = self.pool.get('doctor.dose.unit').search(cr,uid,[('code','=',unidad_dosis)],context=None)
+			
+			numero = numero.replace(',','.')
+
+			_logger.info(unidad_dosis_id)
+			res['value']['administration_route_id']=via
+			res['value']['measuring_unit_qt']=forma_farmaceutica_id
+			res['value']['measuring_unit_q']=forma_farmaceutica_id
+			res['value']['dose_float']=float(numero)
+			res['value']['dose_unit_id']=unidad_dosis_id
+
+
+
+		return res
+
+
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"
 	_name = "account.invoice"

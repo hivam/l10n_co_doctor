@@ -302,6 +302,15 @@
                         </field>
                     </page>
                 </xpath>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group/group[@colspan='3']/field[@name='drugs_id']" position="attributes">
+                    <attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
+                </xpath>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[@colspan='3']/div/field[@name='dose']" position="replace">
+                    <field name="dose_float" style="width:15%%"/>
+                </xpath>
+
             </field>
         </record>  
 
