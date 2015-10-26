@@ -96,9 +96,17 @@
   <story>
   <para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
     <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) ]]</para>
+    <section>
+      <blockTable colWidths="534.0 " style="Table1">
+      <para style="P4">[[ repeatIn(o.certificados_ids, 'line') ]]</para>
+      <tr>
+        <td>
+          <para style="Heading"><b>[[(line.name)]]</b></para>
+        </td>
+      </tr>
+      </blockTable>
 
-    <para style="Heading"><b>CERTIFICADO MÉDICO</b></para>
-
+    </section>
     <blockTable colWidths="350.0,184.0 " style="Table1">
       <tr>
         <td>
