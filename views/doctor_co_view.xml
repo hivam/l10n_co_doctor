@@ -303,16 +303,76 @@
                     </page>
                 </xpath>
 
+                <!--añadiendo onchange a campo drugs_id de medicamentos-->
+            
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group/group[@colspan='3']/field[@name='drugs_id']" position="attributes">
                     <attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
                 </xpath>
 
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[@colspan='3']/div/field[@name='dose']" position="replace">
-                    <field name="dose_float" style="width:15%%"/>
+                <!--fin de añadiendo onchange a campo drugs_id de medicamentos-->
+
+                <!--quitando campos de medicamentos-->
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
+        
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
+                     <attribute name="invisible">1</attribute>
                 </xpath>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[2]" position="attributes">
+                     <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
+                    <attribute name="string">Precripcion</attribute>
+                </xpath>
+
+                <!--fin quitando campos de medicamentos-->
 
             </field>
         </record>  
+
+        <!-- herencia Form View de drugs -->
+        <record id="drugs_form_view_inherit_doctor_co_drugs" model="ir.ui.view">
+            <field name="name">Drugs</field>
+            <field name="model">doctor.drugs</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_drugs_form"/>
+            <field name="arch" type="xml">
+                <field name="atc_id" position="attributes">
+                    <attribute name="required">0</attribute>
+                    <attribute name="string">Generico</attribute>
+                </field>
+
+                <field name="code" position="attributes">
+                    <attribute name="required">0</attribute>
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+
+            
+            </field>
+        </record>
+        <!-- fin de herencia Form View de drugs -->
+
+        <!-- herencia Form View de atc -->
+        <record id="atc_form_view_inherit_doctor_co_atc" model="ir.ui.view">
+            <field name="name">Drugs ATC</field>
+            <field name="model">doctor.atc</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_atc_form"/>
+            <field name="arch" type="xml">
+                <field name="code" position="attributes">
+                    <attribute name="required">0</attribute>
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+        <!-- fin de herencia Form View de atc -->
 
         <record model="ir.ui.view" id="wizard_recomendaciones_form">
         <field name="name">wizard_recomendaciones.form</field>

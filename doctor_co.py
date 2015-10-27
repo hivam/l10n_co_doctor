@@ -484,6 +484,16 @@ class doctor_drugs(osv.osv):
 
 	}
 
+	def create(self, cr, uid, vals, context=None):
+		drugs_ids = self.search(cr,uid,[],context=context)
+		last_id = drugs_ids and max(drugs_ids)
+		code = self.browse(cr,uid,last_id,context=context).code
+		first_code = code[0:2]
+		last_code = int(code[2:])+1
+		new_code = first_code + str(last_code)
+		vals['code'] = new_code
+		return super(doctor_drugs,self).create(cr, uid, vals, context=context)
+
 	def name_get(self, cr, uid, ids, context={}):
 		if not len(ids):
 			return []
@@ -493,10 +503,41 @@ class doctor_drugs(osv.osv):
 		for record in reads:
 			name = record['atc_id'][1]
 			if record['pharmaceutical_form'] and record['drugs_concentration'] and record['administration_route']:
-				name = name[9:] + ' (' + record['drugs_concentration'] + ' - ' + record['pharmaceutical_form'][1] + ' - ' + \
+				name = name + ' (' + record['drugs_concentration'] + ' - ' + record['pharmaceutical_form'][1] + ' - ' + \
 					   record['administration_route'][1] + ')'
 			res.append((record['id'], name))
 		return res
+
+
+class doctor_atc(osv.osv):
+
+	_name = "doctor.atc"
+
+	_inherit = "doctor.atc"
+
+	_columns = {
+
+	}
+
+	def create(self, cr, uid, vals, context=None):
+		atc = vals['name']
+		atc_ids = self.search(cr,uid,[],context=context)
+		last_atc_id = atc_ids and max(atc_ids)
+		vals['code'] = str(int(last_atc_id)+1)
+		vals['name'] = atc.upper()
+		return super(doctor_atc,self).create(cr, uid, vals, context=context)
+
+	def name_get(self, cr, uid, ids, context={}):
+		if not len(ids):
+			return []
+		reads = self.read(cr, uid, ids, ['name', 'code'], context)
+		res = []
+		for record in reads:
+			name = record['name']
+			res.append((record['id'], name))
+		return res
+
+doctor_atc()
 
 
 class doctor_prescription(osv.osv):
@@ -505,7 +546,7 @@ class doctor_prescription(osv.osv):
 	_inherit = 'doctor.prescription'
 
 	_columns = {
-		'dose_float' : fields.float('Dose',digits=(3,3)),
+		'dose_float' : fields.char('Dose'),
 	}
 
 	def onchange_medicamento(self, cr, uid, ids, drugs_id, context=None):
@@ -536,8 +577,6 @@ class doctor_prescription(osv.osv):
 					break
 				numero = numero + x
 
-			_logger.info(len(concentracion[len(numero):].strip()))
-
 			if len(concentracion[len(numero):].strip()) <= 3:
 				unidad_dosis = concentracion[len(numero):].strip()
 			else:
@@ -547,14 +586,11 @@ class doctor_prescription(osv.osv):
 			
 			numero = numero.replace(',','.')
 
-			_logger.info(unidad_dosis_id)
 			res['value']['administration_route_id']=via
 			res['value']['measuring_unit_qt']=forma_farmaceutica_id
 			res['value']['measuring_unit_q']=forma_farmaceutica_id
-			res['value']['dose_float']=float(numero)
+			res['value']['dose_float']=numero
 			res['value']['dose_unit_id']=unidad_dosis_id
-
-
 
 		return res
 
