@@ -367,7 +367,11 @@
                     <field name="indicacion_tomar" nolabel="1"/>
                 </xpath>
 
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[2]" position="replace"/>
 
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
+
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" position="replace"/>
 
 
 
