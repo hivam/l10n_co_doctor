@@ -158,15 +158,15 @@
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
 		 <td>
-            <para style="P6">[[ (line.drugs_id.atc_id.code) ]] [[ (line.drugs_id.atc_id.name) ]] [[ (line.drugs_id.drugs_concentration) ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]]</para>
+            <para style="P6">[[ (line.drugs_id.atc_id.code) ]] [[ (line.drugs_id.atc_id.name) ]] [[ (line.drugs_id.drugs_concentration) ]] [[ (line.drugs_id.pharmaceutical_form.name) ]]</para>
           </td>
           <td>
-            <para style="P7">[[ (line.total_quantity) ]] [[ (line.measuring_unit_qt.name) ]] </para>
+            <para style="P7">[[ (line.cantidad_total) ]] </para>
           </td>
         </tr>
         <tr>
 		 <td>
-            <para style="P6">[[ select_type_action(line.action_id) ]] [[ (line.quantity) ]] [[ (line.measuring_unit_q.name) ]] cada [[ (line.frequency) ]] [[ select_type_unit(line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ select_type_period(line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
+            <para style="P6">[[(line.indicacion_tomar)]] cada [[ (line.frequency) ]] [[ select_type_unit(line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ select_type_period(line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
           </td>
           <td>
             <para style="P6">[[ '' ]] </para>

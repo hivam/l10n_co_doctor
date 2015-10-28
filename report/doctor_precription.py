@@ -22,6 +22,8 @@
 import time
 from openerp.report import report_sxw
 from openerp import pooler
+import logging
+_logger = logging.getLogger(__name__)
 
 class doctor_precription(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
@@ -62,8 +64,10 @@ class doctor_precription(report_sxw.rml_parse):
         context = {}
         context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
         prescription = self.pool.get('doctor.prescription')
-        tipo = dict(prescription.fields_get(self.cr, self.uid, 'dutation_period_n',context=context).get('dutation_period_n').get('selection')).get(
+        tipo = dict(prescription.fields_get(self.cr, self.uid, 'duration_period_n',context=context).get('duration_period_n').get('selection')).get(
             str(period))
+
+        _logger.info(tipo)
         return tipo
 
 

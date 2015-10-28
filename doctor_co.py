@@ -547,6 +547,8 @@ class doctor_prescription(osv.osv):
 
 	_columns = {
 		'dose_float' : fields.char('Dose'),
+		'cantidad_total' : fields.char('Cantidad Total'),
+		'indicacion_tomar': fields.char('Tomar')
 	}
 
 	def onchange_medicamento(self, cr, uid, ids, drugs_id, context=None):
