@@ -6,6 +6,10 @@
                 rml="l10n_co_doctor/report/doctor_prescription.rml" string="Prescription"
                 usage="default"/>
 
+        <report auto="False" id="doctor_attentions_medicamento_otro" model="doctor.attentions" name="doctor_attentions_otra_prescripcion"
+                rml="l10n_co_doctor/report/doctor_attentions_otra_prescripcion.rml" string="Otra Prescripcion"
+                usage="default"/>
+
         <report auto="False" id="doctor_clinical_laboratory" model="doctor.attentions" name="doctor_clinical_laboratory"
                 rml="l10n_co_doctor/report/doctor_clinical_laboratory.rml" string="Clinical Laboratory"
                 usage="default"/>

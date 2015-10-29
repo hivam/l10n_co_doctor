@@ -403,6 +403,7 @@ class doctor_attentions_co(osv.osv):
 		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
 		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
 		'certificados_ids': fields.one2many('doctor.attentions.certificado', 'attentiont_id', 'Certificados',states={'closed': [('readonly', True)]}),
+		'otros_medicamentos_ids': fields.one2many('doctor.attentions.medicamento_otro', 'attentiont_id', 'Otra Prescripcion',states={'closed': [('readonly', True)]}),
 		}
 
 
@@ -413,6 +414,31 @@ class doctor_attentions_co(osv.osv):
 
 
 doctor_attentions_co()
+
+class doctor_otra_prescripcion(osv.osv):
+
+	_name= 'product.product'
+
+	_inherit = 'product.product'
+
+	_columns = {
+		'is_medicamento_prescripcion': fields.boolean('¿Es un medicamento / otro elemento?')
+	}
+
+doctor_otra_prescripcion()
+
+class doctor_attention_medicamento_otro_elemento(osv.osv):
+
+	_name = 'doctor.attentions.medicamento_otro'
+
+	_rec_name = 'procedures_id'
+
+	_columns = {
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
+        'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
+        'prescripcion': fields.char('Prescripcion'),
+        'recomendacion': fields.text('Recomendaciones'),
+	}
 
 
 class doctor_attentions_recomendaciones(osv.osv):
