@@ -414,34 +414,6 @@ class doctor_attentions_co(osv.osv):
 
 doctor_attentions_co()
 
-
-class doctor_co_schedule_inherit(osv.osv):
-
-	_name = 'doctor.schedule'
-
-	_inherit = 'doctor.schedule'
-
-	_columns = {
-
-	}
-
-	def default_get(self, cr, uid, fields, context=None):
-		res = super(doctor_co_schedule_inherit,self).default_get(cr, uid, fields, context=context)
-
-		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
-		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00") + timedelta(minutes=2)
-
-		user = self.pool.get('res.users').browse(cr, uid, uid)
-		tz = pytz.timezone(user.tz) if user.tz else pytz.utc
-		date_begin_user = pytz.utc.localize(fecha_hora_actual).astimezone(tz)
-		
-		res['date_begin'] = str(fecha_hora_actual)
-
-		return res
-
-doctor_co_schedule_inherit()
-
-
 class doctor_otra_prescripcion(osv.osv):
 
 	_name= 'product.product'
