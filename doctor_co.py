@@ -410,9 +410,43 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta': '10',
 	}
 
-
-
 doctor_attentions_co()
+
+
+class doctor_co_schedule_inherit(osv.osv):
+
+	_name = 'doctor.schedule'
+
+	_inherit = 'doctor.schedule'
+
+	_columns = {
+
+	}
+
+	def default_get(self, cr, uid, fields, context=None):
+		res = super(doctor_co_schedule_inherit,self).default_get(cr, uid, fields, context=context)
+		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00") + timedelta(minutes=2)
+		
+		if not 'consultorio_id' in fields:
+			fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
+			fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
+			agenda_ids = self.search(cr,uid,[('date_begin','>=', fecha_usuario_ini), ('date_end', '<=', fecha_usuario_fin)],context=None)
+			ultima_agenda_id = agenda_ids and max(agenda_ids)
+
+			if ultima_agenda_id:
+				hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
+				fecha_hora_actual = str(hora_inicio_agenda)
+
+			if not ultima_agenda_id or hora_inicio_agenda < str(fecha_hora_actual):
+				fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
+
+
+			res['date_begin'] = str(fecha_hora_actual)
+
+		return res
+
+doctor_co_schedule_inherit()
 
 class doctor_otra_prescripcion(osv.osv):
 
@@ -434,9 +468,9 @@ class doctor_attention_medicamento_otro_elemento(osv.osv):
 
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
-        'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
-        'prescripcion': fields.char('Prescripcion'),
-        'recomendacion': fields.text('Recomendaciones'),
+		'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
+		'prescripcion': fields.char('Prescripcion'),
+		'recomendacion': fields.text('Recomendaciones'),
 	}
 
 
