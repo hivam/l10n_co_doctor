@@ -426,7 +426,7 @@ class doctor_co_schedule_inherit(osv.osv):
 	def default_get(self, cr, uid, fields, context=None):
 		res = super(doctor_co_schedule_inherit,self).default_get(cr, uid, fields, context=context)
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
-		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00") + timedelta(minutes=2)
+		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
 		
 		if not 'consultorio_id' in fields:
 			fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
@@ -544,13 +544,16 @@ class doctor_drugs(osv.osv):
 	}
 
 	def create(self, cr, uid, vals, context=None):
-		drugs_ids = self.search(cr,uid,[],context=context)
-		last_id = drugs_ids and max(drugs_ids)
-		code = self.browse(cr,uid,last_id,context=context).code
-		first_code = code[0:2]
-		last_code = int(code[2:])+1
-		new_code = first_code + str(last_code)
-		vals['code'] = new_code
+		modulo_instalado = self.pool.get('ir.module.module').search(cr,uid,[('name', '=', 'l10n_co_doctor'), ('state', '=', 'installed')],context=context)
+		if modulo_instalado:
+			drugs_ids = self.search(cr,uid,[],context=context)
+			last_id = drugs_ids and max(drugs_ids)
+			code = self.browse(cr,uid,last_id,context=context).code
+			first_code = code[0:2]
+			last_code = int(code[2:])+1
+			new_code = first_code + str(last_code)
+			vals['code'] = new_code
+		_logger.info(vals)
 		return super(doctor_drugs,self).create(cr, uid, vals, context=context)
 
 	def name_get(self, cr, uid, ids, context={}):
@@ -567,6 +570,9 @@ class doctor_drugs(osv.osv):
 			res.append((record['id'], name))
 		return res
 
+doctor_drugs()
+
+
 
 class doctor_atc(osv.osv):
 
@@ -579,11 +585,15 @@ class doctor_atc(osv.osv):
 	}
 
 	def create(self, cr, uid, vals, context=None):
-		atc = vals['name']
-		atc_ids = self.search(cr,uid,[],context=context)
-		last_atc_id = atc_ids and max(atc_ids)
-		vals['code'] = str(int(last_atc_id)+1)
-		vals['name'] = atc.upper()
+
+		modulo_instalado = self.pool.get('ir.module.module').search(cr,uid,[('name', '=', 'l10n_co_doctor'), ('state', '=', 'installed')],context=context)
+		if modulo_instalado:
+			atc = vals['name']
+			atc_ids = self.search(cr,uid,[],context=context)
+			last_atc_id = atc_ids and max(atc_ids)
+			_logger.info(last_atc_id)
+			vals['code'] = str(int(last_atc_id)+1)
+			vals['name'] = atc.upper()
 		return super(doctor_atc,self).create(cr, uid, vals, context=context)
 
 	def name_get(self, cr, uid, ids, context={}):
@@ -618,40 +628,43 @@ class doctor_prescription(osv.osv):
 		modelo_crear = self.pool.get('doctor.measuring.unit')
 		numero = ''
 
-		if drugs_id:
-			for medicamento in modelo_buscar.browse(cr,uid,[drugs_id],context=None):
+		modulo_instalado = self.pool.get('ir.module.module').search(cr,uid,[('name', '=', 'l10n_co_doctor'), ('state', '=', 'installed')],context=context)
+		if modulo_instalado:
+
+			if drugs_id:
+				for medicamento in modelo_buscar.browse(cr,uid,[drugs_id],context=None):
+					
+					forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)	
+					
+					via = medicamento.administration_route.id
+					concentracion = medicamento.drugs_concentration
+
+					if not forma_farmaceutica_id:
+						vals['code'] = ('%s' %medicamento.pharmaceutical_form.id)
+						vals['name'] = medicamento.pharmaceutical_form.name
+						modelo_crear.create(cr,uid,vals,context=context)
+
+					forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)
+
+				for x in concentracion:
+					if x == ' ':
+						break
+					numero = numero + x
+
+				if len(concentracion[len(numero):].strip()) <= 3:
+					unidad_dosis = concentracion[len(numero):].strip()
+				else:
+					unidad_dosis = concentracion[len(numero):len(numero)+2].strip()
 				
-				forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)	
+				unidad_dosis_id = self.pool.get('doctor.dose.unit').search(cr,uid,[('code','=',unidad_dosis)],context=None)
 				
-				via = medicamento.administration_route.id
-				concentracion = medicamento.drugs_concentration
+				numero = numero.replace(',','.')
 
-				if not forma_farmaceutica_id:
-					vals['code'] = ('%s' %medicamento.pharmaceutical_form.id)
-					vals['name'] = medicamento.pharmaceutical_form.name
-					modelo_crear.create(cr,uid,vals,context=context)
-
-				forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)
-
-			for x in concentracion:
-				if x == ' ':
-					break
-				numero = numero + x
-
-			if len(concentracion[len(numero):].strip()) <= 3:
-				unidad_dosis = concentracion[len(numero):].strip()
-			else:
-				unidad_dosis = concentracion[len(numero):len(numero)+2].strip()
-			
-			unidad_dosis_id = self.pool.get('doctor.dose.unit').search(cr,uid,[('code','=',unidad_dosis)],context=None)
-			
-			numero = numero.replace(',','.')
-
-			res['value']['administration_route_id']=via
-			res['value']['measuring_unit_qt']=forma_farmaceutica_id
-			res['value']['measuring_unit_q']=forma_farmaceutica_id
-			res['value']['dose_float']=numero
-			res['value']['dose_unit_id']=unidad_dosis_id
+				res['value']['administration_route_id']=via
+				res['value']['measuring_unit_qt']=forma_farmaceutica_id
+				res['value']['measuring_unit_q']=forma_farmaceutica_id
+				res['value']['dose_float']=numero
+				res['value']['dose_unit_id']=unidad_dosis_id
 
 		return res
 
