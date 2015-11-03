@@ -423,26 +423,29 @@ class doctor_co_schedule_inherit(osv.osv):
 
 	}
 
+
 	def default_get(self, cr, uid, fields, context=None):
 		res = super(doctor_co_schedule_inherit,self).default_get(cr, uid, fields, context=context)
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
 		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
-		
-		if not 'consultorio_id' in fields:
-			fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
-			fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
-			agenda_ids = self.search(cr,uid,[('date_begin','>=', fecha_usuario_ini), ('date_end', '<=', fecha_usuario_fin)],context=None)
-			ultima_agenda_id = agenda_ids and max(agenda_ids)
+		fecha_inicio_agenda = datetime.strptime(context['default_date_begin'], "%Y-%m-%d %H:%M:%S")
+		fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
+		fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
+		if fecha_inicio_agenda < fecha_hora_actual:
+			if not 'consultorio_id' in fields:
+				f_ini = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_ini, context)
+				f_fin = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_fin, context)
+				agenda_ids = self.search(cr,uid,[('date_begin','>=', f_fin), ('date_begin', '<=', f_ini)],context=None)
+				ultima_agenda_id = agenda_ids and max(agenda_ids)
 
-			if ultima_agenda_id:
-				hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
-				fecha_hora_actual = str(hora_inicio_agenda)
+				if ultima_agenda_id:
+					hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
+					fecha_hora_actual = str(hora_inicio_agenda)
 
-			if not ultima_agenda_id or hora_inicio_agenda < str(fecha_hora_actual):
-				fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
+				if not ultima_agenda_id:
+					fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
 
-
-			res['date_begin'] = str(fecha_hora_actual)
+				res['date_begin'] = str(fecha_hora_actual)
 
 		return res
 
@@ -544,8 +547,8 @@ class doctor_drugs(osv.osv):
 	}
 
 	def create(self, cr, uid, vals, context=None):
-		modulo_instalado = self.pool.get('ir.module.module').search(cr,uid,[('name', '=', 'l10n_co_doctor'), ('state', '=', 'installed')],context=context)
-		if modulo_instalado:
+		
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 			drugs_ids = self.search(cr,uid,[],context=context)
 			last_id = drugs_ids and max(drugs_ids)
 			code = self.browse(cr,uid,last_id,context=context).code
@@ -586,8 +589,7 @@ class doctor_atc(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 
-		modulo_instalado = self.pool.get('ir.module.module').search(cr,uid,[('name', '=', 'l10n_co_doctor'), ('state', '=', 'installed')],context=context)
-		if modulo_instalado:
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 			atc = vals['name']
 			atc_ids = self.search(cr,uid,[],context=context)
 			last_atc_id = atc_ids and max(atc_ids)
@@ -628,8 +630,7 @@ class doctor_prescription(osv.osv):
 		modelo_crear = self.pool.get('doctor.measuring.unit')
 		numero = ''
 
-		modulo_instalado = self.pool.get('ir.module.module').search(cr,uid,[('name', '=', 'l10n_co_doctor'), ('state', '=', 'installed')],context=context)
-		if modulo_instalado:
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 
 			if drugs_id:
 				for medicamento in modelo_buscar.browse(cr,uid,[drugs_id],context=None):
