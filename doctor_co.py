@@ -420,8 +420,13 @@ class doctor_co_schedule_dias_excepciones(osv.osv):
 
 		'schedule_id': fields.many2one('doctor.schedule', 'Agenda'),
 		'dias_excepciones' : fields.date('Dias Excepciones'),
-
 	}
+
+	_defaults = {
+		'dias_excepciones' : lambda *a: datetime.now().strftime('%Y-%m-%d'),
+	}
+
+doctor_co_schedule_dias_excepciones()
 
 class doctor_co_schedule_inherit(osv.osv):
 
@@ -489,7 +494,10 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		if vals['dias_excepciones_id']:
 			for i in range(0,len(vals['dias_excepciones_id']),1):
-				fecha_excepciones.append(vals['dias_excepciones_id'][i][2]['dias_excepciones'])
+				if not datetime.strptime(vals['dias_excepciones_id'][i][2]['dias_excepciones'], "%Y-%m-%d") < datetime.today():
+					fecha_excepciones.append(vals['dias_excepciones_id'][i][2]['dias_excepciones'])
+				else:
+					raise osv.except_osv(_('Error!'),_('Las fechas excepcionales no deben ser fechas menores a la actual'))
 
 		dia_semana = [
 			'lunes', 'martes', 'miercoles',
@@ -513,18 +521,15 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		if vals['repetir_agenda']:
 
-			if not True in meses_usuario.values():
-				raise osv.except_osv(_('Error!'),_('Debe Seleccionar los meses que se repite la agenda'))
-
-			if not True in dias_usuario.values():
-				raise osv.except_osv(_('Error!'),_('Debe Seleccionar los dias que se repite la agenda'))
-
 			fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 			fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
-
 			fecha_sin_hora = str(fecha_inicio)[0:10]
 			fecha_sin_hora = datetime.strptime(fecha_sin_hora, "%Y-%m-%d")
-			duracion_dias = int(str(fecha_fin - fecha_inicio)[0:2].strip())
+			_logger.info(len(str(fecha_fin - fecha_inicio)[0:2].strip()))
+			if not ':' in str(fecha_fin - fecha_inicio)[0:2].strip():
+				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:2].strip())
+			else:
+				raise osv.except_osv(_('Error!'),_('Las fechas no coinciden para ser una agenda repetida ya que son iguales'))
 
 			for dias in range(0, duracion_dias+1, 1):
 
@@ -532,8 +537,13 @@ class doctor_co_schedule_inherit(osv.osv):
 				dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
 				dia=dias_inicia_trabaja.weekday()
 				mes = dias_inicia_trabaja.strftime('%B')
+				
+				if not True in meses_usuario.values():
+					raise osv.except_osv(_('Error!'),_('Debe Seleccionar los meses que se repite la agenda'))
 
-				_logger.info(dias_usuario[dia_semana[dia]])
+				if not True in dias_usuario.values():
+					raise osv.except_osv(_('Error!'),_('Debe Seleccionar los dias que se repite la agenda'))
+
 				if (dias_usuario[dia_semana[dia]] or str(fecha_sin_h)[0:10] in fecha_excepciones) and meses_usuario[mes]:
 
 					u['date_begin'] = dias_inicia_trabaja
@@ -598,9 +608,6 @@ class doctor_co_schedule_inherit(osv.osv):
 
 			res['fecha_inicio'] = str(fecha_inicio_agenda)
 		return res
-
-
-
 
 doctor_co_schedule_inherit()
 
