@@ -412,6 +412,16 @@ class doctor_attentions_co(osv.osv):
 
 doctor_attentions_co()
 
+class doctor_co_schedule_dias_excepciones(osv.osv):
+
+	_name = 'doctor.schedule_dias_excepciones'
+
+	_columns = {
+
+		'schedule_id': fields.many2one('doctor.schedule', 'Agenda'),
+		'dias_excepciones' : fields.date('Dias Excepciones'),
+
+	}
 
 class doctor_co_schedule_inherit(osv.osv):
 
@@ -420,34 +430,177 @@ class doctor_co_schedule_inherit(osv.osv):
 	_inherit = 'doctor.schedule'
 
 	_columns = {
+		'repetir_agenda': fields.boolean('Repetir Agenda'),
+		'fecha_inicio': fields.datetime('Fecha Inicio'),
+		'fecha_fin': fields.datetime('Fecha Fin'),
+		'dias_excepciones_id': fields.one2many('doctor.schedule_dias_excepciones', 'schedule_id', 'Dias Excepcionales'),
+		'duracion_agenda' : fields.integer('Duracion Agenda (horas)'),
+
+
+		'lunes' : fields.boolean('Lunes'),
+		'martes' : fields.boolean('Martes'),
+		'miercoles' : fields.boolean('Miercoles'),
+		'jueves' : fields.boolean('Jueves'),
+		'viernes' : fields.boolean('Viernes'),
+		'sabado' : fields.boolean('sabado'),
+		'domingo' : fields.boolean('Domingo'),
+
+		'enero' : fields.boolean('Enero'),
+		'febrero' : fields.boolean('Febrero'),
+		'marzo' : fields.boolean('Marzo'),
+		'abril' : fields.boolean('Abril'),
+		'mayo' : fields.boolean('Mayo'),
+		'junio' : fields.boolean('Junio'),
+		'julio' : fields.boolean('Julio'),
+		'agosto' : fields.boolean('Agosto'),
+		'septiembre' : fields.boolean('Septiembre'),
+		'octubre' : fields.boolean('Octubre'),
+		'noviembre' : fields.boolean('Noviembre'),
+		'diciembre' : fields.boolean('Diciembre'),
+
 
 	}
+
+	_defaults = {
+		'fecha_inicio' : lambda *a: datetime.now().strftime('%Y-%m-%d 13:00:00'),
+		'duracion_agenda' : 4,
+
+	}
+
+	def onchange_fecha_incio(self, cr, uid, ids, fecha_inicio, duracion_agenda, fecha_fin, context=None):
+		values = {}
+		res = {}
+		if not fecha_inicio and not fecha_fin:
+			return res
+
+		schedule_begin = datetime.strptime(fecha_inicio, "%Y-%m-%d %H:%M:%S")
+		duration = duracion_agenda
+		date_end = schedule_begin + timedelta(hours=duration)
+		values.update({
+			'fecha_fin': date_end.strftime("%Y-%m-%d %H:%M:%S"),
+		})
+		return {'value': values}
+
+
+	def create(self, cr, uid, vals, context=None):
+		
+		fecha_excepciones = []
+		agenda_id = 0
+
+		if vals['dias_excepciones_id']:
+			for i in range(0,len(vals['dias_excepciones_id']),1):
+				fecha_excepciones.append(vals['dias_excepciones_id'][i][2]['dias_excepciones'])
+
+		dia_semana = [
+			'lunes', 'martes', 'miercoles',
+			'jueves', 'viernes','sabado',
+			'domingo',
+		]
+
+		dias_usuario = {
+			'lunes': vals['lunes'], 'martes': vals['martes'], 'miercoles': vals['miercoles'],
+			'jueves': vals['jueves'], 'viernes': vals['viernes'], 'sabado': vals['sabado'],
+			'domingo': vals['domingo'],
+		}
+
+		meses_usuario = {
+			'enero' : vals['enero'], 'febrero': vals['febrero'], 'marzo': vals['marzo'],'abril': vals['abril'],
+			'mayo': vals['mayo'], 'junio': vals['junio'], 'julio': vals['julio'], 'agosto': vals['agosto'],
+			'septiembre': vals['septiembre'], 'octubre': vals['octubre'], 'noviembre': vals['noviembre'], 'diciembre': vals['diciembre'],
+		}
+
+		u ={}
+
+		if vals['repetir_agenda']:
+
+			if not True in meses_usuario.values():
+				raise osv.except_osv(_('Error!'),_('Debe Seleccionar los meses que se repite la agenda'))
+
+			if not True in dias_usuario.values():
+				raise osv.except_osv(_('Error!'),_('Debe Seleccionar los dias que se repite la agenda'))
+
+			fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
+			fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
+
+			fecha_sin_hora = str(fecha_inicio)[0:10]
+			fecha_sin_hora = datetime.strptime(fecha_sin_hora, "%Y-%m-%d")
+			duracion_dias = int(str(fecha_fin - fecha_inicio)[0:2].strip())
+
+			for dias in range(0, duracion_dias+1, 1):
+
+				fecha_sin_h = fecha_sin_hora + timedelta(days=dias)
+				dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
+				dia=dias_inicia_trabaja.weekday()
+				mes = dias_inicia_trabaja.strftime('%B')
+
+				_logger.info(dias_usuario[dia_semana[dia]])
+				if (dias_usuario[dia_semana[dia]] or str(fecha_sin_h)[0:10] in fecha_excepciones) and meses_usuario[mes]:
+
+					u['date_begin'] = dias_inicia_trabaja
+					u['date_end'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
+					
+					u['fecha_inicio'] = dias_inicia_trabaja
+					u['fecha_fin'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
+					u['consultorio_id'] = vals['consultorio_id']
+					u['professional_id'] = vals['professional_id']
+					u['repetir_agenda'] = vals['repetir_agenda']
+					u['lunes'] = vals['lunes']
+					u['martes']= vals['martes']
+					u['miercoles']= vals['miercoles']
+					u['jueves'] = vals['jueves']
+					u['viernes']= vals['viernes']
+					u['sabado'] = vals['sabado']
+					u['domingo'] = vals['domingo']
+					u['enero'] = vals['enero']
+					u['febrero'] = vals['febrero']
+					u['marzo'] = vals['marzo']
+					u['abril'] = vals['abril']
+					u['mayo'] = vals['mayo']
+					u['junio'] = vals['junio']
+					u['julio'] = vals['julio']
+					u['agosto'] = vals['agosto']
+					u['septiembre'] = vals['septiembre']
+					u['noviembre'] = vals['noviembre']
+					u['diciembre'] = vals['diciembre']
+
+					agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
+		
+		if not vals['repetir_agenda']:
+			agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, vals, context)
+
+		return agenda_id
 
 
 	def default_get(self, cr, uid, fields, context=None):
 		res = super(doctor_co_schedule_inherit,self).default_get(cr, uid, fields, context=context)
-		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
-		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
-		fecha_inicio_agenda = datetime.strptime(context['default_date_begin'], "%Y-%m-%d %H:%M:%S")
-		fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
-		fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
-		if fecha_inicio_agenda < fecha_hora_actual:
-			if not 'consultorio_id' in fields:
-				f_ini = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_ini, context)
-				f_fin = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_fin, context)
-				agenda_ids = self.search(cr,uid,[('date_begin','>=', f_fin), ('date_begin', '<=', f_ini)],context=None)
-				ultima_agenda_id = agenda_ids and max(agenda_ids)
+		if 'default_date_begin' in context:
+			fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+			fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+			fecha_inicio_agenda = datetime.strptime(context['default_date_begin'], "%Y-%m-%d %H:%M:%S")
+			fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
+			fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
+			if fecha_inicio_agenda < fecha_hora_actual:
+				if not 'consultorio_id' in fields:
+					f_ini = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_ini, context)
+					f_fin = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_fin, context)
+					agenda_ids = self.search(cr,uid,[('date_begin','>=', f_ini), ('date_end', '<=', f_fin)],context=None)
+					ultima_agenda_id = agenda_ids and max(agenda_ids)
 
-				if ultima_agenda_id:
-					hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
-					fecha_hora_actual = str(hora_inicio_agenda)
+					if ultima_agenda_id:
+						hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
+						fecha_hora_actual = str(hora_inicio_agenda)
 
-				if not ultima_agenda_id:
-					fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
+					if not ultima_agenda_id:
+						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
 
-				res['date_begin'] = str(fecha_hora_actual)
+					res['date_begin'] = str(fecha_hora_actual)
+					res['fecha_inicio'] = str(fecha_hora_actual)
 
+			res['fecha_inicio'] = str(fecha_inicio_agenda)
 		return res
+
+
+
 
 doctor_co_schedule_inherit()
 

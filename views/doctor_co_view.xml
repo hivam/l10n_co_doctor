@@ -189,6 +189,75 @@
                 <field name="professional_id" position="replace" >
                     <field name="professional_id" required="True"/>
                 </field>
+
+                <field name="patients_count" position="after" >
+                    <field name="repetir_agenda"/>
+                </field>
+
+                <field name="date_begin" position="attributes">
+                    <attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
+                        'required': [('repetir_agenda', '!=', True)]}</attribute>
+                </field>
+
+                <field name="date_end" position="attributes">
+                    <attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
+                        'required': [('repetir_agenda', '!=', True)]}</attribute>
+                </field>
+
+                <field name="schedule_duration" position="attributes">
+                    <attribute name="attrs">
+                        {'invisible': [('repetir_agenda', '=', True)],
+                        'required': [('repetir_agenda', '!=', True)]}
+                    </attribute>
+                </field>
+
+                <notebook>
+                    <page string="Configuracion Repetir Agenda" attrs="{'invisible':[('repetir_agenda', '!=', True)]}">
+                        <legend class="texto_legend">Configuracion Fecha y Hora</legend>
+                        <group colspan="3">
+                            <field name="fecha_inicio" attrs="{'required':[('repetir_agenda', '=', True)]}" on_change="onchange_fecha_incio(fecha_inicio, duracion_agenda, fecha_fin)"/>
+                            <field name="duracion_agenda" attrs="{'required':[('repetir_agenda', '=', True)]}" on_change="onchange_fecha_incio(fecha_inicio, duracion_agenda, fecha_fin)"/>
+                            <field name="fecha_fin" attrs="{'required':[('repetir_agenda', '=', True)]}"/>
+                        </group>
+                        <separator/>
+                        <legend class="texto_legend">Excepcion Fechas</legend>
+                        <group colspan="3">
+                        <field name="dias_excepciones_id" nolabel="1" editable="bottom">
+                            <tree string="Dias excepciones" editable="bottom">
+                                <field name="schedule_id" invisible="1"/>
+                                <field name="dias_excepciones"/>
+                            </tree>
+                        </field>
+                        </group>
+                        <separator/>
+                        <legend class="texto_legend">Dias de la Semana</legend>
+                        <group colspan="4" col="6">
+                            <field name="lunes"/>
+                            <field name="martes"/>
+                            <field name="miercoles"/>
+                            <field name="jueves"/>
+                            <field name="viernes"/>
+                            <field name="sabado"/>
+                            <field name="domingo"/>
+                        </group>
+                        <separator/>
+                        <legend class="texto_legend">Meses</legend>
+                        <group colspan="4" col="6">
+                            <field name="enero"/>
+                            <field name="febrero"/>
+                            <field name="marzo"/>
+                            <field name="abril"/>
+                            <field name="mayo"/>
+                            <field name="junio"/>
+                            <field name="julio"/>
+                            <field name="agosto"/>
+                            <field name="septiembre"/>
+                            <field name="octubre"/>
+                            <field name="noviembre"/>
+                            <field name="diciembre"/>
+                        </group>
+                    </page>
+                </notebook>
             </field>
         </record>
 
