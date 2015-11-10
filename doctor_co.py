@@ -611,6 +611,10 @@ class doctor_co_schedule_inherit(osv.osv):
 						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
 						res['date_begin'] = fecha_hora_actual
 						res['fecha_inicio'] = fecha_hora_actual
+
+			if datetime.strptime(res['fecha_inicio'], "%Y-%m-%d %H:%M:%S") < fecha_inicio_agenda:	
+				res['fecha_inicio'] = str(fecha_inicio_agenda)
+
 		return res
 
 doctor_co_schedule_inherit()
