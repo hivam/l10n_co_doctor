@@ -520,11 +520,14 @@ class doctor_co_schedule_inherit(osv.osv):
 		u ={}
 
 		if vals['repetir_agenda']:
-			fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
-			fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
+			fecha_inicio = self.pool.get('doctor.doctor')._date_to_dateuser(cr, uid, vals['fecha_inicio'])
+			fecha_fin = self.pool.get('doctor.doctor')._date_to_dateuser(cr, uid, vals['fecha_fin'])
+			
+			fecha_inicio = datetime.strptime(fecha_inicio, "%Y-%m-%d %H:%M:%S")
+			fecha_fin = datetime.strptime(fecha_fin, "%Y-%m-%d %H:%M:%S")
 			fecha_sin_hora = str(fecha_inicio)[0:10]
 			fecha_sin_hora = datetime.strptime(fecha_sin_hora, "%Y-%m-%d")
-			_logger.info(len(str(fecha_fin - fecha_inicio)[0:2].strip()))
+
 			if not ':' in str(fecha_fin - fecha_inicio)[0:2].strip():
 				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:2].strip())
 			else:
@@ -543,7 +546,7 @@ class doctor_co_schedule_inherit(osv.osv):
 				dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
 				dia=dias_inicia_trabaja.weekday()
 				mes = dias_inicia_trabaja.strftime('%B')
-
+				_logger.info(dias_inicia_trabaja)
 				if (dias_usuario[dia_semana[dia]] or str(fecha_sin_h)[0:10] in fecha_excepciones) and meses_usuario[mes]:
 
 					u['date_begin'] = dias_inicia_trabaja
@@ -575,6 +578,7 @@ class doctor_co_schedule_inherit(osv.osv):
 					u['diciembre'] = vals['diciembre']
 
 					agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
+		
 		if not vals['repetir_agenda']:
 			agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, vals, context)
 

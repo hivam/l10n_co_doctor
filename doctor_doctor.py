@@ -44,6 +44,16 @@ class doctor(osv.osv):
 
 		return fecha_utc
 
+	def _date_to_dateuser(self, cr, uid, date_begin):
+		date_begin_user = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+
+		user = self.pool.get('res.users').browse(cr, uid, uid)
+		tz = pytz.timezone(user.tz) if user.tz else pytz.utc
+		date_begin_user = pytz.utc.localize(date_begin_user).astimezone(tz)
+
+		date_begin_user = datetime.strftime(date_begin_user, "%Y-%m-%d %H:%M:%S")
+		return date_begin_user
+
 
 	def modulo_instalado(self, cr, uid, nombre_modulo,context=None):
 
