@@ -505,6 +505,12 @@ class doctor_co_schedule_inherit(osv.osv):
 			'domingo',
 		]
 
+		meses_anio = [
+			'enero', 'febrero', 'marzo', 'abril',
+			'mayo', 'junio','julio', 'agosto',
+			'septiembre', 'octubre', 'noviembre', 'diciembre',
+		]
+
 		dias_usuario = {
 			'lunes': vals['lunes'], 'martes': vals['martes'], 'miercoles': vals['miercoles'],
 			'jueves': vals['jueves'], 'viernes': vals['viernes'], 'sabado': vals['sabado'],
@@ -520,11 +526,8 @@ class doctor_co_schedule_inherit(osv.osv):
 		u ={}
 
 		if vals['repetir_agenda']:
-			fecha_inicio = self.pool.get('doctor.doctor')._date_to_dateuser(cr, uid, vals['fecha_inicio'])
-			fecha_fin = self.pool.get('doctor.doctor')._date_to_dateuser(cr, uid, vals['fecha_fin'])
-			
-			fecha_inicio = datetime.strptime(fecha_inicio, "%Y-%m-%d %H:%M:%S")
-			fecha_fin = datetime.strptime(fecha_fin, "%Y-%m-%d %H:%M:%S")
+			fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
+			fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
 			fecha_sin_hora = str(fecha_inicio)[0:10]
 			fecha_sin_hora = datetime.strptime(fecha_sin_hora, "%Y-%m-%d")
 
@@ -545,10 +548,10 @@ class doctor_co_schedule_inherit(osv.osv):
 				fecha_sin_h = fecha_sin_hora + timedelta(days=dias)
 				dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
 				dia=dias_inicia_trabaja.weekday()
-				mes = dias_inicia_trabaja.strftime('%B')
-				_logger.info(dias_inicia_trabaja)
-				if (dias_usuario[dia_semana[dia]] or str(fecha_sin_h)[0:10] in fecha_excepciones) and meses_usuario[mes]:
+				mes = int(dias_inicia_trabaja.strftime('%m'))-1
 
+				if (dias_usuario[dia_semana[dia]] or str(fecha_sin_h)[0:10] in fecha_excepciones) and meses_usuario[meses_anio[mes]]:
+					_logger.info(dias_inicia_trabaja)
 					u['date_begin'] = dias_inicia_trabaja
 					u['date_end'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
 					
@@ -602,15 +605,13 @@ class doctor_co_schedule_inherit(osv.osv):
 
 					if ultima_agenda_id:
 						hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
-						fecha_hora_actual = str(hora_inicio_agenda)
+						res['date_begin'] = hora_inicio_agenda
+						res['fecha_inicio'] = hora_inicio_agenda
 
-					if not ultima_agenda_id:
+					elif not ultima_agenda_id or  fecha_inicio_agenda < fecha_hora_actual:
 						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
-
-					res['date_begin'] = str(fecha_hora_actual)
-					res['fecha_inicio'] = str(fecha_hora_actual)
-
-			res['fecha_inicio'] = str(fecha_inicio_agenda)
+						res['date_begin'] = fecha_hora_actual
+						res['fecha_inicio'] = fecha_hora_actual
 		return res
 
 doctor_co_schedule_inherit()
