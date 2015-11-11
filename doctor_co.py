@@ -852,8 +852,9 @@ class doctor_review_systems(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
-			if vals['review_systems']:
-				return super(doctor_review_systems,self).create(cr, uid, vals, context=context)
+			if 'review_systems' in vals:
+				if vals['review_systems']:
+					return super(doctor_review_systems,self).create(cr, uid, vals, context=context)
 
 doctor_review_systems()
 
@@ -870,8 +871,9 @@ class doctor_attentions_past(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
-			if vals['past']:
-				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
+			if 'past' in vals:
+				if vals['past']:
+					return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
 
 
 
