@@ -837,6 +837,43 @@ class doctor_prescription(osv.osv):
 
 		return res
 
+doctor_prescription()
+
+
+class doctor_review_systems(osv.osv):
+
+	_name = 'doctor.review.systems'
+
+	_inherit = 'doctor.review.systems'
+
+	_columns = {
+
+	}
+
+	def create(self, cr, uid, vals, context=None):
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+			if vals['review_systems']:
+				return super(doctor_review_systems,self).create(cr, uid, vals, context=context)
+
+doctor_review_systems()
+
+
+class doctor_attentions_past(osv.osv):
+
+	_name = 'doctor.attentions.past'
+
+	_inherit = 'doctor.attentions.past'
+
+	_columns = {
+
+	}
+
+	def create(self, cr, uid, vals, context=None):
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+			if vals['past']:
+				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
+
+
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"
