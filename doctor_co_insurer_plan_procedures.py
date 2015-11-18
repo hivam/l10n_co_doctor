@@ -18,20 +18,36 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from rips_models import *
-import res_partner_co
-import doctor_co
-import report
-import doctor_professional_co
-import account_invoice_co
-import doctor_attentions_inherit
-import doctor_review_systems_inherit
-import doctor_attentions_past_inherit
-import doctor_attentions_exam_inherit
-import doctor_atc_past_inherit
-import doctor_diseases_past_inherit
-import doctor_co_prescription_inherit
-import doctor_contract_insurer
-import doctor_insurer_plan
-import doctor_co_insurer_plan_procedures
-import doctor_doctor
+import logging
+_logger = logging.getLogger(__name__)
+import openerp
+import re
+import codecs
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
+class doctor_insurer_plan_procedures(osv.osv):
+	_name = "doctor.insurer.plan.procedures"
+	_rec_name="procedure_id"
+
+	def name_get(self, cr, uid, ids, context={}):
+		if not len(ids):
+			return []
+		rec_name = 'procedure_id'
+		res = [(r['id'], r[rec_name][1])
+			for r in self.read(cr, uid, ids, [rec_name], context)]
+		return res
+
+
+	_columns = {
+		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
+		'procedure_id':	fields.many2one('product.product', 'Procedimiento',required=True),
+		'valor' : 	fields.float('Valor',digits=(3,3), required=True),
+		'active' : fields.boolean('¿Activo?', help="Estado del procedimiento dentro del plan."),
+
+	}
+
+	_defaults={
+		'active': True,
+
+	}

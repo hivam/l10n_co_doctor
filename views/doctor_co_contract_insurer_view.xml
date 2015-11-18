@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <!-- Form View -->
+    <record model="ir.ui.view" id="doctor_co_contract_insurer_form">
+      <field name="name">doctor.contract.insurer.form</field>
+      <field name="model">doctor.contract.insurer</field>
+      <field name="arch" type="xml">
+        <form string="Contrato Aseguradora" version="7.0">
+          <sheet> 
+            <fieldset>
+              <field name="id" invisible="1"/>
+              <legend class="texto_legend">Contrato</legend>
+                <group col="4" colspan="6">
+                  <field name="contract_code"/>
+                  <field name="name"/>
+                  <field name="f_inicio"/>
+                  <field name="f_fin"/>
+                  <field name="valor"/>
+                  <field name="insurer_id"/>
+                  <field name="active"/>
+                </group>
+            </fieldset>
+            <fieldset>
+              <legend class="texto_legend">Planes</legend>
+                <group col="4" colspan="6">
+                  <field name="plan_ids" nolabel="1">
+                    <tree editable="bottom">
+                      <field name="plan_id"/>
+                    </tree>
+                  </field>    
+                </group>
+            </fieldset>
+          </sheet> 
+        </form>
+      </field>
+    </record>
+
+    <!-- Tree View -->
+    <record model="ir.ui.view" id="doctor_co_contract_insurer_tree">
+      <field name="name">doctor.contract.insurer.tree</field>
+      <field name="model">doctor.contract.insurer</field>
+      <field name="arch" type="xml">
+        <tree string="contrato Aseguradora">
+          <field name="contract_code"/>
+            <field name="name"/>
+            <field name="f_inicio"/>
+            <field name="f_fin"/>
+            <field name="valor"/>
+            <field name="insurer_id"/>
+            <field name="active"/>
+        </tree>
+      </field>
+    </record>
+
+  </data>
+</openerp>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <!--doctor insurer inherit-->
+    <record id="doctor_co_insurer_inherit_form" model="ir.ui.view">
+      <field name="name">doctor_co_insurer_inherit_view</field>
+      <field name="model">doctor.insurer</field>
+      <field name="inherit_id" ref="doctor.view_doctor_insurer_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//form/group" position="replace">
+          <group col="2" colspan="4">
+            <field name="insurer" ></field>
+            <field name="code"></field>
+          </group>
+          <group col="1">
+            <field name="id" invisible="1"/>
+            <notebook>
+              <page string="Contrato" attrs="{'invisible': [('id','=',False)]}">
+                <group>
+                  <field name="contract_ids"  context="{'default_insurer_id' : id}" nolabel="1">
+                    <tree string="Contrato">
+                      <field name="contract_code"/>
+                      <field name="name"/>
+                      <field name="f_inicio"/>
+                      <field name="f_fin"/>
+                      <field name="valor"/>
+                      <field name="active"/>
+                    </tree>
+                  </field>
+                </group>
+              </page>
+            </notebook>
+          </group>
+        </xpath>
+      </field>  
+    </record>
+
+  </data>
+</openerp>

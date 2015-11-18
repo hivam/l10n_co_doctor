@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <!-- Form View -->
+    <record model="ir.ui.view" id="doctor_co_insurer_plan_form">
+      <field name="name">doctor.insurer.plan.form</field>
+      <field name="model">doctor.insurer.plan</field>
+      <field name="arch" type="xml">
+        <form string="Contrato Aseguradora" version="7.0">
+          <sheet> 
+            <fieldset>
+              <field name="id" invisible="1"/>
+              <legend class="texto_legend">Configuración de Plan</legend>
+                <group col="2" colspan="4">
+                  <field name="name"/>
+                  <field name="insurer_id" on_change="onchange_limpiarContrato()"/>
+                  <field name="contract_id" domain="[('insurer_id','=',insurer_id)]"/>
+                </group>
+                <group col="1" colspan="4">
+                  <field name="id" invisible="1"/>
+                  <field name="procedimientos_ids" nolabel="1">
+                    <tree editable="bottom">
+                      <field name="procedure_id"/>
+                      <field name="valor"/>
+                      <field name="active"/>
+                    </tree>
+                  </field>
+                </group>
+            </fieldset>
+          </sheet> 
+        </form>
+      </field>
+    </record>
+
+    <!-- Tree View -->
+    <record model="ir.ui.view" id="doctor_co_insurer_plan_tree">
+      <field name="name">doctor.insurer.plan.tree</field>
+      <field name="model">doctor.insurer.plan</field>
+      <field name="arch" type="xml">
+        <tree string="Configuración de Plan">
+          <field name="name"/>
+          <field name="insurer_id"/>
+          <field name="contract_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Action -->
+
+    <record id="doctor_co_insurer_plan_action" model="ir.actions.act_window">
+      <field name="name">Configuración de Planes</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">doctor.insurer.plan</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Configuración de Planes" parent="doctor.menu_doctor_config" id="doctor_co_insurer_plan_id" action="doctor_co_insurer_plan_action"/>
+
+  </data>
+</openerp>
