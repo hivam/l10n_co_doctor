@@ -239,6 +239,7 @@
                             <field name="viernes"/>
                             <field name="sabado"/>
                             <field name="domingo"/>
+                            <field name="todos_los_dias_semana" on_change="onchange_seleccionar_todo(todos_los_dias_semana,'dias')"/>
                         </group>
                         <separator/>
                         <legend class="texto_legend">Meses</legend>
@@ -255,6 +256,7 @@
                             <field name="octubre"/>
                             <field name="noviembre"/>
                             <field name="diciembre"/>
+                            <field name="todos_los_meses" on_change="onchange_seleccionar_todo(todos_los_meses,'meses')"/>
                         </group>
                     </page>
                 </notebook>

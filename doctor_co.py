@@ -424,8 +424,6 @@ class doctor_attentions_co(osv.osv):
 		
 		ids_examen_fisico = self.pool.get('doctor.attentions.exam').search(cr, uid, [('attentiont_id', '=', ids), ('exam', '=', False)], context=context)
 		self.pool.get('doctor.attentions.exam').unlink(cr, uid, ids_examen_fisico, context)
-				
-			
 
 		return attentions_past
 
@@ -468,6 +466,7 @@ class doctor_co_schedule_inherit(osv.osv):
 		'viernes' : fields.boolean('Viernes'),
 		'sabado' : fields.boolean('sabado'),
 		'domingo' : fields.boolean('Domingo'),
+		'todos_los_dias_semana': fields.boolean('Marcar Todo'),
 
 		'enero' : fields.boolean('Enero'),
 		'febrero' : fields.boolean('Febrero'),
@@ -481,6 +480,7 @@ class doctor_co_schedule_inherit(osv.osv):
 		'octubre' : fields.boolean('Octubre'),
 		'noviembre' : fields.boolean('Noviembre'),
 		'diciembre' : fields.boolean('Diciembre'),
+		'todos_los_meses': fields.boolean('Marcar Todo'),
 
 
 	}
@@ -604,6 +604,55 @@ class doctor_co_schedule_inherit(osv.osv):
 			agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, vals, context)
 
 		return agenda_id
+
+	def onchange_seleccionar_todo(self, cr, uid, ids, marcar_todo, seleccion, context=None):
+		res={'value':{}}
+		if marcar_todo:
+			if marcar_todo and seleccion == 'dias':
+				res['value']['lunes']=True
+				res['value']['martes']=True
+				res['value']['miercoles']=True
+				res['value']['jueves']=True
+				res['value']['viernes']=True
+				res['value']['sabado']=True
+				res['value']['domingo']=True
+			elif marcar_todo and seleccion == 'meses':
+				res['value']['enero']=True
+				res['value']['febrero']=True
+				res['value']['marzo']=True
+				res['value']['abril']=True
+				res['value']['mayo']=True
+				res['value']['junio']=True
+				res['value']['julio']=True
+				res['value']['agosto']=True
+				res['value']['septiembre']=True
+				res['value']['octubre']=True
+				res['value']['noviembre']=True
+				res['value']['diciembre']=True
+		else:
+			if not marcar_todo and seleccion == 'dias':
+				res['value']['lunes']=False
+				res['value']['martes']=False
+				res['value']['miercoles']=False
+				res['value']['jueves']=False
+				res['value']['viernes']=False
+				res['value']['sabado']=False
+				res['value']['domingo']=False
+			elif not marcar_todo and seleccion == 'meses':
+				res['value']['enero']=False
+				res['value']['febrero']=False
+				res['value']['marzo']=False
+				res['value']['abril']=False
+				res['value']['mayo']=False
+				res['value']['junio']=False
+				res['value']['julio']=False
+				res['value']['agosto']=False
+				res['value']['septiembre']=False
+				res['value']['octubre']=False
+				res['value']['noviembre']=False
+				res['value']['diciembre']=False
+
+		return res
 
 
 	def default_get(self, cr, uid, fields, context=None):
