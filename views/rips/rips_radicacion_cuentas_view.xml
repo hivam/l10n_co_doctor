@@ -45,8 +45,8 @@
               <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id)" context=""/>
             </fieldset>
             <group col="4">
-
-              <field name="cantidad_factura"/>
+              <field name="id" invisible="1"/>
+              <field name="cantidad_factura" attrs="{'invisible': [('id','=',False)]}"/>
               <field name="numero_radicado"/>
               <field name="valor_total"/>
               <field name="saldo"/>
