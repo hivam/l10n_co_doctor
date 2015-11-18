@@ -29,3 +29,4 @@ import doctor_disability
 import doctor_attention
 import doctor_attentions_recomendaciones
 import doctor_attentions_certificado
+import doctor_attentions_otra_prescripcion

@@ -25,7 +25,6 @@ import re
 import codecs
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-
 import time
 import pooler
 from datetime import date, datetime, timedelta
@@ -403,6 +402,7 @@ class doctor_attentions_co(osv.osv):
 		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
 		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
 		'certificados_ids': fields.one2many('doctor.attentions.certificado', 'attentiont_id', 'Certificados',states={'closed': [('readonly', True)]}),
+		'otros_medicamentos_ids': fields.one2many('doctor.attentions.medicamento_otro', 'attentiont_id', 'Otra Prescripcion',states={'closed': [('readonly', True)]}),
 		}
 
 
@@ -410,9 +410,258 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta': '10',
 	}
 
+	def write(self, cr, uid, ids, vals, context=None):
+		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
+		
+		ids_attention_past = self.pool.get('doctor.attentions.past').search(cr, uid, [('attentiont_id', '=', ids), ('past', '=', False)], context=context)
+		self.pool.get('doctor.attentions.past').unlink(cr, uid, ids_attention_past, context)
+		
+		ids_review_system = self.pool.get('doctor.review.systems').search(cr, uid, [('attentiont_id', '=', ids), ('review_systems', '=', False)], context=context)
+		self.pool.get('doctor.review.systems').unlink(cr, uid, ids_review_system, context)
+	
+		ids_review_system = self.pool.get('doctor.review.systems').search(cr, uid, [('attentiont_id', '=', ids), ('review_systems', '=', False)], context=context)
+		self.pool.get('doctor.review.systems').unlink(cr, uid, ids_review_system, context)
+		
+		ids_examen_fisico = self.pool.get('doctor.attentions.exam').search(cr, uid, [('attentiont_id', '=', ids), ('exam', '=', False)], context=context)
+		self.pool.get('doctor.attentions.exam').unlink(cr, uid, ids_examen_fisico, context)
+				
+			
 
+		return attentions_past
 
 doctor_attentions_co()
+
+class doctor_co_schedule_dias_excepciones(osv.osv):
+
+	_name = 'doctor.schedule_dias_excepciones'
+
+	_columns = {
+
+		'schedule_id': fields.many2one('doctor.schedule', 'Agenda'),
+		'dias_excepciones' : fields.date('Dias Excepciones'),
+	}
+
+	_defaults = {
+		'dias_excepciones' : lambda *a: datetime.now().strftime('%Y-%m-%d'),
+	}
+
+doctor_co_schedule_dias_excepciones()
+
+class doctor_co_schedule_inherit(osv.osv):
+
+	_name = 'doctor.schedule'
+
+	_inherit = 'doctor.schedule'
+
+	_columns = {
+		'repetir_agenda': fields.boolean('Repetir Agenda'),
+		'fecha_inicio': fields.datetime('Fecha Inicio'),
+		'fecha_fin': fields.datetime('Fecha Fin'),
+		'dias_excepciones_id': fields.one2many('doctor.schedule_dias_excepciones', 'schedule_id', 'Dias Excepcionales'),
+		'duracion_agenda' : fields.integer('Duracion Agenda (horas)'),
+
+
+		'lunes' : fields.boolean('Lunes'),
+		'martes' : fields.boolean('Martes'),
+		'miercoles' : fields.boolean('Miercoles'),
+		'jueves' : fields.boolean('Jueves'),
+		'viernes' : fields.boolean('Viernes'),
+		'sabado' : fields.boolean('sabado'),
+		'domingo' : fields.boolean('Domingo'),
+
+		'enero' : fields.boolean('Enero'),
+		'febrero' : fields.boolean('Febrero'),
+		'marzo' : fields.boolean('Marzo'),
+		'abril' : fields.boolean('Abril'),
+		'mayo' : fields.boolean('Mayo'),
+		'junio' : fields.boolean('Junio'),
+		'julio' : fields.boolean('Julio'),
+		'agosto' : fields.boolean('Agosto'),
+		'septiembre' : fields.boolean('Septiembre'),
+		'octubre' : fields.boolean('Octubre'),
+		'noviembre' : fields.boolean('Noviembre'),
+		'diciembre' : fields.boolean('Diciembre'),
+
+
+	}
+
+	_defaults = {
+		'fecha_inicio' : lambda *a: datetime.now().strftime('%Y-%m-%d 13:00:00'),
+		'duracion_agenda' : 4,
+
+	}
+
+	def onchange_fecha_incio(self, cr, uid, ids, fecha_inicio, duracion_agenda, fecha_fin, context=None):
+		values = {}
+		res = {}
+		if not fecha_inicio and not fecha_fin:
+			return res
+
+		schedule_begin = datetime.strptime(fecha_inicio, "%Y-%m-%d %H:%M:%S")
+		duration = duracion_agenda
+		date_end = schedule_begin + timedelta(hours=duration)
+		values.update({
+			'fecha_fin': date_end.strftime("%Y-%m-%d %H:%M:%S"),
+		})
+		return {'value': values}
+
+
+	def create(self, cr, uid, vals, context=None):
+		
+		fecha_excepciones = []
+		agenda_id = 0
+
+		if vals['dias_excepciones_id']:
+			for i in range(0,len(vals['dias_excepciones_id']),1):
+				if not datetime.strptime(vals['dias_excepciones_id'][i][2]['dias_excepciones'], "%Y-%m-%d") < datetime.today():
+					fecha_excepciones.append(vals['dias_excepciones_id'][i][2]['dias_excepciones'])
+				else:
+					raise osv.except_osv(_('Error!'),_('Las fechas excepcionales no deben ser fechas menores a la actual'))
+
+		dia_semana = [
+			'lunes', 'martes', 'miercoles',
+			'jueves', 'viernes','sabado',
+			'domingo',
+		]
+
+		meses_anio = [
+			'enero', 'febrero', 'marzo', 'abril',
+			'mayo', 'junio','julio', 'agosto',
+			'septiembre', 'octubre', 'noviembre', 'diciembre',
+		]
+
+		dias_usuario = {
+			'lunes': vals['lunes'], 'martes': vals['martes'], 'miercoles': vals['miercoles'],
+			'jueves': vals['jueves'], 'viernes': vals['viernes'], 'sabado': vals['sabado'],
+			'domingo': vals['domingo'],
+		}
+
+		meses_usuario = {
+			'enero' : vals['enero'], 'febrero': vals['febrero'], 'marzo': vals['marzo'],'abril': vals['abril'],
+			'mayo': vals['mayo'], 'junio': vals['junio'], 'julio': vals['julio'], 'agosto': vals['agosto'],
+			'septiembre': vals['septiembre'], 'octubre': vals['octubre'], 'noviembre': vals['noviembre'], 'diciembre': vals['diciembre'],
+		}
+
+		u ={}
+
+		if vals['repetir_agenda']:
+			fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
+			fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
+			fecha_sin_hora = str(fecha_inicio)[0:10]
+			fecha_sin_hora = datetime.strptime(fecha_sin_hora, "%Y-%m-%d")
+
+			if not ':' in str(fecha_fin - fecha_inicio)[0:2].strip():
+				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:2].strip())
+			else:
+				raise osv.except_osv(_('Error!'),_('Las fechas no coinciden para ser una agenda repetida ya que son iguales'))
+			
+			if not True in meses_usuario.values():
+					raise osv.except_osv(_('Error!'),_('Debe Seleccionar los meses que se repite la agenda'))
+
+			if not True in dias_usuario.values():
+				raise osv.except_osv(_('Error!'),_('Debe Seleccionar los dias que se repite la agenda'))
+
+
+			for dias in range(0, duracion_dias+1, 1):
+
+				fecha_sin_h = fecha_sin_hora + timedelta(days=dias)
+				dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
+				dia=dias_inicia_trabaja.weekday()
+				mes = int(dias_inicia_trabaja.strftime('%m'))-1
+
+				if (dias_usuario[dia_semana[dia]] or str(fecha_sin_h)[0:10] in fecha_excepciones) and meses_usuario[meses_anio[mes]]:
+					u['date_begin'] = dias_inicia_trabaja
+					u['date_end'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
+					_logger.info('pasa')
+					u['fecha_inicio'] = dias_inicia_trabaja
+					u['fecha_fin'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
+					if 'consultorio_id' in vals:
+						u['consultorio_id'] = vals['consultorio_id']
+					u['professional_id'] = vals['professional_id']
+					u['repetir_agenda'] = vals['repetir_agenda']
+					u['lunes'] = vals['lunes']
+					u['martes']= vals['martes']
+					u['miercoles']= vals['miercoles']
+					u['jueves'] = vals['jueves']
+					u['viernes']= vals['viernes']
+					u['sabado'] = vals['sabado']
+					u['domingo'] = vals['domingo']
+					u['enero'] = vals['enero']
+					u['febrero'] = vals['febrero']
+					u['marzo'] = vals['marzo']
+					u['abril'] = vals['abril']
+					u['mayo'] = vals['mayo']
+					u['junio'] = vals['junio']
+					u['julio'] = vals['julio']
+					u['agosto'] = vals['agosto']
+					u['septiembre'] = vals['septiembre']
+					u['noviembre'] = vals['noviembre']
+					u['diciembre'] = vals['diciembre']
+
+					agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
+		
+		if not vals['repetir_agenda']:
+			agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, vals, context)
+
+		return agenda_id
+
+
+	def default_get(self, cr, uid, fields, context=None):
+		res = super(doctor_co_schedule_inherit,self).default_get(cr, uid, fields, context=context)
+		if 'default_date_begin' in context:
+			fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+			fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+			fecha_inicio_agenda = datetime.strptime(context['default_date_begin'], "%Y-%m-%d %H:%M:%S")
+			fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
+			fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
+			if fecha_inicio_agenda < fecha_hora_actual:
+				if not 'consultorio_id' in fields:
+					f_ini = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_ini, context)
+					f_fin = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_fin, context)
+					agenda_ids = self.search(cr,uid,[('date_begin','>=', f_ini), ('date_end', '<=', f_fin)],context=None)
+					ultima_agenda_id = agenda_ids and max(agenda_ids)
+
+					if ultima_agenda_id:
+						hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
+						res['date_begin'] = hora_inicio_agenda
+						res['fecha_inicio'] = hora_inicio_agenda
+
+					elif not ultima_agenda_id or  fecha_inicio_agenda < fecha_hora_actual:
+						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
+						res['date_begin'] = fecha_hora_actual
+						res['fecha_inicio'] = fecha_hora_actual
+
+			if datetime.strptime(res['fecha_inicio'], "%Y-%m-%d %H:%M:%S") < fecha_inicio_agenda:	
+				res['fecha_inicio'] = str(fecha_inicio_agenda)
+
+		return res
+
+doctor_co_schedule_inherit()
+
+class doctor_otra_prescripcion(osv.osv):
+
+	_name= 'product.product'
+
+	_inherit = 'product.product'
+
+	_columns = {
+		'is_medicamento_prescripcion': fields.boolean('¿Es un medicamento / otro elemento?')
+	}
+
+doctor_otra_prescripcion()
+
+class doctor_attention_medicamento_otro_elemento(osv.osv):
+
+	_name = 'doctor.attentions.medicamento_otro'
+
+	_rec_name = 'procedures_id'
+
+	_columns = {
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
+		'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
+		'prescripcion': fields.char('Prescripcion'),
+		'recomendacion': fields.text('Recomendaciones'),
+	}
 
 
 class doctor_attentions_recomendaciones(osv.osv):
@@ -484,6 +733,19 @@ class doctor_drugs(osv.osv):
 
 	}
 
+	def create(self, cr, uid, vals, context=None):
+		
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+			drugs_ids = self.search(cr,uid,[],context=context)
+			last_id = drugs_ids and max(drugs_ids)
+			code = self.browse(cr,uid,last_id,context=context).code
+			first_code = code[0:2]
+			last_code = int(code[2:])+1
+			new_code = first_code + str(last_code)
+			vals['code'] = new_code
+		_logger.info(vals)
+		return super(doctor_drugs,self).create(cr, uid, vals, context=context)
+
 	def name_get(self, cr, uid, ids, context={}):
 		if not len(ids):
 			return []
@@ -493,10 +755,47 @@ class doctor_drugs(osv.osv):
 		for record in reads:
 			name = record['atc_id'][1]
 			if record['pharmaceutical_form'] and record['drugs_concentration'] and record['administration_route']:
-				name = name[9:] + ' (' + record['drugs_concentration'] + ' - ' + record['pharmaceutical_form'][1] + ' - ' + \
+				name = name + ' (' + record['drugs_concentration'] + ' - ' + record['pharmaceutical_form'][1] + ' - ' + \
 					   record['administration_route'][1] + ')'
 			res.append((record['id'], name))
 		return res
+
+doctor_drugs()
+
+
+
+class doctor_atc(osv.osv):
+
+	_name = "doctor.atc"
+
+	_inherit = "doctor.atc"
+
+	_columns = {
+
+	}
+
+	def create(self, cr, uid, vals, context=None):
+
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+			atc = vals['name']
+			atc_ids = self.search(cr,uid,[],context=context)
+			last_atc_id = atc_ids and max(atc_ids)
+			_logger.info(last_atc_id)
+			vals['code'] = str(int(last_atc_id)+1)
+			vals['name'] = atc.upper()
+		return super(doctor_atc,self).create(cr, uid, vals, context=context)
+
+	def name_get(self, cr, uid, ids, context={}):
+		if not len(ids):
+			return []
+		reads = self.read(cr, uid, ids, ['name', 'code'], context)
+		res = []
+		for record in reads:
+			name = record['name']
+			res.append((record['id'], name))
+		return res
+
+doctor_atc()
 
 
 class doctor_prescription(osv.osv):
@@ -505,7 +804,9 @@ class doctor_prescription(osv.osv):
 	_inherit = 'doctor.prescription'
 
 	_columns = {
-		'dose_float' : fields.float('Dose',digits=(3,3)),
+		'dose_float' : fields.char('Dose'),
+		'cantidad_total' : fields.char('Cantidad Total'),
+		'indicacion_tomar': fields.char('Tomar')
 	}
 
 	def onchange_medicamento(self, cr, uid, ids, drugs_id, context=None):
@@ -516,48 +817,91 @@ class doctor_prescription(osv.osv):
 		modelo_crear = self.pool.get('doctor.measuring.unit')
 		numero = ''
 
-		if drugs_id:
-			for medicamento in modelo_buscar.browse(cr,uid,[drugs_id],context=None):
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+
+			if drugs_id:
+				for medicamento in modelo_buscar.browse(cr,uid,[drugs_id],context=None):
+					
+					forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)	
+					
+					via = medicamento.administration_route.id
+					concentracion = medicamento.drugs_concentration
+
+					if not forma_farmaceutica_id:
+						vals['code'] = ('%s' %medicamento.pharmaceutical_form.id)
+						vals['name'] = medicamento.pharmaceutical_form.name
+						modelo_crear.create(cr,uid,vals,context=context)
+
+					forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)
+
+				for x in concentracion:
+					if x == ' ':
+						break
+					numero = numero + x
+
+				if len(concentracion[len(numero):].strip()) <= 3:
+					unidad_dosis = concentracion[len(numero):].strip()
+				else:
+					unidad_dosis = concentracion[len(numero):len(numero)+2].strip()
 				
-				forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)	
+				unidad_dosis_id = self.pool.get('doctor.dose.unit').search(cr,uid,[('code','=',unidad_dosis)],context=None)
 				
-				via = medicamento.administration_route.id
-				concentracion = medicamento.drugs_concentration
+				numero = numero.replace(',','.')
 
-				if not forma_farmaceutica_id:
-					vals['code'] = ('%s' %medicamento.pharmaceutical_form.id)
-					vals['name'] = medicamento.pharmaceutical_form.name
-					modelo_crear.create(cr,uid,vals,context=context)
-
-				forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)
-
-			for x in concentracion:
-				if x == ' ':
-					break
-				numero = numero + x
-
-			_logger.info(len(concentracion[len(numero):].strip()))
-
-			if len(concentracion[len(numero):].strip()) <= 3:
-				unidad_dosis = concentracion[len(numero):].strip()
-			else:
-				unidad_dosis = concentracion[len(numero):len(numero)+2].strip()
-			
-			unidad_dosis_id = self.pool.get('doctor.dose.unit').search(cr,uid,[('code','=',unidad_dosis)],context=None)
-			
-			numero = numero.replace(',','.')
-
-			_logger.info(unidad_dosis_id)
-			res['value']['administration_route_id']=via
-			res['value']['measuring_unit_qt']=forma_farmaceutica_id
-			res['value']['measuring_unit_q']=forma_farmaceutica_id
-			res['value']['dose_float']=float(numero)
-			res['value']['dose_unit_id']=unidad_dosis_id
-
-
+				res['value']['administration_route_id']=via
+				res['value']['measuring_unit_qt']=forma_farmaceutica_id
+				res['value']['measuring_unit_q']=forma_farmaceutica_id
+				res['value']['dose_float']=numero
+				res['value']['dose_unit_id']=unidad_dosis_id
 
 		return res
 
+doctor_prescription()
+
+
+class doctor_review_systems(osv.osv):
+
+	_name = 'doctor.review.systems'
+
+	_inherit = 'doctor.review.systems'
+
+	_columns = {
+
+	}
+
+	def create(self, cr, uid, vals, context=None):
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+			if 'active_model' in context:
+				if 'review_systems' in vals:
+					if vals['review_systems']:
+						return super(doctor_review_systems,self).create(cr, uid, vals, context=context)
+
+			if not 'active_model' in context:
+				return super(doctor_review_systems,self).create(cr, uid, vals, context=context)
+
+doctor_review_systems()
+
+
+class doctor_attentions_past(osv.osv):
+
+	_name = 'doctor.attentions.past'
+
+	_inherit = 'doctor.attentions.past'
+
+	_columns = {
+
+	}
+
+	def create(self, cr, uid, vals, context=None):
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+
+			if 'active_model' in context:
+				if 'past' in vals:
+					if vals['past']:
+						return super(doctor_attentions_past,self).create(cr, uid,vals, context=context)
+
+			if not 'active_model' in context:
+				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"

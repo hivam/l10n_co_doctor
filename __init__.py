@@ -34,3 +34,4 @@ import doctor_co_prescription_inherit
 import doctor_contract_insurer
 import doctor_insurer_plan
 import doctor_co_insurer_plan_procedures
+import doctor_doctor
