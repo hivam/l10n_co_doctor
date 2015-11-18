@@ -410,6 +410,25 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta': '10',
 	}
 
+	def write(self, cr, uid, ids, vals, context=None):
+		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
+		
+		ids_attention_past = self.pool.get('doctor.attentions.past').search(cr, uid, [('attentiont_id', '=', ids), ('past', '=', False)], context=context)
+		self.pool.get('doctor.attentions.past').unlink(cr, uid, ids_attention_past, context)
+		
+		ids_review_system = self.pool.get('doctor.review.systems').search(cr, uid, [('attentiont_id', '=', ids), ('review_systems', '=', False)], context=context)
+		self.pool.get('doctor.review.systems').unlink(cr, uid, ids_review_system, context)
+	
+		ids_review_system = self.pool.get('doctor.review.systems').search(cr, uid, [('attentiont_id', '=', ids), ('review_systems', '=', False)], context=context)
+		self.pool.get('doctor.review.systems').unlink(cr, uid, ids_review_system, context)
+		
+		ids_examen_fisico = self.pool.get('doctor.attentions.exam').search(cr, uid, [('attentiont_id', '=', ids), ('exam', '=', False)], context=context)
+		self.pool.get('doctor.attentions.exam').unlink(cr, uid, ids_examen_fisico, context)
+				
+			
+
+		return attentions_past
+
 doctor_attentions_co()
 
 class doctor_co_schedule_dias_excepciones(osv.osv):
@@ -852,9 +871,13 @@ class doctor_review_systems(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
-			if 'review_systems' in vals:
-				if vals['review_systems']:
-					return super(doctor_review_systems,self).create(cr, uid, vals, context=context)
+			if 'active_model' in context:
+				if 'review_systems' in vals:
+					if vals['review_systems']:
+						return super(doctor_review_systems,self).create(cr, uid, vals, context=context)
+
+			if not 'active_model' in context:
+				return super(doctor_review_systems,self).create(cr, uid, vals, context=context)
 
 doctor_review_systems()
 
@@ -871,11 +894,14 @@ class doctor_attentions_past(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
-			if 'past' in vals:
-				if vals['past']:
-					return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
 
+			if 'active_model' in context:
+				if 'past' in vals:
+					if vals['past']:
+						return super(doctor_attentions_past,self).create(cr, uid,vals, context=context)
 
+			if not 'active_model' in context:
+				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"
