@@ -52,6 +52,29 @@ class doctor_patient_co(osv.osv):
 	_description = "Information about the patient"
 	_rec_name = 'nombre'
 
+
+	SELECTION_LIST = [
+		('1', u'Años'), 
+		('2', 'Meses'), 
+		('3', 'Dias'),
+	]
+
+
+	def _get_edad(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			edad = self.pool.get('doctor.attentions').calcular_edad(datos.birth_date)
+			res[datos.id] = edad
+		return res
+
+	def _get_unidad_edad(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			unidad_edad = self.pool.get('doctor.attentions').calcular_age_unit(datos.birth_date)
+			res[datos.id] = unidad_edad
+		return res
+
+	
 	_columns = {
 		'nombre': fields.char('Nombre', size=70),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
@@ -81,7 +104,20 @@ class doctor_patient_co(osv.osv):
 		'nombre_responsable': fields.char('Nombre', size=70),
 		'telefono_responsable' : fields.char('Teléfono', size=12),
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
+		'edad_calculada' : fields.function(_get_edad, type="integer", store= False, 
+								readonly=True, method=True, string='Edad Actual',),
+		'unidad_edad_calculada': fields.function(_get_unidad_edad, type="selection", method=True, 
+								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True),
 	}
+
+	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):
+		res = {'value':{}}
+		if fecha_nacimiento:
+			edad = self.pool.get('doctor.attentions').calcular_edad(fecha_nacimiento)
+			unidad_edad = self.pool.get('doctor.attentions').calcular_age_unit(fecha_nacimiento)
+			res['value']['edad_calculada'] = edad
+			res['value']['unidad_edad_calculada'] = unidad_edad
+		return res	
 
 	def onchange_existe(self, cr, uid, ids, ref, context=None):
 		res = {'value':{'lastname' : '', 'surnanme' : '', 'firstname' : '', 'middlename' : '', 'tdoc' : '', 'email' : '', 'phone' : '', 'mobile' : '', 'state_id' : '',
@@ -229,44 +265,54 @@ class doctor_appointment_co(osv.osv):
 
 	def onchange_calcular_hora(self,cr,uid,ids,schedule_id,type_id,time_begin,context=None):
 		values = {}
-
+		if not time_begin:
+			return values
+		#obtener fecha actual para comparar cada que se quiera asignar una cita, se convierte a datetime para comparar
+		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
 		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
-		#hora inicia la agenda
 		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S")
 		horarios = []
 		horario_cadena = []
 		horarios.append(time_begin) 
 		#tener un rango de horas para poder decirle cual puede ser la proxima cita
-		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 5)
+		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 1)
+		
 		for i in range(0,horarios_disponibles,1):
-			horarios.append(horarios[i] + timedelta(minutes=5)) 	
+			horarios.append(horarios[i] + timedelta(minutes=1)) 	
 		for i in horarios:
 			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:%S'))
-		
-		ids_ingresos_diarios = self.search(cr, uid, [('appointment_today', '=', True),('schedule_id', '=', schedule_id)],context=context)
+
+		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
 		if ids_ingresos_diarios:
-			
+			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:00")		
+			if fecha_hora_actual > time_begin:
+				if str(fecha_hora_actual) in horario_cadena:
+					index = horario_cadena.index(str(fecha_hora_actual))	
+					for borrar in range(0,index,1):
+						horario_cadena.pop(horario_cadena.index(horario_cadena[0]))
+
+
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
-				duracion = int(fecha_agenda.type_id.duration / 5)
-
-				if fecha_agenda.time_begin in horario_cadena:
-					del horario_cadena[horario_cadena.index(fecha_agenda.time_begin)]	
-
-				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
-				test = inicio
-				for i in range(1,duracion,1):
-					inicio = inicio + timedelta(minutes=5)
-					inicio_cadena = inicio.strftime('%Y-%m-%d %H:%M:%S')
+				duracion = int(fecha_agenda.type_id.duration / 1)
+				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:00")
+				minutos = 0
+				for i in range(0,duracion,1):
+					inicios = inicio + timedelta(minutes=minutos)
+					inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
+					minutos+=1
 					if inicio_cadena in horario_cadena:
-						del horario_cadena[horario_cadena.index(inicio_cadena)]		
-
+						horario_cadena.pop(horario_cadena.index(inicio_cadena))	
+				
 				if int(len(horario_cadena)) > 1:
-					if int(len(horario_cadena)) > int((appointment_type/5)):
+					if int(len(horario_cadena)) > int((appointment_type/1)):
+						_logger.info(horario_cadena[0])
 						values.update({
 							'time_begin' : horario_cadena[0],
-							'time_end' : horario_cadena[int(appointment_type/5)]
+							'time_end' : horario_cadena[int(appointment_type/1)]
 						})
 					else:
 						raise osv.except_osv(_('Error!'),
@@ -275,13 +321,21 @@ class doctor_appointment_co(osv.osv):
 					raise osv.except_osv(_('Error!'),
 								 _('Las agenda ya esta toda asignada'))
 		else:
-			hora_fin = time_begin + timedelta(minutes=appointment_type)
+
+			if time_begin < fecha_hora_actual:
+				hora_fin = fecha_hora_actual + timedelta(minutes=appointment_type)
+				values.update({
+					'time_begin' : str(fecha_hora_actual)	
+				})
+			else:
+				hora_fin = time_begin + timedelta(minutes=appointment_type)
+
 			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
 			values.update({
 				'time_end' : hora_fin
 			})
 
-
+			
 		return {'value': values}
 
 
@@ -511,40 +565,41 @@ class doctor_co_schedule_inherit(osv.osv):
 		fecha_excepciones = []
 		agenda_id = 0
 
-		if vals['dias_excepciones_id']:
-			for i in range(0,len(vals['dias_excepciones_id']),1):
-				if not datetime.strptime(vals['dias_excepciones_id'][i][2]['dias_excepciones'], "%Y-%m-%d") < datetime.today():
-					fecha_excepciones.append(vals['dias_excepciones_id'][i][2]['dias_excepciones'])
-				else:
-					raise osv.except_osv(_('Error!'),_('Las fechas excepcionales no deben ser fechas menores a la actual'))
-
-		dia_semana = [
-			'lunes', 'martes', 'miercoles',
-			'jueves', 'viernes','sabado',
-			'domingo',
-		]
-
-		meses_anio = [
-			'enero', 'febrero', 'marzo', 'abril',
-			'mayo', 'junio','julio', 'agosto',
-			'septiembre', 'octubre', 'noviembre', 'diciembre',
-		]
-
-		dias_usuario = {
-			'lunes': vals['lunes'], 'martes': vals['martes'], 'miercoles': vals['miercoles'],
-			'jueves': vals['jueves'], 'viernes': vals['viernes'], 'sabado': vals['sabado'],
-			'domingo': vals['domingo'],
-		}
-
-		meses_usuario = {
-			'enero' : vals['enero'], 'febrero': vals['febrero'], 'marzo': vals['marzo'],'abril': vals['abril'],
-			'mayo': vals['mayo'], 'junio': vals['junio'], 'julio': vals['julio'], 'agosto': vals['agosto'],
-			'septiembre': vals['septiembre'], 'octubre': vals['octubre'], 'noviembre': vals['noviembre'], 'diciembre': vals['diciembre'],
-		}
-
-		u ={}
-
 		if vals['repetir_agenda']:
+
+			if vals['dias_excepciones_id']:
+				for i in range(0,len(vals['dias_excepciones_id']),1):
+					if not datetime.strptime(vals['dias_excepciones_id'][i][2]['dias_excepciones'], "%Y-%m-%d") < datetime.today():
+						fecha_excepciones.append(vals['dias_excepciones_id'][i][2]['dias_excepciones'])
+					else:
+						raise osv.except_osv(_('Error!'),_('Las fechas excepcionales no deben ser fechas menores a la actual'))
+
+			dia_semana = [
+				'lunes', 'martes', 'miercoles',
+				'jueves', 'viernes','sabado',
+				'domingo',
+			]
+
+			meses_anio = [
+				'enero', 'febrero', 'marzo', 'abril',
+				'mayo', 'junio','julio', 'agosto',
+				'septiembre', 'octubre', 'noviembre', 'diciembre',
+			]
+
+			dias_usuario = {
+				'lunes': vals['lunes'], 'martes': vals['martes'], 'miercoles': vals['miercoles'],
+				'jueves': vals['jueves'], 'viernes': vals['viernes'], 'sabado': vals['sabado'],
+				'domingo': vals['domingo'],
+			}
+
+			meses_usuario = {
+				'enero' : vals['enero'], 'febrero': vals['febrero'], 'marzo': vals['marzo'],'abril': vals['abril'],
+				'mayo': vals['mayo'], 'junio': vals['junio'], 'julio': vals['julio'], 'agosto': vals['agosto'],
+				'septiembre': vals['septiembre'], 'octubre': vals['octubre'], 'noviembre': vals['noviembre'], 'diciembre': vals['diciembre'],
+			}
+
+			u ={}
+
 			fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 			fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
 			fecha_sin_hora = str(fecha_inicio)[0:10]
@@ -680,10 +735,39 @@ class doctor_co_schedule_inherit(osv.osv):
 						res['date_begin'] = fecha_hora_actual
 						res['fecha_inicio'] = fecha_hora_actual
 
-			if datetime.strptime(res['fecha_inicio'], "%Y-%m-%d %H:%M:%S") < fecha_inicio_agenda:	
-				res['fecha_inicio'] = str(fecha_inicio_agenda)
+			if 'fecha_inicio' in res:
+				if datetime.strptime(res['fecha_inicio'], "%Y-%m-%d %H:%M:%S") < fecha_inicio_agenda:	
+					res['fecha_inicio'] = str(fecha_inicio_agenda)
 
 		return res
+
+
+	def asignar_cita(self, cr, uid, ids, context=None):
+
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
+			data_obj = self.pool.get('ir.model.data')
+			result = data_obj._get_id(cr, uid, 'doctor_multiroom', 'view_doctor_appointment')
+			view_id = data_obj.browse(cr, uid, result).res_id
+
+			for id_agenda in self.browse(cr,uid,ids):
+				agenda_id = id_agenda.id
+
+			context['default_schedule_id'] = agenda_id
+
+		return {
+			'type': 'ir.actions.act_window',
+			'name': 'Asignar Cita',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_id': False,
+			'res_model': 'doctor.appointment',
+			'context': context or None,
+			'view_id': [view_id],
+			'nodestroy': False,
+			'target': 'new'
+
+		}
+
 
 doctor_co_schedule_inherit()
 
