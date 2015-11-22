@@ -120,6 +120,11 @@
                   </fieldset>
                 </xpath>
 
+                <xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']" position="before">
+                    <label for="notas_paciente" string="Notas"/>
+                    <field name="notas_paciente" nolabel="1"/>
+                </xpath>
+
                 <xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@string='Attentions']" position="replace"/>
 
             </field>
@@ -385,6 +390,11 @@
                             </form>
                         </field>
                     </page>
+                </xpath>
+
+                <xpath expr="//form[@string='Attentions']/group[@colspan='4']/separator[@string='Health records']" position="before">
+                    <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician"/>
+                    <field name="notas_confidenciales" attrs="{'invisible':[('activar_notas_confidenciales','=',False)]}"/>
                 </xpath>
 
                 <!--añadiendo onchange a campo drugs_id de medicamentos-->
