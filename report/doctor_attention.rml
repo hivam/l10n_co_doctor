@@ -214,7 +214,7 @@
             <para style="terp_default_8">[[line.system_category.name]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[(line.review_systems or 'Sin diligenciar')]]</para>
+            <para style="terp_default_8">[[(line.review_systems) or 'Sin diligenciar']]</para>
           </td>
         </tr>
       </blockTable>

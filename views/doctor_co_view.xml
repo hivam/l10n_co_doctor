@@ -313,7 +313,7 @@
             <field eval="7" name="priority"/>
             <field name="inherit_id" ref="doctor.view_doctor_attentions_form"/>
             <field name="arch" type="xml">
-
+                
                 <xpath expr="//form/group/group" position="after">
                 <group colspan='2' >
                     <field name="finalidad_consulta"/>
@@ -355,6 +355,16 @@
                     <field name="reportes_paraclinicos" nolabel="1"/>
                 </field>
 
+                <field name="conduct" position="after">
+                    <field name="inv" invisible="1"/> 
+                    <group col="2"> 
+                        <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician" attrs="{'invisible':[ ('inv','=',False)]}"/>
+                    </group>
+                    <group col="1" colspan="2">
+                        <field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician"/> 
+                    </group>
+                </field>
+
                 <xpath expr="//notebook/page[@string='Others']" position="after">
                     <page string="Recomendaciones">
                     <separator string="Recomendaciones" colspan="4"/>       
@@ -392,10 +402,6 @@
                     </page>
                 </xpath>
 
-                <xpath expr="//form[@string='Attentions']/group[@colspan='4']/separator[@string='Health records']" position="before">
-                    <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician"/>
-                    <field name="notas_confidenciales" attrs="{'invisible':[('activar_notas_confidenciales','=',False)]}"/>
-                </xpath>
 
                 <!--añadiendo onchange a campo drugs_id de medicamentos-->
             

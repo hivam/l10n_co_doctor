@@ -434,6 +434,17 @@ class doctor_attentions_co(osv.osv):
 	]
 
 
+	def _get_creador(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			doctor_creo = datos.professional_id.user_id.id
+			doctor_logeado_id = self.pool.get('res.users').search(cr,uid,[('id', '=', uid)],context=context)
+			if doctor_creo in doctor_logeado_id:
+				res[datos.id] = True
+			else:
+				res[datos.id] = False 
+		return res
+
 	_columns = {
 		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
 		'finalidad_consulta':fields.selection([('01','Atención del parto -puerperio'),
@@ -460,11 +471,14 @@ class doctor_attentions_co(osv.osv):
 		'otros_medicamentos_ids': fields.one2many('doctor.attentions.medicamento_otro', 'attentiont_id', 'Otra Prescripcion',states={'closed': [('readonly', True)]}),
 		'activar_notas_confidenciales':fields.boolean('NC', states={'closed': [('readonly', True)]}),
 		'notas_confidenciales': fields.text('Notas Confidenciales', states={'closed': [('readonly', True)]}),
+		'inv': fields.function(_get_creador, type="boolean", store= False, 
+								readonly=True, method=True, string='inv',),	
 		}
 
 
 	_defaults = {
 		'finalidad_consulta': '10',
+		'activar_notas_confidenciales' : False,
 	}
 
 	def write(self, cr, uid, ids, vals, context=None):
