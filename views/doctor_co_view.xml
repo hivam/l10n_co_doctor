@@ -60,11 +60,13 @@
                 <xpath expr="//group[@name='datos_personales']" position="before">
                   <group>
                     <field name="tdoc"/>
-                    <div>
-                        <field name='edad_calculada' nolabel='1' style="width:10%%"/>
-                        <field name='unidad_edad_calculada' nolabel='1' style="width:10%%"/> - de edad
-                    </div>
                   </group>
+                    <div>
+                        <h4>
+                            <field name='edad_calculada' nolabel='1' style="width:10%%"/>
+                            <field name='unidad_edad_calculada' nolabel='1' style="width:10%%"/>
+                        </h4>
+                    </div>
                 </xpath>
 
                 <field name="insurer" position="replace" >
