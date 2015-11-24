@@ -127,6 +127,16 @@
                     <field name="notas_paciente" nolabel="1"/>
                 </xpath>
 
+                <field name="notas_paciente" position="after">
+                    <label for="ver_nc" string="Ver NC"/>
+                    <field name="ver_nc" nolabel="1"/>
+                    <field name="nc_paciente" attrs="{'invisible':[('ver_nc', '=', False)]}"/>
+                </field>
+
+                <field name="birth_date" position="after">
+                    <field name="lugar_nacimiento_id"/>
+                </field>
+
                 <xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@string='Attentions']" position="replace"/>
 
             </field>

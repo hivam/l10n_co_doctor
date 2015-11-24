@@ -74,6 +74,22 @@ class doctor_patient_co(osv.osv):
 			res[datos.id] = unidad_edad
 		return res
 
+	def _get_nc(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		modelo_atencion = self.pool.get('doctor.attentions')
+		nc = ""
+		for datos in self.browse(cr,uid,ids):
+			doctor_id = self.pool.get('doctor.professional').search(cr,uid,[('user_id','=',uid)],context=context)
+			notas_ids =modelo_atencion.search(cr, uid, [('patient_id', '=', datos.id),
+													('professional_id', 'in', doctor_id),
+													('notas_confidenciales', '!=', None)], context=context)
+
+		if notas_ids:
+			for notas in modelo_atencion.browse(cr, uid, notas_ids, context=context):
+				nc += notas.notas_confidenciales + "\n"
+
+			res[datos.id] = nc
+		return res	
 	
 	_columns = {
 		'nombre': fields.char('Nombre', size=70),
@@ -108,7 +124,14 @@ class doctor_patient_co(osv.osv):
 								readonly=True, method=True, string='Edad Actual',),
 		'unidad_edad_calculada': fields.function(_get_unidad_edad, type="selection", method=True, 
 								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True),
+		
 		'notas_paciente': fields.text('Notas'),
+		'ver_nc': fields.boolean('Ver Nc', store=False),
+		'nc_paciente': fields.function(_get_nc, type="text", store= False, 
+								readonly=True, method=True),
+		'lugar_nacimiento_id' : fields.many2one('res.country.state.city', 'lugar nacimiento', required=False ),
+		
+	
 	}
 
 	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):
@@ -167,6 +190,11 @@ class doctor_patient_co(osv.osv):
 			'direccion' : patient_direccion,
 		})
 		return {'value' : values}
+
+
+	def write(self, cr, uid, ids, vals, context=None):
+		vals['ver_nc'] = False
+		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
 	_defaults = {
 		'tipo_usuario': '4',
@@ -482,7 +510,7 @@ class doctor_attentions_co(osv.osv):
 	}
 
 	def write(self, cr, uid, ids, vals, context=None):
-		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
+		
 		
 		ids_attention_past = self.pool.get('doctor.attentions.past').search(cr, uid, [('attentiont_id', '=', ids), ('past', '=', False)], context=context)
 		self.pool.get('doctor.attentions.past').unlink(cr, uid, ids_attention_past, context)
@@ -495,8 +523,8 @@ class doctor_attentions_co(osv.osv):
 		
 		ids_examen_fisico = self.pool.get('doctor.attentions.exam').search(cr, uid, [('attentiont_id', '=', ids), ('exam', '=', False)], context=context)
 		self.pool.get('doctor.attentions.exam').unlink(cr, uid, ids_examen_fisico, context)
-
-		return attentions_past
+		vals['activar_notas_confidenciales'] = False
+		return super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 
 doctor_attentions_co()
 
