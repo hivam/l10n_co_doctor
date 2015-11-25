@@ -470,7 +470,9 @@ class doctor_attentions_co(osv.osv):
 			if doctor_creo in doctor_logeado_id:
 				res[datos.id] = True
 			else:
-				res[datos.id] = False 
+				res[datos.id] = False
+
+		_logger.info(res)
 		return res
 
 	_columns = {
@@ -506,11 +508,13 @@ class doctor_attentions_co(osv.osv):
 
 	_defaults = {
 		'finalidad_consulta': '10',
-		'activar_notas_confidenciales' : False,
+		'activar_notas_confidenciales' : True,
+		'inv' : True
 	}
 
 	def write(self, cr, uid, ids, vals, context=None):
-		
+		vals['activar_notas_confidenciales'] = False
+		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 		
 		ids_attention_past = self.pool.get('doctor.attentions.past').search(cr, uid, [('attentiont_id', '=', ids), ('past', '=', False)], context=context)
 		self.pool.get('doctor.attentions.past').unlink(cr, uid, ids_attention_past, context)
@@ -523,8 +527,12 @@ class doctor_attentions_co(osv.osv):
 		
 		ids_examen_fisico = self.pool.get('doctor.attentions.exam').search(cr, uid, [('attentiont_id', '=', ids), ('exam', '=', False)], context=context)
 		self.pool.get('doctor.attentions.exam').unlink(cr, uid, ids_examen_fisico, context)
+
+		return attentions_past
+
+	def create(self, cr, uid, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
-		return super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
+		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
 doctor_attentions_co()
 
