@@ -275,6 +275,8 @@ class doctor_appointment_co(osv.osv):
 		'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
 										   ('3','Vinculado'), ('4','Particular'),
 										   ('5','Otro')), 'Tipo de usuario', states={'invoiced':[('readonly',True)]}),
+		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
+		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		}
 
 	def onchange_patient(self, cr, uid, ids, patient_id, insurer_id, tipo_usuario_id, ref, context=None):
