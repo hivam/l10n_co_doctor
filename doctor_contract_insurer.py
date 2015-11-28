@@ -25,44 +25,29 @@ import re
 import codecs
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
+from datetime import date, datetime, timedelta
+
 
 class doctor_contrato_aseguradora(osv.osv):
 	_name = "doctor.contract.insurer"
-
-	def name_get(self,cr,uid,ids,context=None):
-		"""
-			sobreescribimos la referencia a los registros
-		"""
-		if not ids:
-			return []
-		#decimos que si hay varios ids, lo tomemos como uno
-		if isinstance(ids,(long,int)):
-			ids=[ids]
-		res=[]
-		for record in self.browse(cr,uid,ids,context=context):
-			_logger.info(record.contract_code)
-			
-			descuento = "%s - %s"%(record.contract_code,record.name)
-			res.append((record['id'],descuento))
-		return res
+	_rec_name="contract_code"
 
 	_columns = {
-		'contract_code' : 	fields.char('Codigo', size=5, required=False),
-		'name' : 		fields.char('Nombre', size=50, required=True),
-		'f_inicio' :	fields.date('Fecha Inicio'),
+		'contract_code' : 	fields.char('Codigo', size=5, required=True),
+		'f_inicio' :	fields.date('Fecha Inicio', required=True),
 		'f_fin' :		fields.date('Fecha Fin'),
 		'valor' :		fields.float('Valor',digits=(3,3)),
 		'active' : 		fields.boolean('¿Activo?'),
-		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=True),
-		'plan_ids': fields.one2many('doctor.insurer.plan', 'contract_id', 'Planes'),
+		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=False),
+		'plan_ids': fields.one2many('doctor.insurer.plan', 'plan_id', 'Planes'),
 	}
 
 	"""
-	Create sobrescrito para convertir nombre y codigo del contrato en mayúscula.
+	Create sobrescrito para convertir codigo del contrato en mayúscula.
 	"""
 	def create(self, cr, uid, vals, context=None):
+		_logger.info(vals['insurer_id'])
 		vals.update({'contract_code': vals['contract_code'].upper()})
-		vals.update({'name': vals['name'].upper()})
 		return super(doctor_contrato_aseguradora, self).create(cr, uid, vals, context)
 
 
@@ -70,16 +55,7 @@ class doctor_contrato_aseguradora(osv.osv):
 
 	_defaults = {
 		'active' : True,
+		'f_inicio': lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
 	}
 	
 doctor_contrato_aseguradora()
-
-class insurer_inherit(osv.osv):
-	_name = "doctor.insurer"
-	_inherit= "doctor.insurer"
-
-	_columns = {
-		'contract_ids': fields.one2many('doctor.contract.insurer', 'insurer_id', 'Contratos'),
-	}
-
-insurer_inherit()

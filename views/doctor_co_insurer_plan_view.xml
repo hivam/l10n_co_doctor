@@ -13,8 +13,7 @@
               <legend class="texto_legend">Configuración de Plan</legend>
                 <group col="2" colspan="4">
                   <field name="name"/>
-                  <field name="insurer_id" on_change="onchange_limpiarContrato()"/>
-                  <field name="contract_id" domain="[('insurer_id','=',insurer_id)]"/>
+                  <field name="insurer_id"/>
                 </group>
                 <group col="1" colspan="4">
                   <field name="id" invisible="1"/>
@@ -40,7 +39,6 @@
         <tree string="Configuración de Plan">
           <field name="name"/>
           <field name="insurer_id"/>
-          <field name="contract_id"/>
         </tree>
       </field>
     </record>
