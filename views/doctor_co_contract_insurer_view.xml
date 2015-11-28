@@ -9,24 +9,24 @@
         <form string="Contrato Aseguradora" version="7.0">
           <sheet> 
             <fieldset>
-              <field name="id" invisible="1"/>
               <legend class="texto_legend">Contrato</legend>
                 <group col="4" colspan="6">
                   <field name="contract_code"/>
-                  <field name="name"/>
+                  <field name="insurer_id"/>
                   <field name="f_inicio"/>
                   <field name="f_fin"/>
                   <field name="valor"/>
-                  <field name="insurer_id"/>
                   <field name="active"/>
+                  <field name="id" invisible="1"/>
                 </group>
             </fieldset>
-            <fieldset>
+            <fieldset attrs="{'invisible': [('id','=',False)]}">
               <legend class="texto_legend">Planes</legend>
                 <group col="4" colspan="6">
-                  <field name="plan_ids" nolabel="1">
+
+                  <field name="plan_ids" context="{'insurer_id': insurer_id, 'contract_id': id}" nolabel="1">
                     <tree editable="bottom">
-                      <field name="plan_id"/>
+                      <field name="plan_id" context="{'default_insurer_id': context.get('insurer_id'), 'default_contract_id' : contract_id}" domain="[('insurer_id','=', context.get('insurer_id'))]"/>
                     </tree>
                   </field>    
                 </group>
@@ -43,15 +43,26 @@
       <field name="arch" type="xml">
         <tree string="contrato Aseguradora">
           <field name="contract_code"/>
-            <field name="name"/>
-            <field name="f_inicio"/>
-            <field name="f_fin"/>
-            <field name="valor"/>
-            <field name="insurer_id"/>
-            <field name="active"/>
+          <field name="f_inicio"/>
+          <field name="f_fin"/>
+          <field name="valor"/>
+          <field name="insurer_id"/>
+          <field name="active"/>
         </tree>
       </field>
     </record>
+
+    <!-- Action -->
+
+    <record id="doctor_co_contracts_action" model="ir.actions.act_window">
+      <field name="name">Contratos</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">doctor.contract.insurer</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Contratos" parent="doctor.menu_doctor_config" id="doctor_co_contract_item" action="doctor_co_contracts_action"/>
 
   </data>
 </openerp>

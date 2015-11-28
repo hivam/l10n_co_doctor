@@ -13,28 +13,8 @@
             <field name="insurer" ></field>
             <field name="code"></field>
           </group>
-          <group col="1">
-            <field name="id" invisible="1"/>
-            <notebook>
-              <page string="Contrato" attrs="{'invisible': [('id','=',False)]}">
-                <group>
-                  <field name="contract_ids"  context="{'default_insurer_id' : id}" nolabel="1">
-                    <tree string="Contrato">
-                      <field name="contract_code"/>
-                      <field name="name"/>
-                      <field name="f_inicio"/>
-                      <field name="f_fin"/>
-                      <field name="valor"/>
-                      <field name="active"/>
-                    </tree>
-                  </field>
-                </group>
-              </page>
-            </notebook>
-          </group>
         </xpath>
       </field>  
     </record>
-
   </data>
 </openerp>

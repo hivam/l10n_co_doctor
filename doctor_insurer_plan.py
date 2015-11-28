@@ -32,8 +32,7 @@ class doctor_insurer_plan(osv.osv):
 	_columns = {
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan',required=False),
 		'name' : fields.char('Nombre', size=30, required=True),
-		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=True),
-		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=True),
+		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=False),
 		'procedimientos_ids': fields.one2many('doctor.insurer.plan.procedures', 'plan_id', 'Procedimientos'),
 	}
 
@@ -43,14 +42,5 @@ class doctor_insurer_plan(osv.osv):
 		self.write(cr, uid, var, {'plan_id': var}, context)
 		return var
 
-	# Este on_change limpia el campo contrato cuando se selecciona una aseguradora
-	# Objetivo: filtrar solo los contratos de cada aseguradora en la interfaz de configuracion de planes.
-	def onchange_limpiarContrato(self, cr, uid, ids, context=None):
-		values = {}
-		values.update({
-			'contract_id' : '',
-		})
-		return {'value' : values}
 
-
-	_sql_constraints = [('plan_name_contract_constraint', 'unique(name, contract_id)', 'Este plan ya existe para este contrato.')]
+	_sql_constraints = [('plan_name_contract_constraint', 'unique(name)', 'Este nombre de plan ya existe.')]
