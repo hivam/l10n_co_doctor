@@ -152,7 +152,10 @@
                     <field name="ref"/>
                 </field>
 
-                <field name="insurer_id" position="after" >
+                <field name="insurer_id" position="replace" >
+                    <field name="insurer_id" class="oe_inline" style="width: 20%%"/>
+                    <field name="plan_id" class="oe_inline" style="width: 6em"/>
+                    <field name="contract_id" class="oe_inline" style="width: 6em"/>
                     <field name="tipo_usuario_id"/>
                 </field>
 
