@@ -128,8 +128,8 @@
                 </xpath>
 
                 <field name="notas_paciente" position="after">
-                    <label for="ver_nc" string="Ver NC"/>
-                    <field name="ver_nc" nolabel="1"/>
+                    <label for="ver_nc" string="Ver NC" groups="doctor.group_doctor_physician"/>
+                    <field name="ver_nc" nolabel="1" groups="doctor.group_doctor_physician"/>
                     <field name="nc_paciente" attrs="{'invisible':[('ver_nc', '=', False)]}"/>
                 </field>
 
