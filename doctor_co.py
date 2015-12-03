@@ -849,12 +849,41 @@ class doctor_attention_medicamento_otro_elemento(osv.osv):
 		'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
 		'prescripcion': fields.char('Prescripcion'),
 		'recomendacion': fields.text('Recomendaciones'),
+		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 	}
+
+	def onchange_plantillas(self, cr, uid, ids, plantilla_id, context=None):
+		res={'value':{}}
+		if plantilla_id:
+			cuerpo = self.pool.get('doctor.attentions.recomendaciones').browse(cr,uid,plantilla_id,context=context).cuerpo
+			res['value']['recomendacion']=cuerpo
+		else:
+			res['value']['recomendacion']=''
+		return res
 
 
 class doctor_attentions_recomendaciones(osv.osv):
 
 	_name = 'doctor.attentions.recomendaciones'
+
+
+	def _get_plantillas(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			plantillas_id  = self.search(cr,uid,[('tipo_plantilla', '=', '01')],context=context)
+			if plantillas_id:
+				res[datos.id] = plantillas_id
+			else:
+				res[datos.id] = False
+			_logger.info(plantillas_id)
+		_logger.info(res)
+		return res
+
+	tipo_plantillas = [
+		('01','Recomendación'),
+		('02','Informes y Certificados'),
+		('03','Prescripciones'),
+	]
 
 	_columns = {
 		'name' : fields.char('Nombre Plantilla', required=True),
@@ -863,12 +892,16 @@ class doctor_attentions_recomendaciones(osv.osv):
 		'professional_id': fields.many2one('doctor.professional', 'Doctor', readonly=True),
 		'cuerpo' : fields.text(u'Recomendación Texto'),
 		'active' : fields.boolean('Active'),
+		'tipo_plantilla': fields.selection(tipo_plantillas,'Tipo Plantilla'),
+		'plantilla_id': fields.function(_get_plantillas, type="selection", store= False, 
+								method=True, string='Plantillas', readonly=False),	
 	}
 
 	_defaults = {
 		'active' : True,
 		'professional_id': lambda self, cr, uid, context: context.get('professional_id', False),
 		'patient_id': lambda self, cr, uid, context: context.get('patient_id', False),
+		'tipo_plantilla' : '01',
 	}
 
 
