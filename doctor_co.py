@@ -304,7 +304,11 @@ class doctor_appointment_co(osv.osv):
 		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
 		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
-		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:00")
+		diff = int(agenda_duracion.date_begin[17:])
+		if diff > 0:
+			diff = 60 - diff
+
+		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
 		horarios = []
 		horario_cadena = []
 		horarios.append(time_begin) 
@@ -315,10 +319,10 @@ class doctor_appointment_co(osv.osv):
 			horarios.append(horarios[i] + timedelta(minutes=1)) 	
 		for i in horarios:
 			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:%S'))
-
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
+		
 		if ids_ingresos_diarios:
-			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:00")		
+			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
 			if fecha_hora_actual > time_begin:
 				if str(fecha_hora_actual) in horario_cadena:
 					index = horario_cadena.index(str(fecha_hora_actual))	
@@ -329,7 +333,7 @@ class doctor_appointment_co(osv.osv):
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
 				duracion = int(fecha_agenda.type_id.duration / 1)
-				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:00")
+				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
 				minutos = 0
 				for i in range(0,duracion,1):
 					inicios = inicio + timedelta(minutes=minutos)
