@@ -867,18 +867,6 @@ class doctor_attentions_recomendaciones(osv.osv):
 	_name = 'doctor.attentions.recomendaciones'
 
 
-	def _get_plantillas(self, cr, uid, ids, field_name, arg, context=None):
-		res = {}
-		for datos in self.browse(cr, uid, ids):
-			plantillas_id  = self.search(cr,uid,[('tipo_plantilla', '=', '01')],context=context)
-			if plantillas_id:
-				res[datos.id] = plantillas_id
-			else:
-				res[datos.id] = False
-			_logger.info(plantillas_id)
-		_logger.info(res)
-		return res
-
 	tipo_plantillas = [
 		('01','Recomendación'),
 		('02','Informes y Certificados'),
@@ -893,8 +881,6 @@ class doctor_attentions_recomendaciones(osv.osv):
 		'cuerpo' : fields.text(u'Recomendación Texto'),
 		'active' : fields.boolean('Active'),
 		'tipo_plantilla': fields.selection(tipo_plantillas,'Tipo Plantilla'),
-		'plantilla_id': fields.function(_get_plantillas, type="selection", store= False, 
-								method=True, string='Plantillas', readonly=False),	
 	}
 
 	_defaults = {
