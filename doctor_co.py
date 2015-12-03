@@ -304,7 +304,7 @@ class doctor_appointment_co(osv.osv):
 		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
 		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
-		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S")
+		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:00")
 		horarios = []
 		horario_cadena = []
 		horarios.append(time_begin) 
@@ -782,8 +782,13 @@ class doctor_co_schedule_inherit(osv.osv):
 
 					if ultima_agenda_id:
 						hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
-						res['date_begin'] = hora_inicio_agenda
-						res['fecha_inicio'] = hora_inicio_agenda
+						diff = int(hora_inicio_agenda[17:])
+						if diff > 0:
+							diff = 60 - diff
+						hora_inicio_agenda = datetime.strptime(hora_inicio_agenda, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+						
+						res['date_begin'] = str(hora_inicio_agenda)
+						res['fecha_inicio'] = str(hora_inicio_agenda)
 
 					elif not ultima_agenda_id or  fecha_inicio_agenda < fecha_hora_actual:
 						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
