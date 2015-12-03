@@ -356,13 +356,16 @@ class doctor_appointment_co(osv.osv):
 					raise osv.except_osv(_('Error!'),
 								 _('Las agenda ya esta toda asignada'))
 		else:
-
 			if time_begin < fecha_hora_actual:
+				_logger.info("asasas")
 				hora_fin = fecha_hora_actual + timedelta(minutes=appointment_type)
 				values.update({
 					'time_begin' : str(fecha_hora_actual)	
 				})
 			else:
+				values.update({
+					'time_begin' : str(time_begin)	
+				})
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
 
 			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
@@ -370,6 +373,7 @@ class doctor_appointment_co(osv.osv):
 				'time_end' : hora_fin
 			})
 
+			_logger.info(values)
 			
 		return {'value': values}
 
