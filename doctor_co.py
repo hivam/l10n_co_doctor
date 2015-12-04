@@ -299,6 +299,7 @@ class doctor_appointment_co(osv.osv):
 		if plan_id:
 			values.update({
 			'plan_id' : '',
+			'contract_id': ''
 		})
 		return {'value' : values}
 
