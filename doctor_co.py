@@ -312,7 +312,11 @@ class doctor_appointment_co(osv.osv):
 		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
 		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
-		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S")
+		diff = int(agenda_duracion.date_begin[17:])
+		if diff > 0:
+			diff = 60 - diff
+
+		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
 		horarios = []
 		horario_cadena = []
 		horarios.append(time_begin) 
@@ -323,10 +327,10 @@ class doctor_appointment_co(osv.osv):
 			horarios.append(horarios[i] + timedelta(minutes=1)) 	
 		for i in horarios:
 			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:%S'))
-
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
+		
 		if ids_ingresos_diarios:
-			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:00")		
+			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
 			if fecha_hora_actual > time_begin:
 				if str(fecha_hora_actual) in horario_cadena:
 					index = horario_cadena.index(str(fecha_hora_actual))	
@@ -337,7 +341,7 @@ class doctor_appointment_co(osv.osv):
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
 				duracion = int(fecha_agenda.type_id.duration / 1)
-				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:00")
+				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
 				minutos = 0
 				for i in range(0,duracion,1):
 					inicios = inicio + timedelta(minutes=minutos)
@@ -360,13 +364,16 @@ class doctor_appointment_co(osv.osv):
 					raise osv.except_osv(_('Error!'),
 								 _('Las agenda ya esta toda asignada'))
 		else:
-
 			if time_begin < fecha_hora_actual:
+				_logger.info("asasas")
 				hora_fin = fecha_hora_actual + timedelta(minutes=appointment_type)
 				values.update({
 					'time_begin' : str(fecha_hora_actual)	
 				})
 			else:
+				values.update({
+					'time_begin' : str(time_begin)	
+				})
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
 
 			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
@@ -374,6 +381,7 @@ class doctor_appointment_co(osv.osv):
 				'time_end' : hora_fin
 			})
 
+			_logger.info(values)
 			
 		return {'value': values}
 
@@ -790,8 +798,13 @@ class doctor_co_schedule_inherit(osv.osv):
 
 					if ultima_agenda_id:
 						hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
-						res['date_begin'] = hora_inicio_agenda
-						res['fecha_inicio'] = hora_inicio_agenda
+						diff = int(hora_inicio_agenda[17:])
+						if diff > 0:
+							diff = 60 - diff
+						hora_inicio_agenda = datetime.strptime(hora_inicio_agenda, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+						
+						res['date_begin'] = str(hora_inicio_agenda)
+						res['fecha_inicio'] = str(hora_inicio_agenda)
 
 					elif not ultima_agenda_id or  fecha_inicio_agenda < fecha_hora_actual:
 						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
@@ -857,12 +870,29 @@ class doctor_attention_medicamento_otro_elemento(osv.osv):
 		'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
 		'prescripcion': fields.char('Prescripcion'),
 		'recomendacion': fields.text('Recomendaciones'),
+		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 	}
+
+	def onchange_plantillas(self, cr, uid, ids, plantilla_id, context=None):
+		res={'value':{}}
+		if plantilla_id:
+			cuerpo = self.pool.get('doctor.attentions.recomendaciones').browse(cr,uid,plantilla_id,context=context).cuerpo
+			res['value']['recomendacion']=cuerpo
+		else:
+			res['value']['recomendacion']=''
+		return res
 
 
 class doctor_attentions_recomendaciones(osv.osv):
 
 	_name = 'doctor.attentions.recomendaciones'
+
+
+	tipo_plantillas = [
+		('01','Recomendación'),
+		('02','Informes y Certificados'),
+		('03','Prescripciones'),
+	]
 
 	_columns = {
 		'name' : fields.char('Nombre Plantilla', required=True),
@@ -871,12 +901,14 @@ class doctor_attentions_recomendaciones(osv.osv):
 		'professional_id': fields.many2one('doctor.professional', 'Doctor', readonly=True),
 		'cuerpo' : fields.text(u'Recomendación Texto'),
 		'active' : fields.boolean('Active'),
+		'tipo_plantilla': fields.selection(tipo_plantillas,'Tipo Plantilla'),
 	}
 
 	_defaults = {
 		'active' : True,
 		'professional_id': lambda self, cr, uid, context: context.get('professional_id', False),
 		'patient_id': lambda self, cr, uid, context: context.get('patient_id', False),
+		'tipo_plantilla' : '01',
 	}
 
 
