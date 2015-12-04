@@ -24,11 +24,7 @@
               <legend class="texto_legend">Planes</legend>
                 <group col="4" colspan="6">
 
-                  <field name="plan_ids" context="{'insurer_id': insurer_id, 'contract_id': id}" nolabel="1">
-                    <tree editable="bottom">
-                      <field name="plan_id" context="{'default_insurer_id': context.get('insurer_id'), 'default_contract_id' : contract_id}" domain="[('insurer_id','=', context.get('insurer_id'))]"/>
-                    </tree>
-                  </field>    
+                  <field name="plan_ids"  nolabel="1"/>
                 </group>
             </fieldset>
           </sheet> 

@@ -46,12 +46,11 @@ class doctor_contrato_aseguradora(osv.osv):
 	Create sobrescrito para convertir codigo del contrato en mayúscula.
 	"""
 	def create(self, cr, uid, vals, context=None):
-		_logger.info(vals['insurer_id'])
 		vals.update({'contract_code': vals['contract_code'].upper()})
 		return super(doctor_contrato_aseguradora, self).create(cr, uid, vals, context)
 
 
-	_sql_constraints = [('contract_code_constraint', 'unique(contract_code)', 'Este código de plan ya existe en la base de datos.')]
+	_sql_constraints = [('contract_code_constraint', 'unique(contract_code)', 'Este código de contrato ya existe en base de datos.')]
 
 	_defaults = {
 		'active' : True,

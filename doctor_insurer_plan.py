@@ -31,8 +31,8 @@ class doctor_insurer_plan(osv.osv):
 	
 	_columns = {
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan',required=False),
-		'name' : fields.char('Nombre', size=30, required=True),
-		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=False),
+		'name' : fields.char('Nombre', size=30, required=False),
+		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=True),
 		'procedimientos_ids': fields.one2many('doctor.insurer.plan.procedures', 'plan_id', 'Procedimientos'),
 	}
 
@@ -41,6 +41,7 @@ class doctor_insurer_plan(osv.osv):
 		var = super(doctor_insurer_plan, self).create(cr, uid, vals, context)
 		self.write(cr, uid, var, {'plan_id': var}, context)
 		return var
+
 
 
 	_sql_constraints = [('plan_name_contract_constraint', 'unique(name)', 'Este nombre de plan ya existe.')]

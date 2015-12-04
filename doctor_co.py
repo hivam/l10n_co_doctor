@@ -294,6 +294,14 @@ class doctor_appointment_co(osv.osv):
 		})
 		return {'value' : values}
 
+	def onchange_limpiarformulario(self, cr, uid, ids, plan_id, context=None):
+		values = {}
+		if plan_id:
+			values.update({
+			'plan_id' : '',
+		})
+		return {'value' : values}
+
 	def onchange_calcular_hora(self,cr,uid,ids,schedule_id,type_id,time_begin,context=None):
 		values = {}
 		if not time_begin:
