@@ -45,10 +45,10 @@
         <field name="insurer" search="[('name','=','Caja De Compensación Familiar Comfenalco Valle Del Cauca')]"/>
         <field name="code">EMP025</field>
     </record>
-    <record id="doctor_insurer_00013" model="doctor.insurer">
+    <!--<record id="doctor_insurer_00013" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Compañía De Medicina Prepagada Colsanitas')]"/>
         <field name="code">EMP023</field>
-    </record>
+    </record>-->
     <record id="doctor_insurer_00014" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Vivir S.A. Medicina Prepagada')]"/>
         <field name="code">EMP022</field>
