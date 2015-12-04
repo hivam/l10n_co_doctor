@@ -192,6 +192,10 @@
                         <field name="aditional"/>
                     </group>
                 </xpath>
+                <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[3]" position="after">
+                    <field name="nro_autorizacion"/>
+                </xpath>
+                
             </field>
         </record>
 

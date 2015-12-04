@@ -1132,6 +1132,19 @@ class doctor_attentions_past(osv.osv):
 			if not 'active_model' in context:
 				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
 
+
+class doctor_appointment_procedures(osv.osv):
+
+	_name = 'doctor.appointment.procedures'
+
+	_inherit = 'doctor.appointment.procedures'
+
+	_columns = {
+		'nro_autorizacion' : fields.char('Nro. Autorizacion', size=64),
+	}
+
+doctor_appointment_procedures()
+
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"
 	_name = "account.invoice"
