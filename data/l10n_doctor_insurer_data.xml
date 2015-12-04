@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data noupdate="0">
+  <data noupdate="1">
     <record id="doctor_insurer_0001" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Colmedica Medicina Prepagada S.A.')]"/>
         <field name="code">EMP017</field>
