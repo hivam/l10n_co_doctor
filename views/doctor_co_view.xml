@@ -402,35 +402,30 @@
 
                 <xpath expr="//notebook/page[@string='Others']" position="after">
                     <page string="Recomendaciones">
-                    <separator string="Recomendaciones" colspan="4"/>       
-                    <field name="recomendaciones_ids" colspan="4" nolabel="1" context="{'professional_id' : professional_id, 'patient_id' : patient_id}">
-                        <tree string="Recomendaciones" >
-                            <field name="name"/>
-                        </tree>
-                        <form string="Recomendaciones">
-                            <group colspan='3' col='2'>
-                                <field name="name"/>
-                                <field name="patient_id"/>
-                                <field name="professional_id" />
-                                <field name="cuerpo"/>
-                            </group>
-                        </form>
-                    </field>
-                    </page> 
+                    <separator string="Recomendaciones" colspan="4"/>
+                    <div>
+                        <group colspan="1" col="1">  
+                            <field name='recomendaciones_ids' nolabel="1" placeholder="Recomendaciones" widget="many2many_tags" domain="[('tipo_plantilla', '=', '01')]"/>
+                        </group> 
+                    </div>
+                     </page> 
+                    <br/>
+                    <br/>
+                    <br/>
                 </xpath>
 
                 <xpath expr="//notebook/page[@string='Others']" position="inside">
-                    <page string="Certificados">
-                        <separator string="Certificados" colspan="4"/>
-                        <field name="certificados_ids" nolabel="1" context="{'professional_id' : professional_id}">
-                            <form string="Certificados">
+                    <page string="Informes y Certificados">
+                        <separator string="Informes y Certificados" colspan="4"/>
+                        <field name="certificados_ids" nolabel="1" context="{'professional_id' : professional_id, 'tipo_plantilla' : '02'}">
+                            <form string="Informes y Certificados">
                                 <group colspan='3' col='2'>
                                     <field name="name"/>
                                      <field name="expedicion_certificado"/>
                                      <field name="asunto" placeholder="El Dr. Certifica Qué"/>
                                      <field name="professional_id"/>
                                      <field name="cuerpo"/>
-                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)"/>
+                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '02')]"/>
                                 </group>   
                             </form>
                         </field>
@@ -519,12 +514,13 @@
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="inside">
                     <page string="Otra Prescripcion">
                         <separator string="Otra Prescripcion" colspan="4"/>
-                        <field name="otros_medicamentos_ids" nolabel="1">
+                        <field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
                             <form string="Otra Prescripcion">
                                 <group colspan='3' col='2'>
                                     <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]"/>
                                      <field name="prescripcion"/>
                                      <field name="recomendacion"/>
+                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '03')]"/>
                                 </group>   
                             </form>
                         </field>
@@ -535,6 +531,46 @@
 
             </field>
         </record>  
+
+
+               <!-- doctor speciality Form View -->
+        <record model="ir.ui.view" id="view_doctor_recomendaciones_form">
+            <field name="name">Plantillas</field>
+            <field name="model">doctor.attentions.recomendaciones</field>
+            <field name="arch" type="xml">
+                <form string="Plantillas" version="7.0">
+                    <group colspan='3' col='2'>
+                        <field name="name"/>
+                        <field name="cuerpo"/>
+                        <field name="tipo_plantilla"/>
+                        <field name="active"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- doctor speciality Tree View -->
+        <record model="ir.ui.view" id="view_doctor_recomendaciones_tree">
+            <field name="name">Plantillas</field>
+            <field name="model">doctor.attentions.recomendaciones</field>
+            <field name="arch" type="xml">
+                <tree string="Plantillas" version="7.0">
+                    <field name="name"/>
+                    <field name="tipo_plantilla"/>
+                    <field name="cuerpo"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- doctor speciality Action -->
+        <record model="ir.actions.act_window" id="action_doctor_plantillas">
+            <field name="name">Plantillas</field>
+            <field name="res_model">doctor.attentions.recomendaciones</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_doctor_plantillas" name="Plantillas" parent="doctor.menu_doctor_config" action="action_doctor_plantillas"/>
 
 
         <!-- herencia Form View de product -->
