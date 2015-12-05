@@ -13,6 +13,7 @@
               <legend class="texto_legend">Configuración de Plan</legend>
                 <group col="2" colspan="4">
                   <field name="name"/>
+                  <field name="codigo"/>
                   <field name="insurer_id"/>
                 </group>
                 <group col="1" colspan="4">
@@ -38,6 +39,7 @@
       <field name="arch" type="xml">
         <tree string="Configuración de Plan">
           <field name="name"/>
+          <field name="codigo"/>
           <field name="insurer_id"/>
         </tree>
       </field>
