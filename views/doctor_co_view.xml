@@ -326,14 +326,14 @@
 
             <filter name="diseases_ids" string="Diagnostico" domain="[('diseases_idsdiseases_ids','=',diseases_ids)]" help="Diagnostico" />
 
-            <filter string="Atenciones Hoy"
-                    name="atenciones_hoy"
-                    domain="[('date_attention','&gt;=', (context_today()).strftime('%%m-%%d-%%Y 00:00:00')),('date_attention','&lt;=',(context_today()).strftime('%%m-%%d-%%Y 23:59:59'))]"
-                    help="Dia Actual"/>
-
             <group expand="0" string= "Agrupar Por...">
                 <filter string="Professional" domain="[]" context="{'group_by' : 'professional_id'}" />
                 <separator/>
+
+                <filter string="Atenciones Hoy"
+                    name="atenciones_hoy"
+                    domain="[('date_attention','&gt;=', (context_today()).strftime('%%m-%%d-%%Y 00:00:00')),('date_attention','&lt;=',(context_today()).strftime('%%m-%%d-%%Y 23:59:59'))]"
+                    help="Dia Actual"/>
                 <filter string="Atenciones Meses" domain="[]" context="{'group_by' : 'date_attention'}" />
             </group>
 
