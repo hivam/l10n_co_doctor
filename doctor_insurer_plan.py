@@ -31,8 +31,8 @@ class doctor_insurer_plan(osv.osv):
 	
 	_columns = {
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan',required=False),
-		'name' : fields.char('Nombre', size=30, required=False),
-		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=True),
+		'name' : fields.char('Nombre', size=30, required=True),
+		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=False),
 		'procedimientos_ids': fields.one2many('doctor.insurer.plan.procedures', 'plan_id', 'Procedimientos'),
 	}
 
@@ -42,6 +42,12 @@ class doctor_insurer_plan(osv.osv):
 		self.write(cr, uid, var, {'plan_id': var}, context)
 		return var
 
+	# Función para evitar nombre de plan duplicado
+	def _check_unique_name(self, cr, uid, ids, context=None):
+		for record in self.browse(cr, uid, ids):
+			ref_ids = self.search(cr, uid, [('name', '=', record.name), ('id', '<>', record.id)])
+			if ref_ids:
+				raise osv.except_osv(_('¡Mensaje de Error!'), _('Este nombre de plan ya existe en el sistema'))
+		return True
 
-
-	_sql_constraints = [('plan_name_contract_constraint', 'unique(name)', 'Este nombre de plan ya existe.')]
+	_constraints = [(_check_unique_name, 'Este nombre de plan ya existe en el sistema', ['name'])]

@@ -294,6 +294,11 @@ class doctor_appointment_co(osv.osv):
 		})
 		return {'value' : values}
 
+	def onchange_checkPlan(self, cr, uid, ids, plan_id, contract_id, context=None):
+		_logger.info(plan_id)
+		_logger.info(contract_id)
+		return True
+
 	def onchange_limpiarformulario(self, cr, uid, ids, plan_id, context=None):
 		values = {}
 		if plan_id:

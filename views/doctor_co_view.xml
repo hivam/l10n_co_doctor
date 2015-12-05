@@ -180,7 +180,7 @@
                     <group colspan='4' col='6'>
                         <field name="insurer_id" on_change="onchange_limpiarformulario(plan_id, contract_id)"/>
                         <field name="plan_id" domain="[('insurer_id','=', insurer_id)]" />
-                        <field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%"/>
+                        <field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
                     </group>
                     <group>
                       <field name="type_id" on_change="onchange_calcular_hora(schedule_id,type_id,time_begin)"/>

@@ -23,8 +23,11 @@
             <fieldset attrs="{'invisible': [('id','=',False)]}">
               <legend class="texto_legend">Planes</legend>
                 <group col="4" colspan="6">
-
-                  <field name="plan_ids"  nolabel="1"/>
+                   <field name="plan_ids"  nolabel="1" domain="[('insurer_id','=',insurer_id)]">
+                    <tree>
+                      <field name="name"/>
+                    </tree>
+                  </field>
                 </group>
             </fieldset>
           </sheet> 

@@ -19,7 +19,7 @@
                   <field name="id" invisible="1"/>
                   <field name="procedimientos_ids" nolabel="1">
                     <tree editable="bottom">
-                      <field name="procedure_id" domain="[('is_health_procedure','=',True)]"/>
+                      <field name="procedure_id"/>
                       <field name="valor"/>
                       <field name="active"/>
                     </tree>

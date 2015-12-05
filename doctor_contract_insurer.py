@@ -39,7 +39,8 @@ class doctor_contrato_aseguradora(osv.osv):
 		'valor' :		fields.float('Valor',digits=(3,3)),
 		'active' : 		fields.boolean('¿Activo?'),
 		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=False),
-		'plan_ids': fields.one2many('doctor.insurer.plan', 'plan_id', 'Planes'),
+		'plan_ids': fields.many2many('doctor.insurer.plan', id1='contract_ids', id2='plan_ids',
+										   string='Planes', required=False, ondelete='restrict'),
 	}
 
 	"""
