@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data noupdate="0">
+  <data noupdate="1">
     <!--PLANES DE Colmedica Medicina Prepagada S.A. -->
     <record id="doctor_insurer_plan_0001" model="doctor.insurer.plan">
         <field name="name">Azul</field>
