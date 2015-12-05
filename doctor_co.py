@@ -294,9 +294,22 @@ class doctor_appointment_co(osv.osv):
 		})
 		return {'value' : values}
 
+
 	def onchange_checkPlan(self, cr, uid, ids, plan_id, contract_id, context=None):
-		_logger.info(plan_id)
-		_logger.info(contract_id)
+		"""
+		Esta funcion comprueba si el plan seleccionado hace parte del contrato seleccionado.
+		"""
+		if contract_id:
+			model= self.pool.get('doctor.contract.insurer')
+			buscar = model.search(cr, uid, [('id', '=', contract_id)] )
+			if buscar:
+				planes_contrato = model.browse(cr, uid, buscar)[0].plan_ids
+				_logger.info(planes_contrato)
+				if  planes_contrato:
+					for rec in planes_contrato:
+						if rec.id == int(plan_id):
+							return True
+			raise osv.except_osv(_('Aviso importante!'),_('El plan seleccionado no hace parte de este contrato o es posible que no esté vigente.\n\nComuníquese con la aseguradora para más información.'))
 		return True
 
 	def onchange_limpiarformulario(self, cr, uid, ids, plan_id, context=None):
@@ -304,6 +317,14 @@ class doctor_appointment_co(osv.osv):
 		if plan_id:
 			values.update({
 			'plan_id' : '',
+			'contract_id': ''
+		})
+		return {'value' : values}
+
+	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, context=None):
+		values = {}
+		if contract_id:
+			values.update({
 			'contract_id': ''
 		})
 		return {'value' : values}
@@ -1136,6 +1157,19 @@ class doctor_attentions_past(osv.osv):
 
 			if not 'active_model' in context:
 				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
+
+
+class doctor_appointment_procedures(osv.osv):
+
+	_name = 'doctor.appointment.procedures'
+
+	_inherit = 'doctor.appointment.procedures'
+
+	_columns = {
+		'nro_autorizacion' : fields.char('Nro. Autorizacion', size=64),
+	}
+
+doctor_appointment_procedures()
 
 class doctor_invoice_co (osv.osv):
 	_inherit = "account.invoice"

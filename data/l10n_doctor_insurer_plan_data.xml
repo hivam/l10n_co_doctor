@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <!--PLANES DE Colmedica Medicina Prepagada S.A. -->
+    <record id="doctor_insurer_plan_0001" model="doctor.insurer.plan">
+        <field name="name">Azul</field>
+        <field name="codigo">AZ01</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0002" model="doctor.insurer.plan">
+        <field name="name">Cedro Exclusivo</field>
+        <field name="codigo">CE02</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0003" model="doctor.insurer.plan">
+        <field name="name">Cedro Máximo</field>
+        <field name="codigo">CE03</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0004" model="doctor.insurer.plan">
+        <field name="name">Cedro Superior</field>
+        <field name="codigo">CE04</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0005" model="doctor.insurer.plan">
+        <field name="name">Diamante</field>
+        <field name="codigo">DI05</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0006" model="doctor.insurer.plan">
+        <field name="name">Diamante Plus</field>
+        <field name="codigo">DI06</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0007" model="doctor.insurer.plan">
+        <field name="name">Diamante Premium</field>
+        <field name="codigo">DI07</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0008" model="doctor.insurer.plan">
+        <field name="name">Esmeralda </field>
+        <field name="codigo">ES08</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0009" model="doctor.insurer.plan">
+        <field name="name">Esmeralda Ambulatorio</field>
+        <field name="codigo">ES09</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0010" model="doctor.insurer.plan">
+        <field name="name">Esmeralda Guía</field>
+        <field name="codigo">ES10</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0011" model="doctor.insurer.plan">
+        <field name="name">Esmeralda Plus</field>
+        <field name="codigo">ES11</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0012" model="doctor.insurer.plan">
+        <field name="name">Esmeralda Plus Guía</field>
+        <field name="codigo">ES12</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0013" model="doctor.insurer.plan">
+        <field name="name">Esmeralda Premium</field>
+        <field name="codigo">ES13</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0014" model="doctor.insurer.plan">
+        <field name="name">Esmeralda Premium Guía</field>
+        <field name="codigo">ES14</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0015" model="doctor.insurer.plan">
+        <field name="name">Magenta</field>
+        <field name="codigo">MA15</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0016" model="doctor.insurer.plan">
+        <field name="name">Nogal Exclusivo</field>
+        <field name="codigo">NO16</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0017" model="doctor.insurer.plan">
+        <field name="name">Nogal Máximo</field>
+        <field name="codigo">NO17</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>    
+    <record id="doctor_insurer_plan_0018" model="doctor.insurer.plan">
+        <field name="name">Nogal Superior</field>
+        <field name="codigo">NO18</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0019" model="doctor.insurer.plan">
+        <field name="name">Roble Exclusivo</field>
+        <field name="codigo">RO19</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0020" model="doctor.insurer.plan">
+        <field name="name">Roble Máximo</field>
+        <field name="codigo">RO20</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0021" model="doctor.insurer.plan">
+        <field name="name">Roble Superior</field>
+        <field name="codigo">RO21</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0022" model="doctor.insurer.plan">
+        <field name="name">Rubi</field>
+        <field name="codigo">RU22</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0023" model="doctor.insurer.plan">
+        <field name="name">Rubi Guía</field>
+        <field name="codigo">RU23</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0024" model="doctor.insurer.plan">
+        <field name="name">Rubi Plus</field>
+        <field name="codigo">RU24</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0025" model="doctor.insurer.plan">
+        <field name="name">Rubi Plus Guía</field>
+        <field name="codigo">RU25</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0026" model="doctor.insurer.plan">
+        <field name="name">Rubi Premium</field>
+        <field name="codigo">RU26</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0027" model="doctor.insurer.plan">
+        <field name="name">Rubi Premium Guía</field>
+        <field name="codigo">RU27</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0028" model="doctor.insurer.plan">
+        <field name="name">Verde</field>
+        <field name="codigo">VE28</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0029" model="doctor.insurer.plan">
+        <field name="name">Zafiro</field>
+        <field name="codigo">ZA29</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0030" model="doctor.insurer.plan">
+        <field name="name">Zafiro Guía</field>
+        <field name="codigo">ZA30</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0031" model="doctor.insurer.plan">
+        <field name="name">Zafiro Plus</field>
+        <field name="codigo">ZA31</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0032" model="doctor.insurer.plan">
+        <field name="name">Zafiro Plus Guía</field>
+        <field name="codigo">ZA32</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0033" model="doctor.insurer.plan">
+        <field name="name">Zafiro Premium</field>
+        <field name="codigo">ZA33</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0034" model="doctor.insurer.plan">
+        <field name="name">Zafiro Premium Guía</field>
+        <field name="codigo">ZA34</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0035" model="doctor.insurer.plan">
+        <field name="name">Zafiro Integral Máximo</field>
+        <field name="codigo">ZA35</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0036" model="doctor.insurer.plan">
+        <field name="name">Zafiro Premium Integral</field>
+        <field name="codigo">ZA36</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0037" model="doctor.insurer.plan">
+        <field name="name">Zafiro Integral Superior</field>
+        <field name="codigo">ZA37</field>
+        <field name="insurer_id" search="[('insurer','=','Colmedica Medicina Prepagada S.A.')]"/>
+    </record>
+    <!--fin PLANES DE Colmedica Medicina Prepagada S.A. -->
+
+
+    <!--PLANES DE Cafesaludmedicina Prepagada S. A. -->
+    <record id="doctor_insurer_plan_0038" model="doctor.insurer.plan">
+        <field name="name">Café</field>
+        <field name="codigo">CA01</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0039" model="doctor.insurer.plan">
+        <field name="name">Café Excelso</field>
+        <field name="codigo">CA02</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0040" model="doctor.insurer.plan">
+        <field name="name">Café Gourmet</field>
+        <field name="codigo">CA03</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0041" model="doctor.insurer.plan">
+        <field name="name">Cereza</field>
+        <field name="codigo">CE04</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0042" model="doctor.insurer.plan">
+        <field name="name">Cereza Gourmet</field>
+        <field name="codigo">CE05</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0043" model="doctor.insurer.plan">
+        <field name="name">Cereza Excelso</field>
+        <field name="codigo">CE06</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0044" model="doctor.insurer.plan">
+        <field name="name">Cereza Plus</field>
+        <field name="codigo">CE07</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0045" model="doctor.insurer.plan">
+        <field name="name">Modular Hosp Y Cir</field>
+        <field name="codigo">MO08</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0046" model="doctor.insurer.plan">
+        <field name="name">Pergamino</field>
+        <field name="codigo">PE09</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0047" model="doctor.insurer.plan">
+        <field name="name">Pergamino Excelso</field>
+        <field name="codigo">PE10</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0048" model="doctor.insurer.plan">
+        <field name="name">Pergamino Gourmet</field>
+        <field name="codigo">PE11</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0049" model="doctor.insurer.plan">
+        <field name="name">Almendra Superior</field>
+        <field name="codigo">AS01</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0050" model="doctor.insurer.plan">
+        <field name="name">Almendra Consulta externa.</field>
+        <field name="codigo">AC01</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0051" model="doctor.insurer.plan">
+        <field name="name">Almendra Ambulatoria</field>
+        <field name="codigo">AA01</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0052" model="doctor.insurer.plan">
+        <field name="name">Salud Plus</field>
+        <field name="codigo">SP01</field>
+        <field name="insurer_id" search="[('insurer','=','Cafesaludmedicina Prepagada S. A')]"/>
+    </record>
+    <!--fin PLANES DE Cafesaludmedicina Prepagada S. A. -->
+
+        <!--PLANES DE Saludcoop E.P.S. -->
+    <record id="doctor_insurer_plan_0053" model="doctor.insurer.plan">
+        <field name="name">Solidario</field>
+        <field name="codigo">SO01</field>
+        <field name="insurer_id" search="[('insurer','=','Saludcoop E.P.S.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0054" model="doctor.insurer.plan">
+        <field name="name">Máximo</field>
+        <field name="codigo">MA02</field>
+        <field name="insurer_id" search="[('insurer','=','Saludcoop E.P.S.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0055" model="doctor.insurer.plan">
+        <field name="name">Supremo</field>
+        <field name="codigo">SU03</field>
+        <field name="insurer_id" search="[('insurer','=','Saludcoop E.P.S.')]"/>
+    </record>
+    <!--fin PLANES DE Saludcoop E.P.S. -->
+
+    <!--PLANES DE Sanitas S.A. E.P.S. -->
+    <record id="doctor_insurer_plan_0056" model="doctor.insurer.plan">
+        <field name="name">Empresarial</field>
+        <field name="codigo">EM01</field>
+        <field name="insurer_id" search="[('insurer','=','Sanitas S.A. E.P.S.')]"/>
+    </record>
+    <!--fin PLANES DE Sanitas S.A. E.P.S. -->
+
+    <!--PLANES DE Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps -->
+    <record id="doctor_insurer_plan_0057" model="doctor.insurer.plan">
+        <field name="name">Quimbaya - Familiar</field>
+        <field name="codigo">QF01</field>
+        <field name="insurer_id" search="[('insurer','=','Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0058" model="doctor.insurer.plan">
+        <field name="name">Bienestar</field>
+        <field name="codigo">BI02</field>
+        <field name="insurer_id" search="[('insurer','=','Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0059" model="doctor.insurer.plan">
+        <field name="name">Selectivo</field>
+        <field name="codigo">SE03</field>
+        <field name="insurer_id" search="[('insurer','=','Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0060" model="doctor.insurer.plan">
+        <field name="name">Excelencia </field>
+        <field name="codigo">EX04</field>
+        <field name="insurer_id" search="[('insurer','=','Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps')]"/>
+    </record>
+    <!--fin PLANES DE Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps -->
+
+
+    <!--PLANES DE Coomeva Medicina Prepagada S. A.-->
+    <record id="doctor_insurer_plan_0061" model="doctor.insurer.plan">
+        <field name="name">Clásico</field>
+        <field name="codigo">CL01</field>
+        <field name="insurer_id" search="[('insurer','=','Coomeva Medicina Prepagada S. A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0062" model="doctor.insurer.plan">
+        <field name="name">Clásico Uniban</field>
+        <field name="codigo">CL02</field>
+        <field name="insurer_id" search="[('insurer','=','Coomeva Medicina Prepagada S. A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0063" model="doctor.insurer.plan">
+        <field name="name">Modular Hosp.Mater.Cir</field>
+        <field name="codigo">MO03</field>
+        <field name="insurer_id" search="[('insurer','=','Coomeva Medicina Prepagada S. A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0064" model="doctor.insurer.plan">
+        <field name="name">Oro</field>
+        <field name="codigo">OR04</field>
+        <field name="insurer_id" search="[('insurer','=','Coomeva Medicina Prepagada S. A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0065" model="doctor.insurer.plan">
+        <field name="name">Plata</field>
+        <field name="codigo">PL05</field>
+        <field name="insurer_id" search="[('insurer','=','Coomeva Medicina Prepagada S. A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0066" model="doctor.insurer.plan">
+        <field name="name">Salud Oral</field>
+        <field name="codigo">SA06</field>
+        <field name="insurer_id" search="[('insurer','=','Coomeva Medicina Prepagada S. A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0067" model="doctor.insurer.plan">
+        <field name="name">Tradicional </field>
+        <field name="codigo">TR07</field>
+        <field name="insurer_id" search="[('insurer','=','Coomeva Medicina Prepagada S. A.')]"/>
+    </record>
+    <!--fin PLANES DE Coomeva Medicina Prepagada S. A.-->
+
+        <!--PLANES DE Famisanar Ltda. Cafam -Colsubsidio E.P.S.-->
+    <record id="doctor_insurer_plan_0068" model="doctor.insurer.plan">
+        <field name="name">Famifacil Elite</field>
+        <field name="codigo">FA01</field>
+        <field name="insurer_id" search="[('insurer','=','Famisanar Ltda. Cafam -Colsubsidio E.P.S.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0069" model="doctor.insurer.plan">
+        <field name="name">Famifacil Preferencial</field>
+        <field name="codigo">FA02</field>
+        <field name="insurer_id" search="[('insurer','=','Famisanar Ltda. Cafam -Colsubsidio E.P.S.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0070" model="doctor.insurer.plan">
+        <field name="name">Famifacil HYC Colectivo</field>
+        <field name="codigo">FA03</field>
+        <field name="insurer_id" search="[('insurer','=','Famisanar Ltda. Cafam -Colsubsidio E.P.S.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0071" model="doctor.insurer.plan">
+        <field name="name">Famifacil Plus Colectivo</field>
+        <field name="codigo">PA04</field>
+        <field name="insurer_id" search="[('insurer','=','Famisanar Ltda. Cafam -Colsubsidio E.P.S.')]"/>
+    </record>
+    <!--fin PLANES DE Famisanar Ltda. Cafam -Colsubsidio E.P.S.-->
+
+        <!--PLANES DE Cruz Blanca Eps S.A..-->
+    <record id="doctor_insurer_plan_0072" model="doctor.insurer.plan">
+        <field name="name">Clásico </field>
+        <field name="codigo">CL01</field>
+        <field name="insurer_id" search="[('insurer','=','Cruz Blanca Eps S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0073" model="doctor.insurer.plan">
+        <field name="name">Insignia</field>
+        <field name="codigo">IN02</field>
+        <field name="insurer_id" search="[('insurer','=','Cruz Blanca Eps S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0074" model="doctor.insurer.plan">
+        <field name="name">Súper</field>
+        <field name="codigo">SU03</field>
+        <field name="insurer_id" search="[('insurer','=','Cruz Blanca Eps S.A.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0075" model="doctor.insurer.plan">
+        <field name="name">Magno</field>
+        <field name="codigo">MA04</field>
+        <field name="insurer_id" search="[('insurer','=','Cruz Blanca Eps S.A.')]"/>
+    </record>
+    <!--fin PLANES DE Cruz Blanca Eps S.A.-->
+
+    <!--PLANES DE Compensar E.P.S.-->
+    <record id="doctor_insurer_plan_0076" model="doctor.insurer.plan">
+        <field name="name">Familiar</field>
+        <field name="codigo">FA01</field>
+        <field name="insurer_id" search="[('insurer','=','Compensar E.P.S.')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0077" model="doctor.insurer.plan">
+        <field name="name">Especial</field>
+        <field name="codigo">ES02</field>
+        <field name="insurer_id" search="[('insurer','=','Compensar E.P.S.')]"/>
+    </record>
+    <!--fin PLANES DE Compensar E.P.S.-->
+
+        <!--PLANES DE Salud Colpatria S.A Medicina Prepagada-->
+    <record id="doctor_insurer_plan_0078" model="doctor.insurer.plan">
+        <field name="name">Alterno</field>
+        <field name="codigo">AL01</field>
+        <field name="insurer_id" search="[('insurer','=','Salud Colpatria S.A Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0079" model="doctor.insurer.plan">
+        <field name="name">Amigo</field>
+        <field name="codigo">AM02</field>
+        <field name="insurer_id" search="[('insurer','=','Salud Colpatria S.A Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0080" model="doctor.insurer.plan">
+        <field name="name">Fesalud Plus</field>
+        <field name="codigo">FE03</field>
+        <field name="insurer_id" search="[('insurer','=','Salud Colpatria S.A Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0081" model="doctor.insurer.plan">
+        <field name="name">Esencial</field>
+        <field name="codigo">ES04</field>
+        <field name="insurer_id" search="[('insurer','=','Salud Colpatria S.A Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0082" model="doctor.insurer.plan">
+        <field name="name">Original</field>
+        <field name="codigo">OR05</field>
+        <field name="insurer_id" search="[('insurer','=','Salud Colpatria S.A Medicina Prepagada')]"/>
+    </record>
+    <!--fin PLANES DE Salud Colpatria S.A Medicina Prepagada-->
+
+    <!--PLANES DE Caja De Compensación Familiar Comfenalco Valle Del Cauca-->
+    <record id="doctor_insurer_plan_0083" model="doctor.insurer.plan">
+        <field name="name">Integra</field>
+        <field name="codigo">IN01</field>
+        <field name="insurer_id" search="[('insurer','=','Caja De Compensación Familiar Comfenalco Valle Del Cauca')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0084" model="doctor.insurer.plan">
+        <field name="name">U.H.C.M.</field>
+        <field name="codigo">UH02</field>
+        <field name="insurer_id" search="[('insurer','=','Caja De Compensación Familiar Comfenalco Valle Del Cauca')]"/>
+    </record>
+    <!--fin PLANES DE Caja De Compensación Familiar Comfenalco Valle Del Cauca-->
+
+    <!--PLANES DE Compañía De Medicina Prepagada Colsanitas-->
+    <record id="doctor_insurer_plan_0085" model="doctor.insurer.plan">
+        <field name="name">Tradicional</field>
+        <field name="codigo">TR01</field>
+        <field name="insurer_id" search="[('insurer','=','Compañía De Medicina Prepagada Colsanitas')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0086" model="doctor.insurer.plan">
+        <field name="name">Integral</field>
+        <field name="codigo">IN02</field>
+        <field name="insurer_id" search="[('insurer','=','Compañía De Medicina Prepagada Colsanitas')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0087" model="doctor.insurer.plan">
+        <field name="name">M10</field>
+        <field name="codigo">EM01</field>
+        <field name="insurer_id" search="[('insurer','=','Compañía De Medicina Prepagada Colsanitas')]"/>
+    </record>
+    <!--fin PLANES DE Compañía De Medicina Prepagada Colsanitas-->
+
+    <!--PLANES DE Vivir S.A. Medicina Prepagada-->
+    <record id="doctor_insurer_plan_0088" model="doctor.insurer.plan">
+        <field name="name">Excelencia</field>
+        <field name="codigo">EX01</field>
+        <field name="insurer_id" search="[('insurer','=','Vivir S.A. Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0089" model="doctor.insurer.plan">
+        <field name="name">Calidad</field>
+        <field name="codigo">CA01</field>
+        <field name="insurer_id" search="[('insurer','=','Vivir S.A. Medicina Prepagada')]"/>
+    </record>
+    <!--fin PLANES DE Vivir S.A. Medicina Prepagada-->
+
+
+    <!--PLANES DE Humana Golden Cross S.A. Medicina Prepagada-->
+    <record id="doctor_insurer_plan_0090" model="doctor.insurer.plan">
+        <field name="name">Plus</field>
+        <field name="codigo">PL01</field>
+        <field name="insurer_id" search="[('insurer','=','Humana Golden Cross S.A. Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0091" model="doctor.insurer.plan">
+        <field name="name">Preferencial 3000</field>
+        <field name="codigo">PR02</field>
+        <field name="insurer_id" search="[('insurer','=','Humana Golden Cross S.A. Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0092" model="doctor.insurer.plan">
+        <field name="name">Tradicional  </field>
+        <field name="codigo">TR03</field>
+        <field name="insurer_id" search="[('insurer','=','Humana Golden Cross S.A. Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0093" model="doctor.insurer.plan">
+        <field name="name">Milenio</field>
+        <field name="codigo">MI04</field>
+        <field name="insurer_id" search="[('insurer','=','Humana Golden Cross S.A. Medicina Prepagada')]"/>
+    </record>
+
+    <!--PLANES DE Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada-->
+    <record id="doctor_insurer_plan_0094" model="doctor.insurer.plan">
+        <field name="name">H&amp;C</field>
+        <field name="codigo">HC01</field>
+        <field name="insurer_id" search="[('insurer','=','Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0095" model="doctor.insurer.plan">
+        <field name="name">MEDICO 100%</field>
+        <field name="codigo">ME02</field>
+        <field name="insurer_id" search="[('insurer','=','Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada')]"/>
+    </record>
+    <record id="doctor_insurer_plan_0096" model="doctor.insurer.plan">
+        <field name="name">Salud Oral </field>
+        <field name="codigo">SA03</field>
+        <field name="insurer_id" search="[('insurer','=','Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada')]"/>
+    </record>
+    <!--fin PLANES DE Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada-->
+  </data>
+</openerp>
