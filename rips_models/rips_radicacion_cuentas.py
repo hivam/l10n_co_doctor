@@ -135,7 +135,7 @@ class radicacion_cuentas(osv.osv):
 		try:
 			parent_id = self.pool.get('document.directory').search(cr, uid, [('name', '=', 'Rips')])
 		except Exception as e:
-			raise osv.except_osv(_('Error!'),
+			raise osv.except_osv(_('¡Aviso Importante!'),
 					_('No hay un lugar donde almacenar el archivo RIPS.\n1. Habilite la opcion gestion de documentos en el menu Configuracion > Conocimiento\n2. Ir a Conocimiento (menu superior)> Documentos> Directorios y crear un directorio con el nombre "Rips"'))
 
 		if not parent_id:
