@@ -958,6 +958,8 @@ class doctor_attentions_certificado(osv.osv):
 		'cuerpo' : fields.text(u'Certificación'),
 		'active' : fields.boolean('Active'),
 		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'multi_images': fields.one2many('multi_imagen', 'certificados_id', 'Imagenes',),
+		'leido': fields.boolean('Leido', ),
 	}
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, context=None):
@@ -978,6 +980,17 @@ class doctor_attentions_certificado(osv.osv):
 
 doctor_attentions_certificado()
 
+class multi_imagen(osv.osv):
+
+	_name = 'multi_imagen'
+
+	_columns = {
+		'name': fields.binary('Imagen'),
+		'certificados_id': fields.many2one('doctor.attentions.certificado', 'Certificado o Informe', ondelete='restrict'),
+
+	}
+
+multi_imagen()
 
 class doctor_drugs(osv.osv):
 
