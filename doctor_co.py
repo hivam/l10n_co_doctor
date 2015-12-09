@@ -309,6 +309,7 @@ class doctor_appointment_co(osv.osv):
 					for rec in planes_contrato:
 						if rec.id == int(plan_id):
 							return True
+			self.onchange_limpiarformulario(cr, uid, ids, plan_id)
 			raise osv.except_osv(_('Aviso importante!'),_('El plan seleccionado no hace parte de este contrato o es posible que no esté vigente.\n\nComuníquese con la aseguradora para más información.'))
 		return True
 
@@ -1220,6 +1221,7 @@ class doctor_sales_order_co (osv.osv):
 			'type': 'out_invoice',
 			'reference': order.client_order_ref or order.name,
 			'account_id': order.partner_id.property_account_receivable.id,
+			'account_patient': order.partner_id.property_account_receivable.id,
 			'partner_id': order.partner_invoice_id.id,
 			'patient_id': order.patient_id.id,
 			'ref': order.ref,
