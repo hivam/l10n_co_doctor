@@ -153,13 +153,46 @@
      </tr>
     </blockTable>
 
-  <section>
+
+    <section>
+    [[o.certificados_ids.multi_images.name  or removeParentNode('section') ]]
+    <blockTable style="Table6">
+      <tr>
+        <td>
+          <image height="80" width="166">[[primera_foto(line.id, 1) or removeParentNode('image')]]</image>
+        </td>
+        <td>
+          <image height="80" width="166">[[primera_foto(line.id, 3) or removeParentNode('image')]]</image>
+        </td>
+        <td>
+          <image height="80" width="166">[[primera_foto(line.id, 5) or removeParentNode('image')]]</image>
+        </td>
+      </tr>
+      <para style="P5"> </para>
+      <tr>
+        <td>
+          <image height="80" width="166">[[primera_foto(line.id, 2) or removeParentNode('image')]]</image>
+        </td>
+        <td>
+         <image height="80" width="166">[[primera_foto(line.id, 4) or removeParentNode('image')]]</image>
+        </td>
+        <td>
+         <image height="80" width="166">[[primera_foto(line.id, 6) or removeParentNode('image')]]</image>        
+        </td>
+      </tr>
+    </blockTable>
+    </section>
+
+
+
+
+    <section>
     [[o.certificados_ids  or removeParentNode('section') ]]
-    <blockTable colWidths="534.0" style="Table6">
-        <para style="P4">[[ repeatIn(o.certificados_ids, 'line') ]]</para>
+    <blockTable colWidths="534" style="Table6">
+        <para style="P5">[[ repeatIn(o.certificados_ids, 'line') ]]</para>
         <tr>
           <td>
-            <para style="P6">[[(line.asunto)]]: [[(line.cuerpo)]]</para>
+            <para style="P6">[[(line.asunto)]] [[(line.cuerpo)]]</para >
           </td>
         </tr>
       </blockTable>

@@ -426,7 +426,16 @@
                                      <field name="professional_id"/>
                                      <field name="cuerpo"/>
                                      <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '02')]"/>
-                                </group>   
+                                </group>  
+                                <group colspan="3" col="2">
+                                    <div>
+                                        <field name="multi_images" nolabel="1">
+                                            <tree string="Imagenes" editable="top">
+                                                <field name="name"/>
+                                            </tree>
+                                        </field>
+                                    </div>
+                                </group> 
                             </form>
                         </field>
                     </page>

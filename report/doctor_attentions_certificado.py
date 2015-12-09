@@ -22,6 +22,8 @@
 import time
 from openerp.report import report_sxw
 from openerp import pooler
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class doctor_attentions_certificado(report_sxw.rml_parse):
@@ -31,6 +33,7 @@ class doctor_attentions_certificado(report_sxw.rml_parse):
             'time': time,
             'select_type': self.select_type,
             'select_age': self.select_age,
+            'primera_foto': self.primera_foto,
         })
 
     def select_type(self, tipo_usuario):
@@ -48,7 +51,38 @@ class doctor_attentions_certificado(report_sxw.rml_parse):
         age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
             str(age))
         return age_unit
+
+
+    def cual_foto(self, n_foto):
+        retorno = -1
+        if n_foto == 1:
+            retorno = 0
+        elif n_foto == 2:
+            retorno = 1
+        elif n_foto == 3:
+            retorno = 2
+        elif n_foto == 4:
+            retorno = 3
+        elif n_foto == 5:
+            retorno = 4
+        elif n_foto == 6:
+            retorno = 5
+        return retorno
+
+    def primera_foto(self, certificado_id, n_foto):
+        foto = self.cual_foto(n_foto)
+        context = {}
+        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+        image = self.pool.get('multi_imagen')
+        cantidad_imagen = image.search(self.cr, self.uid, [('certificados_id', '=', certificado_id)], context=context)
+        if cantidad_imagen:
+            if foto != -1:
+                for i in image.browse(self.cr, self.uid, [cantidad_imagen[foto]], context=context):
+                    return i.name
+
         
+        
+
 report_sxw.report_sxw('report.doctor_attentions_certificado', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_attentions_certificado.rml',
                       parser=doctor_attentions_certificado)
