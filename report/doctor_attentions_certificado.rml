@@ -209,7 +209,7 @@
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
     <td>
-          <para style="P6">Nombre: [[ (o.professional_id.professional.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Nombre: [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
         </td>
         <td>
           <para style="P6">Registro N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
