@@ -179,7 +179,7 @@
                   </group>    
                     <group colspan='4' col='6'>
                         <field name="insurer_id" on_change="onchange_limpiarformulario(plan_id, contract_id)"/>
-                        <field name="plan_id" domain="[('insurer_id','=', insurer_id)]" on_change="onchange_limpiarContrato(contract_id)" />
+                        <field name="plan_id" domain="[('insurer_id','=', insurer_id)]" on_change="onchange_limpiarContrato(contract_id, schedule_id, plan_id)" />
                         <field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
                     </group>
                     <group>
@@ -195,7 +195,10 @@
                 <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[3]" position="after">
                     <field name="nro_autorizacion"/>
                 </xpath>
+
                 
+
+               
             </field>
         </record>
 

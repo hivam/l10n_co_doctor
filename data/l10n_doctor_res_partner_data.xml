@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data noupdate="0">
-    <!--<record id="res_partner_id_0000" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Susalud Eps</field>
-        <field name="ref">800088702</field>
-        <field name="dv">2</field>
-    </record>-->
+
     <record id="res_partner_id_0001" model="res.partner">
         <field name="is_company">True</field>
         <field name="tdoc">31</field>
@@ -85,13 +79,7 @@
         <field name="ref">890303093</field>
         <field name="dv">5</field>
     </record>
-    <!--record id="res_partner_id_0013" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Comfenalco Antioquia E.P.S.</field>
-        <field name="ref">890303093</field>
-        <field name="dv">5</field>
-    </record-->
+
     <record id="res_partner_id_0014" model="res.partner">
         <field name="is_company">True</field>
         <field name="tdoc">31</field>
@@ -120,5 +108,14 @@
         <field name="ref">800088702</field>
         <field name="dv">2</field>
     </record>
+
+    <record id="res_partner_id_0019" model="res.partner">
+        <field name="is_company">True</field>
+        <field name="tdoc">31</field>
+        <field name="name">Medisánitas S.A Compañía De Medicina Prepagada</field>
+        <field name="ref">800153424</field>
+        <field name="dv">8</field>
+    </record>
+
   </data>
 </openerp>

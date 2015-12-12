@@ -25,6 +25,8 @@ import re
 import codecs
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
+from openerp.osv.orm import setup_modifiers
+from lxml import etree
 import time
 import pooler
 from datetime import date, datetime, timedelta
@@ -279,6 +281,8 @@ class doctor_appointment_co(osv.osv):
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		}
 
+
+
 	def onchange_patient(self, cr, uid, ids, patient_id, insurer_id, tipo_usuario_id, ref, context=None):
 		values = {}
 		if not patient_id:
@@ -321,13 +325,51 @@ class doctor_appointment_co(osv.osv):
 		})
 		return {'value' : values}
 
-	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, context=None):
-		values = {}
+	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, schedule_id, plan_id, context=None):
+		
+		if context is None:
+			context = {}
+
+		res={'value':{},}
+
+		modelo_agenda = self.pool.get('doctor.schedule')
+		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
+		procedimientos_planes = []
+		procedimientos = []
+		procedimientos_doctor_ids = []
+		
 		if contract_id:
-			values.update({
-			'contract_id': ''
-		})
-		return {'value' : values}
+			res['value']['contract_id'] = ''
+
+		res.setdefault('domain', {})
+		if plan_id and schedule_id:
+			
+			professional_id = modelo_agenda.browse(cr, uid, schedule_id, context=context).professional_id.id
+			
+			procedimientos_planes_ids = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id)], context=context)
+			for proce_plan in modelo_procedimiento_plan.browse(cr, uid, procedimientos_planes_ids, context=context):
+				procedimientos_planes.append(proce_plan.procedure_id.id)
+
+			if procedimientos_planes:
+				cr.execute("""SELECT procedures_ids FROM doctor_professional_product_product_rel WHERE professional_ids = %s """, [professional_id] )
+
+				for i in cr.fetchall():
+					procedimientos_doctor_ids.append(i[0])
+
+				if procedimientos_doctor_ids:
+
+					for procedimiento_doctor in procedimientos_doctor_ids:
+
+						if procedimiento_doctor in procedimientos_planes:
+							procedimientos.append(procedimiento_doctor)
+
+					dominio = 	[('id', 'in', procedimientos)]	
+					
+					res['domain']['procedures_id'] = str(dominio)
+			
+			_logger.info(res)
+		return res
+		
 
 	def onchange_calcular_hora(self,cr,uid,ids,schedule_id,type_id,time_begin,context=None):
 		values = {}
