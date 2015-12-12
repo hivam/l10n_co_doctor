@@ -370,12 +370,34 @@ class doctor_appointment_co(osv.osv):
 			
 			_logger.info(res)
 		return res
-		
+
+	def onchange_prueba(self, cr, uid, ids, context=None):
+		res={'value':{}}
+		_logger.info("****************")
+
+		return res
 
 	def onchange_calcular_hora(self,cr,uid,ids,schedule_id,type_id,time_begin,context=None):
 		values = {}
+		procedimientos = []
+		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
+		modelo_crear = self.pool.get('product.product')
+
+		if type_id:
+			procedures_appointment_type_ids = modelo_buscar.search(cr, uid, [('appointment_type_id', '=', type_id)], context=context)
+
+			for i in modelo_buscar.browse(cr,uid,procedures_appointment_type_ids,context=context):
+				procedimientos.append((0,0,{'procedures_id' : i.procedures_id.id, 'quantity': 1}))
+
+			
+			values.update({
+				'procedures_id' : procedimientos,
+				
+			})
+
 		if not time_begin:
 			return values
+
 		#obtener fecha actual para comparar cada que se quiera asignar una cita, se convierte a datetime para comparar
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
 		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
@@ -523,6 +545,45 @@ class doctor_appointment_co(osv.osv):
 		return order_id
 
 doctor_appointment_co()
+
+class doctor_appointment_type(osv.osv):
+	_name = "doctor.appointment.type"
+	_inherit = "doctor.appointment.type"
+
+	_columns = {
+		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud',
+										 ondelete='restrict'),
+	}
+
+doctor_appointment_type()
+
+class doctor_appointment_type_procedures(osv.osv):
+	_name = "doctor.appointment.type_procedures"
+	_rec_name = 'procedures_id'
+	
+	_columns = {
+		'appointment_type_id': fields.many2one('doctor.appointment.type', 'Tipo Cita'),
+		'procedures_id': fields.many2one('product.product', 'Procedimientos en Salud', required=True, ondelete='restrict'),
+		'quantity': fields.integer('Cantidad', required=True),
+		'additional_description': fields.char('Add. description', size=30,
+											  help='Additional description that will be added to the product description on orders.'),
+	}
+
+	def name_get(self, cr, uid, ids, context={}):
+		if not len(ids):
+			return []
+		rec_name = 'procedures_id'
+		res = [(r['id'], r[rec_name][1])
+			   for r in self.read(cr, uid, ids, [rec_name], context)]
+		return res
+
+	_defaults = {
+		'quantity': 1,
+	}
+
+
+doctor_appointment_type_procedures()
+
 
 class doctor_attentions_co(osv.osv):
 	_name = "doctor.attentions"

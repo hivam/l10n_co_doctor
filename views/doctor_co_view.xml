@@ -196,12 +196,31 @@
                     <field name="nro_autorizacion"/>
                 </xpath>
 
-                
+                <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']" position="attributes">
+                    <attribute name="on_change">onchange_prueba()</attribute>
+                    <attribute name="context">{'professiona_id': professional_id,'plan_id': plan_id, 'type_id': type_id}</attribute>
+                </xpath>
 
-               
             </field>
         </record>
 
+
+        <record id="view_doctor_appointment_type_from_view" model="ir.ui.view">
+            <field name="name">Tipo Cita</field>
+            <field name="model">doctor.appointment.type</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_appointment_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form[@string='Appointment type']/group" position="after">
+                    <field name="procedures_id" colspan="4" nolabel="1">
+                        <tree string="Procedimientos en salud" editable="bottom">
+                            <field name="procedures_id"/>
+                            <field name="quantity"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+          </record>
 
 
         <!-- schedule Form View -->
