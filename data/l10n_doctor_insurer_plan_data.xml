@@ -527,5 +527,24 @@
         <field name="insurer_id" search="[('insurer','=','Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada')]"/>
     </record>
     <!--fin PLANES DE Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada-->
+
+    <!--PLANES DE Medisánitas S.A Compañía De Medicina Prepagada-->
+    <record id="doctor_insurer_plan_0123" model="doctor.insurer.plan">
+        <field name="name">Integral</field>
+        <field name="codigo">IN01</field>
+        <field name="insurer_id" search="[('insurer','=','Medisánitas S.A Compañía De Medicina Prepagada')]"/>
+    </record>   
+    <record id="doctor_insurer_plan_0124" model="doctor.insurer.plan">
+        <field name="name">Tradicional</field>
+        <field name="codigo">TR02</field>
+        <field name="insurer_id" search="[('insurer','=','Medisánitas S.A Compañía De Medicina Prepagada')]"/>
+    </record>  
+    <record id="doctor_insurer_plan_0125" model="doctor.insurer.plan">
+        <field name="name">M7</field>
+        <field name="codigo">EM03</field>
+        <field name="insurer_id" search="[('insurer','=','Medisánitas S.A Compañía De Medicina Prepagada')]"/>
+    </record>   
+    <!--fin PLANES DE Medisánitas S.A Compañía De Medicina Prepagada-->
+    
   </data>
 </openerp>

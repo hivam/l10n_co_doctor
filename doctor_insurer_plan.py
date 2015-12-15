@@ -46,7 +46,7 @@ class doctor_insurer_plan(osv.osv):
 	# Función para evitar nombre de plan duplicado
 	def _check_unique_name(self, cr, uid, ids, context=None):
 		for record in self.browse(cr, uid, ids):
-			ref_ids = self.search(cr, uid, [('name', '=', record.name), ('id', '<>', record.id)])
+			ref_ids = self.search(cr, uid, [('name', '=', record.name), ('id', '<>', record.id), ('insurer_id', '=', record.insurer_id.id)])
 			if ref_ids:
 				raise osv.except_osv(_('¡Mensaje de Error!'), _('Este nombre de plan ya existe en el sistema'))
 		return True

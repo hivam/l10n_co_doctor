@@ -26,55 +26,60 @@
         <field name="code">EPS018</field>
         <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
     </record>
-    <record id="doctor_insurer_0007" model="doctor.insurer">
+    <record id="doctor_insurer_0006" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Coomeva Medicina Prepagada S. A.')]"/>
         <field name="code">EMP028</field>
         <field name="tipousuario_id" search="[('name','=','Otro')]"/>
     </record>
-    <record id="doctor_insurer_0008" model="doctor.insurer">
+    <record id="doctor_insurer_0007" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Famisanar Ltda. Cafam -Colsubsidio E.P.S.')]"/>
         <field name="code">EPS017</field>
         <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
     </record>
-    <record id="doctor_insurer_0009" model="doctor.insurer">
+    <record id="doctor_insurer_0008" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Cruz Blanca Eps S.A.')]"/>
         <field name="code">EPS023</field>
         <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
     </record>
-    <record id="doctor_insurer_0010" model="doctor.insurer">
+    <record id="doctor_insurer_009" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Compensar E.P.S.')]"/>
         <field name="code">EPS008</field>
         <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
     </record>
-    <record id="doctor_insurer_0011" model="doctor.insurer">
+    <record id="doctor_insurer_0010" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Salud Colpatria S.A Medicina Prepagada')]"/>
         <field name="code">EMP019</field>
         <field name="tipousuario_id" search="[('name','=','Otro')]"/>
     </record>
-    <record id="doctor_insurer_00012" model="doctor.insurer">
+    <record id="doctor_insurer_00011" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Caja De Compensación Familiar Comfenalco Valle Del Cauca')]"/>
         <field name="code">EMP025</field>
         <field name="tipousuario_id" search="[('name','=','Otro')]"/>
     </record>
-    <record id="doctor_insurer_00013" model="doctor.insurer">
+    <record id="doctor_insurer_00012" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Compañía De Medicina Prepagada Colsanitas')]"/>
         <field name="code">EMP023</field>
         <field name="tipousuario_id" search="[('name','=','Otro')]"/>
     </record>
-    <record id="doctor_insurer_00014" model="doctor.insurer">
+    <record id="doctor_insurer_00013" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Vivir S.A. Medicina Prepagada')]"/>
         <field name="code">EMP022</field>
         <field name="tipousuario_id" search="[('name','=','Otro')]"/>
     </record>
-    <record id="doctor_insurer_00015" model="doctor.insurer">
+    <record id="doctor_insurer_00014" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Humana Golden Cross S.A. Medicina Prepagada')]"/>
         <field name="code">EMP012</field>
         <field name="tipousuario_id" search="[('name','=','Otro')]"/>
     </record>
-    <record id="doctor_insurer_00016" model="doctor.insurer">
+    <record id="doctor_insurer_00015" model="doctor.insurer">
         <field name="insurer" search="[('name','=','Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada')]"/>
         <field name="code">EMP021</field>
         <field name="tipousuario_id" search="[('name','=','Otro')]"/>
     </record>
+    <record id="doctor_insurer_00017" model="doctor.insurer">
+        <field name="insurer" search="[('name','=','Medisánitas S.A Compañía De Medicina Prepagada')]"/>
+        <field name="code">EPS015</field>
+    </record>
+
   </data>
 </openerp>
