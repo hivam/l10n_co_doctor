@@ -1322,7 +1322,6 @@ class doctor_appointment_procedures(osv.osv):
 
 	_columns = {
 		'nro_autorizacion' : fields.char('Nro. Autorizacion', size=64),
-		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 	}
 
 doctor_appointment_procedures()
