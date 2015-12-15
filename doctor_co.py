@@ -103,9 +103,7 @@ class doctor_patient_co(osv.osv):
 		'telefono' : fields.char('Teléfono', size=12),
 		'email' : fields.char('Email'),
 		'movil' :fields.char('Móvil', size=12),
-		'tipo_usuario':  fields.selection((('1','Contributivo'), ('2','Subsidiado'),
-										   ('3','Vinculado'), ('4','Particular'),
-										   ('5','Otro')), 'Tipo de usuario', required=True),
+		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
 		'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
 		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
 		'street' :  fields.char('Dirección', required=False),
@@ -197,7 +195,6 @@ class doctor_patient_co(osv.osv):
 		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
 	_defaults = {
-		'tipo_usuario': '4',
 		'zona' : 'U'
 		}
 
@@ -270,11 +267,9 @@ class doctor_appointment_co(osv.osv):
 	_inherit = "doctor.appointment"
 	_columns = {
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
-												 states={'invoiced': [('readonly', True)]}),
+										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
-		'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
-										   ('3','Vinculado'), ('4','Particular'),
-										   ('5','Otro')), 'Tipo de usuario', states={'invoiced':[('readonly',True)]}),
+		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		}
@@ -285,7 +280,7 @@ class doctor_appointment_co(osv.osv):
 			return values
 		patient = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context)
 		insurer_patient = patient.insurer.id
-		tipo_usuario_patient = patient.tipo_usuario
+		tipo_usuario_patient = patient.tipo_usuario.id
 		ref_patient = patient.ref
 		values.update({
 			'insurer_id' : insurer_patient,

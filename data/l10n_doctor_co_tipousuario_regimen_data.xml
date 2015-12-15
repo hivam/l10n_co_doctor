@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record id="doctor_tipousuario_regimen_0001" model="doctor.tipousuario.regimen">
+        <field name="name">Contributivo</field>
+        <field name="obligatorio" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+     <record id="doctor_tipousuario_regimen_0002" model="doctor.tipousuario.regimen">
+        <field name="name">Subsidiado</field>
+        <field name="obligatorio" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="doctor_tipousuario_regimen_0003" model="doctor.tipousuario.regimen">
+        <field name="name">Vinculado</field>
+        <field name="obligatorio" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="doctor_tipousuario_regimen_0004" model="doctor.tipousuario.regimen">
+        <field name="name">Particular</field>
+        <field name="obligatorio" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="doctor_tipousuario_regimen_0005" model="doctor.tipousuario.regimen">
+        <field name="name">Otro</field>
+        <field name="obligatorio" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+  </data>
+</openerp>

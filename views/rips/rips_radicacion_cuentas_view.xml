@@ -17,8 +17,8 @@
             <field name="id" invisible="1"/>
             <label for="secuencia" string="Cuenta N°" attrs="{'invisible': [('id','=', False)]}"/>
             <field name="secuencia" style="width: 30%%" class="oe_inline" attrs="{'invisible': [('id','=', False)]}"/>
-            <label for="tipo_usuario_id" string="Plan Beneficios" class="left-margin10"/>
-            <field name="tipo_usuario_id" style="width: 50%%" class="oe_inline"/>
+            <label for="tipo_usuario_id" string="Tipo Usuario" class="left-margin10"/>
+            <field name="tipo_usuario_id" style="width: 40%%" class="oe_inline"/>
             <label for="f_radicacion" string="Fecha Radicación" class="left-margin10"/>
             <field name="f_radicacion" class="oe_inline"/>
 
@@ -27,8 +27,8 @@
           <group >
 
           <h2>
-            <label for="cliente" string="Cliente" attrs="{'invisible': [('tipo_usuario_id','=','4')]}"/>
-            <field name="cliente" style="width: 60%%" attrs="{'invisible': [('tipo_usuario_id','=','4')]}"/>
+            <label for="cliente" string="Cliente"/>
+            <field name="cliente" style="width: 60%%" domain="[('tipousuario_id','=',tipo_usuario_id)]"/>
           </h2>
           <separator/>
 

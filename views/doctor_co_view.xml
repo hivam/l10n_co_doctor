@@ -70,7 +70,7 @@
                 </xpath>
 
                 <field name="insurer" position="replace" >
-                  <field name="insurer" attrs="{'invisible': [('tipo_usuario','=','4')]}"/>
+                  <field name="insurer" attrs="{'invisible': [('tipo_usuario','=', 4)]}" domain="[('tipousuario_id','=',tipo_usuario)]" />
                 </field>
 
                 <field name="insurer" position="before" >
@@ -177,8 +177,8 @@
                     <field name="ref" />
                     <field name="tipo_usuario_id"/>
                   </group>    
-                    <group colspan='4' col='6'>
-                        <field name="insurer_id" on_change="onchange_limpiarformulario(plan_id, contract_id)"/>
+                    <group colspan='4' col='6' attrs="{'invisible': [('tipo_usuario_id', '=', 4)]}">
+                        <field name="insurer_id" on_change="onchange_limpiarformulario(plan_id, contract_id)" domain="[('tipousuario_id','=',tipo_usuario_id )]"/>
                         <field name="plan_id" domain="[('insurer_id','=', insurer_id)]" on_change="onchange_limpiarContrato(contract_id)" />
                         <field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
                     </group>

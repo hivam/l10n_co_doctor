@@ -76,6 +76,16 @@ class radicacion_cuentas(osv.osv):
 	_name ='rips.radicacioncuentas'
 	_rec_name = 'secuencia'
 
+	def _contar_facturas(self, cr, uid, ids, field_name, arg, context=None):
+		"""
+		ésta función cuenta las facturas filtradas en radicación de cuentas 
+		"""
+		res = {}
+		for po in self.browse(cr, uid, ids, context = context):
+			res[po.id] = len(po.invoices_ids)
+		return res
+
+
 	_columns = {
 		'secuencia' : fields.char("Cuenta N°", size=200 ),
 		'cliente': fields.many2one('doctor.insurer', 'Cliente', required=True, help='Aseguradora'),
@@ -83,14 +93,14 @@ class radicacion_cuentas(osv.osv):
 		'rangofacturas_desde' : fields.date('Desde', required=True),
 		'rangofacturas_hasta' : fields.date('Hasta', required=True),
 		'numero_radicado' : fields.char("N° Radicado", size=200 ),
-		'cantidad_factura' : fields.integer('Cantidad Facturas'),
+		'cantidad_factura' : fields.function(_contar_facturas, type="integer", store= True, 
+								readonly=True, method=True, string='Cantidad facturas',),
 		'confirmada' : fields.boolean('Radicacion confirmada', required=True),
 		'valor_total' : fields.float('Valor Total'),
 		'saldo' : fields.float('Saldo'),
 		'plano' : fields.binary(string='Archivo RIP'),
 		'plano_nombre' : fields.char('File name', 40, readonly=True),
-	 	'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
-										   ('3','Vinculado'), ('4','Otro')), 'Tipo de usuario', required= True),
+		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
 		#Rips
 		'rips_ids': fields.one2many('rips.generados', 'radicacioncuentas_id', string='RIPS', required=True, ondelete='restrict'),
 		#Facturas
@@ -104,8 +114,7 @@ class radicacion_cuentas(osv.osv):
 
 	}
 
-
-
+	
 	def _date_to_dateuser(self,cr, uid,date,context=None):
 		dateuser = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
 
@@ -160,10 +169,6 @@ class radicacion_cuentas(osv.osv):
 			return nueva_secuencia
 		else:
 			return 'known.txt'
-
-	#TODO: contar facturas para agregar al campo de "Cantidad Facturas"
-	def contarFacturas(self, cr, uid, vals, context=None):
-		return True
 
 	def generar_rips(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
@@ -243,7 +248,6 @@ class radicacion_cuentas(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		vals.update({'secuencia': self.getSecuencia(cr,uid)})
-		vals.update({'cantidad_factura' : self.contarFacturas(cr, uid, vals)})
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
 
 	def confirmar(self, cr, uid, ids, context=None):
