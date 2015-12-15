@@ -337,7 +337,7 @@ class doctor_appointment_co(osv.osv):
 			res['value']['contract_id'] = ''
 		return res
 
-
+			
 	def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, context=None):
 
 		procedimientos = []
@@ -347,39 +347,41 @@ class doctor_appointment_co(osv.osv):
 
 		if type_id:
 			procedures_appointment_type_ids = modelo_buscar.search(cr, uid, [('appointment_type_id', '=', type_id)], context=context)
-			
+		
 			if procedures_appointment_type_ids:
 
 				for i in modelo_buscar.browse(cr,uid,procedures_appointment_type_ids,context=context):
 					cr.execute("""SELECT procedures_ids FROM doctor_professional_product_product_rel WHERE professional_ids = %s AND procedures_ids = %s """, [professional_id, i.procedures_id.id] )
-					
 					resultado = cr.fetchall()
 
 				if resultado:
 					for j in resultado:
 						ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0])], context=context)
 				else:
-					raise osv.except_osv(_('Aviso importante!'),_('El procedimiento que esta enlazado con la cita no lo realiza el profesional encargado de esta agenda'))
-
+					raise osv.except_osv(_('Aviso importante!!'),
+								 _('El procedimiento que esta enlazado con la cita no lo realiza el profesional encargado de esta agenda'))
 				if ids_procedimientos:
 					for x in modelo_procedimiento_plan.browse(cr, uid, ids_procedimientos, context=context):
-						_logger.info(x)
 						procedimientos.append((0,0,{'procedures_id' : x.procedure_id.id, 'quantity': 1}))
 				else:
-					raise osv.except_osv(_('Aviso importante!'),_('El procedimiento no se encuentra en el plan seleccionado'))
-
-			return procedimientos
+					raise osv.except_osv(_('Aviso importante!!'),
+								 _('El procedimiento no se encuentra en el plan seleccionado'))
+		return procedimientos
 
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, context=None):
 		values = {}
-
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		professional_id = agenda_duracion.professional_id.id
-
-		values.update({
-			'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, context=context),
-				
-		})
+		try:
+			values.update({
+				'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, context=context),
+			})
+		except Exception as a:
+			warning = {
+				'title': 'Aviso importante!!!',
+				'message' : '%s' %(a[1])
+			}
+			return {'value': {'procedures_id': False}, 'warning': warning}
 
 		if not time_begin:
 			return values
