@@ -197,6 +197,10 @@
                 </xpath>
 
 
+
+                <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']" position="attributes">
+                    <attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
+                </xpath>
       
                 <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[2]" position="attributes">
                     <attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
