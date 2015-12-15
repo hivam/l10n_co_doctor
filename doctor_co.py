@@ -326,74 +326,60 @@ class doctor_appointment_co(osv.osv):
 		})
 		return {'value' : values}
 
-	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, schedule_id, plan_id, context=None):
+	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, professional_id, plan_id, context=None):
 		
 		if context is None:
 			context = {}
 
 		res={'value':{},}
-
-		modelo_agenda = self.pool.get('doctor.schedule')
-		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
-		procedimientos_planes = []
-		procedimientos = []
-		procedimientos_doctor_ids = []
 		
 		if contract_id:
 			res['value']['contract_id'] = ''
-
-		res.setdefault('domain', {})
-		if plan_id and schedule_id:
-			
-			professional_id = modelo_agenda.browse(cr, uid, schedule_id, context=context).professional_id.id
-			
-			procedimientos_planes_ids = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id)], context=context)
-			for proce_plan in modelo_procedimiento_plan.browse(cr, uid, procedimientos_planes_ids, context=context):
-				procedimientos_planes.append(proce_plan.procedure_id.id)
-
-			if procedimientos_planes:
-				cr.execute("""SELECT procedures_ids FROM doctor_professional_product_product_rel WHERE professional_ids = %s """, [professional_id] )
-
-				for i in cr.fetchall():
-					procedimientos_doctor_ids.append(i[0])
-
-				if procedimientos_doctor_ids:
-
-					for procedimiento_doctor in procedimientos_doctor_ids:
-
-						if procedimiento_doctor in procedimientos_planes:
-							procedimientos.append(procedimiento_doctor)
-
-					dominio = 	[('id', 'in', procedimientos)]	
-					
-					res['domain']['procedures_id'] = str(dominio)
-			
-			_logger.info(res)
 		return res
 
-	def onchange_prueba(self, cr, uid, ids, context=None):
-		res={'value':{}}
-		_logger.info("****************")
 
-		return res
+	def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, context=None):
 
-	def onchange_calcular_hora(self,cr,uid,ids,schedule_id,type_id,time_begin,context=None):
-		values = {}
 		procedimientos = []
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
-		modelo_crear = self.pool.get('product.product')
+		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
+		ids_procedimientos = []
 
 		if type_id:
 			procedures_appointment_type_ids = modelo_buscar.search(cr, uid, [('appointment_type_id', '=', type_id)], context=context)
-
-			for i in modelo_buscar.browse(cr,uid,procedures_appointment_type_ids,context=context):
-				procedimientos.append((0,0,{'procedures_id' : i.procedures_id.id, 'quantity': 1}))
-
 			
-			values.update({
-				'procedures_id' : procedimientos,
+			if procedures_appointment_type_ids:
+
+				for i in modelo_buscar.browse(cr,uid,procedures_appointment_type_ids,context=context):
+					cr.execute("""SELECT procedures_ids FROM doctor_professional_product_product_rel WHERE professional_ids = %s AND procedures_ids = %s """, [professional_id, i.procedures_id.id] )
+					
+					resultado = cr.fetchall()
+
+				if resultado:
+					for j in resultado:
+						ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0])], context=context)
+				else:
+					raise osv.except_osv(_('Aviso importante!'),_('El procedimiento que esta enlazado con la cita no lo realiza el profesional encargado de esta agenda'))
+
+				if ids_procedimientos:
+					for x in modelo_procedimiento_plan.browse(cr, uid, ids_procedimientos, context=context):
+						_logger.info(x)
+						procedimientos.append((0,0,{'procedures_id' : x.procedure_id.id, 'quantity': 1}))
+				else:
+					raise osv.except_osv(_('Aviso importante!'),_('El procedimiento no se encuentra en el plan seleccionado'))
+
+			return procedimientos
+
+	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, context=None):
+		values = {}
+
+		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
+		professional_id = agenda_duracion.professional_id.id
+
+		values.update({
+			'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, context=context),
 				
-			})
+		})
 
 		if not time_begin:
 			return values
@@ -403,7 +389,6 @@ class doctor_appointment_co(osv.osv):
 		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
 		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
 		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
-		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		diff = int(agenda_duracion.date_begin[17:])
 		if diff > 0:
 			diff = 60 - diff
@@ -987,6 +972,59 @@ class doctor_otra_prescripcion(osv.osv):
 	_columns = {
 		'is_medicamento_prescripcion': fields.boolean('¿Es un medicamento / otro elemento?')
 	}
+
+
+	def procedimientos_doctor(self, cr, uid, plan_id, professional_id, context=None):
+
+		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
+		procedimientos_planes = []
+		procedimientos = []
+		ids_procedimientos = []
+		procedimientos_doctor_ids = []
+			
+		procedimientos_planes_ids = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id)], context=context)
+			
+		for proce_plan in modelo_procedimiento_plan.browse(cr, uid, procedimientos_planes_ids, context=context):
+			procedimientos_planes.append(proce_plan.procedure_id.id)
+
+		if procedimientos_planes:
+			cr.execute("""SELECT procedures_ids FROM doctor_professional_product_product_rel WHERE professional_ids = %s """, [professional_id] )
+
+			for i in cr.fetchall():
+				procedimientos_doctor_ids.append(i[0])
+
+			if procedimientos_doctor_ids:
+
+				for procedimiento_doctor in procedimientos_doctor_ids:
+
+					if procedimiento_doctor in procedimientos_planes:
+						procedimientos.append(procedimiento_doctor)
+
+				ids_procedimientos = procedimientos	
+		return ids_procedimientos
+
+	def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
+		
+		args = args or []
+		ids = []
+		
+		ids_procedimientos = []
+
+		plan_id = context.get('plan_id')
+		professional_id = context.get('professional_id')
+		if plan_id and professional_id:				
+			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
+		else:
+			if name:
+				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+				if not ids:
+					ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+			else:
+				ids = self.search(cr, uid, args, limit=limit, context=context)
+			
+			ids_procedimientos = ids
+
+		return self.name_get(cr, uid, ids_procedimientos, context)
 
 doctor_otra_prescripcion()
 

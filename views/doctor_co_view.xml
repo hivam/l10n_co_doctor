@@ -179,11 +179,11 @@
                   </group>    
                     <group colspan='4' col='6'>
                         <field name="insurer_id" on_change="onchange_limpiarformulario(plan_id, contract_id)"/>
-                        <field name="plan_id" domain="[('insurer_id','=', insurer_id)]" on_change="onchange_limpiarContrato(contract_id, schedule_id, plan_id)" />
+                        <field name="plan_id" domain="[('insurer_id','=', insurer_id)]" on_change="onchange_limpiarContrato(contract_id, professional_id, plan_id)" />
                         <field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
                     </group>
                     <group>
-                      <field name="type_id" on_change="onchange_calcular_hora(schedule_id,type_id,time_begin)"/>
+                      <field name="type_id" on_change="onchange_calcular_hora(schedule_id,type_id,time_begin, plan_id)"/>
                       <field name="appointment_today" invisible="True"/>
                     </group>
                     <group colspan='4' col='6'>
@@ -196,10 +196,12 @@
                     <field name="nro_autorizacion"/>
                 </xpath>
 
-                <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']" position="attributes">
-                    <attribute name="on_change">onchange_prueba()</attribute>
-                    <attribute name="context">{'professiona_id': professional_id,'plan_id': plan_id, 'type_id': type_id}</attribute>
+
+      
+                <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[2]" position="attributes">
+                    <attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
                 </xpath>
+
 
             </field>
         </record>
