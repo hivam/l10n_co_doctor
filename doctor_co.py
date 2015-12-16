@@ -321,7 +321,7 @@ class doctor_appointment_co(osv.osv):
 		})
 		return {'value' : values}
 
-	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, professional_id, plan_id, context=None):
+	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, context=None):
 		
 		if context is None:
 			context = {}
