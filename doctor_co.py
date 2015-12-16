@@ -472,11 +472,11 @@ class doctor_appointment_co(osv.osv):
 		order_line_obj = self.pool.get('sale.order.line')
 		# Create order object
 
-		if str(doctor_appointment.tipo_usuario_id) != '4' and not doctor_appointment.insurer_id:
+		if str(doctor_appointment.tipo_usuario_id.id) != 4 and not doctor_appointment.insurer_id:
 			raise osv.except_osv(_('Error!'),
 			_('Por favor ingrese la aseguradora a la que se le enviará la factura por los servicios prestados al paciente.'))
 
-		if str(doctor_appointment.tipo_usuario_id) == '4':
+		if str(doctor_appointment.tipo_usuario_id.id) == 4:
 			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.patient_id.ref)])[0]
 			for record in self.pool.get('res.partner').browse(cr, uid, [tercero]):
 				user = record.user_id.id
@@ -491,7 +491,7 @@ class doctor_appointment_co(osv.osv):
 			'partner_id': tercero,
 			'patient_id': doctor_appointment.patient_id.id,
 			'ref': doctor_appointment.ref,
-			'tipo_usuario_id' : doctor_appointment.tipo_usuario_id,
+			'tipo_usuario_id' : doctor_appointment.tipo_usuario_id.id,
 			'state': 'draft',
 		}
 		# Get other order values from appointment partner
@@ -1327,9 +1327,7 @@ class doctor_invoice_co (osv.osv):
 
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
-		'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
-										   ('3','Vinculado'), ('4','Particular'),
-										   ('5','Otro')), 'Tipo de usuario'),
+		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 				 }
 
 doctor_invoice_co()
@@ -1340,9 +1338,7 @@ class doctor_sales_order_co (osv.osv):
 
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
-		'tipo_usuario_id': fields.selection((('1','Contributivo'), ('2','Subsidiado'),
-										   ('3','Vinculado'), ('4','Particular'),
-										   ('5','Otro')), 'Tipo de usuario'),
+		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 				 }
 
 	def _prepare_invoice(self, cr, uid, order, lines, context=None):
@@ -1374,7 +1370,7 @@ class doctor_sales_order_co (osv.osv):
 			'partner_id': order.partner_invoice_id.id,
 			'patient_id': order.patient_id.id,
 			'ref': order.ref,
-			'tipo_usuario_id': order.tipo_usuario_id,
+			'tipo_usuario_id': order.tipo_usuario_id.id,
 			'journal_id': journal_ids[0],
 			'invoice_line': [(6, 0, lines)],
 			'currency_id': order.pricelist_id.currency_id.id,

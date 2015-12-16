@@ -43,6 +43,7 @@
               <field name="rangofacturas_desde" class="oe_inline"/>
               <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
               <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id)" context=""/>
+              <button name="validar" string="Validar" type="object"/>
             </fieldset>
             <group col="4">
               <field name="id" invisible="1"/>
