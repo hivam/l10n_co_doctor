@@ -99,7 +99,7 @@ class doctor_patient_co(osv.osv):
 								  ('13','Cédula de ciudadanía'), ('21','Cédula de extranjería'), ('41','Pasaporte'),
 								  ('NU','Número único de identificación'), ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
 								  'Tipo de Documento', required=True),
-		'ref' :  fields.char('Identificación', required=True ),
+		'ref' :  fields.char('Identificación', required=True, ),
 		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , 'Ocupación' , required=False),
 		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
 		'telefono' : fields.char('Teléfono', size=12),

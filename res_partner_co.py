@@ -152,7 +152,7 @@ class res_partner_co(osv.osv):
                     return True
                 elif len(str(ref)) < 2:
                     return False
-                elif len(str(ref)) > 10:
+                elif len(str(ref)) > 12:
                     return False
         return True
 
@@ -198,7 +198,7 @@ class res_partner_co(osv.osv):
 
     _constraints = [
         (_check_name, '¡Error! - El nombre no ha sido actualizado, escriba nuevamente el primer apellido', ['name']),
-        (_check_ident, '¡Error! Número de identificación debe tener entre 2 y 10 dígitos', ['ref']),
+        (_check_ident, '¡Error! Número de identificación debe tener entre 2 y 12 dígitos', ['ref']),
         (_check_unique_ident, '¡Error! Número de identificación ya existe en el sistema', ['ref']),
         (_check_dv, '¡Error! El digito de verificación es incorrecto',['dv']),
         (_check_ident_num, '¡Error! El número de identificación sólo permite números', ['ref']),
