@@ -361,22 +361,15 @@ class doctor_appointment_co(osv.osv):
 				else:
 					raise osv.except_osv(_('Aviso importante!!'),
 								 _('El procedimiento no se encuentra en el plan seleccionado'))
+			else:
+				raise osv.except_osv(_('Aviso importante!!'),
+								 _('La cita no tiene procedimeintos enlazados'))
 		return procedimientos
 
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, context=None):
 		values = {}
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		professional_id = agenda_duracion.professional_id.id
-		try:
-			values.update({
-				'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, context=context),
-			})
-		except Exception as a:
-			warning = {
-				'title': 'Aviso importante!!!',
-				'message' : '%s' %(a[1])
-			}
-			return {'value': {'procedures_id': False}, 'warning': warning}
 
 		if not time_begin:
 			return values
@@ -455,7 +448,20 @@ class doctor_appointment_co(osv.osv):
 				'time_end' : hora_fin
 			})
 
-			_logger.info(values)
+		try:
+			values.update({
+				'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, context=context),
+			})
+		except Exception as a:
+			warning = {
+				'title': 'Aviso importante!!!',
+				'message' : '%s' %(a[1])
+			}
+			values.update({
+				'procedures_id' : False,
+			})
+
+			return {'value': values, 'warning': warning}
 			
 		return {'value': values}
 
