@@ -350,11 +350,16 @@ class doctor_appointment_co(osv.osv):
 					resultado = cr.fetchall()
 
 				if resultado:
-					for j in resultado:
-						ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0])], context=context)
+					if plan_id:
+						for j in resultado:
+							ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0])], context=context)
+					else:
+						raise osv.except_osv(_('Aviso importante!!'),
+								 _('No tiene ningun plan seleccionado'))	
 				else:
 					raise osv.except_osv(_('Aviso importante!!'),
 								 _('El procedimiento que esta enlazado con la cita no lo realiza el profesional encargado de esta agenda'))
+				
 				if ids_procedimientos:
 					for x in modelo_procedimiento_plan.browse(cr, uid, ids_procedimientos, context=context):
 						procedimientos.append((0,0,{'procedures_id' : x.procedure_id.id, 'quantity': 1}))
