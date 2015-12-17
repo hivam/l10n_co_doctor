@@ -50,6 +50,10 @@
                 rml="l10n_co_doctor/report/doctor_attentions_certificado.rml" string="Informes y Certificados"
                 usage="default"/>
 
+        <report auto="False" id="doctor_account_voucher" model="account.voucher" name="doctor_account_voucher"
+                rml="l10n_co_doctor/report/doctor_account_voucher.rml" string="Factura Cliente"
+                usage="default"/>
+
 
     </data>
 </openerp>
