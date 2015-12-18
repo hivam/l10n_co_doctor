@@ -51,7 +51,7 @@
                 usage="default"/>
 
         <report auto="False" id="doctor_account_voucher" model="account.voucher" name="doctor_account_voucher"
-                rml="l10n_co_doctor/report/doctor_account_voucher.rml" string="Factura Cliente"
+                rml="l10n_co_doctor/report/doctor_account_voucher.rml" string="Recibo Copago"
                 usage="default"/>
 
 
