@@ -105,7 +105,7 @@ class doctor_patient_co(osv.osv):
 		'telefono' : fields.char('Teléfono', size=12),
 		'email' : fields.char('Email'),
 		'movil' :fields.char('Móvil', size=12),
-		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario'),
+		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
 		'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
 		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
 		'street' :  fields.char('Dirección', required=False),
