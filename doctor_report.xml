@@ -54,6 +54,10 @@
                 rml="l10n_co_doctor/report/doctor_account_voucher.rml" string="Recibo Copago"
                 usage="default"/>
 
+        <report auto="False" id="rips_radicacioncuentas" model="rips.radicacioncuentas" name="rips_radicacioncuentas"
+                rml="l10n_co_doctor/report/rips_radicacioncuentas.rml" string="Cuenta de Cobro"
+                usage="default"/>
+
 
     </data>
 </openerp>
