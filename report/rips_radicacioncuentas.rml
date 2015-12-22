@@ -145,6 +145,12 @@
           <para style="terp_default_8">[['N/A']]</para>
         </td>
         <td>
+          <blockTable colWidths="534.0">
+            <tr>
+              <td><para style="terp_default_8">Paciente: [[(line.patient_id.nombre)]] identificación: [[(line.patient_id.ref)]]</para></td>
+            </tr>
+          </blockTable>
+          <spacer length="17"></spacer>
           <para style="terp_default_8">[[fecha_consulta(line.origin) or 'N/A']]</para>
         </td>
         <td>
