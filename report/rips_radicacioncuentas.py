@@ -43,6 +43,8 @@ class rips_radicacioncuentas(report_sxw.rml_parse):
             'base_diagnostico': self.base_diagnostico,
             'diagnostico': self.diagnostico,
             'cie10': self.cie10,
+            'numero_factura': self.numero_factura,
+            'reiniciar_lista': self.reiniciar_lista,
         })
 
 
@@ -56,7 +58,19 @@ class rips_radicacioncuentas(report_sxw.rml_parse):
         cuenta_line = self.pool.get('account.invoice.line')
         return cuenta_line.search(self.cr, self.uid, [('invoice_id', '=', invoice_id)], context=context)    
 
-    
+    _numero_anterior = [0]
+
+    def numero_factura(self):
+        context = {}
+        self.core()
+        self._numero_anterior[0] = self._numero_anterior[0] + 1
+        return self._numero_anterior[0]
+        
+    def reiniciar_lista(self):
+        context = {}
+        self.core()
+        self._numero_anterior[0] = 0   
+
     def total(self, fecha_desde, fecha_hasta):
         context = {}
         self.core()
@@ -174,5 +188,5 @@ class rips_radicacioncuentas(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.rips_radicacioncuentas', 'rips.radicacioncuentas',
                       'addons/l10n_co_doctor/report/rips_radicacioncuentas.rml',
-                      parser=rips_radicacioncuentas)
+                      parser=rips_radicacioncuentas, header="internal landscape")
         
