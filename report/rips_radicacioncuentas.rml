@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <document filename="test.pdf">
-  <template pageSize="(595.0,842.0)" title="Test" author="Hector Ivan Valencia Muñoz - TIX S.A.S." allowSplitting="20">
-    <pageTemplate id="first">
-      <frame id="first" x1="18.0" y1="29.0" width="534" height="784"/>
+  <template pageSize="(842, 595)" allowSplitting="20" bottomMargin="2.5cm" leftMargin="3cm" rightMargin="3cm" topMargin="2.5cm">
+    <pageTemplate id="landscape">
+      <frame id="only" x1="1" y1="1" width="770.0" height="443.0"/>
     </pageTemplate>
   </template>
   <stylesheet>
@@ -15,8 +15,8 @@
       <blockValign value="TOP"/>
     </blockTableStyle>
     <blockTableStyle id="Table2">
-      <blockAlignment value="LEFT"/>
-      <blockValign value="TOP"/>
+      <blockAlignment value="RIGHT"/>
+      <blockValign value="BOTTOM"/>
       <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
       <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
     </blockTableStyle>
@@ -38,7 +38,7 @@
       <blockAlignment value="LEFT"/>
       <blockValign value="TOP"/>
     </blockTableStyle>
-    <blockTableStyle id="Table6">
+    <blockTableStyle id="Table6" >
       <blockAlignment value="LEFT"/>
       <blockValign value="TOP"/>
       <lineStyle kind="LINEBEFORE" colorName="#000000" start="0,0" stop="0,-1"/>
@@ -100,22 +100,31 @@
 
   <section>
   [[o.invoices_ids  or removeParentNode('section') ]]
-    <blockTable colWidths="70.0, 50.0, 65.0, 174.0, 30.0, 55.0, 55.0, 55.0">
+    <blockTable colWidths="30.0, 50.0, 60.0, 200.0, 40.0, 50.0, 50.0, 120.0, 56.66, 56.66, 56.68">
       <tr>
+        <td>
+          <para style="P5">N°</para>
+        </td>
         <td>
           <para style="P5">Fecha</para>
         </td>
         <td>
-          <para style="P5">Cotiza.</para>
-        </td>
-        <td>
-          <para style="P5">Código</para>
+          <para style="P5">Codigo</para>
         </td>
         <td>
           <para style="P5">Servicio</para>
         </td>
         <td>
-          <para style="P5">Cant.</para>
+          <para style="P5">N° Auto. </para>
+        </td>
+        <td>
+          <para style="P5">Plan</para>
+        </td>
+        <td>
+          <para style="P5">Cod. CIE10</para>
+        </td>
+        <td>
+          <para style="P5">Diagnostico</para>
         </td>
         <td>
           <para style="P5">Valor</para>
@@ -129,38 +138,58 @@
       </tr>
     </blockTable>
 
-    <blockTable colWidths="70.0, 50.0, 65.0, 174.0, 30.0, 55.0, 55.0, 55.0">
+    <blockTable colWidths="30.0, 50.0, 60.0, 200.0, 40.0, 50.0, 50.0, 120.0, 56.66, 56.66, 56.68">
       <tr>
         <para style="P4">[[repeatIn(o.invoices_ids, 'line')]]</para>
-        <para style="terp_default_8">Paciente: [[(line.patient_id.nombre)]] identificación: [[(line.patient_id.ref)]]</para>
         <td>
-          <para style="terp_default_8">[[(line.date_invoice) or 'Sin diligenciar']]</para>
+          <para style="terp_default_8">[[numero_factura()]]</para>
         </td>
         <td>
-          <para style="terp_default_8">[['N/A']]</para>
+          <blockTable colWidths="770">
+            <tr>
+              <td><para style="terp_default_8">Paciente: [[(line.patient_id.nombre)]] identificación: [[(line.patient_id.ref)]]</para></td>
+            </tr>
+          </blockTable>
+          <spacer length="17"></spacer>
+          <para style="terp_default_8">[[fecha_consulta(line.origin) or 'N/A']]</para>
         </td>
         <td>
-          <para style="terp_default_8">[[(select_codigo_procedimiento(line.id)) or 'Sin diligenciar']]</para>
+          <para style="terp_default_8">[[(select_codigo_procedimiento(line.id)) or 'N/A']]</para>
         </td>
         <td>
-          <para style="terp_default_8">[[(select_nombre_procedimiento(line.id)) or 'Sin diligenciar']]</para>
+          <para style="terp_default_8">[[(select_nombre_procedimiento(line.id)) or 'N/A']]</para>
         </td>
         <td>
-          <para style="terp_default_8">[[(select_cantidad_procedimiento(line.id)) or 'Sin diligenciar']]</para>
+          <para style="terp_default_8">[[(select_numero_autorizacion(line.origin)) or 'N/A']]</para>
         </td>
         <td>
-          <para style="terp_default_8">[[(line.amount_untaxed) or 'Sin diligenciar']]</para>
+          <para style="terp_default_8">[[(select_plan_usuario(line.origin)) or 'N/A']]</para>
         </td>
         <td>
-          <para style="terp_default_8">[[(line.amount_patient) or 'Sin diligenciar']]</para>
+          <para style="terp_default_8">[[cie10(line.origin) or 'N/A']]</para>
         </td>
         <td>
-          <para style="terp_default_8">[[(line.amount_total) or 'Sin diligenciar']]</para>
+          <para style="terp_default_8">[[diagnostico(line.origin) or 'N/A']]</para>
+        </td>
+        <td>
+          <para style="terp_default_8">[[(line.amount_untaxed) or 'N/A']]</para>
+        </td>
+        <td>
+          <para style="terp_default_8">[[(line.amount_patient) or 'N/A']]</para>
+        </td>
+        <td>
+          <para style="terp_default_8">[[(line.amount_total) or 'N/A']]</para>
         </td>
       </tr>
       </blockTable>
 
-
+  </section>
+  <section>
+        <blockTable colWidths="770" style="Table2">
+        <tr>
+          <td><para style="terp_default_Right_8">Total Cuenta de Cobro: [[total(o.rangofacturas_desde, o.rangofacturas_hasta) or 'Sin diligenciar']] [[reiniciar_lista()]]</para></td>
+          </tr>
+      </blockTable>
   </section>
 
   </story>

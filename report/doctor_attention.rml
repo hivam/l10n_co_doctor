@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <document filename="test.pdf">
-  <template pageSize="(595.0,842.0)" title="Test" author="Hector Ivan Valencia Muñoz - TIX S.A.S." allowSplitting="20">
+  <template pageSize="(595.0,842.0)" leftMargin="3CM" title="Test" author="Hector Ivan Valencia Muñoz - TIX S.A.S." allowSplitting="20">
     <pageTemplate id="first">
       <frame id="first" x1="18.0" y1="29.0" width="534" height="784"/>
     </pageTemplate>

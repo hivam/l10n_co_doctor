@@ -50,7 +50,7 @@ class doctor_surgical(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.doctor_surgical', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_surgical.rml',
-                      parser=doctor_surgical)
+                      parser=doctor_surgical, header='external')
         
         
         

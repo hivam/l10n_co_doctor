@@ -1,121 +1,894 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data noupdate="0">
+        <record id="res_partner_id_0001" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Colmedica Medicina Prepagada S.A.</field>
+            <field name="ref">800106339</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0002" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Cafesaludmedicina Prepagada S. A</field>
+            <field name="ref">800140949</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0003" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Saludcoop E.P.S.</field>
+            <field name="ref">800250119</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0004" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Sanitas S.A. E.P.S.</field>
+            <field name="ref">800251440</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0005" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps</field>
+            <field name="ref">805001157</field>
+            <field name="dv">2</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0006" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Coomeva Medicina Prepagada S. A.</field>
+            <field name="ref">805009741</field>
+            <field name="dv">0</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0007" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Famisanar Ltda. Cafam -Colsubsidio E.P.S.</field>
+            <field name="ref">830003564</field>
+            <field name="dv">7</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0009" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Cruz Blanca Eps S.A.</field>
+            <field name="ref">830009783</field>
+            <field name="dv">0</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0010" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Compensar E.P.S.</field>
+            <field name="ref">860066942</field>
+            <field name="dv">7</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0011" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Salud Colpatria S.A Medicina Prepagada</field>
+            <field name="ref">860512237</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0012" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Caja De Compensación Familiar Comfenalco Valle Del Cauca</field>
+            <field name="ref">890303093</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0014" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Compañía De Medicina Prepagada Colsanitas</field>
+            <field name="ref">860078828</field>
+            <field name="dv">7</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0015" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Vivir S.A. Medicina Prepagada</field>
+            <field name="ref">800142965</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0016" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Humana Golden Cross S.A. Medicina Prepagada</field>
+            <field name="ref">800087750</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0017" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada</field>
+            <field name="ref">800088702</field>
+            <field name="dv">2</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0019" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">Medisánitas S.A Compañía De Medicina Prepagada</field>
+            <field name="ref">800153424</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0020" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COLMEDICA ENTIDAD PROMOTORA DE SALUD S.A.</field>
+            <field name="ref">8301138310</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0021" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COLMENA RIESGOS PROFESIONALES S.A.</field>
+            <field name="ref">8002261753</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0022" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMPAÑIA AGRICOLA DE SEGUROS DE VIDA S.A.</field>
+            <field name="ref">8600025286</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0023" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR COMFENALCO CUNDINAMARCA</field>
+            <field name="ref">8600066060</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0024" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR COMPENSAR</field>
+            <field name="ref">8600669427</field>
+            <field name="dv">7</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0025" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMFENALCO VALLE</field>
+            <field name="ref">8903030935</field>
+            <field name="dv">2</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0026" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SALUD COLPATRIA S.A.</field>
+            <field name="ref">8605122376</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0027" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SEGUROS DE VIDA COLPATRIA S.A.</field>
+            <field name="ref">8600021839</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0028" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SEGUROS DE VIDA DEL ESTADO S.A.</field>
+            <field name="ref">8600091744</field>
+            <field name="dv">4</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0029" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAFESALUD EPS</field>
+            <field name="ref">8001409496</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0030" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CRUZ BLANCA S.A.</field>
+            <field name="ref">8300097830</field>
+            <field name="dv">9</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0031" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">E.P.S. FAMISANAR LTDA. CAFAM COLSUBSIDIO</field>
+            <field name="ref">8300035647</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0032" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SEGUROS BOLIVAR S.A.</field>
+            <field name="ref">8600025032</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0033" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMPAÑÍA DE SEGUROS DE VIDA AURORA S.A.</field>
+            <field name="ref">8600221375</field>
+            <field name="dv">9</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0034" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">E.P.S. SANITAS S.A.</field>
+            <field name="ref">8002514406</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0035" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">LA PREVISORA VIDA S.A. COMPAÑÍA DE SEGUROS</field>
+            <field name="ref">8600111536</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0036" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SALUDCOLOMBIA EPS S.A.</field>
+            <field name="ref">8050219842</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0037" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SALUDCOOP EPS</field>
+            <field name="ref">8002501191</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0038" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SALUDVIDA S.A. EPS</field>
+            <field name="ref">8300741845</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0039" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SERVICIO OCCIDENTAL DE SALUD S.A. S.O.S.</field>
+            <field name="ref">8050011572</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0040" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SOLIDARIA DE SALUD SOLSALUD S.A.</field>
+            <field name="ref">8040012735</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0041" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMFENALCO CARTAGENA</field>
+            <field name="ref">8904800237</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0042" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR COMFENALCO QUINDIO</field>
+            <field name="ref">8900003810</field>
+            <field name="dv">5</field>
+        </record>
+    </data>    
+    <data noupdate="0">
+        <record id="res_partner_id_0043" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE CARTAGO</field>
+            <field name="ref">8919004520</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+       <record id="res_partner_id_0044" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DEL MAGDALENA</field>
+            <field name="ref">8917800933</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
 
-    <record id="res_partner_id_0001" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Colmedica Medicina Prepagada S.A.</field>
-        <field name="ref">800106339</field>
-        <field name="dv">1</field>
-    </record>
-    <record id="res_partner_id_0002" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Cafesaludmedicina Prepagada S. A</field>
-        <field name="ref">800140949</field>
-        <field name="dv">6</field>
-    </record>
-    <record id="res_partner_id_0003" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Saludcoop E.P.S.</field>
-        <field name="ref">800250119</field>
-        <field name="dv">1</field>
-    </record>
-    <record id="res_partner_id_0004" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Sanitas S.A. E.P.S.</field>
-        <field name="ref">800251440</field>
-        <field name="dv">6</field>
-    </record>
-    <record id="res_partner_id_0005" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps</field>
-        <field name="ref">805001157</field>
-        <field name="dv">2</field>
-    </record>
-    <record id="res_partner_id_0006" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Coomeva Medicina Prepagada S. A.</field>
-        <field name="ref">805009741</field>
-        <field name="dv">0</field>
-    </record>
-    <record id="res_partner_id_0007" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Famisanar Ltda. Cafam -Colsubsidio E.P.S.</field>
-        <field name="ref">830003564</field>
-        <field name="dv">7</field>
-    </record>
-    <record id="res_partner_id_0009" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Cruz Blanca Eps S.A.</field>
-        <field name="ref">830009783</field>
-        <field name="dv">0</field>
-    </record>
-    <record id="res_partner_id_0010" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Compensar E.P.S.</field>
-        <field name="ref">860066942</field>
-        <field name="dv">7</field>
-    </record>
-    <record id="res_partner_id_0011" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Salud Colpatria S.A Medicina Prepagada</field>
-        <field name="ref">860512237</field>
-        <field name="dv">6</field>
-    </record>
-    <record id="res_partner_id_0012" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Caja De Compensación Familiar Comfenalco Valle Del Cauca</field>
-        <field name="ref">890303093</field>
-        <field name="dv">5</field>
-    </record>
+    <data noupdate="0">
+       <record id="res_partner_id_0046" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DEL NORTE DE SANTANDER COMFANORTE</field>
+            <field name="ref">8905005163</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0047" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DEL QUINDIO</field>
+            <field name="ref">8900000626</field>
+            <field name="dv">2</field>
+        </record>
+    </data>
 
-    <record id="res_partner_id_0014" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Compañía De Medicina Prepagada Colsanitas</field>
-        <field name="ref">860078828</field>
-        <field name="dv">7</field>
-    </record>
-    <record id="res_partner_id_0015" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Vivir S.A. Medicina Prepagada</field>
-        <field name="ref">800142965</field>
-        <field name="dv">3</field>
-    </record>
-    <record id="res_partner_id_0016" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Humana Golden Cross S.A. Medicina Prepagada</field>
-        <field name="ref">800087750</field>
-        <field name="dv">1</field>
-    </record>
-    <record id="res_partner_id_0017" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada</field>
-        <field name="ref">800088702</field>
-        <field name="dv">2</field>
-    </record>
+    <data noupdate="0">
+        <record id="res_partner_id_0048" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DEL VALLE DEL CAUCA</field>
+            <field name="ref">8903032085</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
 
-    <record id="res_partner_id_0019" model="res.partner">
-        <field name="is_company">True</field>
-        <field name="tdoc">31</field>
-        <field name="name">Medisánitas S.A Compañía De Medicina Prepagada</field>
-        <field name="ref">800153424</field>
-        <field name="dv">8</field>
-    </record>
+    <data noupdate="0">
+        <record id="res_partner_id_0049" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMFAMILIAR HUILA</field>
+            <field name="ref">8911800082</field>
+            <field name="dv">9</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0050" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMFAMILIARES UNIDAS DEL VALLE</field>
+            <field name="ref">8913800034</field>
+            <field name="dv">2</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0051" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COOMEVA EPS S.A.</field>
+            <field name="ref">8050004271</field>
+            <field name="dv">7</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0052" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SEGUROS DE VIDA ALFA S.A.</field>
+            <field name="ref">8605036173</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0053" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE BARRANCABERMEJA CAFABA</field>
+            <field name="ref">8902702755</field>
+            <field name="dv">4</field>
+        </record>
+    </data>
 
-  </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0054" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FLIAR DEL SUR DEL TOLIMA CAFASUR</field>
+            <field name="ref">8907047370</field>
+            <field name="dv">0</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0055" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">INSTITUTO DE SEGUROS SOCIALES</field>
+            <field name="ref">8600138161</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0056" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR CAJACOPI ATLANTICO</field>
+            <field name="ref">8901020441</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0057" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE BUENAVENTURA COMFAMAR</field>
+            <field name="ref">8903040338</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0058" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE CARTAGENA COMFAMILIAR</field>
+            <field name="ref">8904801101</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0059" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA SANTANDEREANA DE SUBSIDIO FAMILIAR CAJASAN</field>
+            <field name="ref">8902001061</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0060" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAPRECOM</field>
+            <field name="ref">8999990260</field>
+            <field name="dv">7</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0061" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMFAMILIAR AFIDRO</field>
+            <field name="ref">8600073315</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0062" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">ESCUELA SUPERIOR DE ADMINISTRACION PUBLICA ESAP</field>
+            <field name="ref">8999990547</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0063" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">ESCUELA SUPERIOR DE ADMINISTRACION PUBLICA ESAP CARTAGENA</field>
+            <field name="ref">8002485291</field>
+            <field name="dv">2</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0064" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">ESCUELA SUPERIOR DE ADMINISTRACION PUBLICA ESAP MEDELLIN</field>
+            <field name="ref">8001175196</field>
+            <field name="dv">7</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0065" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE BARRANQUILLA COMBARRANQUILLA</field>
+            <field name="ref">8901020022</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0066" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">FONDO DE PENSIONES SANTANDER</field>
+            <field name="ref">8002248278</field>
+            <field name="dv">0</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0067" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">LIBERTY SEGUROS DE VIDA S.A.</field>
+            <field name="ref">8600086457</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0068" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SALUD TOTAL S.A. EPS ARS</field>
+            <field name="ref">8001309074</field>
+            <field name="dv">4</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0069" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE AUXILIOS Y DE PRESTACIONES DE ACDAC CAXDAC</field>
+            <field name="ref">8600073798</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0070" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">ASEGURADORA DE VIDA COLSEGUROS S.A.</field>
+            <field name="ref">8600274041</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0071" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR CAMACOL COMFAMILIAR CAMACOL</field>
+            <field name="ref">8909008401</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0072" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR COMFENALCO ANTIOQUIA</field>
+            <field name="ref">8909008426</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0073" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE ANTIOQUIA COMFAMA</field>
+            <field name="ref">8909008419</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0074" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE LA GUAJIRA</field>
+            <field name="ref">8921150065</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0075" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FLIAR. DEL CAUCA COMFACAUCA</field>
+            <field name="ref">8915001820</field>
+            <field name="dv">4</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0076" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA NACIONAL DE PREVISION SOCIAL</field>
+            <field name="ref">8999990103</field>
+            <field name="dv">9</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0077" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMFAMILIAR DEL ATLANTICO</field>
+            <field name="ref">8901019949</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0078" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMPAÑIA SURAMERICANA DE SERVICIOS DE SALUD S.A. SUSALUD</field>
+            <field name="ref">8000887022</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0079" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SERVICIO NACIONAL DE APRENDIZAJE SENA</field>
+            <field name="ref">8999990341</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0080" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">SURATEP SA</field>
+            <field name="ref">8002561619</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0081" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DEL AMAZONAS</field>
+            <field name="ref">8000031226</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0082" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DEL PUTUMAYO</field>
+            <field name="ref">8912003378</field>
+            <field name="dv">8</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0083" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">FONDO DE PASIVO SOCIAL DE FERROCARRILES NACIONALES DE COLOMBIA</field>
+            <field name="ref">8001128062</field>
+            <field name="dv">9</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0084" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">MINISTERIO DE EDUCACION NACIONAL</field>
+            <field name="ref">8999990017</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0085" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR CAFAM</field>
+            <field name="ref">8600135703</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0086" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR CAMPESINA COMCAJA</field>
+            <field name="ref">800231969</field>
+            <field name="dv">4</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0087" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">COMFACESAR</field>
+            <field name="ref">8923999898</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0088" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">HUMANA VIVIR S.A. EPS</field>
+            <field name="ref">8300064040</field>
+            <field name="dv">5</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0089" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">INSTITUTO COLOMBIANO DE BIENESTAR FAMILIAR I.C.B.F.</field>
+            <field name="ref">8999992392</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0090" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">LA EQUIDAD SEGUROS DE VIDA</field>
+            <field name="ref">8300086861</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0091" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">REDSALUD ATENCION HUMANA EPS S.A.</field>
+            <field name="ref">8300965131</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0092" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE LA DORADA COMFAMILIAR</field>
+            <field name="ref">8908012637</field>
+            <field name="dv">4</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0093" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DEL CHOCO</field>
+            <field name="ref">8916000918</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
+    <data noupdate="0">
+        <record id="res_partner_id_0094" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">EMPRESAS PUBLICAS DE MEDELLIN SERVICIOS MEDICOS</field>
+            <field name="ref">8909049961</field>
+            <field name="dv">1</field>
+        </record>
+    </data>
+    
+    <data noupdate="0">
+        <record id="res_partner_id_0095" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE CUNDINAMARCA COMFACUNDI</field>
+            <field name="ref">8600459047</field>
+            <field name="dv">0</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0096" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">UNISALUD</field>
+            <field name="ref">8999990633</field>
+            <field name="dv">0</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0097" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DEL TOLIMA COMFATOLIMA</field>
+            <field name="ref">8002110251</field>
+            <field name="dv">9</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0098" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">CAJA DE COMPENSACION FAMILIAR DE RISARALDA</field>
+            <field name="ref">8914800001</field>
+            <field name="dv">3</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="res_partner_id_0099" model="res.partner">
+            <field name="is_company">True</field>
+            <field name="tdoc">31</field>
+            <field name="name">FOSYGA</field>
+            <field name="ref">8300796720</field>
+            <field name="dv">6</field>
+        </record>
+    </data>
 </openerp>
+
