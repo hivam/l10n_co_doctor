@@ -257,7 +257,7 @@ class doctor_patient_co_ocupacion(osv.Model):
 	_name = 'doctor.patient.ocupacion'
 
 	_columns = {
-		'codigo' : fields.char('Código Ocupación' ,size = 3 ,required = True ),
+		'codigo' : fields.char('Código Ocupación' ,size = 3 ,required = False ),
 		'name' : fields.char('Descripción',required = False )
 	}
 	_sql_constraints = [('ocupacion_constraint', 'unique(name)', 'Esta ocupación ya existe en la base de datos.')]
