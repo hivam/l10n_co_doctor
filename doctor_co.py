@@ -493,16 +493,16 @@ class doctor_appointment_co(osv.osv):
 		order_line_obj = self.pool.get('sale.order.line')
 		# Create order object
 
-		if str(doctor_appointment.tipo_usuario_id.id) != 4 and not doctor_appointment.insurer_id:
+		if doctor_appointment.tipo_usuario_id.id != 4 and not doctor_appointment.insurer_id:
 			raise osv.except_osv(_('Error!'),
 			_('Por favor ingrese la aseguradora a la que se le enviará la factura por los servicios prestados al paciente.'))
 
-		if str(doctor_appointment.tipo_usuario_id.id) == 4:
+		if doctor_appointment.tipo_usuario_id.id == 4:
 			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.patient_id.ref)])[0]
 			for record in self.pool.get('res.partner').browse(cr, uid, [tercero]):
 				user = record.user_id.id
 		else:
-			tercero= doctor_appointment.insurer_id.insurer.id
+			tercero = doctor_appointment.insurer_id.insurer.id
 			user = doctor_appointment.insurer_id.insurer.user_id.id
 
 
