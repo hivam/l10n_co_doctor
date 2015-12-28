@@ -335,28 +335,32 @@ class doctor_appointment_co(osv.osv):
 			
 	def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=None):
 
+		resultado = []
 		procedimientos = []
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
 		ids_procedimientos = []
 
-		if tipo_usuario_id == 4:
-			return procedimientos
-
-
 		if type_id:
 			procedures_appointment_type_ids = modelo_buscar.search(cr, uid, [('appointment_type_id', '=', type_id)], context=context)
 		
 			if procedures_appointment_type_ids:
-
 				for i in modelo_buscar.browse(cr,uid,procedures_appointment_type_ids,context=context):
 					cr.execute("""SELECT procedures_ids FROM doctor_professional_product_product_rel WHERE professional_ids = %s AND procedures_ids = %s """, [professional_id, i.procedures_id.id] )
-					resultado = cr.fetchall()
+					resultado.append(cr.fetchall())
+					
+
+
+				if tipo_usuario_id == 4:
+					for x in resultado:
+						if x:
+							procedimientos.append((0,0,{'procedures_id' : x[0][0], 'quantity': 1}))
+					return procedimientos
 
 				if resultado:
 					if plan_id:
 						for j in resultado:
-							ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0])], context=context)
+							ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0][0])], context=context)
 					else:
 						raise osv.except_osv(_('Aviso importante!!'),
 								 _('No tiene ningun plan seleccionado'))	
