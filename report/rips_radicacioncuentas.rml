@@ -140,9 +140,16 @@
 
     <blockTable colWidths="30.0, 50.0, 60.0, 200.0, 40.0, 50.0, 50.0, 120.0, 56.66, 56.66, 56.68">
       <tr>
-        <para style="P4">[[repeatIn(o.invoices_ids, 'line')]]</para>
+      <para style="P4">[[repeatIn(o.invoices_ids, 'line')]]</para>
         <td>
           <para style="terp_default_8">[[numero_factura()]]</para>
+          <spacer length="17"></spacer>
+          <blockTable colWidths="770" style="Table2">
+          <tr>
+            <td><para style="terp_default_Right_8"><strong> Subtotal: </strong> [[(line.amount_total) or 'N/A']]</para></td>
+          </tr>
+          </blockTable>
+          
         </td>
         <td>
           <blockTable colWidths="770">
@@ -152,44 +159,51 @@
           </blockTable>
           <spacer length="17"></spacer>
           <para style="terp_default_8">[[fecha_consulta(line.origin) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[(select_codigo_procedimiento(line.id)) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[(select_nombre_procedimiento(line.id)) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[(select_numero_autorizacion(line.origin)) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[(select_plan_usuario(line.origin)) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[cie10(line.origin) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[diagnostico(line.origin) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[(line.amount_untaxed) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[(line.amount_patient) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
         <td>
           <para style="terp_default_8">[[(line.amount_total) or 'N/A']]</para>
+          <spacer length="17"></spacer>
         </td>
       </tr>
       </blockTable>
 
   </section>
   <section>
-        <blockTable colWidths="770" style="Table2">
-        <tr>
-          <td><para style="terp_default_Right_8">Total Cuenta de Cobro: [[total(o.rangofacturas_desde, o.rangofacturas_hasta) or 'Sin diligenciar']] [[reiniciar_lista()]]</para></td>
-          </tr>
-      </blockTable>
+        <spacer length="17"></spacer>
+         <para style="terp_default_Right_8">Total Cuenta de Cobro: [[total(o.rangofacturas_desde, o.rangofacturas_hasta) or 'N/A']] [[reiniciar_lista()]]</para>
   </section>
 
   </story>
