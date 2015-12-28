@@ -333,12 +333,16 @@ class doctor_appointment_co(osv.osv):
 		return res
 
 			
-	def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, context=None):
+	def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=None):
 
 		procedimientos = []
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
 		ids_procedimientos = []
+
+		if tipo_usuario_id == 4:
+			return procedimientos
+
 
 		if type_id:
 			procedures_appointment_type_ids = modelo_buscar.search(cr, uid, [('appointment_type_id', '=', type_id)], context=context)
@@ -371,7 +375,7 @@ class doctor_appointment_co(osv.osv):
 								 _('La cita no tiene procedimeintos enlazados'))
 		return procedimientos
 
-	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, context=None):
+	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
 		values = {}
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		professional_id = agenda_duracion.professional_id.id
@@ -455,7 +459,7 @@ class doctor_appointment_co(osv.osv):
 
 		try:
 			values.update({
-				'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, context=context),
+				'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=context),
 			})
 		except Exception as a:
 			warning = {

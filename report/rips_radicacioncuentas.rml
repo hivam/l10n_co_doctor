@@ -100,7 +100,7 @@
 
   <section>
   [[o.invoices_ids  or removeParentNode('section') ]]
-    <blockTable colWidths="30.0, 50.0, 60.0, 200.0, 40.0, 50.0, 50.0, 120.0, 56.66, 56.66, 56.68">
+    <blockTable colWidths="30.0, 50.0, 60.0, 200.0, 40.0, 60.0, 40.0, 120.0, 56.66, 56.66, 56.68">
       <tr>
         <td>
           <para style="P5">N°</para>
@@ -138,7 +138,7 @@
       </tr>
     </blockTable>
 
-    <blockTable colWidths="30.0, 50.0, 60.0, 200.0, 40.0, 50.0, 50.0, 120.0, 56.66, 56.66, 56.68">
+    <blockTable colWidths="30.0, 50.0, 60.0, 200.0, 40.0, 60.0, 40.0, 120.0, 56.66, 56.66, 56.68">
       <tr>
       <para style="P4">[[repeatIn(o.invoices_ids, 'line')]]</para>
         <td>
@@ -203,7 +203,7 @@
   </section>
   <section>
         <spacer length="17"></spacer>
-         <para style="terp_default_Right_8">Total Cuenta de Cobro: [[total(o.rangofacturas_desde, o.rangofacturas_hasta) or 'N/A']] [[reiniciar_lista()]]</para>
+         <para style="terp_default_Right_8"><strong>Total Cuenta de Cobro:</strong> [[total(o.rangofacturas_desde, o.rangofacturas_hasta) or 'N/A']] [[reiniciar_lista()]]</para>
   </section>
 
   </story>
