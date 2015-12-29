@@ -349,18 +349,20 @@ class doctor_appointment_co(osv.osv):
 					cr.execute("""SELECT procedures_ids FROM doctor_professional_product_product_rel WHERE professional_ids = %s AND procedures_ids = %s """, [professional_id, i.procedures_id.id] )
 					resultado.append(cr.fetchall())
 					
-
-
 				if tipo_usuario_id == 4:
 					for x in resultado:
 						if x:
 							procedimientos.append((0,0,{'procedures_id' : x[0][0], 'quantity': 1}))
 					return procedimientos
 
+
+				_logger.info(resultado)
 				if resultado:
 					if plan_id:
 						for j in resultado:
-							ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0][0])], context=context)
+							if j:
+								ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0][0])], context=context)
+							
 					else:
 						raise osv.except_osv(_('Aviso importante!!'),
 								 _('No tiene ningun plan seleccionado'))	
@@ -419,6 +421,7 @@ class doctor_appointment_co(osv.osv):
 
 
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
+
 				#con esto sabemos cuantos campos de la lista podemos quitar
 				duracion = int(fecha_agenda.type_id.duration / 1)
 				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
@@ -445,7 +448,6 @@ class doctor_appointment_co(osv.osv):
 								 _('Las agenda ya esta toda asignada'))
 		else:
 			if time_begin < fecha_hora_actual:
-				_logger.info("asasas")
 				hora_fin = fecha_hora_actual + timedelta(minutes=appointment_type)
 				values.update({
 					'time_begin' : str(fecha_hora_actual)	
