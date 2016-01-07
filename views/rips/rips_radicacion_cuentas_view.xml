@@ -25,13 +25,17 @@
           </div>
 
           <group >
-
-          <h2>
-            <label for="cliente" string="Cliente"/>
-            <field name="cliente" style="width: 60%%" domain="[('tipousuario_id','=',tipo_usuario_id)]"/>
-          </h2>
+          <div>  
+            <h2>
+              <label for="cliente" string="Cliente"/>
+              <field name="cliente" style="width: 60%%" class="oe_inline" domain="[('tipousuario_id','=',tipo_usuario_id)]"/>
+            </h2>
+            <h3>
+              <label for="contrato" string="Contrato"/>
+              <field name="contrato"  class="oe_inline" style="width: 30%%" />
+            </h3>
+          </div>
           <separator/>
-
 
           </group>
 
@@ -39,22 +43,19 @@
             <group col="4">
             <fieldset>
               <legend class="texto_legend">Rango de Facturas</legend>
+              <field name="id" invisible="1"/>
               <label for="rangofacturas_desde" string="Desde"/>
               <field name="rangofacturas_desde" class="oe_inline"/>
               <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
               <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id)" context=""/>
-              <button name="validar" string="Validar" type="object"/>
             </fieldset>
             <group col="4">
-              <field name="id" invisible="1"/>
-              <field name="cantidad_factura" attrs="{'invisible': [('id','=',False)]}"/>
+              <field name="cantidad_factura"/>
               <field name="numero_radicado"/>
               <field name="valor_total"/>
               <field name="saldo"/>
             </group>
             </group>
-
-
           </group>
           <notebook>
             <page string="Facturas"  attrs="">
