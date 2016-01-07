@@ -399,6 +399,7 @@ class doctor_appointment_co(osv.osv):
 		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
 		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
 		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
+		
 		diff = int(agenda_duracion.date_begin[17:])
 		if diff > 0:
 			diff = 60 - diff
@@ -412,8 +413,10 @@ class doctor_appointment_co(osv.osv):
 		
 		for i in range(0,horarios_disponibles,1):
 			horarios.append(horarios[i] + timedelta(minutes=1)) 	
+		
 		for i in horarios:
 			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:00'))
+		
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
 		
 		if ids_ingresos_diarios:
@@ -432,7 +435,7 @@ class doctor_appointment_co(osv.osv):
 				minutos = 0
 				for i in range(0,duracion,1):
 					inicios = inicio + timedelta(minutes=minutos)
-					inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:%S')
+					inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
 					minutos+=1
 					if inicio_cadena in horario_cadena:
 						horario_cadena.pop(horario_cadena.index(inicio_cadena))	
@@ -461,7 +464,7 @@ class doctor_appointment_co(osv.osv):
 				})
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
 
-			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
+			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:00')
 			values.update({
 				'time_end' : hora_fin
 			})
