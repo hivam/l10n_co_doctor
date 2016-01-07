@@ -413,7 +413,7 @@ class doctor_appointment_co(osv.osv):
 		for i in range(0,horarios_disponibles,1):
 			horarios.append(horarios[i] + timedelta(minutes=1)) 	
 		for i in horarios:
-			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:%S'))
+			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:00'))
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
 		
 		if ids_ingresos_diarios:
@@ -426,21 +426,19 @@ class doctor_appointment_co(osv.osv):
 
 
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
-
 				#con esto sabemos cuantos campos de la lista podemos quitar
 				duracion = int(fecha_agenda.type_id.duration / 1)
 				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
 				minutos = 0
 				for i in range(0,duracion,1):
 					inicios = inicio + timedelta(minutes=minutos)
-					inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
+					inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:%S')
 					minutos+=1
 					if inicio_cadena in horario_cadena:
 						horario_cadena.pop(horario_cadena.index(inicio_cadena))	
 				
 				if int(len(horario_cadena)) > 1:
 					if int(len(horario_cadena)) > int((appointment_type/1)):
-						_logger.info(horario_cadena[0])
 						values.update({
 							'time_begin' : horario_cadena[0],
 							'time_end' : horario_cadena[int(appointment_type/1)]
