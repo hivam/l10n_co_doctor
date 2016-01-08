@@ -25,18 +25,20 @@
           </div>
 
           <group >
+          <group col="4" colspan="6">
           <div>  
             <h2>
-              <label for="cliente" string="Cliente"/>
-              <field name="cliente" style="width: 60%%" class="oe_inline" domain="[('tipousuario_id','=',tipo_usuario_id)]"/>
+              <label for="cliente" string="Cliente" class="left-margin10"/>
+              <field name="cliente" style="width: 80%%" domain="[('tipousuario_id','=',tipo_usuario_id)]"/>
             </h2>
-            <h3>
-              <label for="contrato" string="Contrato"/>
-              <field name="contrato"  class="oe_inline" style="width: 30%%" />
-            </h3>
           </div>
-          <separator/>
-
+          <div>
+            <h2>
+              <label for="contrato" string="Contrato"/>
+              <field name="contrato" style="width: 50%%"/>
+            </h2>
+          </div>
+          </group>
           </group>
 
           <group col="1">
