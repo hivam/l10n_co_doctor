@@ -36,6 +36,15 @@ class doctor_professional_co(osv.osv):
 	_inherit ='doctor.professional'
 
 	_columns = {
+		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
+		'firtsname': fields.char('Primer Nombre', size=25, required=True),
+		'lastname': fields.char('Primer Apellido', size=25, required=True),
+		'middlename': fields.char('Segundo Nombre', size=25),
+		'nombreUsuario': fields.char('Nombre Usuario', size=40, required=True),
+		'ref': fields.char('Número Identificación', size=15, required=True),
+		'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
+		'street' :  fields.char('Dirección', required=False),
+		'surname': fields.char('Segundo Apellido', size=25),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
 								  ('13','Cédula de ciudadanía'), ('21','Tarjeta de extranjería'),
 								  ('22','Cédula de extranjería'), ('31','NIT'),
@@ -43,15 +52,6 @@ class doctor_professional_co(osv.osv):
 								  ('43','Para uso definido por la DIAN'), ('NU','Número único de identificación'),
 								  ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
 								  'Tipo de Documento'),
-		'ref': fields.char('Número Identificación', size=15, required=True),
-		'lastname': fields.char('Primer Apellido', size=25, required=True),
-		'surname': fields.char('Segundo Apellido', size=25),
-		'firtsname': fields.char('Primer Nombre', size=25, required=True),
-		'middlename': fields.char('Segundo Nombre', size=25),
-		'nombreUsuario': fields.char('Nombre Usuario', size=40, required=True),
-		'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
-		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
-		'street' :  fields.char('Dirección', required=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 
 	}

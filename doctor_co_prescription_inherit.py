@@ -32,41 +32,41 @@ class doctor_co_prescription_inherit(osv.osv):
 	_inherit = "doctor.prescription"	
 
 	_columns = {
-		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
-        'drugs_id': fields.many2one('doctor.drugs', 'Drug', required=False, ondelete='restrict'),
-        'total_quantity': fields.integer('Total quantity', required=False),
-        'measuring_unit_qt': fields.many2one('doctor.measuring.unit', 'Drug measuring unit', required=False,
-                                             ondelete='restrict'),
-        'action_id': fields.selection([
-                                          ('take', 'Take'),
-                                          ('inject', 'Inject'),
-                                          ('apply', 'Apply'),
-                                          ('inhale', 'Inhale'),
-                                      ], 'Action', required=False),
-        'quantity': fields.integer('Quantity', required=False),
-        'measuring_unit_q': fields.many2one('doctor.measuring.unit', 'Drug measuring unit', required=False,
-                                            ondelete='restrict'),
-        'frequency': fields.integer('Frequency (each)', required=False),
-        'frequency_unit_n': fields.selection([
-                                                 ('minutes', 'minutes'),
-                                                 ('hours', 'hours'),
-                                                 ('days', 'days'),
-                                                 ('weeks', 'weeks'),
-                                                 ('wr', 'when required'),
-                                                 ('total', 'total'),
-                                             ], 'Frequency unit', required=False),
-        'duration': fields.integer('Treatment duration', required=False),
-        'duration_period_n': fields.selection([
-                                                  ('minutes', 'minutes'),
-                                                  ('hours', 'hours'),
-                                                  ('days', 'days'),
-                                                  ('months', 'months'),
-                                                  ('indefinite', 'indefinite'),
-                                              ], 'Treatment period', required=False),
-        'administration_route_id': fields.many2one('doctor.administration.route', 'Administration route', required=False,
-                                                   ondelete='restrict'),
-        'dose': fields.integer('Dose', required=False),
-        'dose_unit_id': fields.many2one('doctor.dose.unit', 'Dose unit', required=False, ondelete='restrict'),
-        'indications': fields.text('Indications'),
-
+				'action_id': fields.selection([
+																					('take', 'Take'),
+																					('inject', 'Inject'),
+																					('apply', 'Apply'),
+																					('inhale', 'Inhale'),
+																			], 'Action', required=False),
+				'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
+				'dose': fields.integer('Dose', required=False),
+				'dose_unit_id': fields.many2one('doctor.dose.unit', 'Dose unit', required=False, ondelete='restrict'),
+				'duration': fields.integer('Treatment duration', required=False),
+				'duration_period_n': fields.selection([
+																									('minutes', 'minutes'),
+																									('hours', 'hours'),
+																									('days', 'days'),
+																									('months', 'months'),
+																									('indefinite', 'indefinite'),
+																							], 'Treatment period', required=False),
+				'drugs_id': fields.many2one('doctor.drugs', 'Drug', required=False, ondelete='restrict'),
+				
+				'frequency': fields.integer('Frequency (each)', required=False),
+				'frequency_unit_n': fields.selection([
+																								 ('minutes', 'minutes'),
+																								 ('hours', 'hours'),
+																								 ('days', 'days'),
+																								 ('weeks', 'weeks'),
+																								 ('wr', 'when required'),
+																								 ('total', 'total'),
+																						 ], 'Frequency unit', required=False),
+				'indications': fields.text('Indications'),
+				'measuring_unit_qt': fields.many2one('doctor.measuring.unit', 'Drug measuring unit', required=False,
+																						 ondelete='restrict'),
+				
+				
+				'measuring_unit_q': fields.many2one('doctor.measuring.unit', 'Drug measuring unit', required=False,
+																						ondelete='restrict'),
+				'quantity': fields.integer('Quantity', required=False),
+				'total_quantity': fields.integer('Total quantity', required=False),
 	}

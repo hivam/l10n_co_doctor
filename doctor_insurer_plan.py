@@ -30,10 +30,10 @@ class doctor_insurer_plan(osv.osv):
 	_name = "doctor.insurer.plan"
 	
 	_columns = {
-		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan',required=False),
-		'name' : fields.char('Nombre', size=30, required=False),
 		'codigo' : fields.char('Codigo', size=30),
 		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=True),
+		'name' : fields.char('Nombre', size=30, required=False),
+		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan',required=False),
 		'procedimientos_ids': fields.one2many('doctor.insurer.plan.procedures', 'plan_id', 'Procedimientos'),
 	}
 

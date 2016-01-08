@@ -32,8 +32,8 @@ class doctor_attentions_exam_inherit(osv.osv):
 	_rec_name = 'attentiont_id'
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
-		'exam_category': fields.many2one('doctor.exam.category', 'Exam category', required=False, ondelete='restrict'),
 		'exam': fields.text('Exam', required=False),
+		'exam_category': fields.many2one('doctor.exam.category', 'Exam category', required=False, ondelete='restrict'),	
 	}
 
 

@@ -32,9 +32,9 @@ class doctor_co_tipousuario_regimen(osv.osv):
 	_name = "doctor.tipousuario.regimen"
 
 	_columns = {
+		'active' : fields.boolean('Activo', required=False),
 		'name' :	fields.char('Regimen', size=12, required=True),
 		'obligatorio' : fields.boolean('Regimen Obligatorio'),
-		'active' : fields.boolean('Activo', required=False),
 	}
 
 	_defaults = {
