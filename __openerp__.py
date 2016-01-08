@@ -52,7 +52,7 @@ Location change for "Doctor" module in Colombia
               'data/l10n_doctor_co_tipousuario_regimen_data.xml',
               'data/l10n_doctor_patient_estadocivil.xml',
               'data/l10n_doctor_patient_parentesco.xml',
-              'data/l10n_doctor_patient_ocupacion.xml',
+              'data/l10n_doctor_patient_ocupacion_resumido.xml',
               'data/l10n_states_co_data.xml',
               'data/l10n_cities_co_data.xml',
               'data/l10n_specialitys_co_data.xml',

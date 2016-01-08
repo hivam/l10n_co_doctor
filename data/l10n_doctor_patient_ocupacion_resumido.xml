@@ -1,0 +1,1781 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="1">
+		<record id="tipo_ocupacion_1" model="doctor.patient.ocupacion">
+			<field name="name">Ama De Casa</field>
+			<field name="codigo"></field>
+		</record>
+		<record id="tipo_ocupacion_2" model="doctor.patient.ocupacion">
+			<field name="name">Pensionado</field>
+			<field name="codigo"></field>
+		</record>
+		<record id="tipo_ocupacion_3" model="doctor.patient.ocupacion">
+			<field name="name">Estudiante</field>
+			<field name="codigo"></field>
+		</record>
+		<record id="tipo_ocupacion_4" model="doctor.patient.ocupacion">
+			<field name="name">Comerciante</field>
+			<field name="codigo"></field>
+		</record>
+		<record id="tipo_ocupacion_5" model="doctor.patient.ocupacion">
+			<field name="name">Conductor ( Taxi, Bus, Camión ETC)</field>
+			<field name="codigo"></field>
+		</record>
+		<record id="tipo_ocupacion_6" model="doctor.patient.ocupacion">
+			<field name="name">Directivo de la Administración Pública</field>
+			<field name="codigo">12</field>
+		</record>
+		<record id="tipo_ocupacion_7" model="doctor.patient.ocupacion">
+			<field name="name">Directores y Gerentes Generales de Servicios Financieros, de Telecomunicaciones y Otros Servicios</field>
+			<field name="codigo">13</field>
+		</record>
+		<record id="tipo_ocupacion_8" model="doctor.patient.ocupacion">
+			<field name="name">Directores y Gerentes Generales de Salud, Educación, Servicios Social y Comunitario y Organizaciones</field>
+			<field name="codigo">14</field>
+		</record>
+		<record id="tipo_ocupacion_9" model="doctor.patient.ocupacion">
+			<field name="name">Presidente, asociación deportiva</field>
+			<field name="codigo">15</field>
+		</record>
+		<record id="tipo_ocupacion_10" model="doctor.patient.ocupacion">
+			<field name="name">Directores y Gerentes Generales de Comercio, Medios de Comunicación y Otros Servicios</field>
+			<field name="codigo">15</field>
+		</record>
+		<record id="tipo_ocupacion_11" model="doctor.patient.ocupacion">
+			<field name="name">Directores y Gerentes Generales de Producción de Bienes, Servicios Públicos, Transporte y Construcción</field>
+			<field name="codigo">16</field>
+		</record>
+		<record id="tipo_ocupacion_12" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes Financieros</field>
+			<field name="codigo">111</field>
+		</record>
+		<record id="tipo_ocupacion_13" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Recursos Humanos</field>
+			<field name="codigo">112</field>
+		</record>
+		<record id="tipo_ocupacion_14" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Compras y Adquisiciones</field>
+			<field name="codigo">113</field>
+		</record>
+		<record id="tipo_ocupacion_15" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Otros Servicios Administrativos</field>
+			<field name="codigo">114</field>
+		</record>
+		<record id="tipo_ocupacion_16" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Seguros, Bienes Raíces y Corretaje Financiero</field>
+			<field name="codigo">121</field>
+		</record>
+		<record id="tipo_ocupacion_17" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Banca, Crédito e Inversiones</field>
+			<field name="codigo">122</field>
+		</record>
+		<record id="tipo_ocupacion_18" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Otros Servicios a las Empresas</field>
+			<field name="codigo">123</field>
+		</record>
+		<record id="tipo_ocupacion_19" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Empresas de Telecomunicaciones</field>
+			<field name="codigo">131</field>
+		</record>
+		<record id="tipo_ocupacion_20" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Servicios de Correo y Mensajería</field>
+			<field name="codigo">132</field>
+		</record>
+		<record id="tipo_ocupacion_21" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Ingeniería</field>
+			<field name="codigo">211</field>
+		</record>
+		<record id="tipo_ocupacion_22" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Investigación y Desarrollo en Ciencias Naturales y Aplicadas</field>
+			<field name="codigo">212</field>
+		</record>
+		<record id="tipo_ocupacion_23" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Sistemas de Información y Procesamiento de Datos</field>
+			<field name="codigo">213</field>
+		</record>
+		<record id="tipo_ocupacion_24" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Servicios a la Salud</field>
+			<field name="codigo">311</field>
+		</record>
+		<record id="tipo_ocupacion_25" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Programas de Política Social y de Salud</field>
+			<field name="codigo">411</field>
+		</record>
+		<record id="tipo_ocupacion_26" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Programas de Política de Desarrollo Económico</field>
+			<field name="codigo">412</field>
+		</record>
+		<record id="tipo_ocupacion_27" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Programas de Política Educativa</field>
+			<field name="codigo">413</field>
+		</record>
+		<record id="tipo_ocupacion_28" model="doctor.patient.ocupacion">
+			<field name="name">Otros Gerentes</field>
+			<field name="codigo">414</field>
+		</record>
+		<record id="tipo_ocupacion_29" model="doctor.patient.ocupacion">
+			<field name="name">Administradores de Educación Superior y Formación para el Trabajo</field>
+			<field name="codigo">421</field>
+		</record>
+		<record id="tipo_ocupacion_30" model="doctor.patient.ocupacion">
+			<field name="name">Directores y Administradores de Educación Básica y Media</field>
+			<field name="codigo">422</field>
+		</record>
+		<record id="tipo_ocupacion_31" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Servicios Social, Comunitario y Correccional</field>
+			<field name="codigo">423</field>
+		</record>
+		<record id="tipo_ocupacion_32" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Biblioteca, Archivo, Museo y Galería de Arte</field>
+			<field name="codigo">511</field>
+		</record>
+		<record id="tipo_ocupacion_33" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Medios de Comunicación y Artes Escénicas</field>
+			<field name="codigo">512</field>
+		</record>
+		<record id="tipo_ocupacion_34" model="doctor.patient.ocupacion">
+			<field name="name">Directores de Programas de Esparcimiento y Deportes</field>
+			<field name="codigo">513</field>
+		</record>
+		<record id="tipo_ocupacion_35" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Ventas, Mercadeo y Publicidad</field>
+			<field name="codigo">611</field>
+		</record>
+		<record id="tipo_ocupacion_36" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Servicios de Comercio Exterior</field>
+			<field name="codigo">612</field>
+		</record>
+		<record id="tipo_ocupacion_37" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Comercio al Por Menor</field>
+			<field name="codigo">621</field>
+		</record>
+		<record id="tipo_ocupacion_38" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Restaurantes y Servicios de Alimentos</field>
+			<field name="codigo">631</field>
+		</record>
+		<record id="tipo_ocupacion_39" model="doctor.patient.ocupacion">
+			<field name="name">Gerentes de Servicios de Alojamiento</field>
+			<field name="codigo">632</field>
+		</record>
+		<record id="tipo_ocupacion_40" model="doctor.patient.ocupacion">
+			<field name="name">Centros de Estéticas, Gimnasio,Lavandería, Aseo, Escuelas de Conducción </field>
+			<field name="codigo">651</field>
+		</record>
+		<record id="tipo_ocupacion_41" model="doctor.patient.ocupacion">
+			<field name="name">Producción Primaria, Mineria,Pesca,Avicultura, Agricultura, Flores.</field>
+			<field name="codigo">711</field>
+		</record>
+		<record id="tipo_ocupacion_42" model="doctor.patient.ocupacion">
+			<field name="name">Construcción (Vivienda, Industrial, Comercial</field>
+			<field name="codigo">811</field>
+		</record>
+		<record id="tipo_ocupacion_43" model="doctor.patient.ocupacion">
+			<field name="name">Transporte y Distribución(Carga, Fletes, Almacén, Bodega,Transporte Aereo,Transporte Maritimo, Controlador Aereo)</field>
+			<field name="codigo">812</field>
+		</record>
+		<record id="tipo_ocupacion_44" model="doctor.patient.ocupacion">
+			<field name="name">Operación de Instalaciones Físicas(Adm. Centro Comercial,Terminal de Transporte,Servicios Generales, Instalaciones Deportivas)</field>
+			<field name="codigo">821</field>
+		</record>
+		<record id="tipo_ocupacion_45" model="doctor.patient.ocupacion">
+			<field name="name">Mantenimiento( Equipos, Automotores, Servicios de Apoyo)</field>
+			<field name="codigo">822</field>
+		</record>
+		<record id="tipo_ocupacion_46" model="doctor.patient.ocupacion">
+			<field name="name">Producción Industrial(Planta, Manufacturas, Confecciones, Procesamiento)</field>
+			<field name="codigo">911</field>
+		</record>
+		<record id="tipo_ocupacion_47" model="doctor.patient.ocupacion">
+			<field name="name">Empresas de Servicios Públicos( Agua, Luz, Gas, Basuras y Desechos, Telefonia)</field>
+			<field name="codigo">912</field>
+		</record>
+		<record id="tipo_ocupacion_48" model="doctor.patient.ocupacion">
+			<field name="name">Contadores y Auditores (Auditor Interno,General, Contador, Contador Publico, Revisor Fiscal)</field>
+			<field name="codigo">1111</field>
+		</record>
+		<record id="tipo_ocupacion_49" model="doctor.patient.ocupacion">
+			<field name="name">Analistas y Agentes de Inversiones y Finanzas( Fiduciarias, Bolsa, Bancos, Inversiones)</field>
+			<field name="codigo">1112</field>
+		</record>
+		<record id="tipo_ocupacion_50" model="doctor.patient.ocupacion">
+			<field name="name">Profesionales en Recursos Humanos(Analista,Coordinador,Bienestar Social y Capacitador)</field>
+			<field name="codigo">1121</field>
+		</record>
+		<record id="tipo_ocupacion_51" model="doctor.patient.ocupacion">
+			<field name="name">Profesionales en Organización y Administración de las Empresas(Analista Ocupacional, Analista Ocupacional)</field>
+			<field name="codigo">1122</field>
+		</record>
+		<record id="tipo_ocupacion_52" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Empleados de Apoyo Administrativo(Jefe de Servicios de Oficina, Coord, Administrativo,Coord, de Secretarias, Supervisor de Archivo, Sup. Operadores, Sup. Auxiliares de registro - salud)</field>
+			<field name="codigo">1211</field>
+		</record>
+		<record id="tipo_ocupacion_53" model="doctor.patient.ocupacion">
+			<field name="name">Empleados de Seguros y Finanzas(Capacitaciones, Atención al Cliente, Ej. De cuenta, gestor interno, Ejecutivo Banca, Empleado Bancario)</field>
+			<field name="codigo">1212</field>
+		</record>
+		<record id="tipo_ocupacion_54" model="doctor.patient.ocupacion">
+			<field name="name">Empleados de Información y Servicio al Cliente(Inf. Y Estadistica, Call Center,Servicio al Cliente, Encuestadores)</field>
+			<field name="codigo">1213</field>
+		</record>
+		<record id="tipo_ocupacion_55" model="doctor.patient.ocupacion">
+			<field name="name">Empleados de Correo y Mensajeria( Jefe Of. De correo, Mensajero,Repartidor de encomiendas, Cartero)</field>
+			<field name="codigo">1214</field>
+		</record>
+		<record id="tipo_ocupacion_56" model="doctor.patient.ocupacion">
+			<field name="name">Empleados de Registro, Distribución y Programación (Adm. Bodega, Coor. Distribuciones, Almacenista,Despachos, Recepcion de Mercancias, logistica)</field>
+			<field name="codigo">1215</field>
+		</record>
+		<record id="tipo_ocupacion_57" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes Administrativos (Coord, Servicios Generales,servicios  administrativos, Asistente, Auxiliar de farmarcia, Auxiliar Ambiental,Auxiliar de Operaciones, Aux. Vigilancia, auxiliar p.o.p)</field>
+			<field name="codigo">1221</field>
+		</record>
+		<record id="tipo_ocupacion_58" model="doctor.patient.ocupacion">
+			<field name="name">Administradores de Inmuebles( Propiedad horizontal, Residencial, Finca Raiz)</field>
+			<field name="codigo">1222</field>
+		</record>
+		<record id="tipo_ocupacion_59" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes de Personal y Selección (Asistente de Personal, Reclutamientos,Selección,Recursos Humanos, Capacitación)</field>
+			<field name="codigo">1223</field>
+		</record>
+		<record id="tipo_ocupacion_60" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes de Compras y Adquisiciones (Analista de Compras,Comprador, Asistente de compras)</field>
+			<field name="codigo">1224</field>
+		</record>
+		<record id="tipo_ocupacion_61" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes de Juzgados Tribunales y Afines( Oficial Mayor Juzgado, Notificador, Secretario, Juzgado, Sustanciador)</field>
+			<field name="codigo">1225</field>
+		</record>
+		<record id="tipo_ocupacion_62" model="doctor.patient.ocupacion">
+			<field name="name">Aduanas, Impuestos, Inmigración y Seguridad Social(Insp. Seguridad Social, Insp. Administración Publica, Insp. Adunas, Funconario Adunas,Recaudador, Pasaportes, Pensiones,Inmigracion, hacienda)</field>
+			<field name="codigo">1226</field>
+		</record>
+		<record id="tipo_ocupacion_63" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes y Auxiliares de Comercio Exterior (Importaciones, Exportaciones)</field>
+			<field name="codigo">1227</field>
+		</record>
+		<record id="tipo_ocupacion_64" model="doctor.patient.ocupacion">
+			<field name="name">Organizadores de Eventos (Coord, de Eventos, muestras musicales,festivales, fiestas, convenciones, maestro de ceremonias)</field>
+			<field name="codigo">1228</field>
+		</record>
+		<record id="tipo_ocupacion_65" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes  - Auxiliares Contables y Financieros (Asistente contable, Analista contable, analista de nomina,tesoreria, presupuesto, costos y cuentas)</field>
+			<field name="codigo">1231</field>
+		</record>
+		<record id="tipo_ocupacion_66" model="doctor.patient.ocupacion">
+			<field name="name">Analistas de Crédito y Cobranzas( Analista de crédito, cobranza, cartera, hipotecas, Técnico crédito)</field>
+			<field name="codigo">1232</field>
+		</record>
+		<record id="tipo_ocupacion_67" model="doctor.patient.ocupacion">
+			<field name="name">Avaluadores y Liquidadores de Seguros(Liquidador,Analista de seguros, Siniestros, Perito, Bienes, Negocios, Analisis de Reaseguros)</field>
+			<field name="codigo">1233</field>
+		</record>
+		<record id="tipo_ocupacion_68" model="doctor.patient.ocupacion">
+			<field name="name">Agentes de Aduana (Maritimo, Terrestre, portuario, Aduanero, Embarques).</field>
+			<field name="codigo">1234</field>
+		</record>
+		<record id="tipo_ocupacion_69" model="doctor.patient.ocupacion">
+			<field name="name">Secretarias( Aux. Contable, Médica,Bilingüe,General, Gerencia,Ejecutiva)</field>
+			<field name="codigo">1311</field>
+		</record>
+		<record id="tipo_ocupacion_70" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Oficina (Oficinistas, Auxiliaes de Copiado)</field>
+			<field name="codigo">1312</field>
+		</record>
+		<record id="tipo_ocupacion_71" model="doctor.patient.ocupacion">
+			<field name="name">Recepcionistas y Operadores de Conmutador</field>
+			<field name="codigo">1313</field>
+		</record>
+		<record id="tipo_ocupacion_72" model="doctor.patient.ocupacion">
+			<field name="name">Digitadores</field>
+			<field name="codigo">1321</field>
+		</record>
+		<record id="tipo_ocupacion_73" model="doctor.patient.ocupacion">
+			<field name="name">Transcriptores y Relatores</field>
+			<field name="codigo">1322</field>
+		</record>
+		<record id="tipo_ocupacion_74" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares Contables( cuentas por cobrar, costos, facturación, tesoreria,presupuesto, contabilidad cooperativa, facturador, contabilidad hotelera, hospitalaria, facturacion EPS)</field>
+			<field name="codigo">1331</field>
+		</record>
+		<record id="tipo_ocupacion_75" model="doctor.patient.ocupacion">
+			<field name="name">Cajeros de Servicios Financieros (Cajeros Universidades, Aux. de ventanilla, Aux. Atencion al cliente)</field>
+			<field name="codigo">1332</field>
+		</record>
+		<record id="tipo_ocupacion_76" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Banca, Seguros y Otros Servicios Financieros( Giros, remesas, informadores, )</field>
+			<field name="codigo">1333</field>
+		</record>
+		<record id="tipo_ocupacion_77" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Cartera y Cobranzas</field>
+			<field name="codigo">1334</field>
+		</record>
+		<record id="tipo_ocupacion_78" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Nómina y Prestaciones</field>
+			<field name="codigo">1334</field>
+		</record>
+		<record id="tipo_ocupacion_79" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares Administrativos</field>
+			<field name="codigo">1341</field>
+		</record>
+		<record id="tipo_ocupacion_80" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Personal</field>
+			<field name="codigo">1342</field>
+		</record>
+		<record id="tipo_ocupacion_81" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Tribunales ( Escribientes, Auxiliar Tribunal, Empleado Judicial)</field>
+			<field name="codigo">1343</field>
+		</record>
+		<record id="tipo_ocupacion_82" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Archivo y Registro</field>
+			<field name="codigo">1344</field>
+		</record>
+		<record id="tipo_ocupacion_83" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Biblioteca</field>
+			<field name="codigo">1345</field>
+		</record>
+		<record id="tipo_ocupacion_84" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Publicación y Afines</field>
+			<field name="codigo">1346</field>
+		</record>
+		<record id="tipo_ocupacion_85" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Información y Servicio al Cliente</field>
+			<field name="codigo">1353</field>
+		</record>
+		<record id="tipo_ocupacion_86" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Estadísticas y Encuestadores</field>
+			<field name="codigo">1354</field>
+		</record>
+		<record id="tipo_ocupacion_87" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Correo y Servicio Postal</field>
+			<field name="codigo">1361</field>
+		</record>
+		<record id="tipo_ocupacion_88" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Almacén y Bodega</field>
+			<field name="codigo">1371</field>
+		</record>
+		<record id="tipo_ocupacion_89" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Compras e Inventarios</field>
+			<field name="codigo">1372</field>
+		</record>
+		<record id="tipo_ocupacion_90" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Radio y Despachadores</field>
+			<field name="codigo">1373</field>
+		</record>
+		<record id="tipo_ocupacion_91" model="doctor.patient.ocupacion">
+			<field name="name">Programadores de Rutas y Tripulaciones</field>
+			<field name="codigo">1374</field>
+		</record>
+		<record id="tipo_ocupacion_92" model="doctor.patient.ocupacion">
+			<field name="name">Operadores Telefónicos</field>
+			<field name="codigo">1375</field>
+		</record>
+		<record id="tipo_ocupacion_93" model="doctor.patient.ocupacion">
+			<field name="name">Físicos y Astrónomos</field>
+			<field name="codigo">2111</field>
+		</record>
+		<record id="tipo_ocupacion_94" model="doctor.patient.ocupacion">
+			<field name="name">Químicos</field>
+			<field name="codigo">2112</field>
+		</record>
+		<record id="tipo_ocupacion_95" model="doctor.patient.ocupacion">
+			<field name="name">Geólogos, Geoquímicas y Geofísicos</field>
+			<field name="codigo">2113</field>
+		</record>
+		<record id="tipo_ocupacion_96" model="doctor.patient.ocupacion">
+			<field name="name">Meteorólogos</field>
+			<field name="codigo">2114</field>
+		</record>
+		<record id="tipo_ocupacion_97" model="doctor.patient.ocupacion">
+			<field name="name">Biólogos, Botánicos, Zoólogos y Relacionados</field>
+			<field name="codigo">2121</field>
+		</record>
+		<record id="tipo_ocupacion_98" model="doctor.patient.ocupacion">
+			<field name="name">Expertos Forestales </field>
+			<field name="codigo">2122</field>
+		</record>
+		<record id="tipo_ocupacion_99" model="doctor.patient.ocupacion">
+			<field name="name">Expertos Agrícolas y Pecuarios</field>
+			<field name="codigo">2123</field>
+		</record>
+		<record id="tipo_ocupacion_100" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros en Construcción y Obras Civiles</field>
+			<field name="codigo">2131</field>
+		</record>
+		<record id="tipo_ocupacion_101" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros Mecánicos</field>
+			<field name="codigo">2132</field>
+		</record>
+		<record id="tipo_ocupacion_102" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros Electricistas</field>
+			<field name="codigo">2133</field>
+		</record>
+		<record id="tipo_ocupacion_103" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros Electrónicos y de Telecomunicaciones</field>
+			<field name="codigo">2134</field>
+		</record>
+		<record id="tipo_ocupacion_104" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros Químicos</field>
+			<field name="codigo">2135</field>
+		</record>
+		<record id="tipo_ocupacion_105" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros Industriales y de Fabricación</field>
+			<field name="codigo">2141</field>
+		</record>
+		<record id="tipo_ocupacion_106" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros de Materiales y Metalurgia</field>
+			<field name="codigo">2142</field>
+		</record>
+		<record id="tipo_ocupacion_107" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros de Minas</field>
+			<field name="codigo">2143</field>
+		</record>
+		<record id="tipo_ocupacion_108" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros de Petróleos</field>
+			<field name="codigo">2144</field>
+		</record>
+		<record id="tipo_ocupacion_109" model="doctor.patient.ocupacion">
+			<field name="name">Ingenieros de Sistemas, Informática y Computación</field>
+			<field name="codigo">2145</field>
+		</record>
+		<record id="tipo_ocupacion_110" model="doctor.patient.ocupacion">
+			<field name="name">Otros Ingenieros (Agroindustrial, Saneamiento y Desarrollo ambiental,Biomedico,Mecatronico,Pesquero, Naval,Recursos naturales,textil. Agricola,alimentos, vuelo)</field>
+			<field name="codigo">2146</field>
+		</record>
+		<record id="tipo_ocupacion_111" model="doctor.patient.ocupacion">
+			<field name="name">Arquitectos</field>
+			<field name="codigo">2151</field>
+		</record>
+		<record id="tipo_ocupacion_112" model="doctor.patient.ocupacion">
+			<field name="name">Urbanistas y Planificadores del Uso del Suelo</field>
+			<field name="codigo">2152</field>
+		</record>
+		<record id="tipo_ocupacion_113" model="doctor.patient.ocupacion">
+			<field name="name">Profesionales Topográficos </field>
+			<field name="codigo">2153</field>
+		</record>
+		<record id="tipo_ocupacion_114" model="doctor.patient.ocupacion">
+			<field name="name">Matemáticos, Estadísticos y Actuarios </field>
+			<field name="codigo">2161</field>
+		</record>
+		<record id="tipo_ocupacion_115" model="doctor.patient.ocupacion">
+			<field name="name">Analistas de Sistemas Informáticos</field>
+			<field name="codigo">2171</field>
+		</record>
+		<record id="tipo_ocupacion_116" model="doctor.patient.ocupacion">
+			<field name="name">Administradores de Sistemas Informáticos</field>
+			<field name="codigo">2172</field>
+		</record>
+		<record id="tipo_ocupacion_117" model="doctor.patient.ocupacion">
+			<field name="name">Programadores de Aplicaciones Informáticas</field>
+			<field name="codigo">2173</field>
+		</record>
+		<record id="tipo_ocupacion_118" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Química Aplicada</field>
+			<field name="codigo">2211</field>
+		</record>
+		<record id="tipo_ocupacion_119" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Geología y Minería</field>
+			<field name="codigo">2212</field>
+		</record>
+		<record id="tipo_ocupacion_120" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Meteorología</field>
+			<field name="codigo">2213</field>
+		</record>
+		<record id="tipo_ocupacion_121" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Ciencias Biológicas </field>
+			<field name="codigo">2221</field>
+		</record>
+		<record id="tipo_ocupacion_122" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos Forestales y de Recursos Naturales</field>
+			<field name="codigo">2222</field>
+		</record>
+		<record id="tipo_ocupacion_123" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Construcción y Arquitectura</field>
+			<field name="codigo">2231</field>
+		</record>
+		<record id="tipo_ocupacion_124" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Mecánica y Construcción Mecánica</field>
+			<field name="codigo">2232</field>
+		</record>
+		<record id="tipo_ocupacion_125" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Fabricación Industrial</field>
+			<field name="codigo">2233</field>
+		</record>
+		<record id="tipo_ocupacion_126" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Electricidad</field>
+			<field name="codigo">2241</field>
+		</record>
+		<record id="tipo_ocupacion_127" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Electrónica y Telecomunicaciones</field>
+			<field name="codigo">2242</field>
+		</record>
+		<record id="tipo_ocupacion_128" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Instrumentos Industriales</field>
+			<field name="codigo">2243</field>
+		</record>
+		<record id="tipo_ocupacion_129" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Instrumentos de Aeronavegación</field>
+			<field name="codigo">2244</field>
+		</record>
+		<record id="tipo_ocupacion_130" model="doctor.patient.ocupacion">
+			<field name="name">Diseñadores Industriales</field>
+			<field name="codigo">2251</field>
+		</record>
+		<record id="tipo_ocupacion_131" model="doctor.patient.ocupacion">
+			<field name="name">Dibujantes Técnicos</field>
+			<field name="codigo">2252</field>
+		</record>
+		<record id="tipo_ocupacion_132" model="doctor.patient.ocupacion">
+			<field name="name">Topógrafos </field>
+			<field name="codigo">2253</field>
+		</record>
+		<record id="tipo_ocupacion_133" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Cartografía</field>
+			<field name="codigo">2254</field>
+		</record>
+		<record id="tipo_ocupacion_134" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Pruebas No destructivas</field>
+			<field name="codigo">2261</field>
+		</record>
+		<record id="tipo_ocupacion_135" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Sanidad, Seguridad y Salud Ocupacional</field>
+			<field name="codigo">2262</field>
+		</record>
+		<record id="tipo_ocupacion_136" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Construcción</field>
+			<field name="codigo">2263</field>
+		</record>
+		<record id="tipo_ocupacion_137" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Equipos de Transporte e Instrumentos de Medición </field>
+			<field name="codigo">2264</field>
+		</record>
+		<record id="tipo_ocupacion_138" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Productos Agrícolas, Pecuarios y de Pesca</field>
+			<field name="codigo">2265</field>
+		</record>
+		<record id="tipo_ocupacion_139" model="doctor.patient.ocupacion">
+			<field name="name">Pilotos, Ingenieros e Instructores de Vuelo</field>
+			<field name="codigo">2271</field>
+		</record>
+		<record id="tipo_ocupacion_140" model="doctor.patient.ocupacion">
+			<field name="name">Controladores de Tráfico Aéreo</field>
+			<field name="codigo">2272</field>
+		</record>
+		<record id="tipo_ocupacion_141" model="doctor.patient.ocupacion">
+			<field name="name">Capitanes y Oficiales de Cubierta</field>
+			<field name="codigo">2273</field>
+		</record>
+		<record id="tipo_ocupacion_142" model="doctor.patient.ocupacion">
+			<field name="name">Oficiales de Máquinas</field>
+			<field name="codigo">2274</field>
+		</record>
+		<record id="tipo_ocupacion_143" model="doctor.patient.ocupacion">
+			<field name="name">Controladores de Tráfico Ferroviario y Marítimo</field>
+			<field name="codigo">2275</field>
+		</record>
+		<record id="tipo_ocupacion_144" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos de Sistemas</field>
+			<field name="codigo">2281</field>
+		</record>
+		<record id="tipo_ocupacion_145" model="doctor.patient.ocupacion">
+			<field name="name">Médicos Especialistas</field>
+			<field name="codigo">3111</field>
+		</record>
+		<record id="tipo_ocupacion_146" model="doctor.patient.ocupacion">
+			<field name="name">Médicos Generales</field>
+			<field name="codigo">3112</field>
+		</record>
+		<record id="tipo_ocupacion_147" model="doctor.patient.ocupacion">
+			<field name="name">Odontólogos</field>
+			<field name="codigo">3113</field>
+		</record>
+		<record id="tipo_ocupacion_148" model="doctor.patient.ocupacion">
+			<field name="name">Veterinarios</field>
+			<field name="codigo">3114</field>
+		</record>
+		<record id="tipo_ocupacion_149" model="doctor.patient.ocupacion">
+			<field name="name">Optómetras</field>
+			<field name="codigo">3121</field>
+		</record>
+		<record id="tipo_ocupacion_150" model="doctor.patient.ocupacion">
+			<field name="name">Otras Ocupaciones Profesionales en Diagnóstico y Tratamiento de la Salud n.c.a.</field>
+			<field name="codigo">3122</field>
+		</record>
+		<record id="tipo_ocupacion_151" model="doctor.patient.ocupacion">
+			<field name="name">Farmacéuticos</field>
+			<field name="codigo">3131</field>
+		</record>
+		<record id="tipo_ocupacion_152" model="doctor.patient.ocupacion">
+			<field name="name">Dietistas y Nutricionistas</field>
+			<field name="codigo">3132</field>
+		</record>
+		<record id="tipo_ocupacion_153" model="doctor.patient.ocupacion">
+			<field name="name">Audiólogos y Terapeutas del Lenguaje</field>
+			<field name="codigo">3141</field>
+		</record>
+		<record id="tipo_ocupacion_154" model="doctor.patient.ocupacion">
+			<field name="name">Fisioterapeutas</field>
+			<field name="codigo">3142</field>
+		</record>
+		<record id="tipo_ocupacion_155" model="doctor.patient.ocupacion">
+			<field name="name">Terapeutas Ocupacionales</field>
+			<field name="codigo">3143</field>
+		</record>
+		<record id="tipo_ocupacion_156" model="doctor.patient.ocupacion">
+			<field name="name">Enfermeros</field>
+			<field name="codigo">3151</field>
+		</record>
+		<record id="tipo_ocupacion_157" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos de Laboratorio Médico y Patología</field>
+			<field name="codigo">3211</field>
+		</record>
+		<record id="tipo_ocupacion_158" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Terapia Respiratoria y Cardiovascular</field>
+			<field name="codigo">3212</field>
+		</record>
+		<record id="tipo_ocupacion_159" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Imágenes Diagnósticas</field>
+			<field name="codigo">3213</field>
+		</record>
+		<record id="tipo_ocupacion_160" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Radioterapia y Medicina Nuclear</field>
+			<field name="codigo">3214</field>
+		</record>
+		<record id="tipo_ocupacion_161" model="doctor.patient.ocupacion">
+			<field name="name">Instrumentador Quirúrgico</field>
+			<field name="codigo">3215</field>
+		</record>
+		<record id="tipo_ocupacion_162" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos Dentales</field>
+			<field name="codigo">3221</field>
+		</record>
+		<record id="tipo_ocupacion_163" model="doctor.patient.ocupacion">
+			<field name="name">Higienistas Dentales</field>
+			<field name="codigo">3222</field>
+		</record>
+		<record id="tipo_ocupacion_164" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos Ópticos</field>
+			<field name="codigo">3231</field>
+		</record>
+		<record id="tipo_ocupacion_165" model="doctor.patient.ocupacion">
+			<field name="name">Practicantes de Medicina Alternativa</field>
+			<field name="codigo">3232</field>
+		</record>
+		<record id="tipo_ocupacion_166" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes de Ambulancia y Otras Ocupaciones Paramédicas</field>
+			<field name="codigo">3233</field>
+		</record>
+		<record id="tipo_ocupacion_167" model="doctor.patient.ocupacion">
+			<field name="name">Otras Ocupaciones Técnicas en Terapia y Valoración</field>
+			<field name="codigo">3234</field>
+		</record>
+		<record id="tipo_ocupacion_168" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Enfermería</field>
+			<field name="codigo">3311</field>
+		</record>
+		<record id="tipo_ocupacion_169" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Odontología</field>
+			<field name="codigo">3312</field>
+		</record>
+		<record id="tipo_ocupacion_170" model="doctor.patient.ocupacion">
+			<field name="name">Promotores de Salud</field>
+			<field name="codigo">3313</field>
+		</record>
+		<record id="tipo_ocupacion_171" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Laboratorio Clínico</field>
+			<field name="codigo">3314</field>
+		</record>
+		<record id="tipo_ocupacion_172" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Droguería y Farmacia</field>
+			<field name="codigo">3315</field>
+		</record>
+		<record id="tipo_ocupacion_173" model="doctor.patient.ocupacion">
+			<field name="name">Jueces ( Magistrados, Fiscales)</field>
+			<field name="codigo">4111</field>
+		</record>
+		<record id="tipo_ocupacion_174" model="doctor.patient.ocupacion">
+			<field name="name">Abogados</field>
+			<field name="codigo">4112</field>
+		</record>
+		<record id="tipo_ocupacion_175" model="doctor.patient.ocupacion">
+			<field name="name">Profesores de Educación Superior</field>
+			<field name="codigo">4121</field>
+		</record>
+		<record id="tipo_ocupacion_176" model="doctor.patient.ocupacion">
+			<field name="name">Especialistas en Métodos Pedagógicos y Material Didáctico</field>
+			<field name="codigo">4122</field>
+		</record>
+		<record id="tipo_ocupacion_177" model="doctor.patient.ocupacion">
+			<field name="name">Instructores de Formación para el Trabajo</field>
+			<field name="codigo">4131</field>
+		</record>
+		<record id="tipo_ocupacion_178" model="doctor.patient.ocupacion">
+			<field name="name">Profesores de Educación Básica Secundaria y Media</field>
+			<field name="codigo">4141</field>
+		</record>
+		<record id="tipo_ocupacion_179" model="doctor.patient.ocupacion">
+			<field name="name">Profesores de Educación Básica Primaria</field>
+			<field name="codigo">4142</field>
+		</record>
+		<record id="tipo_ocupacion_180" model="doctor.patient.ocupacion">
+			<field name="name">Profesores de Preescolar</field>
+			<field name="codigo">4143</field>
+		</record>
+		<record id="tipo_ocupacion_181" model="doctor.patient.ocupacion">
+			<field name="name">Orientadores Educativos</field>
+			<field name="codigo">4144</field>
+		</record>
+		<record id="tipo_ocupacion_182" model="doctor.patient.ocupacion">
+			<field name="name">Psicólogos</field>
+			<field name="codigo">4151</field>
+		</record>
+		<record id="tipo_ocupacion_183" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores Sociales y Consultores de Familia</field>
+			<field name="codigo">4152</field>
+		</record>
+		<record id="tipo_ocupacion_184" model="doctor.patient.ocupacion">
+			<field name="name">Sociólogos, Antropólogos y Afines</field>
+			<field name="codigo">4161</field>
+		</record>
+		<record id="tipo_ocupacion_185" model="doctor.patient.ocupacion">
+			<field name="name">Filósofos, Filólogos y Afines</field>
+			<field name="codigo">4162</field>
+		</record>
+		<record id="tipo_ocupacion_186" model="doctor.patient.ocupacion">
+			<field name="name">Consultores, Investigadores y Analistas de Política Económica</field>
+			<field name="codigo">4171</field>
+		</record>
+		<record id="tipo_ocupacion_187" model="doctor.patient.ocupacion">
+			<field name="name">Consultores y Funcionarios de Desarrollo Económico y Comercial</field>
+			<field name="codigo">4172</field>
+		</record>
+		<record id="tipo_ocupacion_188" model="doctor.patient.ocupacion">
+			<field name="name">Investigadores, Consultores y Funcionarios de Políticas Sociales, de  Salud y de Educación </field>
+			<field name="codigo">4173</field>
+		</record>
+		<record id="tipo_ocupacion_189" model="doctor.patient.ocupacion">
+			<field name="name">Funcionarios de Programas Exclusivos de la Administración Pública</field>
+			<field name="codigo">4174</field>
+		</record>
+		<record id="tipo_ocupacion_190" model="doctor.patient.ocupacion">
+			<field name="name">Investigadores, Consultores y Funcionarios de Políticas de Ciencias Naturales y Aplicadas</field>
+			<field name="codigo">4175</field>
+		</record>
+		<record id="tipo_ocupacion_191" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes en Servicios Social y Comunitario</field>
+			<field name="codigo">4211</field>
+		</record>
+		<record id="tipo_ocupacion_192" model="doctor.patient.ocupacion">
+			<field name="name">Consejeros de Servicios de Empleo</field>
+			<field name="codigo">4212</field>
+		</record>
+		<record id="tipo_ocupacion_193" model="doctor.patient.ocupacion">
+			<field name="name">Instructores y Profesores de Personas Discapacitadas</field>
+			<field name="codigo">4213</field>
+		</record>
+		<record id="tipo_ocupacion_194" model="doctor.patient.ocupacion">
+			<field name="name">Otros Instructores</field>
+			<field name="codigo">4214</field>
+		</record>
+		<record id="tipo_ocupacion_195" model="doctor.patient.ocupacion">
+			<field name="name">Asistentes Legales y Afines</field>
+			<field name="codigo">4216</field>
+		</record>
+		<record id="tipo_ocupacion_196" model="doctor.patient.ocupacion">
+			<field name="name">Bibliotecarios</field>
+			<field name="codigo">5111</field>
+		</record>
+		<record id="tipo_ocupacion_197" model="doctor.patient.ocupacion">
+			<field name="name">Restauradores y Curadores</field>
+			<field name="codigo">5112</field>
+		</record>
+		<record id="tipo_ocupacion_198" model="doctor.patient.ocupacion">
+			<field name="name">Archivistas</field>
+			<field name="codigo">5113</field>
+		</record>
+		<record id="tipo_ocupacion_199" model="doctor.patient.ocupacion">
+			<field name="name">Escritores</field>
+			<field name="codigo">5121</field>
+		</record>
+		<record id="tipo_ocupacion_200" model="doctor.patient.ocupacion">
+			<field name="name">Editores</field>
+			<field name="codigo">5122</field>
+		</record>
+		<record id="tipo_ocupacion_201" model="doctor.patient.ocupacion">
+			<field name="name">Periodistas</field>
+			<field name="codigo">5123</field>
+		</record>
+		<record id="tipo_ocupacion_202" model="doctor.patient.ocupacion">
+			<field name="name">Traductores e Interpretes</field>
+			<field name="codigo">5124</field>
+		</record>
+		<record id="tipo_ocupacion_203" model="doctor.patient.ocupacion">
+			<field name="name">Ocupaciones Profesionales en Relaciones Públicas y Comunicaciones</field>
+			<field name="codigo">5125</field>
+		</record>
+		<record id="tipo_ocupacion_204" model="doctor.patient.ocupacion">
+			<field name="name">Productores, Directores Artísticos, Coreógrafos y Ocupaciones Relacionadas</field>
+			<field name="codigo">5131</field>
+		</record>
+		<record id="tipo_ocupacion_205" model="doctor.patient.ocupacion">
+			<field name="name">Directores Musicales, Compositores y Arreglistas</field>
+			<field name="codigo">5132</field>
+		</record>
+		<record id="tipo_ocupacion_206" model="doctor.patient.ocupacion">
+			<field name="name">Músicos y Cantantes</field>
+			<field name="codigo">5133</field>
+		</record>
+		<record id="tipo_ocupacion_207" model="doctor.patient.ocupacion">
+			<field name="name">Bailarines</field>
+			<field name="codigo">5134</field>
+		</record>
+		<record id="tipo_ocupacion_208" model="doctor.patient.ocupacion">
+			<field name="name">Pintores, Escultores y Otros Artistas Visuales</field>
+			<field name="codigo">5136</field>
+		</record>
+		<record id="tipo_ocupacion_209" model="doctor.patient.ocupacion">
+			<field name="name">Ocupaciones Técnicas Relacionadas con Museos y Galerías</field>
+			<field name="codigo">5211</field>
+		</record>
+		<record id="tipo_ocupacion_210" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Biblioteca y Archivo</field>
+			<field name="codigo">5212</field>
+		</record>
+		<record id="tipo_ocupacion_211" model="doctor.patient.ocupacion">
+			<field name="name">Fotógrafos</field>
+			<field name="codigo">5221</field>
+		</record>
+		<record id="tipo_ocupacion_212" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Cámara de Cine y Televisión</field>
+			<field name="codigo">5222</field>
+		</record>
+		<record id="tipo_ocupacion_213" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos de Arte Gráfico</field>
+			<field name="codigo">5223</field>
+		</record>
+		<record id="tipo_ocupacion_214" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Transmisión de Radio y Televisión</field>
+			<field name="codigo">5224</field>
+		</record>
+		<record id="tipo_ocupacion_215" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos en Grabación de Audio y Video</field>
+			<field name="codigo">5225</field>
+		</record>
+		<record id="tipo_ocupacion_216" model="doctor.patient.ocupacion">
+			<field name="name">Otras Ocupaciones Técnicas en Cine, TV y Artes Escénicas</field>
+			<field name="codigo">5226</field>
+		</record>
+		<record id="tipo_ocupacion_217" model="doctor.patient.ocupacion">
+			<field name="name">Ocupaciones de Asistencia en Cine, TV y Artes Escénicas  </field>
+			<field name="codigo">5227</field>
+		</record>
+		<record id="tipo_ocupacion_218" model="doctor.patient.ocupacion">
+			<field name="name">Anunciadores y Locutores</field>
+			<field name="codigo">5231</field>
+		</record>
+		<record id="tipo_ocupacion_219" model="doctor.patient.ocupacion">
+			<field name="name">Diseñadores Gráficos y Dibujantes Artísticos</field>
+			<field name="codigo">5241</field>
+		</record>
+		<record id="tipo_ocupacion_220" model="doctor.patient.ocupacion">
+			<field name="name">Diseñadores de Interiores</field>
+			<field name="codigo">5242</field>
+		</record>
+		<record id="tipo_ocupacion_221" model="doctor.patient.ocupacion">
+			<field name="name">Diseñadores de Teatro, Moda, Exhibición, y Otros Diseñadores Creativos</field>
+			<field name="codigo">5243</field>
+		</record>
+		<record id="tipo_ocupacion_222" model="doctor.patient.ocupacion">
+			<field name="name">Artesanos</field>
+			<field name="codigo">5244</field>
+		</record>
+		<record id="tipo_ocupacion_223" model="doctor.patient.ocupacion">
+			<field name="name">Patronistas –Productos de Tela, Cuero y Piel</field>
+			<field name="codigo">5245</field>
+		</record>
+		<record id="tipo_ocupacion_224" model="doctor.patient.ocupacion">
+			<field name="name">Entrenadores y Preparadores Físicos</field>
+			<field name="codigo">5252</field>
+		</record>
+		<record id="tipo_ocupacion_225" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores de Ventas</field>
+			<field name="codigo">6211</field>
+		</record>
+		<record id="tipo_ocupacion_226" model="doctor.patient.ocupacion">
+			<field name="name">Administradores y Supervisores de Comercio al Por Menor</field>
+			<field name="codigo">6211</field>
+		</record>
+		<record id="tipo_ocupacion_227" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores de Servicios de Alimentos</field>
+			<field name="codigo">6213</field>
+		</record>
+		<record id="tipo_ocupacion_228" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores de Personal </field>
+			<field name="codigo">6214</field>
+		</record>
+		<record id="tipo_ocupacion_229" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos Criminalisticos y Judiciales</field>
+			<field name="codigo">6224</field>
+		</record>
+		<record id="tipo_ocupacion_230" model="doctor.patient.ocupacion">
+			<field name="name">Agentes y Corredores de Seguros</field>
+			<field name="codigo">6231</field>
+		</record>
+		<record id="tipo_ocupacion_231" model="doctor.patient.ocupacion">
+			<field name="name">Agentes de Bienes Raíces</field>
+			<field name="codigo">6232</field>
+		</record>
+		<record id="tipo_ocupacion_232" model="doctor.patient.ocupacion">
+			<field name="name">Vendedores –Ventas Técnicas</field>
+			<field name="codigo">6233</field>
+		</record>
+		<record id="tipo_ocupacion_233" model="doctor.patient.ocupacion">
+			<field name="name">Agentes de Compras e Intermediarios</field>
+			<field name="codigo">6234</field>
+		</record>
+		<record id="tipo_ocupacion_234" model="doctor.patient.ocupacion">
+			<field name="name">Chef</field>
+			<field name="codigo">6241</field>
+		</record>
+		<record id="tipo_ocupacion_235" model="doctor.patient.ocupacion">
+			<field name="name">Vendedores –Ventas no Técnicas</field>
+			<field name="codigo">6311</field>
+		</record>
+		<record id="tipo_ocupacion_236" model="doctor.patient.ocupacion">
+			<field name="name">Vendedores de Mostrador</field>
+			<field name="codigo">6321</field>
+		</record>
+		<record id="tipo_ocupacion_237" model="doctor.patient.ocupacion">
+			<field name="name">Mercaderistas e Impulsadores</field>
+			<field name="codigo">6322</field>
+		</record>
+		<record id="tipo_ocupacion_238" model="doctor.patient.ocupacion">
+			<field name="name">Cajeros de Comercio</field>
+			<field name="codigo">6323</field>
+		</record>
+		<record id="tipo_ocupacion_239" model="doctor.patient.ocupacion">
+			<field name="name">Modelos</field>
+			<field name="codigo">6324</field>
+		</record>
+		<record id="tipo_ocupacion_240" model="doctor.patient.ocupacion">
+			<field name="name">Agentes de Viajes</field>
+			<field name="codigo">6331</field>
+		</record>
+		<record id="tipo_ocupacion_241" model="doctor.patient.ocupacion">
+			<field name="name">Empleados de Ventas y Servicios de Líneas Aéreas, Marítimas y Terrestres</field>
+			<field name="codigo">6332</field>
+		</record>
+		<record id="tipo_ocupacion_242" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Vuelo y Sobrecargos</field>
+			<field name="codigo">6333</field>
+		</record>
+		<record id="tipo_ocupacion_243" model="doctor.patient.ocupacion">
+			<field name="name">Empleados de Recepción Hotelera</field>
+			<field name="codigo">6334</field>
+		</record>
+		<record id="tipo_ocupacion_244" model="doctor.patient.ocupacion">
+			<field name="name">Guías de Viaje y Turismo</field>
+			<field name="codigo">6341</field>
+		</record>
+		<record id="tipo_ocupacion_245" model="doctor.patient.ocupacion">
+			<field name="name">Recreacionistas</field>
+			<field name="codigo">6342</field>
+		</record>
+		<record id="tipo_ocupacion_246" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Juegos Mecánicos y de Salón</field>
+			<field name="codigo">6343</field>
+		</record>
+		<record id="tipo_ocupacion_247" model="doctor.patient.ocupacion">
+			<field name="name">Cortadores de Carne –Comercio Mayorista y al Detal</field>
+			<field name="codigo">6351</field>
+		</record>
+		<record id="tipo_ocupacion_248" model="doctor.patient.ocupacion">
+			<field name="name">Panaderos y Pasteleros</field>
+			<field name="codigo">6352</field>
+		</record>
+		<record id="tipo_ocupacion_249" model="doctor.patient.ocupacion">
+			<field name="name">Meseros y Capitán de Meseros</field>
+			<field name="codigo">6353</field>
+		</record>
+		<record id="tipo_ocupacion_250" model="doctor.patient.ocupacion">
+			<field name="name">Barman</field>
+			<field name="codigo">6354</field>
+		</record>
+		<record id="tipo_ocupacion_251" model="doctor.patient.ocupacion">
+			<field name="name">Cocineros</field>
+			<field name="codigo">6355</field>
+		</record>
+		<record id="tipo_ocupacion_252" model="doctor.patient.ocupacion">
+			<field name="name">Funcionarios de Regulación</field>
+			<field name="codigo">6362</field>
+		</record>
+		<record id="tipo_ocupacion_253" model="doctor.patient.ocupacion">
+			<field name="name">Bomberos</field>
+			<field name="codigo">6364</field>
+		</record>
+		<record id="tipo_ocupacion_254" model="doctor.patient.ocupacion">
+			<field name="name">Guardianes de Prisión</field>
+			<field name="codigo">6365</field>
+		</record>
+		<record id="tipo_ocupacion_255" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares del Cuidado de Niños</field>
+			<field name="codigo">6372</field>
+		</record>
+		<record id="tipo_ocupacion_256" model="doctor.patient.ocupacion">
+			<field name="name">Estilistas, Esteticistas y Afines</field>
+			<field name="codigo">6373</field>
+		</record>
+		<record id="tipo_ocupacion_257" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores del Cuidado de Animales</field>
+			<field name="codigo">6374</field>
+		</record>
+		<record id="tipo_ocupacion_258" model="doctor.patient.ocupacion">
+			<field name="name">Empleados de Pompas Fúnebres</field>
+			<field name="codigo">6375</field>
+		</record>
+		<record id="tipo_ocupacion_259" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores de Estación de Servicio</field>
+			<field name="codigo">6611</field>
+		</record>
+		<record id="tipo_ocupacion_260" model="doctor.patient.ocupacion">
+			<field name="name">Otras Ocupaciones Elementales de las Ventas (Chance, Ambulante, mostrador, puesto, loteria, supermercado)</field>
+			<field name="codigo">6612</field>
+		</record>
+		<record id="tipo_ocupacion_261" model="doctor.patient.ocupacion">
+			<field name="name">Ayudantes de Cocina y Cafetería</field>
+			<field name="codigo">6621</field>
+		</record>
+		<record id="tipo_ocupacion_262" model="doctor.patient.ocupacion">
+			<field name="name">Aseadores  </field>
+			<field name="codigo">6631</field>
+		</record>
+		<record id="tipo_ocupacion_263" model="doctor.patient.ocupacion">
+			<field name="name">Aseadores Especializados y Fumigadores</field>
+			<field name="codigo">6632</field>
+		</record>
+		<record id="tipo_ocupacion_264" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Servicios a Viajeros</field>
+			<field name="codigo">6641</field>
+		</record>
+		<record id="tipo_ocupacion_265" model="doctor.patient.ocupacion">
+			<field name="name">Auxiliares de Servicios de Recreación y Deporte</field>
+			<field name="codigo">6642</field>
+		</record>
+		<record id="tipo_ocupacion_266" model="doctor.patient.ocupacion">
+			<field name="name">Empleados de Lavandería</field>
+			<field name="codigo">6643</field>
+		</record>
+		<record id="tipo_ocupacion_267" model="doctor.patient.ocupacion">
+			<field name="name">Otras Ocupaciones Elementales de los Servicios  (Conserje)</field>
+			<field name="codigo">6644</field>
+		</record>
+		<record id="tipo_ocupacion_268" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Minería y Canteras</field>
+			<field name="codigo">7211</field>
+		</record>
+		<record id="tipo_ocupacion_269" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Perforación y Servicios –Pozos de Petróleo y Gas</field>
+			<field name="codigo">7212</field>
+		</record>
+		<record id="tipo_ocupacion_270" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Producción Agrícola</field>
+			<field name="codigo">7221</field>
+		</record>
+		<record id="tipo_ocupacion_271" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Producción Pecuaria</field>
+			<field name="codigo">7222</field>
+		</record>
+		<record id="tipo_ocupacion_272" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Explotación Forestal y Silvicultura</field>
+			<field name="codigo">7223</field>
+		</record>
+		<record id="tipo_ocupacion_273" model="doctor.patient.ocupacion">
+			<field name="name">Agricultores y Administradores Agropecuarios</field>
+			<field name="codigo">7231</field>
+		</record>
+		<record id="tipo_ocupacion_274" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas de Servicios Agrícolas y Relacionados</field>
+			<field name="codigo">7232</field>
+		</record>
+		<record id="tipo_ocupacion_275" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores de Servicios de Jardinería y Viverismo</field>
+			<field name="codigo">7233</field>
+		</record>
+		<record id="tipo_ocupacion_276" model="doctor.patient.ocupacion">
+			<field name="name">Administradores de Explotación Acuícola</field>
+			<field name="codigo">7234</field>
+		</record>
+		<record id="tipo_ocupacion_277" model="doctor.patient.ocupacion">
+			<field name="name">Capitanes y Patrones de Pesca</field>
+			<field name="codigo">7241</field>
+		</record>
+		<record id="tipo_ocupacion_278" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Apoyo y Servicios en Minería Bajo Tierra</field>
+			<field name="codigo">7311</field>
+		</record>
+		<record id="tipo_ocupacion_279" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Apoyo y Servicios en Perforación de Petróleo y Gas</field>
+			<field name="codigo">7312</field>
+		</record>
+		<record id="tipo_ocupacion_280" model="doctor.patient.ocupacion">
+			<field name="name">Mineros –Producción Bajo Tierra</field>
+			<field name="codigo">7313</field>
+		</record>
+		<record id="tipo_ocupacion_281" model="doctor.patient.ocupacion">
+			<field name="name">Perforadores de Pozos de Gas y Petróleo y Trabajadores Relacionados</field>
+			<field name="codigo">7314</field>
+		</record>
+		<record id="tipo_ocupacion_282" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores de Explotación Forestal</field>
+			<field name="codigo">7321</field>
+		</record>
+		<record id="tipo_ocupacion_283" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores de Silvicultura y Forestación</field>
+			<field name="codigo">7322</field>
+		</record>
+		<record id="tipo_ocupacion_284" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores Agrícolas</field>
+			<field name="codigo">7331</field>
+		</record>
+		<record id="tipo_ocupacion_285" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores Pecuarios</field>
+			<field name="codigo">7332</field>
+		</record>
+		<record id="tipo_ocupacion_286" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores de Plantas de Incubación Artificial </field>
+			<field name="codigo">7335</field>
+		</record>
+		<record id="tipo_ocupacion_287" model="doctor.patient.ocupacion">
+			<field name="name">Pescadores</field>
+			<field name="codigo">7341</field>
+		</record>
+		<record id="tipo_ocupacion_288" model="doctor.patient.ocupacion">
+			<field name="name">Obreros y Ayudantes de Minería</field>
+			<field name="codigo">7611</field>
+		</record>
+		<record id="tipo_ocupacion_289" model="doctor.patient.ocupacion">
+			<field name="name">Obreros y Ayudantes de Producción en Pozos de Petróleo y Gas</field>
+			<field name="codigo">7612</field>
+		</record>
+		<record id="tipo_ocupacion_290" model="doctor.patient.ocupacion">
+			<field name="name">Obreros Agropecuarios </field>
+			<field name="codigo">7613</field>
+		</record>
+		<record id="tipo_ocupacion_291" model="doctor.patient.ocupacion">
+			<field name="name">Jardineros</field>
+			<field name="codigo">7614</field>
+		</record>
+		<record id="tipo_ocupacion_292" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores, Ajustadores de Maquinas-Herramientas y Ocupaciones Relacionadas</field>
+			<field name="codigo">8211</field>
+		</record>
+		<record id="tipo_ocupacion_293" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores, Electricidad y Telecomunicaciones</field>
+			<field name="codigo">8212</field>
+		</record>
+		<record id="tipo_ocupacion_294" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores, Instalación de Tuberías </field>
+			<field name="codigo">8213</field>
+		</record>
+		<record id="tipo_ocupacion_295" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores, Moldeo, Forja y Montaje de Estructuras Metálicas</field>
+			<field name="codigo">8214</field>
+		</record>
+		<record id="tipo_ocupacion_296" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores, Carpintería</field>
+			<field name="codigo">8215</field>
+		</record>
+		<record id="tipo_ocupacion_297" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores, Mecánica</field>
+			<field name="codigo">8216</field>
+		</record>
+		<record id="tipo_ocupacion_298" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores, Operación de Equipo Pesado</field>
+			<field name="codigo">8217</field>
+		</record>
+		<record id="tipo_ocupacion_299" model="doctor.patient.ocupacion">
+			<field name="name">Contratistas y Supervisores, Construcción y Otras Ocupaciones de Instalación y Reparación</field>
+			<field name="codigo">8218</field>
+		</record>
+		<record id="tipo_ocupacion_300" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores de Operación de Transporte Ferroviario</field>
+			<field name="codigo">8221</field>
+		</record>
+		<record id="tipo_ocupacion_301" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores de Operación de Transporte Terrestre (no ferroviario)</field>
+			<field name="codigo">8222</field>
+		</record>
+		<record id="tipo_ocupacion_302" model="doctor.patient.ocupacion">
+			<field name="name">Ajustadores de Maquinas-Herramientas</field>
+			<field name="codigo">8311</field>
+		</record>
+		<record id="tipo_ocupacion_303" model="doctor.patient.ocupacion">
+			<field name="name">Modelistas y Matriceros</field>
+			<field name="codigo">8312</field>
+		</record>
+		<record id="tipo_ocupacion_304" model="doctor.patient.ocupacion">
+			<field name="name">Electricistas Industriales</field>
+			<field name="codigo">8321</field>
+		</record>
+		<record id="tipo_ocupacion_305" model="doctor.patient.ocupacion">
+			<field name="name">Electricistas Residenciales</field>
+			<field name="codigo">8322</field>
+		</record>
+		<record id="tipo_ocupacion_306" model="doctor.patient.ocupacion">
+			<field name="name">Instaladores de Redes de Energía Eléctrica</field>
+			<field name="codigo">8323</field>
+		</record>
+		<record id="tipo_ocupacion_307" model="doctor.patient.ocupacion">
+			<field name="name">Instaladores y Reparadores de Redes y Líneas de Telecomunicaciones</field>
+			<field name="codigo">8324</field>
+		</record>
+		<record id="tipo_ocupacion_308" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores de Instalación y Reparación de Equipos de Telecomunicaciones</field>
+			<field name="codigo">8325</field>
+		</record>
+		<record id="tipo_ocupacion_309" model="doctor.patient.ocupacion">
+			<field name="name">Técnicos de Mantenimiento y Servicio de Televisión por Cable</field>
+			<field name="codigo">8326</field>
+		</record>
+		<record id="tipo_ocupacion_310" model="doctor.patient.ocupacion">
+			<field name="name">Plomeros</field>
+			<field name="codigo">8331</field>
+		</record>
+		<record id="tipo_ocupacion_311" model="doctor.patient.ocupacion">
+			<field name="name">Instaladores de Tuberías y Sistemas de Aspersión</field>
+			<field name="codigo">8332</field>
+		</record>
+		<record id="tipo_ocupacion_312" model="doctor.patient.ocupacion">
+			<field name="name">Instaladores de Redes  y Equipos a Gas</field>
+			<field name="codigo">8333</field>
+		</record>
+		<record id="tipo_ocupacion_313" model="doctor.patient.ocupacion">
+			<field name="name">Chapistas y Caldereros</field>
+			<field name="codigo">8341</field>
+		</record>
+		<record id="tipo_ocupacion_314" model="doctor.patient.ocupacion">
+			<field name="name">Soldadores</field>
+			<field name="codigo">8342</field>
+		</record>
+		<record id="tipo_ocupacion_315" model="doctor.patient.ocupacion">
+			<field name="name">Montadores de Estructuras Metálicas</field>
+			<field name="codigo">8343</field>
+		</record>
+		<record id="tipo_ocupacion_316" model="doctor.patient.ocupacion">
+			<field name="name">Ornamentistas y Forjadores</field>
+			<field name="codigo">8344</field>
+		</record>
+		<record id="tipo_ocupacion_317" model="doctor.patient.ocupacion">
+			<field name="name">Carpinteros</field>
+			<field name="codigo">8351</field>
+		</record>
+		<record id="tipo_ocupacion_318" model="doctor.patient.ocupacion">
+			<field name="name">Ebanistas</field>
+			<field name="codigo">8352</field>
+		</record>
+		<record id="tipo_ocupacion_319" model="doctor.patient.ocupacion">
+			<field name="name">Oficiales de Construcción</field>
+			<field name="codigo">8361</field>
+		</record>
+		<record id="tipo_ocupacion_320" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores en Hormigón y Enfoscado</field>
+			<field name="codigo">8362</field>
+		</record>
+		<record id="tipo_ocupacion_321" model="doctor.patient.ocupacion">
+			<field name="name">Enchapadores </field>
+			<field name="codigo">8363</field>
+		</record>
+		<record id="tipo_ocupacion_322" model="doctor.patient.ocupacion">
+			<field name="name">Techadores</field>
+			<field name="codigo">8364</field>
+		</record>
+		<record id="tipo_ocupacion_323" model="doctor.patient.ocupacion">
+			<field name="name">Instaladores de Material Aislante</field>
+			<field name="codigo">8365</field>
+		</record>
+		<record id="tipo_ocupacion_324" model="doctor.patient.ocupacion">
+			<field name="name">Pintores y Empapeladores</field>
+			<field name="codigo">8366</field>
+		</record>
+		<record id="tipo_ocupacion_325" model="doctor.patient.ocupacion">
+			<field name="name">Instaladores de Pisos</field>
+			<field name="codigo">8367</field>
+		</record>
+		<record id="tipo_ocupacion_326" model="doctor.patient.ocupacion">
+			<field name="name">Revocadores</field>
+			<field name="codigo">8368</field>
+		</record>
+		<record id="tipo_ocupacion_327" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos Industriales</field>
+			<field name="codigo">8371</field>
+		</record>
+		<record id="tipo_ocupacion_328" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos de Maquinaria Textil</field>
+			<field name="codigo">8372</field>
+		</record>
+		<record id="tipo_ocupacion_329" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos de Equipo Pesado</field>
+			<field name="codigo">8373</field>
+		</record>
+		<record id="tipo_ocupacion_330" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos de Aviación</field>
+			<field name="codigo">8374</field>
+		</record>
+		<record id="tipo_ocupacion_331" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos de Aire Acondicionado y Refrigeración</field>
+			<field name="codigo">8375</field>
+		</record>
+		<record id="tipo_ocupacion_332" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos de Vehículos Automotores</field>
+			<field name="codigo">8381</field>
+		</record>
+		<record id="tipo_ocupacion_333" model="doctor.patient.ocupacion">
+			<field name="name">Electricistas de Vehículos Automotores</field>
+			<field name="codigo">8382</field>
+		</record>
+		<record id="tipo_ocupacion_334" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos de Motos</field>
+			<field name="codigo">8383</field>
+		</record>
+		<record id="tipo_ocupacion_335" model="doctor.patient.ocupacion">
+			<field name="name">Latoneros</field>
+			<field name="codigo">8384</field>
+		</record>
+		<record id="tipo_ocupacion_336" model="doctor.patient.ocupacion">
+			<field name="name">Reparadores de Aparatos Electrodomésticos</field>
+			<field name="codigo">8391</field>
+		</record>
+		<record id="tipo_ocupacion_337" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos Electricistas</field>
+			<field name="codigo">8392</field>
+		</record>
+		<record id="tipo_ocupacion_338" model="doctor.patient.ocupacion">
+			<field name="name">Ajustadores y Reparadores de Equipos Electrónicos</field>
+			<field name="codigo">8393</field>
+		</record>
+		<record id="tipo_ocupacion_339" model="doctor.patient.ocupacion">
+			<field name="name">Mecánicos de Otros Pequeñas Máquinas y Motores</field>
+			<field name="codigo">8394</field>
+		</record>
+		<record id="tipo_ocupacion_340" model="doctor.patient.ocupacion">
+			<field name="name">Instaladores Residenciales y Comerciales</field>
+			<field name="codigo">8411</field>
+		</record>
+		<record id="tipo_ocupacion_341" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Mantenimiento -Instalaciones de Abastecimiento de Agua y Gas</field>
+			<field name="codigo">8412</field>
+		</record>
+		<record id="tipo_ocupacion_342" model="doctor.patient.ocupacion">
+			<field name="name">Vidrieros</field>
+			<field name="codigo">8413</field>
+		</record>
+		<record id="tipo_ocupacion_343" model="doctor.patient.ocupacion">
+			<field name="name">Otros Reparadores</field>
+			<field name="codigo">8414</field>
+		</record>
+		<record id="tipo_ocupacion_344" model="doctor.patient.ocupacion">
+			<field name="name">Tapiceros</field>
+			<field name="codigo">8421</field>
+		</record>
+		<record id="tipo_ocupacion_345" model="doctor.patient.ocupacion">
+			<field name="name">Sastres, Modistos, Plateros y Sombrereros</field>
+			<field name="codigo">8422</field>
+		</record>
+		<record id="tipo_ocupacion_346" model="doctor.patient.ocupacion">
+			<field name="name">Zapateros y Afines</field>
+			<field name="codigo">8423</field>
+		</record>
+		<record id="tipo_ocupacion_347" model="doctor.patient.ocupacion">
+			<field name="name">Joyeros y Relojeros</field>
+			<field name="codigo">8424</field>
+		</record>
+		<record id="tipo_ocupacion_348" model="doctor.patient.ocupacion">
+			<field name="name">Tipógrafos</field>
+			<field name="codigo">8425</field>
+		</record>
+		<record id="tipo_ocupacion_349" model="doctor.patient.ocupacion">
+			<field name="name">Cerrajeros y Otros Oficios</field>
+			<field name="codigo">8426</field>
+		</record>
+		<record id="tipo_ocupacion_350" model="doctor.patient.ocupacion">
+			<field name="name">Buzos</field>
+			<field name="codigo">8427</field>
+		</record>
+		<record id="tipo_ocupacion_351" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Maquinas Estacionarias y Equipo Auxiliar</field>
+			<field name="codigo">8431</field>
+		</record>
+		<record id="tipo_ocupacion_352" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Plantas de Generación y Distribución de Energía</field>
+			<field name="codigo">8432</field>
+		</record>
+		<record id="tipo_ocupacion_353" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Grúa</field>
+			<field name="codigo">8441</field>
+		</record>
+		<record id="tipo_ocupacion_354" model="doctor.patient.ocupacion">
+			<field name="name">Perforadores y Operarios de Voladura –Minería de Superficie, Canteras y Construcción</field>
+			<field name="codigo">8442</field>
+		</record>
+		<record id="tipo_ocupacion_355" model="doctor.patient.ocupacion">
+			<field name="name">Perforadores de Pozos de Agua</field>
+			<field name="codigo">8443</field>
+		</record>
+		<record id="tipo_ocupacion_356" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Equipo Pesado (excepto grúa)</field>
+			<field name="codigo">8451</field>
+		</record>
+		<record id="tipo_ocupacion_357" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Equipo para Limpieza de Vías y Alcantarillado</field>
+			<field name="codigo">8452</field>
+		</record>
+		<record id="tipo_ocupacion_358" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Maquinaria Agrícola</field>
+			<field name="codigo">8453</field>
+		</record>
+		<record id="tipo_ocupacion_359" model="doctor.patient.ocupacion">
+			<field name="name">Maquinistas de Transporte Ferroviario</field>
+			<field name="codigo">8461</field>
+		</record>
+		<record id="tipo_ocupacion_360" model="doctor.patient.ocupacion">
+			<field name="name">Guardafrenos y Otros Operadores Ferroviarios</field>
+			<field name="codigo">8462</field>
+		</record>
+		<record id="tipo_ocupacion_361" model="doctor.patient.ocupacion">
+			<field name="name">Marineros de Cubierta</field>
+			<field name="codigo">8481</field>
+		</record>
+		<record id="tipo_ocupacion_362" model="doctor.patient.ocupacion">
+			<field name="name">Marineros de Sala de Máquinas</field>
+			<field name="codigo">8482</field>
+		</record>
+		<record id="tipo_ocupacion_363" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Pequeñas Embarcaciones</field>
+			<field name="codigo">8483</field>
+		</record>
+		<record id="tipo_ocupacion_364" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Rampa –Transporte Aéreo</field>
+			<field name="codigo">8484</field>
+		</record>
+		<record id="tipo_ocupacion_365" model="doctor.patient.ocupacion">
+			<field name="name">Operarios Portuarios</field>
+			<field name="codigo">8491</field>
+		</record>
+		<record id="tipo_ocupacion_366" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Cargue y Descargue de Materiales</field>
+			<field name="codigo">8492</field>
+		</record>
+		<record id="tipo_ocupacion_367" model="doctor.patient.ocupacion">
+			<field name="name">Ayudantes y Obreros de Construcción</field>
+			<field name="codigo">8611</field>
+		</record>
+		<record id="tipo_ocupacion_368" model="doctor.patient.ocupacion">
+			<field name="name">Ayudantes de Otros Oficios (Blindaje, ornamentador,mecanico disel)</field>
+			<field name="codigo">8612</field>
+		</record>
+		<record id="tipo_ocupacion_369" model="doctor.patient.ocupacion">
+			<field name="name">Obreros de Mantenimiento de Obras Públicas</field>
+			<field name="codigo">8621</field>
+		</record>
+		<record id="tipo_ocupacion_370" model="doctor.patient.ocupacion">
+			<field name="name">Ayudantes de Transporte Automotor </field>
+			<field name="codigo">8622</field>
+		</record>
+		<record id="tipo_ocupacion_371" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores Tratamiento de Metales y Minerales</field>
+			<field name="codigo">9211</field>
+		</record>
+		<record id="tipo_ocupacion_372" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Procesamiento de Químicos, Petróleo, Gas y Tratamiento de Agua y Generación de Energía</field>
+			<field name="codigo">9212</field>
+		</record>
+		<record id="tipo_ocupacion_373" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Procesamiento de Alimentos, Bebidas y Tabaco</field>
+			<field name="codigo">9213</field>
+		</record>
+		<record id="tipo_ocupacion_374" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Fabricación de Productos de Plástico y Caucho</field>
+			<field name="codigo">9214</field>
+		</record>
+		<record id="tipo_ocupacion_375" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Procesamiento de la Madera y Producción de Pulpa y Papel</field>
+			<field name="codigo">9215</field>
+		</record>
+		<record id="tipo_ocupacion_376" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Procesamiento Textil</field>
+			<field name="codigo">9216</field>
+		</record>
+		<record id="tipo_ocupacion_377" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Ensamble de Vehículos de Motor</field>
+			<field name="codigo">9221</field>
+		</record>
+		<record id="tipo_ocupacion_378" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Fabricación de Productos Electrónicos</field>
+			<field name="codigo">9222</field>
+		</record>
+		<record id="tipo_ocupacion_379" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Fabricación de Productos Eléctricos</field>
+			<field name="codigo">9223</field>
+		</record>
+		<record id="tipo_ocupacion_380" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Fabricación de Muebles y Accesorios</field>
+			<field name="codigo">9224</field>
+		</record>
+		<record id="tipo_ocupacion_381" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Fabricación de Productos de Tela, Cuero y Piel</field>
+			<field name="codigo">9225</field>
+		</record>
+		<record id="tipo_ocupacion_382" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Impresión y Ocupaciones Relacionadas (Encuadernador, Impresión)</field>
+			<field name="codigo">9226</field>
+		</record>
+		<record id="tipo_ocupacion_383" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Fabricación de Otros Productos Mecánicos y Metálicos</field>
+			<field name="codigo">9227</field>
+		</record>
+		<record id="tipo_ocupacion_384" model="doctor.patient.ocupacion">
+			<field name="name">Supervisores, Fabricación  Ensamble de Otros Productos n.c.a</field>
+			<field name="codigo">9228</field>
+		</record>
+		<record id="tipo_ocupacion_385" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Control Central de Procesos, Tratamiento de Metales y Minerales</field>
+			<field name="codigo">9231</field>
+		</record>
+		<record id="tipo_ocupacion_386" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Procesos, Químicos, Gas y Petróleo</field>
+			<field name="codigo">9232</field>
+		</record>
+		<record id="tipo_ocupacion_387" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Control de Procesos, Producción de Pulpa</field>
+			<field name="codigo">9233</field>
+		</record>
+		<record id="tipo_ocupacion_388" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Control de Procesos, Fabricación de Papel</field>
+			<field name="codigo">9234</field>
+		</record>
+		<record id="tipo_ocupacion_389" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Maquinas, Tratamiento de Metales y Minerales</field>
+			<field name="codigo">9311</field>
+		</record>
+		<record id="tipo_ocupacion_390" model="doctor.patient.ocupacion">
+			<field name="name">Trabajadores de Fundición</field>
+			<field name="codigo">9312</field>
+		</record>
+		<record id="tipo_ocupacion_391" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Fabricación, Moldeo y Acabado del Vidrio</field>
+			<field name="codigo">9313</field>
+		</record>
+		<record id="tipo_ocupacion_392" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Moldeo de Arcilla, Piedra y Concreto</field>
+			<field name="codigo">9314</field>
+		</record>
+		<record id="tipo_ocupacion_393" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Control de Calidad, Tratamiento de Metales y Minerales</field>
+			<field name="codigo">9315</field>
+		</record>
+		<record id="tipo_ocupacion_394" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas de Planta Química</field>
+			<field name="codigo">9321</field>
+		</record>
+		<record id="tipo_ocupacion_395" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para Procesamiento de Plásticos</field>
+			<field name="codigo">9322</field>
+		</record>
+		<record id="tipo_ocupacion_396" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas y Trabajadores Relacionados con el Procesamiento del Caucho</field>
+			<field name="codigo">9323</field>
+		</record>
+		<record id="tipo_ocupacion_397" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Plantas de Tratamiento de Aguas y Desechos</field>
+			<field name="codigo">9324</field>
+		</record>
+		<record id="tipo_ocupacion_398" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para Procesamiento de la Madera</field>
+			<field name="codigo">9331</field>
+		</record>
+		<record id="tipo_ocupacion_399" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para la Producción de Pulpa</field>
+			<field name="codigo">9332</field>
+		</record>
+		<record id="tipo_ocupacion_400" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para la Fabricación de Papel</field>
+			<field name="codigo">9333</field>
+		</record>
+		<record id="tipo_ocupacion_401" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para la Fabricación de Productos de Papel</field>
+			<field name="codigo">9334</field>
+		</record>
+		<record id="tipo_ocupacion_402" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Control de Calidad, Procesamiento de la Madera</field>
+			<field name="codigo">9335</field>
+		</record>
+		<record id="tipo_ocupacion_403" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para la Preparación de Fibras Textiles</field>
+			<field name="codigo">9341</field>
+		</record>
+		<record id="tipo_ocupacion_404" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Telares y Otras Máquinas Tejedoras</field>
+			<field name="codigo">9342</field>
+		</record>
+		<record id="tipo_ocupacion_405" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas de Tintura y Acabado Textil</field>
+			<field name="codigo">9343</field>
+		</record>
+		<record id="tipo_ocupacion_406" model="doctor.patient.ocupacion">
+			<field name="name">Analistas de  Calidad Textiles</field>
+			<field name="codigo">9344</field>
+		</record>
+		<record id="tipo_ocupacion_407" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para Coser</field>
+			<field name="codigo">9351</field>
+		</record>
+		<record id="tipo_ocupacion_408" model="doctor.patient.ocupacion">
+			<field name="name">Cortadores de Tela, Cuero y Piel</field>
+			<field name="codigo">9352</field>
+		</record>
+		<record id="tipo_ocupacion_409" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas y Trabajadores Relacionados con la Fabricación de Calzado y Marroquinería </field>
+			<field name="codigo">9353</field>
+		</record>
+		<record id="tipo_ocupacion_410" model="doctor.patient.ocupacion">
+			<field name="name">Operarios del Tratamiento de Pieles y Cueros</field>
+			<field name="codigo">9354</field>
+		</record>
+		<record id="tipo_ocupacion_411" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Control de Calidad, Fabricación de Productos de Tela, Piel y Cuero</field>
+			<field name="codigo">9355</field>
+		</record>
+		<record id="tipo_ocupacion_412" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Control de Procesos y Máquinas para la Elaboración de Alimentos y Bebidas</field>
+			<field name="codigo">9361</field>
+		</record>
+		<record id="tipo_ocupacion_413" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Planta de Beneficio Animal</field>
+			<field name="codigo">9362</field>
+		</record>
+		<record id="tipo_ocupacion_414" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Planta de Procesamiento y Empaque de Pescado</field>
+			<field name="codigo">9363</field>
+		</record>
+		<record id="tipo_ocupacion_415" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para la Elaboración de Productos de Tabaco</field>
+			<field name="codigo">9364</field>
+		</record>
+		<record id="tipo_ocupacion_416" model="doctor.patient.ocupacion">
+			<field name="name">Inspectores de Control de Calidad, Procesamiento de Alimentos y Bebidas</field>
+			<field name="codigo">9365</field>
+		</record>
+		<record id="tipo_ocupacion_417" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas de Impresión</field>
+			<field name="codigo">9371</field>
+		</record>
+		<record id="tipo_ocupacion_418" model="doctor.patient.ocupacion">
+			<field name="name">Grabadores y Otras Ocupaciones de Pre-impresión</field>
+			<field name="codigo">9372</field>
+		</record>
+		<record id="tipo_ocupacion_419" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas de Encuadernación y Acabado</field>
+			<field name="codigo">9373</field>
+		</record>
+		<record id="tipo_ocupacion_420" model="doctor.patient.ocupacion">
+			<field name="name">Procesadores Fotográficos y de Películas</field>
+			<field name="codigo">9374</field>
+		</record>
+		<record id="tipo_ocupacion_421" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores e Inspectores de Vehículos a Automotor</field>
+			<field name="codigo">9381</field>
+		</record>
+		<record id="tipo_ocupacion_422" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores, Fabricantes e Inspectores de Equipos y Componentes Electrónicos</field>
+			<field name="codigo">9382</field>
+		</record>
+		<record id="tipo_ocupacion_423" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores e Inspectores de Aparatos y Equipo Eléctrico</field>
+			<field name="codigo">9383</field>
+		</record>
+		<record id="tipo_ocupacion_424" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores, Fabricantes e Inspectores de Transformadores y Motores Eléctricos Industriales</field>
+			<field name="codigo">9384</field>
+		</record>
+		<record id="tipo_ocupacion_425" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores e Inspectores de Productos Mecánicos</field>
+			<field name="codigo">9385</field>
+		</record>
+		<record id="tipo_ocupacion_426" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores e Inspectores de Ensamble de Aeronaves</field>
+			<field name="codigo">9386</field>
+		</record>
+		<record id="tipo_ocupacion_427" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas e Inspectores de la Fabricación de Productos y Componentes Eléctricos</field>
+			<field name="codigo">9387</field>
+		</record>
+		<record id="tipo_ocupacion_428" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores e Inspectores de Embarcaciones</field>
+			<field name="codigo">9391</field>
+		</record>
+		<record id="tipo_ocupacion_429" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores e Inspectores de Muebles y Accesorios</field>
+			<field name="codigo">9392</field>
+		</record>
+		<record id="tipo_ocupacion_430" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Acabado de Muebles</field>
+			<field name="codigo">9393</field>
+		</record>
+		<record id="tipo_ocupacion_431" model="doctor.patient.ocupacion">
+			<field name="name">Ensambladores de Productos Plásticos e Inspectores</field>
+			<field name="codigo">9394</field>
+		</record>
+		<record id="tipo_ocupacion_432" model="doctor.patient.ocupacion">
+			<field name="name">Operarios de Recubrimientos Metálicos</field>
+			<field name="codigo">9395</field>
+		</record>
+		<record id="tipo_ocupacion_433" model="doctor.patient.ocupacion">
+			<field name="name">Pintores en Procesos de Manufactura</field>
+			<field name="codigo">9396</field>
+		</record>
+		<record id="tipo_ocupacion_434" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas Herramientas</field>
+			<field name="codigo">9411</field>
+		</record>
+		<record id="tipo_ocupacion_435" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para el Trabajo de la Madera</field>
+			<field name="codigo">9412</field>
+		</record>
+		<record id="tipo_ocupacion_436" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para el Trabajo del Metal</field>
+			<field name="codigo">9413</field>
+		</record>
+		<record id="tipo_ocupacion_437" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para Forja</field>
+			<field name="codigo">9414</field>
+		</record>
+		<record id="tipo_ocupacion_438" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas de Soldadura</field>
+			<field name="codigo">9415</field>
+		</record>
+		<record id="tipo_ocupacion_439" model="doctor.patient.ocupacion">
+			<field name="name">Operadores de Máquinas para la Fabricación de Otros Productos Metálicos</field>
+			<field name="codigo">9416</field>
+		</record>
+		<record id="tipo_ocupacion_440" model="doctor.patient.ocupacion">
+			<field name="name">Obreros y Ayudantes en el Tratamiento de Metales y Minerales</field>
+			<field name="codigo">9611</field>
+		</record>
+		<record id="tipo_ocupacion_441" model="doctor.patient.ocupacion">
+			<field name="name">Ayudantes en la Fabricación Metálica</field>
+			<field name="codigo">9612</field>
+		</record>
+		<record id="tipo_ocupacion_442" model="doctor.patient.ocupacion">
+			<field name="name">Obreros y Ayudantes de Planta Química</field>
+			<field name="codigo">9613</field>
+		</record>
+		<record id="tipo_ocupacion_443" model="doctor.patient.ocupacion">
+			<field name="name">Obreros y Ayudantes en el Procesamiento de la Madera y Producción de Pulpa y Papel</field>
+			<field name="codigo">9614</field>
+		</record>
+		<record id="tipo_ocupacion_444" model="doctor.patient.ocupacion">
+			<field name="name">Obreros y Ayudantes en la Elaboración de Alimentos y Bebidas</field>
+			<field name="codigo">9615</field>
+		</record>
+	</data>
+</openerp>
