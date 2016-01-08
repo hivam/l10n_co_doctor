@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
@@ -1040,7 +1041,7 @@ class doctor_otra_prescripcion(osv.osv):
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
 		else:
 			if name:
-				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
 				if not ids:
 					ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
 			else:
