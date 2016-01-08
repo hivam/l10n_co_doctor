@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
@@ -393,6 +394,7 @@ class doctor_appointment_co(osv.osv):
 		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
 		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
 		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
+		
 		diff = int(agenda_duracion.date_begin[17:])
 		if diff > 0:
 			diff = 60 - diff
@@ -406,8 +408,10 @@ class doctor_appointment_co(osv.osv):
 		
 		for i in range(0,horarios_disponibles,1):
 			horarios.append(horarios[i] + timedelta(minutes=1)) 	
+		
 		for i in horarios:
-			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:%S'))
+			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:00'))
+		
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
 		
 		if ids_ingresos_diarios:
@@ -420,7 +424,6 @@ class doctor_appointment_co(osv.osv):
 
 
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
-
 				#con esto sabemos cuantos campos de la lista podemos quitar
 				duracion = int(fecha_agenda.type_id.duration / 1)
 				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
@@ -434,7 +437,6 @@ class doctor_appointment_co(osv.osv):
 				
 				if int(len(horario_cadena)) > 1:
 					if int(len(horario_cadena)) > int((appointment_type/1)):
-						_logger.info(horario_cadena[0])
 						values.update({
 							'time_begin' : horario_cadena[0],
 							'time_end' : horario_cadena[int(appointment_type/1)]
@@ -457,7 +459,7 @@ class doctor_appointment_co(osv.osv):
 				})
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
 
-			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:%S')
+			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:00')
 			values.update({
 				'time_end' : hora_fin
 			})
@@ -1029,7 +1031,7 @@ class doctor_otra_prescripcion(osv.osv):
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
 		else:
 			if name:
-				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
 				if not ids:
 					ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
 			else:
