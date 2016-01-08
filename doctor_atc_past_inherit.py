@@ -31,9 +31,9 @@ class doctor_atc_past_inherit(osv.osv):
     _inherit = "doctor.atc.past"
     _rec_name = 'attentiont_id'
     _columns = {
+    	'atc_id': fields.many2one('doctor.atc', 'Past drugs', required=False, ondelete='restrict'),
         'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
         'patient_id': fields.many2one('doctor.patient', 'Patient', required=False, ondelete='restrict'),
-        'atc_id': fields.many2one('doctor.atc', 'Past drugs', required=False, ondelete='restrict'),
     }
 
 doctor_atc_past_inherit()

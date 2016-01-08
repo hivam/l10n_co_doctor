@@ -95,44 +95,38 @@ class doctor_patient_co(osv.osv):
 		return res	
 	
 	_columns = {
+		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
+		'edad_calculada' : fields.function(_get_edad, type="integer", store= False, 
+								readonly=True, method=True, string='Edad Actual',),
+		'email' : fields.char('Email'),
+		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
+		'es_profesionalsalud': fields.boolean('Es profesional de la salud?', help="Marcar cuando el paciente a crear ya existe como profesional de la salud."),
+		'lugar_nacimiento_id' : fields.many2one('res.country.state.city', 'lugar nacimiento', required=False ),
+		'movil' :fields.char('Móvil', size=12),
+		'nc_paciente': fields.function(_get_nc, type="text", store= False, 
+								readonly=True, method=True),
 		'nombre': fields.char('Nombre', size=70),
+		'nombre_acompaniante': fields.char('Nombre', size=70),
+		'nombre_responsable': fields.char('Nombre', size=70),
+		'notas_paciente': fields.text('Notas'),
+		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , 'Ocupación' , required=False),
+		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
+		'ref' :  fields.char('Identificación', required=True, ),
+		'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
+		'street' :  fields.char('Dirección', required=False),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
 								  ('13','Cédula de ciudadanía'), ('21','Cédula de extranjería'), ('41','Pasaporte'),
 								  ('NU','Número único de identificación'), ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
 								  'Tipo de Documento', required=True),
-		'ref' :  fields.char('Identificación', required=True, ),
-		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , 'Ocupación' , required=False),
-		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
 		'telefono' : fields.char('Teléfono', size=12),
-		'email' : fields.char('Email'),
-		'movil' :fields.char('Móvil', size=12),
-		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario'),
-		'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
-		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
-		'street' :  fields.char('Dirección', required=False),
-		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
-		'es_profesionalsalud': fields.boolean('Es profesional de la salud?', help="Marcar cuando el paciente a crear ya existe como profesional de la salud."),
-
-		#Acompañante
-		'nombre_acompaniante': fields.char('Nombre', size=70),
 		'telefono_acompaniante' : fields.char('Teléfono', size=12),
-
-		#Responsable paciente
-		'nombre_responsable': fields.char('Nombre', size=70),
 		'telefono_responsable' : fields.char('Teléfono', size=12),
-		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
-		'edad_calculada' : fields.function(_get_edad, type="integer", store= False, 
-								readonly=True, method=True, string='Edad Actual',),
+		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario'),
+
 		'unidad_edad_calculada': fields.function(_get_unidad_edad, type="selection", method=True, 
 								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True),
-		
-		'notas_paciente': fields.text('Notas'),
 		'ver_nc': fields.boolean('Ver Nc', store=False),
-		'nc_paciente': fields.function(_get_nc, type="text", store= False, 
-								readonly=True, method=True),
-		'lugar_nacimiento_id' : fields.many2one('res.country.state.city', 'lugar nacimiento', required=False ),
-		
-	
+		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 	}
 
 	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):
@@ -269,12 +263,12 @@ class doctor_appointment_co(osv.osv):
 	_name = "doctor.appointment"
 	_inherit = "doctor.appointment"
 	_columns = {
+		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
 										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
+		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
-		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
-		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		}
 
 
@@ -572,11 +566,11 @@ class doctor_appointment_type_procedures(osv.osv):
 	_rec_name = 'procedures_id'
 	
 	_columns = {
-		'appointment_type_id': fields.many2one('doctor.appointment.type', 'Tipo Cita'),
-		'procedures_id': fields.many2one('product.product', 'Procedimientos en Salud', required=True, ondelete='restrict'),
-		'quantity': fields.integer('Cantidad', required=True),
 		'additional_description': fields.char('Add. description', size=30,
 											  help='Additional description that will be added to the product description on orders.'),
+		'appointment_type_id': fields.many2one('doctor.appointment.type', 'Tipo Cita'),
+		'procedures_id': fields.many2one('product.product', 'Procedimientos en Salud', required=True, ondelete='restrict'),
+		'quantity': fields.integer('Cantidad', required=True),		
 	}
 
 	def name_get(self, cr, uid, ids, context={}):
@@ -635,7 +629,9 @@ class doctor_attentions_co(osv.osv):
 		return res
 
 	_columns = {
-		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
+		'activar_notas_confidenciales':fields.boolean('NC', states={'closed': [('readonly', True)]}),
+		'causa_externa' : fields.selection(causa_externa, 'Causa Externa',states={'closed': [('readonly', True)]}),
+		'certificados_ids': fields.one2many('doctor.attentions.certificado', 'attentiont_id', 'Certificados',states={'closed': [('readonly', True)]}),
 		'finalidad_consulta':fields.selection([('01','Atención del parto -puerperio'),
 												('02','Atención del recién nacido'),
 												('03','Atención en planificación familiar'),
@@ -647,21 +643,19 @@ class doctor_attentions_co(osv.osv):
 												('09','Detección de enfermedad profesional'),
 												('10','No aplica'),
 											   ],'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
-
-		'causa_externa' : fields.selection(causa_externa, 'Causa Externa',states={'closed': [('readonly', True)]}),
-		'otros_antecedentes_patologicos' : fields.text(u'Otros antecedentes patológicos',states={'closed': [('readonly', True)]}),
-		'otros_antecedentes_farmacologicos' : fields.text(u'Otros Antecedentes farmacológicos',states={'closed': [('readonly', True)]}),
-		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas',states={'closed': [('readonly', True)]}),
-		'otros_antecedentes': fields.text('Otros Antecedentes',states={'closed': [('readonly', True)]}),
-		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico',states={'closed': [('readonly', True)]}),
-		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
-		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
-		'certificados_ids': fields.one2many('doctor.attentions.certificado', 'attentiont_id', 'Certificados',states={'closed': [('readonly', True)]}),
-		'otros_medicamentos_ids': fields.one2many('doctor.attentions.medicamento_otro', 'attentiont_id', 'Otra Prescripcion',states={'closed': [('readonly', True)]}),
-		'activar_notas_confidenciales':fields.boolean('NC', states={'closed': [('readonly', True)]}),
-		'notas_confidenciales': fields.text('Notas Confidenciales', states={'closed': [('readonly', True)]}),
 		'inv': fields.function(_get_creador, type="boolean", store= False, 
 								readonly=True, method=True, string='inv',),	
+		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
+		'notas_confidenciales': fields.text('Notas Confidenciales', states={'closed': [('readonly', True)]}),
+
+		'otros_antecedentes': fields.text('Otros Antecedentes',states={'closed': [('readonly', True)]}),
+		'otros_antecedentes_farmacologicos' : fields.text(u'Otros Antecedentes farmacológicos',states={'closed': [('readonly', True)]}),
+		'otros_antecedentes_patologicos' : fields.text(u'Otros antecedentes patológicos',states={'closed': [('readonly', True)]}),
+		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico',states={'closed': [('readonly', True)]}),
+		'otros_medicamentos_ids': fields.one2many('doctor.attentions.medicamento_otro', 'attentiont_id', 'Otra Prescripcion',states={'closed': [('readonly', True)]}),
+		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas',states={'closed': [('readonly', True)]}),
+		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
+		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
 		}
 
 
@@ -700,9 +694,8 @@ class doctor_co_schedule_dias_excepciones(osv.osv):
 	_name = 'doctor.schedule_dias_excepciones'
 
 	_columns = {
-
-		'schedule_id': fields.many2one('doctor.schedule', 'Agenda'),
 		'dias_excepciones' : fields.date('Dias Excepciones'),
+		'schedule_id': fields.many2one('doctor.schedule', 'Agenda'),
 	}
 
 	_defaults = {
@@ -718,13 +711,12 @@ class doctor_co_schedule_inherit(osv.osv):
 	_inherit = 'doctor.schedule'
 
 	_columns = {
-		'repetir_agenda': fields.boolean('Repetir Agenda'),
-		'fecha_inicio': fields.datetime('Fecha Inicio'),
-		'fecha_fin': fields.datetime('Fecha Fin'),
 		'dias_excepciones_id': fields.one2many('doctor.schedule_dias_excepciones', 'schedule_id', 'Dias Excepcionales'),
 		'duracion_agenda' : fields.integer('Duracion Agenda (horas)'),
-
-
+		'fecha_inicio': fields.datetime('Fecha Inicio'),
+		'fecha_fin': fields.datetime('Fecha Fin'),
+		'repetir_agenda': fields.boolean('Repetir Agenda'),
+		
 		'lunes' : fields.boolean('Lunes'),
 		'martes' : fields.boolean('Martes'),
 		'miercoles' : fields.boolean('Miercoles'),
@@ -747,8 +739,6 @@ class doctor_co_schedule_inherit(osv.osv):
 		'noviembre' : fields.boolean('Noviembre'),
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
-
-
 	}
 
 	_defaults = {
@@ -1061,10 +1051,10 @@ class doctor_attention_medicamento_otro_elemento(osv.osv):
 
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
-		'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
-		'prescripcion': fields.char('Prescripcion'),
-		'recomendacion': fields.text('Recomendaciones'),
 		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'prescripcion': fields.char('Prescripcion'),
+		'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
+		'recomendacion': fields.text('Recomendaciones'),
 	}
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, context=None):
@@ -1089,12 +1079,12 @@ class doctor_attentions_recomendaciones(osv.osv):
 	]
 
 	_columns = {
-		'name' : fields.char('Nombre Plantilla', required=True),
+		'active' : fields.boolean('Active'),
 		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
+		'cuerpo' : fields.text(u'Recomendación Texto'),
+		'name' : fields.char('Nombre Plantilla', required=True),
 		'patient_id': fields.many2one('doctor.patient', 'Paciente', readonly=True),
 		'professional_id': fields.many2one('doctor.professional', 'Doctor', readonly=True),
-		'cuerpo' : fields.text(u'Recomendación Texto'),
-		'active' : fields.boolean('Active'),
 		'tipo_plantilla': fields.selection(tipo_plantillas,'Tipo Plantilla'),
 	}
 
@@ -1115,17 +1105,17 @@ class doctor_attentions_certificado(osv.osv):
 	_name = 'doctor.attentions.certificado'
 
 	_columns = {
-		'name' : fields.char('Titulo', required=True),
-		'expedicion_certificado' : fields.datetime(u'Fecha de Expedición'),
-		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
-		'patient_id': fields.many2one('doctor.patient', 'Paciente', readonly=True),
-		'professional_id': fields.many2one('doctor.professional', 'Doctor',readonly=True),
-		'asunto' : fields.char('Asunto'),
-		'cuerpo' : fields.text(u'Certificación'),
 		'active' : fields.boolean('Active'),
-		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
-		'multi_images': fields.one2many('multi_imagen', 'certificados_id', 'Imagenes',),
+		'asunto' : fields.char('Asunto'),
+		'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
+		'cuerpo' : fields.text(u'Certificación'),
+		'expedicion_certificado' : fields.datetime(u'Fecha de Expedición'),
 		'leido': fields.boolean('Leido', ),
+		'multi_images': fields.one2many('multi_imagen', 'certificados_id', 'Imagenes',),
+		'name' : fields.char('Titulo', required=True),
+		'patient_id': fields.many2one('doctor.patient', 'Paciente', readonly=True),
+		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'professional_id': fields.many2one('doctor.professional', 'Doctor',readonly=True),
 	}
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, context=None):
@@ -1138,9 +1128,9 @@ class doctor_attentions_certificado(osv.osv):
 		return res
 
 	_defaults = {
-		'name' : 'Certificado',
 		'active' : True,
 		'expedicion_certificado' : lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+		'name' : 'Certificado',
 		'professional_id': lambda self, cr, uid, context: context.get('professional_id', False),
 	}
 
@@ -1151,9 +1141,8 @@ class multi_imagen(osv.osv):
 	_name = 'multi_imagen'
 
 	_columns = {
-		'name': fields.binary('Imagen'),
 		'certificados_id': fields.many2one('doctor.attentions.certificado', 'Certificado o Informe', ondelete='restrict'),
-
+		'name': fields.binary('Imagen'),
 	}
 
 multi_imagen()
@@ -1239,8 +1228,8 @@ class doctor_prescription(osv.osv):
 	_inherit = 'doctor.prescription'
 
 	_columns = {
-		'dose_float' : fields.char('Dose'),
 		'cantidad_total' : fields.char('Cantidad Total'),
+		'dose_float' : fields.char('Dose'),
 		'indicacion_tomar': fields.char('Tomar')
 	}
 

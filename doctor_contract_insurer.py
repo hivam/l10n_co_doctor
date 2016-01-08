@@ -33,14 +33,14 @@ class doctor_contrato_aseguradora(osv.osv):
 	_rec_name="contract_code"
 
 	_columns = {
+		'active' : 		fields.boolean('¿Activo?'),
 		'contract_code' : 	fields.char('Codigo', size=5, required=True),
 		'f_inicio' :	fields.date('Fecha Inicio', required=True),
 		'f_fin' :		fields.date('Fecha Fin'),
-		'valor' :		fields.float('Valor',digits=(3,3)),
-		'active' : 		fields.boolean('¿Activo?'),
 		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=False),
 		'plan_ids': fields.many2many('doctor.insurer.plan', id1='contract_ids', id2='plan_ids',
 										   string='Planes', required=False, ondelete='restrict'),
+		'valor' :		fields.float('Valor',digits=(3,3)),	
 	}
 
 	"""

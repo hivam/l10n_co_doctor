@@ -33,6 +33,6 @@ class account_invoice(osv.osv):
     _inherit = "account.invoice"
 
     _columns = {
-        'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Cuenta'),
-        'radicada' : fields.boolean('Radicada')
+    	'radicada' : fields.boolean('Radicada'),
+        'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Cuenta'),   
     }

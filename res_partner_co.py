@@ -33,9 +33,9 @@ class CountryStateCity(osv.osv):
     _description='Model to manipulate Cities'
     _name ='res.country.state.city'
     _columns = {
-        'state_id': fields.many2one('res.country.state', 'State', required=True),
-        'name': fields.char('City Name', size=64, required=True),
         'code': fields.char('City Code', size=5, help='Código DANE -5 dígitos-', required=True),
+        'name': fields.char('City Name', size=64, required=True),
+        'state_id': fields.many2one('res.country.state', 'State', required=True),
     }
 
     def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=80):
@@ -59,8 +59,14 @@ class res_partner_co(osv.osv):
     _name = 'res.partner'
     _inherit = 'res.partner'
     _columns = {
-        'es_profesional_salud':fields.boolean('Es Profesional de la Salud'),
+        'city_id':fields.many2one('res.country.state.city', 'Ciudad', required=False, domain="[('state_id','=',state_id)]"),
+        'dv': fields.char('dv', size=1, help='Digito de verificación'),
         'es_paciente':fields.boolean('Es paciente'),
+        'es_profesional_salud':fields.boolean('Es Profesional de la Salud'),
+        'firtsname': fields.char('firtsname', size=25),
+        'lastname': fields.char('lastname', size=25),
+        'middlename': fields.char('middlename', size=25),
+        'surname': fields.char('surname', size=25),
         'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
                                   ('13','Cédula de ciudadanía'), ('21','Tarjeta de extranjería'),
                                   ('22','Cédula de extranjería'), ('31','NIT'),
@@ -68,12 +74,6 @@ class res_partner_co(osv.osv):
                                   ('43','Para uso definido por la DIAN'), ('NU','Número único de identificación'),
                                   ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
                                   'Tipo de Documento'),
-        'dv': fields.char('dv', size=1, help='Digito de verificación'),
-        'lastname': fields.char('lastname', size=25),
-        'surname': fields.char('surname', size=25),
-        'firtsname': fields.char('firtsname', size=25),
-        'middlename': fields.char('middlename', size=25),
-        'city_id':fields.many2one('res.country.state.city', 'Ciudad', required=False, domain="[('state_id','=',state_id)]"),
     }
 
     def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
@@ -88,10 +88,10 @@ class res_partner_co(osv.osv):
         return self.name_get(cr, uid, ids, context)
 
     _defaults = {
-        'tdoc' : '13',
         'country_id': lambda self, cr, uid, context: self.pool.get('res.country').browse(cr, uid, self.pool.get('res.country').search(cr, uid, [('code','=','CO')]))[0].id,
-        'state_id': lambda self, cr, uid, context: self.pool.get('res.country.state').browse(cr, uid, self.pool.get('res.country.state').search(cr, uid, [('code','=','63')]))[0].id,
         'es_paciente': False,
+        'state_id': lambda self, cr, uid, context: self.pool.get('res.country.state').browse(cr, uid, self.pool.get('res.country.state').search(cr, uid, [('code','=','63')]))[0].id,
+        'tdoc' : '13',
         }
 
 # Función para concatenar los apellidos y nombres y almacenarlos en el campo name

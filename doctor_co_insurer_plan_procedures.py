@@ -40,10 +40,11 @@ class doctor_insurer_plan_procedures(osv.osv):
 
 
 	_columns = {
+		'active' : fields.boolean('¿Activo?', help="Estado del procedimiento dentro del plan."),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 		'procedure_id':	fields.many2one('product.product', 'Procedimiento',required=True),
 		'valor' : 	fields.float('Valor',digits=(3,3), required=True),
-		'active' : fields.boolean('¿Activo?', help="Estado del procedimiento dentro del plan."),
+		
 
 	}
 

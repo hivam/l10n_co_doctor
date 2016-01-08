@@ -32,8 +32,8 @@ class doctor_diseases_past_inherit(osv.osv):
     _rec_name = 'attentiont_id'
     _columns = {
         'attentiont_id': fields.many2one('doctor.attentions', 'Attention', ondelete='restrict'),
-        'patient_id': fields.many2one('doctor.patient', 'Patient', required=False, ondelete='restrict'),
         'diseases_id': fields.many2one('doctor.diseases', 'Past diseases', required=False, ondelete='restrict'),
+        'patient_id': fields.many2one('doctor.patient', 'Patient', required=False, ondelete='restrict'),  
     }
 
 doctor_diseases_past_inherit()
