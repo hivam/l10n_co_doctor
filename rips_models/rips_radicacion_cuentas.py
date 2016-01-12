@@ -114,9 +114,9 @@ class radicacion_cuentas(osv.osv):
 	_columns = {
 		'cantidad_factura' : fields.function(_contar_facturas, type="char", store= True, 
 								readonly=True, method=True, string='Cantidad facturas'),
-		'cliente': fields.many2one('doctor.insurer', 'Cliente', required=True, help='Aseguradora'),
+		'cliente_id': fields.many2one('doctor.insurer', 'Cliente', required=True, help='Aseguradora'),
 		'confirmada' : fields.boolean('Radicacion confirmada', required=True),
-		'contrato' : fields.many2one('doctor.contract.insurer', 'Contrato', required=True, help='Contrato por el que se atiende al cliente.'),
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=True, help='Contrato por el que se atiende al cliente.'),
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
 		#Facturas
 		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict'),
@@ -152,8 +152,8 @@ class radicacion_cuentas(osv.osv):
 		dateuser = datetime.strftime(dateuser, "%Y-%m-%d")
 		return dateuser
 
-	def get_invoices(self, cr, uid, ids, cliente, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, context=None):
-		id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente).insurer.id
+	def get_invoices(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, context=None):
+		id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
 		id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
 		invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
 																('state', '=', 'open'),
@@ -305,5 +305,13 @@ class radicacion_cuentas(osv.osv):
 																	('tipo_usuario_id', '=', tipo_usuario_id ),
 																	('radicada', '=', False)])
 		return {'value': {'valor_total': invoices}}
+
+	def onchange_contrato(self, cr, uid, ids, cliente,context=None):
+		res = {'value':{}}
+		modelo= self.pool.get('doctor.contract.insurer')
+		buscar = modelo.search(cr, uid, [('insurer_id', '=', cliente)] )
+		if len(buscar) == 1:
+			res['value']['contrato_id'] =  buscar[0]
+		return res
 
 radicacion_cuentas()

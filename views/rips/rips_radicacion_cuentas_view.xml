@@ -28,14 +28,14 @@
           <group col="4" colspan="6">
           <div>  
             <h2>
-              <label for="cliente" string="Cliente" class="left-margin10"/>
-              <field name="cliente" style="width: 80%%" domain="[('tipousuario_id','=',tipo_usuario_id)]"/>
+              <label for="cliente_id" string="Cliente" class="left-margin10"/>
+              <field name="cliente_id" style="width: 80%%" domain="[('tipousuario_id','=',tipo_usuario_id)]" on_change="onchange_contrato(cliente_id)"/>
             </h2>
           </div>
           <div>
             <h2>
-              <label for="contrato" string="Contrato"/>
-              <field name="contrato" style="width: 50%%"/>
+              <label for="contrato_id" string="Contrato"/>
+              <field name="contrato_id" style="width: 50%%" domain="[('insurer_id','=',cliente)]"/>
             </h2>
           </div>
           </group>
@@ -49,7 +49,7 @@
               <label for="rangofacturas_desde" string="Desde"/>
               <field name="rangofacturas_desde" class="oe_inline"/>
               <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
-              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id)" context=""/>
+              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id)" context=""/>
             </fieldset>
             <group col="4">
               <field name="cantidad_factura"/>
@@ -111,7 +111,7 @@
         <tree string="Radicacion Cuentas">
           <field name="secuencia"/>
           <field name="f_radicacion"/>
-          <field name="cliente"/>
+          <field name="cliente_id"/>
           <field name="cantidad_factura"/>
           <field name="numero_radicado"/>
           <field name="valor_total"/>
