@@ -262,6 +262,22 @@ doctor_patient_co_ocupacion()
 class doctor_appointment_co(osv.osv):
 	_name = "doctor.appointment"
 	_inherit = "doctor.appointment"
+
+	ambito = [
+		(1, 'Ambulatorio'),
+		(2, 'En Urgencias'),
+		(3, 'Hospitalario'),
+	]
+
+
+	finalidad = [
+		(1, 'Diagnostico'),
+		(2, u'Protección Especifica'),
+		(3, u'Terapéutica'),
+		(4, u'Detección Temprana de enf. General'),
+		(5, u'Detección Temprana de enf. profesional'),
+	]
+
 	_columns = {
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
@@ -269,9 +285,15 @@ class doctor_appointment_co(osv.osv):
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
-		}
+		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
+		'ambito': fields.selection(ambito, u'Ámbito'),
+		'finalidad': fields.selection(finalidad, 'Finalidad'),
+	}
 
-
+	_defaults = {
+		"ambito": 1,
+		"finalidad": 1,
+	}
 
 	def onchange_patient(self, cr, uid, ids, patient_id, insurer_id, tipo_usuario_id, ref, context=None):
 		values = {}
