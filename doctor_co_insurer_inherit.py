@@ -33,7 +33,7 @@ class doctor_insurer_co_inherit(osv.osv):
 	_inherit = "doctor.insurer"
 
 	_columns = {
-		'tipousuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
+		'tipousuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
 	}
 
 	
