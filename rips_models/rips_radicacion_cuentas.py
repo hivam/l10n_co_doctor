@@ -76,50 +76,37 @@ class radicacion_cuentas(osv.osv):
 	_name ='rips.radicacioncuentas'
 	_rec_name = 'secuencia'
 
-	def _contar_facturas(self, cr, uid, ids, field_name, arg, context=None):
+	def _contar_facturas(self, cr, uid, ids, context=None):
 		"""
 		ésta función cuenta las facturas filtradas en radicación de cuentas 
 		"""
-		res = {}
 		for po in self.browse(cr, uid, ids, context = context):
-			res[po.id] = len(po.invoices_ids)
-		return res
+			return len(po.invoices_ids)
 
-	def _numero_radicado(self, cr, uid, ids, field_name, arg, context=None):
-		res = {}
-		res[0] = "easd"
-		return res
-
-	def _valor_total(self, cr, uid, ids, field_name, arg, context=None):
-		res = {}
-		
+	def _valor_total(self, cr, uid, ids, context=None):
+		"""
+		ésta función cuenta las facturas filtradas en radicación de cuentas 
+		"""
 		for datos in self.browse(cr,uid,ids, context):
 			suma = 0
 			for d in datos.invoices_ids:
 				suma+= d.amount_total
-			res[datos.id]= suma
-		return res
+		return suma
 
-	def _saldo(self, cr, uid, ids, field_name, arg, context=None):
-		res = {}
-		
+	def _saldo(self, cr, uid, ids, context=None):
 		for datos in self.browse(cr,uid,ids, context):
 			saldo = 0
 			for d in datos.invoices_ids:
 				saldo+= d.residual
-			res[datos.id]= saldo
-		return res
-
+		return saldo
 
 	_columns = {
-		'cantidad_factura' : fields.function(_contar_facturas, type="char", store= True, 
-								readonly=True, method=True, string='Cantidad facturas'),
+		'cantidad_factura' : fields.integer('Cantidad facturas', readonly=True),
 		'cliente_id': fields.many2one('doctor.insurer', 'Cliente', required=True, help='Aseguradora'),
-		'confirmada' : fields.boolean('Radicacion confirmada', required=True),
-		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=True, help='Contrato por el que se atiende al cliente.'),
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False, help='Contrato por el que se atiende al cliente.'),
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
 		#Facturas
-		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict'),
+		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict', states={'done': [('readonly', True)]}),
 		'numero_radicado' : fields.char("N° Radicado", size=200 ),
 		'plano' : fields.binary(string='Archivo RIP'),
 		'plano_nombre' : fields.char('File name', 40, readonly=True),
@@ -127,18 +114,16 @@ class radicacion_cuentas(osv.osv):
 		'rangofacturas_hasta' : fields.date('Hasta', required=True),
 		#Rips
 		'rips_ids': fields.one2many('rips.generados', 'radicacioncuentas_id', string='RIPS', required=True, ondelete='restrict'),
-		'saldo' : fields.function(_saldo, type="float", store= True, 
-								readonly=True, method=True, string='Saldo',),
+		'saldo' : fields.float('Saldo', readonly=True),
 		'secuencia' : fields.char("Cuenta N°", size=200 ),
+		'state': fields.selection([('draft', 'Borrador'), ('done', 'Confirmado')], 'Status', readonly=True, required=False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
-		'valor_total' : fields.function(_valor_total, type="float", store= True, 
-								readonly=True, method=True, string='Valor Total',),
+		'valor_total' : fields.float('Valor Total', readonly=True),
 	}
 
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
-		'confirmada'   : False
-
+		'state' : 'draft',
 	}
 
 	
@@ -278,12 +263,16 @@ class radicacion_cuentas(osv.osv):
 		return True
 
 	def create(self, cr, uid, vals, context=None):
-		vals.update({'secuencia': self.getSecuencia(cr,uid)})
+		vals.update({'secuencia': self.getSecuencia(cr,uid), 'state': 'draft'})
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
 
 	def confirmar(self, cr, uid, ids, context=None):
-		raise osv.except_osv(_('Aviso!'),
-				_('Funcionalidad no implementada.'))
+		res={'value':{}}
+		facturas=self._contar_facturas(cr, uid, ids, context=None )
+		valor_total = self._valor_total(cr, uid, ids, context=None)
+		saldo = self._saldo(cr, uid, ids, context=None)
+		self.write(cr, uid, ids, {'state': 'done', 'cantidad_factura': facturas, 'saldo' : saldo, 'valor_total' : valor_total}, context)
+		return res
 
 	def validar(self, cr, uid, ids, context=None):
 		raise osv.except_osv(_('Aviso!'),
