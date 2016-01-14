@@ -383,8 +383,8 @@ class doctor_appointment_co(osv.osv):
 					if plan_id:
 						for j in res:
 							if j:
-								ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0][0])], context=context)
-							
+								procedimiento_id = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0][0])], context=context)
+								ids_procedimientos.append(procedimiento_id[0])
 					else:
 						raise osv.except_osv(_('Aviso importante!!'),
 								 _('No tiene ningun plan seleccionado'))	
@@ -1431,4 +1431,80 @@ class doctor_sales_order_co (osv.osv):
 
 doctor_sales_order_co()
 
+
+class doctor_configuracion(osv.osv):
+
+	_name = "doctor.configuracion"
+
+	_columns = {
+		'aseguradora_id': fields.many2one('doctor.insurer', "Aseguradora", required=False),
+		'parametrizacion_ids': fields.one2many('doctor.parametrizacion', 'doctor_configuracion_id', 'Agregar parametrizacion'),
+	}
+
+
+	def on_change_cargadatos(self, cr, uid, ids, aseguradora_id, context=None):
+		res={'value':{}}
+		modelo_contrato = self.pool.get("doctor.contract.insurer")
+		modelo_configuracion_aseg_proc = self.pool.get("doctor.configuracion.aseguradora.procedimiento")
+		modelo_aseg_proce = self.pool.get("doctor.aseguradora.procedimiento")
+		planes = []
+
+		if aseguradora_id:
+			contratos_ids = modelo_contrato.search(cr, uid, [("insurer_id", "=", aseguradora_id)], context=context)
+			config_aseg_proc_ids = modelo_configuracion_aseg_proc.search(cr, uid, [("aseguradora_id", "=", aseguradora_id)], context=context)
+
+			proce_asegu_ids = modelo_aseg_proce.search(cr, uid, [("aseguradora_procedimiento_id", "in", config_aseg_proc_ids)], context=context)
+
+			if contratos_ids:
+
+				for contrato in modelo_contrato.browse(cr, uid, contratos_ids, context=context):
+					cr.execute("""SELECT plan_ids FROM doctor_contract_insurer_doctor_insurer_plan_rel WHERE contract_ids = %s  """, [contrato.id] )
+
+				for i in cr.fetchall():
+					for proce in modelo_aseg_proce.browse(cr, uid, proce_asegu_ids, context=context):
+						planes.append((0,0,{'plan_id' : i[0], 'contract_id' : contrato.id, 'procedures_id': proce.procedures_id.id}))
+						
+				res['value']['parametrizacion_ids'] = planes
+
+		return res
+
+doctor_configuracion()
+
+class doctor_parametrizacion(osv.osv):
+
+	_name = "doctor.parametrizacion"
+
+	_columns = {
+		'doctor_configuracion_id': fields.many2one('doctor.configuracion', 'configuracion'),
+		'procedures_id': fields.many2one('product.product', 'Procedimiento en salud', required=True, ondelete='restrict', domain="[('is_health_procedure','=',True)]"),
+		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
+		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
+		'valor': fields.integer('valor'),
+	}
+
+doctor_parametrizacion()
+
+
+class doctor_configuracion_aseguradora_procedimiento(osv.osv):
+
+	_name = "doctor.configuracion.aseguradora.procedimiento"
+
+	_columns = {
+		'aseguradora_id': fields.many2one('doctor.insurer', "Aseguradora", required=False),
+		'procedures_id': fields.one2many('doctor.aseguradora.procedimiento', 'aseguradora_procedimiento_id', 'Procedimientos en Salud',
+										 ondelete='restrict'),
+	}
+
+doctor_configuracion_aseguradora_procedimiento()
+
+class doctor_aseguradora_procedimiento(osv.osv):
+
+	_name = "doctor.aseguradora.procedimiento"
+
+	_columns = {
+		'procedures_id': fields.many2one('product.product', 'Procedimientos en Salud', required=True, ondelete='restrict'),
+		'aseguradora_procedimiento_id': fields.many2one('doctor.configuracion.aseguradora.procedimiento', 'Aseguradora'),
+	}
+
+doctor_aseguradora_procedimiento()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
