@@ -1445,14 +1445,13 @@ class doctor_configuracion(osv.osv):
 	def on_change_cargadatos(self, cr, uid, ids, aseguradora_id, context=None):
 		res={'value':{}}
 		modelo_contrato = self.pool.get("doctor.contract.insurer")
-		modelo_configuracion_aseg_proc = self.pool.get("doctor.configuracion.aseguradora.procedimiento")
+		modelo_configuracion_inst_proc = self.pool.get("doctor.configuracion_procedimientos_institucion")
 		modelo_aseg_proce = self.pool.get("doctor.aseguradora.procedimiento")
 		planes = []
 
 		if aseguradora_id:
 			contratos_ids = modelo_contrato.search(cr, uid, [("insurer_id", "=", aseguradora_id)], context=context)
-			config_aseg_proc_ids = modelo_configuracion_aseg_proc.search(cr, uid, [("aseguradora_id", "=", aseguradora_id)], context=context)
-
+			config_aseg_proc_ids = modelo_configuracion_inst_proc.search(cr, uid,[], context=context)
 			proce_asegu_ids = modelo_aseg_proce.search(cr, uid, [("aseguradora_procedimiento_id", "in", config_aseg_proc_ids)], context=context)
 
 			if contratos_ids:
@@ -1485,17 +1484,16 @@ class doctor_parametrizacion(osv.osv):
 doctor_parametrizacion()
 
 
-class doctor_configuracion_aseguradora_procedimiento(osv.osv):
+class doctor_configuracion_procedimientos_institucion(osv.osv):
 
-	_name = "doctor.configuracion.aseguradora.procedimiento"
+	_name = "doctor.configuracion_procedimientos_institucion"
 
 	_columns = {
-		'aseguradora_id': fields.many2one('doctor.insurer', "Aseguradora", required=False),
 		'procedures_id': fields.one2many('doctor.aseguradora.procedimiento', 'aseguradora_procedimiento_id', 'Procedimientos en Salud',
 										 ondelete='restrict'),
 	}
 
-doctor_configuracion_aseguradora_procedimiento()
+doctor_configuracion_procedimientos_institucion()
 
 class doctor_aseguradora_procedimiento(osv.osv):
 
@@ -1503,7 +1501,7 @@ class doctor_aseguradora_procedimiento(osv.osv):
 
 	_columns = {
 		'procedures_id': fields.many2one('product.product', 'Procedimientos en Salud', required=True, ondelete='restrict'),
-		'aseguradora_procedimiento_id': fields.many2one('doctor.configuracion.aseguradora.procedimiento', 'Aseguradora'),
+		'aseguradora_procedimiento_id': fields.many2one('doctor.configuracion_procedimientos_institucion', 'Procedimientos Institucion'),
 	}
 
 doctor_aseguradora_procedimiento()

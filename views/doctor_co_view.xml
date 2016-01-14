@@ -741,9 +741,9 @@
         <menuitem id="menu_doctor_configuracion" name="Parametrizacion Contratos" parent="doctor.menu_doctor_config" action="action_doctor_configuracion"/>
 
         <!-- doctor_aseguradora_procedimiento -->
-        <record model="ir.ui.view" id="view_doctor_configuracion_aseguradora_procedimiento_form">
+        <record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_form">
             <field name="name">Configuracion Procedimientos Institucion</field>
-            <field name="model">doctor.configuracion.aseguradora.procedimiento</field>
+            <field name="model">doctor.configuracion_procedimientos_institucion</field>
             <field name="arch" type="xml">
                 <form string="Configuracion Procedimientos Institucion" version="7.0">
                     <label string="Procedimientos Institucion" for="procedures_id" class="texto"/>
@@ -757,9 +757,9 @@
         </record>
 
         <!-- doctor speciality Tree View -->
-        <record model="ir.ui.view" id="view_doctor_configuracion_aseguradora_procedimiento_tree">
+        <record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_tree">
             <field name="name">Configuracion Procedimientos Institucion</field>
-            <field name="model">doctor.configuracion.aseguradora.procedimiento</field>
+            <field name="model">doctor.configuracion_procedimientos_institucion</field>
             <field name="arch" type="xml">
                 <tree string="Configuracion Procedimientos Institucion" version="7.0">
                     <field name="procedures_id"/>
@@ -768,14 +768,14 @@
         </record>
 
         <!-- doctor speciality Action -->
-        <record model="ir.actions.act_window" id="action_doctor_configuracion_aseguradora_procedimiento">
+        <record model="ir.actions.act_window" id="action_doctor_configuracion_procedimientos_institucion">
             <field name="name">Configuracion Procedimientos Institucion</field>
-            <field name="res_model">doctor.configuracion.aseguradora.procedimiento</field>
+            <field name="res_model">doctor.configuracion_procedimientos_institucion</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_doctor_configuracion_aseguradora_procedimiento" name="Confi. Procedimientos Institucion" parent="doctor.menu_doctor_config" action="action_doctor_configuracion_aseguradora_procedimiento"/>
+        <menuitem id="menu_doctor_configuracion_procedimientos_institucion" name="Confi. Procedimientos Institucion" parent="doctor.menu_doctor_config" action="action_doctor_configuracion_procedimientos_institucion"/>
 
     </data>
 </openerp>
