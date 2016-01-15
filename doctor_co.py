@@ -1488,10 +1488,35 @@ class doctor_configuracion_procedimientos_institucion(osv.osv):
 
 	_name = "doctor.configuracion_procedimientos_institucion"
 
+
+	def _get_nombre(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			nombre_compania = self.pool.get("res.users").browse(cr, uid, uid, context=context).company_id.name
+			res[datos.id] = nombre_compania
+		return res
+
 	_columns = {
+		'name' : fields.function(_get_nombre, type="char", store= False, 
+								readonly=True, method=True, string=u'Nombre Compañia',),
 		'procedures_id': fields.one2many('doctor.aseguradora.procedimiento', 'aseguradora_procedimiento_id', 'Procedimientos en Salud',
 										 ondelete='restrict'),
 	}
+
+	_defaults = {
+		"name": lambda self, cr, uid, context: self.pool.get('doctor.doctor').company_nombre(cr, uid, context=None),
+	}
+
+	def _check_email(self, cr, uid, ids, context=None):
+
+
+		ids_procedimientos = self.search(cr, uid, [], context=context)
+		if len(ids_procedimientos) == 1:
+			return True
+		else:
+			return False
+
+	_constraints = [(_check_email, u'La Compañia ya tiene un registro con los procedimientos si desea agregar edite dicho registro', ['name'])]
 
 doctor_configuracion_procedimientos_institucion()
 
