@@ -127,6 +127,7 @@ class doctor_patient_co(osv.osv):
 								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True),
 		'ver_nc': fields.boolean('Ver Nc', store=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
+		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
 	}
 
 	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):

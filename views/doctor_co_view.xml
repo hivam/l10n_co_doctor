@@ -77,6 +77,10 @@
                     <field name="tipo_usuario"/>
                 </field>
 
+                <field name="insurer" position="after" >
+                    <field name="nro_afiliacion"/>
+                </field>
+
                 <field name="deceased" position="after" >
                   <field name="es_profesionalsalud"/>
                 </field>
