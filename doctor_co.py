@@ -1446,21 +1446,30 @@ class doctor_configuracion(osv.osv):
 		modelo_contrato = self.pool.get("doctor.contract.insurer")
 		modelo_configuracion_inst_proc = self.pool.get("doctor.configuracion_procedimientos_institucion")
 		modelo_aseg_proce = self.pool.get("doctor.aseguradora.procedimiento")
+		modelo_datos_parame = self.pool.get("doctor.parametrizacion")
 		planes = []
-
+		valor = 0
 		if aseguradora_id:
 			contratos_ids = modelo_contrato.search(cr, uid, [("insurer_id", "=", aseguradora_id)], context=context)
 			config_aseg_proc_ids = modelo_configuracion_inst_proc.search(cr, uid,[], context=context)
 			proce_asegu_ids = modelo_aseg_proce.search(cr, uid, [("aseguradora_procedimiento_id", "in", config_aseg_proc_ids)], context=context)
 
 			if contratos_ids:
-
 				for contrato in modelo_contrato.browse(cr, uid, contratos_ids, context=context):
 					cr.execute("""SELECT plan_ids FROM doctor_contract_insurer_doctor_insurer_plan_rel WHERE contract_ids = %s  """, [contrato.id] )
 
 				for i in cr.fetchall():
 					for proce in modelo_aseg_proce.browse(cr, uid, proce_asegu_ids, context=context):
-						planes.append((0,0,{'plan_id' : i[0], 'contract_id' : contrato.id, 'procedures_id': proce.procedures_id.id}))
+						
+						parametrizacion_ids = modelo_datos_parame.search(cr, uid, [('plan_id', '=', i[0]), ('procedures_id', '=', proce.procedures_id.id), ('contract_id', '=', contrato.id)], context=context)
+
+						if parametrizacion_ids:
+							for valor in modelo_datos_parame.browse(cr, uid, parametrizacion_ids, context=context):
+								valor = valor.valor
+						else:
+							valor = 0
+
+						planes.append((0,0,{'plan_id' : i[0], 'contract_id' : contrato.id, 'procedures_id': proce.procedures_id.id, 'valor': valor}))
 						
 				res['value']['parametrizacion_ids'] = planes
 
@@ -1481,27 +1490,48 @@ class doctor_configuracion(osv.osv):
 		return super(doctor_configuracion,self).create(cr, uid, vals, context=context)
 
 	def write(self, cr, uid, ids, vals, context=None):
-		confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)
+		modelo_asegur_plan = self.pool.get('doctor.insurer.plan.procedures')
+		modelo_datos_cambio = self.pool.get("doctor.parametrizacion")
+		id_asegur_plan = 0
 		dato = {}
-		if 'parametrizacion_ids' in vals:
-
-			for i in range(0, len(vals['parametrizacion_ids']),1):
-				_logger.info(vals['parametrizacion_ids'][i])
-
-				try:
-					valor = vals['parametrizacion_ids'][i][2]['valor']
+		ejecu_write = True
+		for i in range(0, len(vals['parametrizacion_ids']),1):
+			try:
+				valor = vals['parametrizacion_ids'][i][2]['valor']
+				id_modifico = vals['parametrizacion_ids'][i][1]
+			except TypeError:
+				_logger.info("no modifica")
+			else:
+				if not 'aseguradora_id' in vals:
 					if valor:
-						dato['valor'] = valor
-						id_modifico = vals['parametrizacion_ids'][i][1]
-						self.pool.get('doctor.insurer.plan.procedures').write(cr, uid, id_modifico, dato, context=context)
+						dato['valor'] = valor					
+						buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('id', '=', id_modifico)], context=context)
+						for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
+							id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
+							modelo_asegur_plan.write(cr, uid, id_asegur_plan, dato, context=context)
+		
+				else:
+					buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('plan_id', '=', vals['parametrizacion_ids'][i][2]['plan_id']),
+								 ('contract_id', '=', vals['parametrizacion_ids'][i][2]['contract_id']), 
+								 ('procedures_id', '=', vals['parametrizacion_ids'][i][2]['procedures_id'])], context=context)
+					
+					if not buscar_cambio_id:
+						dato['plan_id'] = vals['parametrizacion_ids'][i][2]['plan_id']
+						dato['procedure_id'] = vals['parametrizacion_ids'][i][2]['procedures_id']
+						dato['valor'] = vals['parametrizacion_ids'][i][2]['valor']
+						dato['active'] = True
+						modelo_asegur_plan.create(cr, uid, dato, context=context)
+						dato['doctor_configuracion_id']=ids[0]
+						dato['procedures_id'] = dato['procedure_id']
+						dato['contract_id']=vals['parametrizacion_ids'][i][2]['contract_id']
+						del dato['procedure_id']
+						dato['procedures_id'] = vals['parametrizacion_ids'][i][2]['procedures_id']
+						modelo_datos_cambio.create(cr, uid, dato, context=context)
 
-				except:
-					_logger.info("no modifica")
-
-
-
-
-
+						ejecu_write = False
+						
+		if ejecu_write:				
+			confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)
 		return True
 
 doctor_configuracion()
@@ -1530,7 +1560,7 @@ class doctor_configuracion_procedimientos_institucion(osv.osv):
 		res = {}
 		for dato in self.browse(cr, uid, ids):
 			nombre_compania = self.pool.get("res.users").browse(cr, uid, uid, context=context).company_id.name
-			res[datos.id] = nombre_compania
+			res[dato.id] = nombre_compania
 		return res
 
 	_columns = {
