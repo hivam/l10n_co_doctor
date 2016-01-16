@@ -1437,10 +1437,9 @@ class doctor_configuracion(osv.osv):
 	_name = "doctor.configuracion"
 
 	_columns = {
-		'aseguradora_id': fields.many2one('doctor.insurer', "Aseguradora", required=False),
+		'aseguradora_id': fields.many2one('doctor.insurer', "Aseguradora", required=True),
 		'parametrizacion_ids': fields.one2many('doctor.parametrizacion', 'doctor_configuracion_id', 'Agregar parametrizacion'),
 	}
-
 
 	def on_change_cargadatos(self, cr, uid, ids, aseguradora_id, context=None):
 		res={'value':{}}
@@ -1467,6 +1466,44 @@ class doctor_configuracion(osv.osv):
 
 		return res
 
+
+	def create(self, cr, uid, vals, context=None):
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+			datos = {}
+			for dato in range(0, len(vals['parametrizacion_ids']), 1):
+
+				datos['plan_id'] = vals['parametrizacion_ids'][dato][2]['plan_id']
+				datos['procedure_id'] = vals['parametrizacion_ids'][dato][2]['procedures_id']
+				datos['valor'] = vals['parametrizacion_ids'][dato][2]['valor']
+				datos['active'] = True
+				self.pool.get('doctor.insurer.plan.procedures').create(cr, uid, datos, context=context)
+
+		return super(doctor_configuracion,self).create(cr, uid, vals, context=context)
+
+	def write(self, cr, uid, ids, vals, context=None):
+		confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)
+		dato = {}
+		if 'parametrizacion_ids' in vals:
+
+			for i in range(0, len(vals['parametrizacion_ids']),1):
+				_logger.info(vals['parametrizacion_ids'][i])
+
+				try:
+					valor = vals['parametrizacion_ids'][i][2]['valor']
+					if valor:
+						dato['valor'] = valor
+						id_modifico = vals['parametrizacion_ids'][i][1]
+						self.pool.get('doctor.insurer.plan.procedures').write(cr, uid, id_modifico, dato, context=context)
+
+				except:
+					_logger.info("no modifica")
+
+
+
+
+
+		return True
+
 doctor_configuracion()
 
 class doctor_parametrizacion(osv.osv):
@@ -1478,7 +1515,7 @@ class doctor_parametrizacion(osv.osv):
 		'procedures_id': fields.many2one('product.product', 'Procedimiento en salud', required=True, ondelete='restrict', domain="[('is_health_procedure','=',True)]"),
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
-		'valor': fields.integer('valor'),
+		'valor': fields.integer('valor', required = True),
 	}
 
 doctor_parametrizacion()
@@ -1491,7 +1528,7 @@ class doctor_configuracion_procedimientos_institucion(osv.osv):
 
 	def _get_nombre(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
-		for datos in self.browse(cr, uid, ids):
+		for dato in self.browse(cr, uid, ids):
 			nombre_compania = self.pool.get("res.users").browse(cr, uid, uid, context=context).company_id.name
 			res[datos.id] = nombre_compania
 		return res
