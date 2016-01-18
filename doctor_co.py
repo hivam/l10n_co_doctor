@@ -1496,6 +1496,7 @@ class doctor_configuracion(osv.osv):
 		dato = {}
 		ejecu_write = True
 		for i in range(0, len(vals['parametrizacion_ids']),1):
+			
 			try:
 				valor = vals['parametrizacion_ids'][i][2]['valor']
 				id_modifico = vals['parametrizacion_ids'][i][1]
@@ -1529,10 +1530,35 @@ class doctor_configuracion(osv.osv):
 						modelo_datos_cambio.create(cr, uid, dato, context=context)
 
 						ejecu_write = False
-						
+			
+			if vals['parametrizacion_ids'][i][0] == 2:
+				buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('id', '=', vals['parametrizacion_ids'][i][1])], context=context)
+				for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
+					id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
+					for k in modelo_asegur_plan.browse(cr, uid, id_asegur_plan, context=context):
+						modelo_asegur_plan.unlink(cr, uid, k.id, context=context)
+
+
 		if ejecu_write:				
 			confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)
 		return True
+
+	def unlink(self, cr, uid, ids, context=None):
+
+		modelo_asegur_plan = self.pool.get('doctor.insurer.plan.procedures')
+		modelo_datos_cambio = self.pool.get("doctor.parametrizacion")
+
+		if ids:
+			datos_param_eli_id = modelo_datos_cambio.search(cr, uid, [('doctor_configuracion_id', '=', ids)], context=context)
+			if datos_param_eli_id:
+				for i in modelo_datos_cambio.browse(cr, uid, datos_param_eli_id, context=context):
+					elimi_proce_plan_id = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', i.plan_id.id), ('procedure_id', '=', i.procedures_id.id), ('valor', '=', i.valor)], context=context)
+					modelo_datos_cambio.unlink(cr, uid, i.id, context=context)
+					if elimi_proce_plan_id:
+						for j in modelo_asegur_plan.browse(cr, uid, elimi_proce_plan_id, context=context):
+							modelo_asegur_plan.unlink(cr, uid, j.id, context=context)
+
+			return super(doctor_configuracion, self).unlink(cr, uid, ids, context=context)
 
 doctor_configuracion()
 
