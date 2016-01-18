@@ -1441,6 +1441,17 @@ class doctor_configuracion(osv.osv):
 		'parametrizacion_ids': fields.one2many('doctor.parametrizacion', 'doctor_configuracion_id', 'Agregar parametrizacion'),
 	}
 
+	def precaucion(self, mensaje, res):
+		warning = {
+			'title': 'Aviso importante!!!',
+			'message' : '%s' %(mensaje)
+		}
+		res.update({
+			'parametrizacion_ids' : '',
+		})
+
+		return {'value': res, 'warning': warning}
+
 	def on_change_cargadatos(self, cr, uid, ids, aseguradora_id, context=None):
 		res={'value':{}}
 		modelo_contrato = self.pool.get("doctor.contract.insurer")
@@ -1470,11 +1481,26 @@ class doctor_configuracion(osv.osv):
 							valor = 0
 
 						planes.append((0,0,{'plan_id' : i[0], 'contract_id' : contrato.id, 'procedures_id': proce.procedures_id.id, 'valor': valor}))
-						
+				
 				res['value']['parametrizacion_ids'] = planes
+				
+				if not planes:
+					warning = {
+						'title': 'Aviso importante!!!',
+						'message' : '%s' %('El contrato que tiene esta aseguradora no tiene ningun plan seleccionado')
+					}
+					return {'value': res, 'warning': warning}
+			else:
+				warning = {
+					'title': 'Aviso importante!!!',
+					'message' : '%s' %('La Aseguradora seleccionada no tiene ningun contrato creado.')
+				}
+				res.update({
+					'parametrizacion_ids' : '',
+				})
 
+				return {'value': res, 'warning': warning}
 		return res
-
 
 	def create(self, cr, uid, vals, context=None):
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
@@ -1560,6 +1586,10 @@ class doctor_configuracion(osv.osv):
 
 			return super(doctor_configuracion, self).unlink(cr, uid, ids, context=context)
 
+
+
+	_sql_constraints = [('ec_constraint', 'unique(aseguradora_id)', 'Ya hay un registro para esta aseguradora por favor si desea modificarlo editelo')]
+
 doctor_configuracion()
 
 class doctor_parametrizacion(osv.osv):
@@ -1600,16 +1630,14 @@ class doctor_configuracion_procedimientos_institucion(osv.osv):
 		"name": lambda self, cr, uid, context: self.pool.get('doctor.doctor').company_nombre(cr, uid, context=None),
 	}
 
-	def _check_email(self, cr, uid, ids, context=None):
-
-
+	def _check_registro_creado(self, cr, uid, ids, context=None):
 		ids_procedimientos = self.search(cr, uid, [], context=context)
 		if len(ids_procedimientos) == 1:
 			return True
 		else:
 			return False
 
-	_constraints = [(_check_email, u'La Compañia ya tiene un registro con los procedimientos si desea agregar edite dicho registro', ['name'])]
+	_constraints = [(_check_registro_creado, u'La Compañia ya tiene un registro con los procedimientos si desea agregar edite dicho registro', ['name'])]
 
 doctor_configuracion_procedimientos_institucion()
 
