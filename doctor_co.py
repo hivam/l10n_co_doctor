@@ -1551,7 +1551,8 @@ class doctor_configuracion(osv.osv):
 					buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('plan_id', '=', vals['parametrizacion_ids'][i][2]['plan_id']),
 								 ('contract_id', '=', vals['parametrizacion_ids'][i][2]['contract_id']), 
 								 ('procedures_id', '=', vals['parametrizacion_ids'][i][2]['procedures_id'])], context=context)
-					
+								
+
 					if not buscar_cambio_id:
 						dato['plan_id'] = vals['parametrizacion_ids'][i][2]['plan_id']
 						dato['procedure_id'] = vals['parametrizacion_ids'][i][2]['procedures_id']
@@ -1564,16 +1565,15 @@ class doctor_configuracion(osv.osv):
 						del dato['procedure_id']
 						dato['procedures_id'] = vals['parametrizacion_ids'][i][2]['procedures_id']
 						modelo_datos_cambio.create(cr, uid, dato, context=context)
-
 						ejecu_write = False
 			
+
 			if vals['parametrizacion_ids'][i][0] == 2:
 				buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('id', '=', vals['parametrizacion_ids'][i][1])], context=context)
 				for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
 					id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
 					for k in modelo_asegur_plan.browse(cr, uid, id_asegur_plan, context=context):
 						modelo_asegur_plan.unlink(cr, uid, k.id, context=context)
-
 
 		if ejecu_write:				
 			confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)

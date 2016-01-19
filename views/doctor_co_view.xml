@@ -705,7 +705,7 @@
 
                <!-- doctor speciality Form View -->
         <record model="ir.ui.view" id="view_doctor_configuracion_form">
-            <field name="name">Parametrizacion Contratos</field>
+            <field name="name">Precios de Procedimientos</field>
             <field name="model">doctor.configuracion</field>
             <field name="arch" type="xml">
                 <form string="Parametrizacion Contratos" version="7.0">
@@ -725,7 +725,7 @@
 
         <!-- doctor speciality Tree View -->
         <record model="ir.ui.view" id="view_doctor_configuracion_tree">
-            <field name="name">Parametrizacion Contratos</field>
+            <field name="name">Precios de Procedimientos</field>
             <field name="model">doctor.configuracion</field>
             <field name="arch" type="xml">
                 <tree string="Parametrizacion Contratos" version="7.0">
@@ -736,13 +736,13 @@
 
         <!-- doctor speciality Action -->
         <record model="ir.actions.act_window" id="action_doctor_configuracion">
-            <field name="name">Parametrizacion Contratos</field>
+            <field name="name">Precios de Procedimientos</field>
             <field name="res_model">doctor.configuracion</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_doctor_configuracion" name="Parametrizacion Contratos" parent="doctor.menu_doctor_config" action="action_doctor_configuracion"/>
+        <menuitem id="menu_doctor_configuracion" name="Precios de Procedimientos" parent="doctor.menu_doctor_config" action="action_doctor_configuracion"/>
 
         <!-- doctor_aseguradora_procedimiento -->
         <record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_form">
