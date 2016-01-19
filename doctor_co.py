@@ -406,8 +406,24 @@ class doctor_appointment_co(osv.osv):
 
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
 		values = {}
+
+		if not schedule_id:
+			warning = {
+				'title': 'Aviso importante!!!',
+				'message' : '%s' %('Debe de Seleccionar una Agenda')
+			}
+			values.update({
+				'type_id' : False,
+			})
+
+			return {'value': values, 'warning': warning}
+
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		professional_id = agenda_duracion.professional_id.id
+
+
+
+
 
 		if not time_begin:
 			return values
@@ -1440,18 +1456,8 @@ class doctor_configuracion(osv.osv):
 	_columns = {
 		'aseguradora_id': fields.many2one('doctor.insurer', "Aseguradora", required=True),
 		'parametrizacion_ids': fields.one2many('doctor.parametrizacion', 'doctor_configuracion_id', 'Agregar parametrizacion'),
+	
 	}
-
-	def precaucion(self, mensaje, res):
-		warning = {
-			'title': 'Aviso importante!!!',
-			'message' : '%s' %(mensaje)
-		}
-		res.update({
-			'parametrizacion_ids' : '',
-		})
-
-		return {'value': res, 'warning': warning}
 
 	def on_change_cargadatos(self, cr, uid, ids, aseguradora_id, context=None):
 		res={'value':{}}
@@ -1490,6 +1496,9 @@ class doctor_configuracion(osv.osv):
 						'title': 'Aviso importante!!!',
 						'message' : '%s' %('El contrato que tiene esta aseguradora no tiene ningun plan seleccionado')
 					}
+					res.update({
+						'parametrizacion_ids' : '',
+					})
 					return {'value': res, 'warning': warning}
 			else:
 				warning = {
@@ -1568,6 +1577,7 @@ class doctor_configuracion(osv.osv):
 
 		if ejecu_write:				
 			confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)
+		
 		return True
 
 	def unlink(self, cr, uid, ids, context=None):
@@ -1586,8 +1596,6 @@ class doctor_configuracion(osv.osv):
 							modelo_asegur_plan.unlink(cr, uid, j.id, context=context)
 
 			return super(doctor_configuracion, self).unlink(cr, uid, ids, context=context)
-
-
 
 	_sql_constraints = [('ec_constraint', 'unique(aseguradora_id)', 'Ya hay un registro para esta aseguradora por favor si desea modificarlo editelo')]
 
