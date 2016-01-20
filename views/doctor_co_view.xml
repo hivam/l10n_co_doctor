@@ -77,6 +77,10 @@
                     <field name="tipo_usuario"/>
                 </field>
 
+                <field name="insurer" position="after" >
+                    <field name="nro_afiliacion"/>
+                </field>
+
                 <field name="deceased" position="after" >
                   <field name="es_profesionalsalud"/>
                 </field>
@@ -576,7 +580,7 @@
         </record>  
 
 
-               <!-- doctor speciality Form View -->
+        <!-- doctor speciality Form View -->
         <record model="ir.ui.view" id="view_doctor_recomendaciones_form">
             <field name="name">Plantillas</field>
             <field name="model">doctor.attentions.recomendaciones</field>
@@ -700,5 +704,85 @@
 
             </field>
         </record>
+
+               <!-- doctor speciality Form View -->
+        <record model="ir.ui.view" id="view_doctor_configuracion_form">
+            <field name="name">Precios de Procedimientos</field>
+            <field name="model">doctor.configuracion</field>
+            <field name="arch" type="xml">
+                <form string="Parametrizacion Contratos" version="7.0">
+                    <label string="Aseguradora" for="aseguradora_id" class="texto"/>
+                    <field name="aseguradora_id" on_change="on_change_cargadatos(aseguradora_id)"/>
+                    <field name="parametrizacion_ids" nolabel="1" attrs="{'invisible': [('aseguradora_id', '=', False)] }">
+                        <tree string="Parametrizacion" editable="top">
+                            <field name="procedures_id"/>
+                            <field name="contract_id"/>
+                            <field name="plan_id"/> 
+                            <field name="valor"/> 
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+        <!-- doctor speciality Tree View -->
+        <record model="ir.ui.view" id="view_doctor_configuracion_tree">
+            <field name="name">Precios de Procedimientos</field>
+            <field name="model">doctor.configuracion</field>
+            <field name="arch" type="xml">
+                <tree string="Parametrizacion Contratos" version="7.0">
+                    <field name="aseguradora_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- doctor speciality Action -->
+        <record model="ir.actions.act_window" id="action_doctor_configuracion">
+            <field name="name">Precios de Procedimientos</field>
+            <field name="res_model">doctor.configuracion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_doctor_configuracion" name="Precios de Procedimientos" parent="doctor.menu_doctor_config" action="action_doctor_configuracion"/>
+
+        <!-- doctor_aseguradora_procedimiento -->
+        <record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_form">
+            <field name="name">Configuracion Procedimientos Institucion</field>
+            <field name="model">doctor.configuracion_procedimientos_institucion</field>
+            <field name="arch" type="xml">
+                <form string="Configuracion Procedimientos Institucion" version="7.0">
+                    
+                    <label string="Nombre Compañia" for="name" class="texto"/>
+                    <field name="name"/>
+                    <label string="Procedimientos Institucion" for="procedures_id" class="texto"/>
+                    <field name="procedures_id" colspan="4" nolabel="1">
+                        <tree string="Procedimientos en salud" editable="bottom">
+                            <field name="procedures_id"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+        <!-- doctor speciality Tree View -->
+        <record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_tree">
+            <field name="name">Configuracion Procedimientos Institucion</field>
+            <field name="model">doctor.configuracion_procedimientos_institucion</field>
+            <field name="arch" type="xml">
+                <field name="name"/>
+            </field>
+        </record>
+
+        <!-- doctor speciality Action -->
+        <record model="ir.actions.act_window" id="action_doctor_configuracion_procedimientos_institucion">
+            <field name="name">Configuracion Procedimientos Institucion</field>
+            <field name="res_model">doctor.configuracion_procedimientos_institucion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_doctor_configuracion_procedimientos_institucion" name="Confi. Procedimientos Institucion" parent="doctor.menu_doctor_config" action="action_doctor_configuracion_procedimientos_institucion"/>
+
     </data>
 </openerp>
