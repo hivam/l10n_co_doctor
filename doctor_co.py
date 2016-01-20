@@ -538,6 +538,7 @@ class doctor_appointment_co(osv.osv):
 			'patient_id': doctor_appointment.patient_id.id,
 			'ref': doctor_appointment.ref,
 			'tipo_usuario_id' : doctor_appointment.tipo_usuario_id.id,
+			'contrato_id' : doctor_appointment.contract_id.id,
 			'state': 'draft',
 		}
 		# Get other order values from appointment partner
@@ -1369,7 +1370,8 @@ class doctor_invoice_co (osv.osv):
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
-				 }
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
+	}
 
 doctor_invoice_co()
 
@@ -1380,7 +1382,8 @@ class doctor_sales_order_co (osv.osv):
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
-				 }
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
+	 }
 
 	def _prepare_invoice(self, cr, uid, order, lines, context=None):
 		"""Prepare the dict of values to create the new invoice for a
@@ -1401,6 +1404,8 @@ class doctor_sales_order_co (osv.osv):
 		if not journal_ids:
 			raise osv.except_osv(_('Error!'),
 				_('Please define sales journal for this company: "%s" (id:%d).') % (order.company_id.name, order.company_id.id))
+		_logger.info("------------")
+		_logger.info(order.contrato_id.id)
 		invoice_vals = {
 			'name': order.client_order_ref or '',
 			'origin': order.name,
@@ -1412,6 +1417,7 @@ class doctor_sales_order_co (osv.osv):
 			'patient_id': order.patient_id.id,
 			'ref': order.ref,
 			'tipo_usuario_id': order.tipo_usuario_id.id,
+			'contrato_id' : order.contrato_id.id,
 			'journal_id': journal_ids[0],
 			'invoice_line': [(6, 0, lines)],
 			'currency_id': order.pricelist_id.currency_id.id,

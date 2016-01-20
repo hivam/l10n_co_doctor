@@ -679,6 +679,7 @@
                 <field name="patient_id" position="after">
                     <field name="ref"/>
                     <field name="tipo_usuario_id"/>
+                    <field name="contrato_id"/>
                 </field>
             </field>
         </record>
@@ -694,6 +695,7 @@
                 <field name="patient_id" position="after">
                     <field name="ref"/>
                     <field name="tipo_usuario_id"/>
+                    <field name="contrato_id"/>
                 </field>
 
             </field>

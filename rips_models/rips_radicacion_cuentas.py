@@ -228,6 +228,11 @@ class radicacion_cuentas(osv.osv):
 				archivo.write( var.cliente_id.code + ',')
 				#nombre aseguradora
 				archivo.write( var.cliente_id.insurer.name + ',')
+				#Numero de contrato
+				if var.contrato_id.contract_code:	
+					archivo.write( var.contrato_id.contract_code + ',')
+				else:
+					archivo.write(',')
 				#plan de beneficios
 				if var.tipo_usuario_id:
 					archivo.write((var.tipo_usuario_id.name).upper() + ',')
@@ -236,7 +241,7 @@ class radicacion_cuentas(osv.osv):
 				#valor total del pago copmartido (valor paciente)
 				archivo.write( str(factura.amount_patient) + ',')
 				#valor neto a pagar por la entidad contratante
-				archivo.write( str(factura.amount_total) + ',')
+				archivo.write( str(factura.amount_total))
 				#salto de linea
 				archivo.write('\n')
 				# actualizar factura a radicada
@@ -273,13 +278,17 @@ class radicacion_cuentas(osv.osv):
 
 	def filtrarFacturas(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
-			cliente = var.cliente.id
+			cliente = var.cliente_id.id
+			contrato = var.contrato_id.id
+			sdfasdfwrt;
+			_logger.info(var.contrato_id.id)
 			rangofacturas_desde = var.rangofacturas_desde
 			rangofacturas_hasta = var.rangofacturas_hasta
 			tipo_usuario_id = var.tipo_usuario_id.id
 			id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente).insurer.id
 			id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
 			invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
+																	('contrato_id','=', contrato),
 																	('state', '=', 'open'),
 																	('date_invoice', '>=', rangofacturas_desde),
 																	('date_invoice', '<=', rangofacturas_hasta),
