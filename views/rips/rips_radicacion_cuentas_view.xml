@@ -8,10 +8,10 @@
       <field name="arch" type="xml">
         <form string="Radicacion Cuentas" version="7.0">
           <header>
-            <button name="validar" string="Validar" type="object" class="oe_highlight" />
-            <button name="generar_rips" string="Generar RIPS" type="object"/>
-            <button name="confirmar" string="Confirmar" type="object" class="oe_highlight" confirm="¿Está seguro de confirmar esta radicación de cuentas? La información no será editable posteriormente." attrs="{'invisible': [('state','=', 'done')]}"/>
-            <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+            <button name="validar" string="Validar" type="object" class="oe_highlight" states="confirmed"/>
+            <button name="generar_rips" string="Generar RIPS" type="object" states="confirmed"/>
+            <button name="confirmar" string="Confirmar" type="object" class="oe_highlight" confirm="¿Está seguro de confirmar esta radicación de cuentas? La información no será editable posteriormente." states="draft"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,validated"/>
           </header>
           <br></br>
           <div>

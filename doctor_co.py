@@ -127,6 +127,7 @@ class doctor_patient_co(osv.osv):
 								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True),
 		'ver_nc': fields.boolean('Ver Nc', store=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
+		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
 	}
 
 	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):
@@ -383,8 +384,8 @@ class doctor_appointment_co(osv.osv):
 					if plan_id:
 						for j in res:
 							if j:
-								ids_procedimientos = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0][0])], context=context)
-							
+								procedimiento_id = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0][0])], context=context)
+								ids_procedimientos.append(procedimiento_id[0])
 					else:
 						raise osv.except_osv(_('Aviso importante!!'),
 								 _('No tiene ningun plan seleccionado'))	
@@ -405,8 +406,24 @@ class doctor_appointment_co(osv.osv):
 
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
 		values = {}
+
+		if not schedule_id:
+			warning = {
+				'title': 'Aviso importante!!!',
+				'message' : '%s' %('Debe de Seleccionar una Agenda')
+			}
+			values.update({
+				'type_id' : False,
+			})
+
+			return {'value': values, 'warning': warning}
+
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		professional_id = agenda_duracion.professional_id.id
+
+
+
+
 
 		if not time_begin:
 			return values
@@ -1431,4 +1448,216 @@ class doctor_sales_order_co (osv.osv):
 
 doctor_sales_order_co()
 
+
+class doctor_configuracion(osv.osv):
+
+	_name = "doctor.configuracion"
+
+	_columns = {
+		'aseguradora_id': fields.many2one('doctor.insurer', "Aseguradora", required=True),
+		'parametrizacion_ids': fields.one2many('doctor.parametrizacion', 'doctor_configuracion_id', 'Agregar parametrizacion'),
+	
+	}
+
+	def on_change_cargadatos(self, cr, uid, ids, aseguradora_id, context=None):
+		res={'value':{}}
+		modelo_contrato = self.pool.get("doctor.contract.insurer")
+		modelo_configuracion_inst_proc = self.pool.get("doctor.configuracion_procedimientos_institucion")
+		modelo_aseg_proce = self.pool.get("doctor.aseguradora.procedimiento")
+		modelo_datos_parame = self.pool.get("doctor.parametrizacion")
+		planes = []
+		valor = 0
+		if aseguradora_id:
+			contratos_ids = modelo_contrato.search(cr, uid, [("insurer_id", "=", aseguradora_id)], context=context)
+			config_aseg_proc_ids = modelo_configuracion_inst_proc.search(cr, uid,[], context=context)
+			proce_asegu_ids = modelo_aseg_proce.search(cr, uid, [("aseguradora_procedimiento_id", "in", config_aseg_proc_ids)], context=context)
+
+			if contratos_ids:
+				for contrato in modelo_contrato.browse(cr, uid, contratos_ids, context=context):
+					cr.execute("""SELECT plan_ids FROM doctor_contract_insurer_doctor_insurer_plan_rel WHERE contract_ids = %s  """, [contrato.id] )
+
+				for i in cr.fetchall():
+					for proce in modelo_aseg_proce.browse(cr, uid, proce_asegu_ids, context=context):
+						
+						parametrizacion_ids = modelo_datos_parame.search(cr, uid, [('plan_id', '=', i[0]), ('procedures_id', '=', proce.procedures_id.id), ('contract_id', '=', contrato.id)], context=context)
+
+						if parametrizacion_ids:
+							for valor in modelo_datos_parame.browse(cr, uid, parametrizacion_ids, context=context):
+								valor = valor.valor
+						else:
+							valor = 0
+
+						planes.append((0,0,{'plan_id' : i[0], 'contract_id' : contrato.id, 'procedures_id': proce.procedures_id.id, 'valor': valor}))
+				
+				res['value']['parametrizacion_ids'] = planes
+				
+				if not planes:
+					warning = {
+						'title': 'Aviso importante!!!',
+						'message' : '%s' %('El contrato que tiene esta aseguradora no tiene ningun plan seleccionado')
+					}
+					res.update({
+						'parametrizacion_ids' : '',
+					})
+					return {'value': res, 'warning': warning}
+			else:
+				warning = {
+					'title': 'Aviso importante!!!',
+					'message' : '%s' %('La Aseguradora seleccionada no tiene ningun contrato creado.')
+				}
+				res.update({
+					'parametrizacion_ids' : '',
+				})
+
+				return {'value': res, 'warning': warning}
+		return res
+
+	def create(self, cr, uid, vals, context=None):
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+			datos = {}
+			for dato in range(0, len(vals['parametrizacion_ids']), 1):
+
+				datos['plan_id'] = vals['parametrizacion_ids'][dato][2]['plan_id']
+				datos['procedure_id'] = vals['parametrizacion_ids'][dato][2]['procedures_id']
+				datos['valor'] = vals['parametrizacion_ids'][dato][2]['valor']
+				datos['active'] = True
+				self.pool.get('doctor.insurer.plan.procedures').create(cr, uid, datos, context=context)
+
+		return super(doctor_configuracion,self).create(cr, uid, vals, context=context)
+
+	def write(self, cr, uid, ids, vals, context=None):
+		modelo_asegur_plan = self.pool.get('doctor.insurer.plan.procedures')
+		modelo_datos_cambio = self.pool.get("doctor.parametrizacion")
+		id_asegur_plan = 0
+		dato = {}
+		ejecu_write = True
+		for i in range(0, len(vals['parametrizacion_ids']),1):
+			
+			try:
+				valor = vals['parametrizacion_ids'][i][2]['valor']
+				id_modifico = vals['parametrizacion_ids'][i][1]
+			except TypeError:
+				_logger.info("no modifica")
+			else:
+				if not 'aseguradora_id' in vals:
+					if valor:
+						dato['valor'] = valor					
+						buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('id', '=', id_modifico)], context=context)
+						for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
+							id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
+							modelo_asegur_plan.write(cr, uid, id_asegur_plan, dato, context=context)
+		
+				else:
+					buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('plan_id', '=', vals['parametrizacion_ids'][i][2]['plan_id']),
+								 ('contract_id', '=', vals['parametrizacion_ids'][i][2]['contract_id']), 
+								 ('procedures_id', '=', vals['parametrizacion_ids'][i][2]['procedures_id'])], context=context)
+								
+
+					if not buscar_cambio_id:
+						dato['plan_id'] = vals['parametrizacion_ids'][i][2]['plan_id']
+						dato['procedure_id'] = vals['parametrizacion_ids'][i][2]['procedures_id']
+						dato['valor'] = vals['parametrizacion_ids'][i][2]['valor']
+						dato['active'] = True
+						modelo_asegur_plan.create(cr, uid, dato, context=context)
+						dato['doctor_configuracion_id']=ids[0]
+						dato['procedures_id'] = dato['procedure_id']
+						dato['contract_id']=vals['parametrizacion_ids'][i][2]['contract_id']
+						del dato['procedure_id']
+						dato['procedures_id'] = vals['parametrizacion_ids'][i][2]['procedures_id']
+						modelo_datos_cambio.create(cr, uid, dato, context=context)
+						ejecu_write = False
+			
+
+			if vals['parametrizacion_ids'][i][0] == 2:
+				buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('id', '=', vals['parametrizacion_ids'][i][1])], context=context)
+				for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
+					id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
+					for k in modelo_asegur_plan.browse(cr, uid, id_asegur_plan, context=context):
+						modelo_asegur_plan.unlink(cr, uid, k.id, context=context)
+
+		if ejecu_write:				
+			confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)
+		
+		return True
+
+	def unlink(self, cr, uid, ids, context=None):
+
+		modelo_asegur_plan = self.pool.get('doctor.insurer.plan.procedures')
+		modelo_datos_cambio = self.pool.get("doctor.parametrizacion")
+
+		if ids:
+			datos_param_eli_id = modelo_datos_cambio.search(cr, uid, [('doctor_configuracion_id', '=', ids)], context=context)
+			if datos_param_eli_id:
+				for i in modelo_datos_cambio.browse(cr, uid, datos_param_eli_id, context=context):
+					elimi_proce_plan_id = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', i.plan_id.id), ('procedure_id', '=', i.procedures_id.id), ('valor', '=', i.valor)], context=context)
+					modelo_datos_cambio.unlink(cr, uid, i.id, context=context)
+					if elimi_proce_plan_id:
+						for j in modelo_asegur_plan.browse(cr, uid, elimi_proce_plan_id, context=context):
+							modelo_asegur_plan.unlink(cr, uid, j.id, context=context)
+
+			return super(doctor_configuracion, self).unlink(cr, uid, ids, context=context)
+
+	_sql_constraints = [('ec_constraint', 'unique(aseguradora_id)', 'Ya hay un registro para esta aseguradora por favor si desea modificarlo editelo')]
+
+doctor_configuracion()
+
+class doctor_parametrizacion(osv.osv):
+
+	_name = "doctor.parametrizacion"
+
+	_columns = {
+		'doctor_configuracion_id': fields.many2one('doctor.configuracion', 'configuracion'),
+		'procedures_id': fields.many2one('product.product', 'Procedimiento en salud', required=True, ondelete='restrict', domain="[('is_health_procedure','=',True)]"),
+		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
+		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
+		'valor': fields.integer('valor', required = True),
+	}
+
+doctor_parametrizacion()
+
+
+class doctor_configuracion_procedimientos_institucion(osv.osv):
+
+	_name = "doctor.configuracion_procedimientos_institucion"
+
+
+	def _get_nombre(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for dato in self.browse(cr, uid, ids):
+			nombre_compania = self.pool.get("res.users").browse(cr, uid, uid, context=context).company_id.name
+			res[dato.id] = nombre_compania
+		return res
+
+	_columns = {
+		'name' : fields.function(_get_nombre, type="char", store= False, 
+								readonly=True, method=True, string=u'Nombre Compañia',),
+		'procedures_id': fields.one2many('doctor.aseguradora.procedimiento', 'aseguradora_procedimiento_id', 'Procedimientos en Salud',
+										 ondelete='restrict'),
+	}
+
+	_defaults = {
+		"name": lambda self, cr, uid, context: self.pool.get('doctor.doctor').company_nombre(cr, uid, context=None),
+	}
+
+	def _check_registro_creado(self, cr, uid, ids, context=None):
+		ids_procedimientos = self.search(cr, uid, [], context=context)
+		if len(ids_procedimientos) == 1:
+			return True
+		else:
+			return False
+
+	_constraints = [(_check_registro_creado, u'La Compañia ya tiene un registro con los procedimientos si desea agregar edite dicho registro', ['name'])]
+
+doctor_configuracion_procedimientos_institucion()
+
+class doctor_aseguradora_procedimiento(osv.osv):
+
+	_name = "doctor.aseguradora.procedimiento"
+
+	_columns = {
+		'procedures_id': fields.many2one('product.product', 'Procedimientos en Salud', required=True, ondelete='restrict'),
+		'aseguradora_procedimiento_id': fields.many2one('doctor.configuracion_procedimientos_institucion', 'Procedimientos Institucion'),
+	}
+
+doctor_aseguradora_procedimiento()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

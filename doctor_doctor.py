@@ -62,3 +62,12 @@ class doctor(osv.osv):
 			return True
 
 		return False
+
+	def company_nombre(self, cr, uid, context=None):
+
+		if not context:
+			context = {}
+
+		nombre_compania = self.pool.get("res.users").browse(cr, uid, uid, context=context).company_id.name
+
+		return nombre_compania
