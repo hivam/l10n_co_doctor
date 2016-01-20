@@ -131,17 +131,17 @@ class radicacion_cuentas(osv.osv):
 		dateuser = datetime.strftime(dateuser, "%Y-%m-%d")
 		return dateuser
 
-	def get_invoices(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, context=None):
+	def get_invoices(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, context=None):
 		id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
 		id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
 		invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
+																('contrato_id','=', contrato_id or False),
 																('state', '=', 'open'),
 																('date_invoice', '>=', rangofacturas_desde),
 																('date_invoice', '<=', rangofacturas_hasta),
 																('residual', '<>', 0.0),
 																('tipo_usuario_id', '=', tipo_usuario_id ),
 																('radicada', '=', False)])
-
 		return {'value': {'invoices_ids': invoices}}
 
 
@@ -275,27 +275,6 @@ class radicacion_cuentas(osv.osv):
 	def validar(self, cr, uid, ids, context=None):
 		raise osv.except_osv(_('Aviso!'),
 				_('Funcionalidad no implementada.'))
-
-	def filtrarFacturas(self, cr, uid, ids, context=None):
-		for var in self.browse(cr, uid, ids):
-			cliente = var.cliente_id.id
-			contrato = var.contrato_id.id
-			sdfasdfwrt;
-			_logger.info(var.contrato_id.id)
-			rangofacturas_desde = var.rangofacturas_desde
-			rangofacturas_hasta = var.rangofacturas_hasta
-			tipo_usuario_id = var.tipo_usuario_id.id
-			id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente).insurer.id
-			id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
-			invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
-																	('contrato_id','=', contrato),
-																	('state', '=', 'open'),
-																	('date_invoice', '>=', rangofacturas_desde),
-																	('date_invoice', '<=', rangofacturas_hasta),
-																	('residual', '<>', 0.0),
-																	('tipo_usuario_id', '=', tipo_usuario_id ),
-																	('radicada', '=', False)])
-		return {'value': {'valor_total': invoices}}
 
 	def onchange_contrato(self, cr, uid, ids, cliente,context=None):
 		res = {'value':{}}
