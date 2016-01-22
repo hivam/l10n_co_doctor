@@ -380,7 +380,6 @@ class doctor_appointment_co(osv.osv):
 								procedimientos.append((0,0,{'procedures_id' : x[0][0], 'quantity': 1}))
 						return procedimientos
 
-
 					if plan_id:
 						for j in res:
 							if j:
@@ -421,10 +420,6 @@ class doctor_appointment_co(osv.osv):
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		professional_id = agenda_duracion.professional_id.id
 
-
-
-
-
 		if not time_begin:
 			return values
 
@@ -450,7 +445,7 @@ class doctor_appointment_co(osv.osv):
 		
 		for i in horarios:
 			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:00'))
-		
+
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
 		
 		if ids_ingresos_diarios:
@@ -460,7 +455,6 @@ class doctor_appointment_co(osv.osv):
 					index = horario_cadena.index(str(fecha_hora_actual))	
 					for borrar in range(0,index,1):
 						horario_cadena.pop(horario_cadena.index(horario_cadena[0]))
-
 
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
