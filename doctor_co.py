@@ -526,7 +526,9 @@ class doctor_appointment_co(osv.osv):
 		"""
 		insurer = ''
 		order_obj = self.pool.get('sale.order')
+		valor_procedimiento = 0
 		order_line_obj = self.pool.get('sale.order.line')
+		procedimientos_plan = self.pool.get('doctor.insurer.plan.procedures')
 		# Create order object
 
 		if doctor_appointment.tipo_usuario_id.id != 4 and not doctor_appointment.insurer_id:
@@ -535,6 +537,7 @@ class doctor_appointment_co(osv.osv):
 
 		if doctor_appointment.tipo_usuario_id.id == 4:
 			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.patient_id.ref)])[0]
+			
 			for record in self.pool.get('res.partner').browse(cr, uid, [tercero]):
 				user = record.user_id.id
 		else:
@@ -559,6 +562,10 @@ class doctor_appointment_co(osv.osv):
 		# Create order lines objects
 		appointment_procedures_ids = []
 		for procedures_id in appointment_procedures:
+			if doctor_appointment.tipo_usuario_id.id != 4:
+				procedimiento_valor_id = procedimientos_plan.search(cr, uid, [('plan_id', '=', doctor_appointment.plan_id.id), ('procedure_id', '=', procedures_id.procedures_id.id)], context=context)
+				valor = procedimientos_plan.browse(cr, uid, procedimiento_valor_id[0], context=context).valor
+			
 			order_line = {
 				'order_id': order_id,
 				'product_id': procedures_id.procedures_id.id,
@@ -566,7 +573,7 @@ class doctor_appointment_co(osv.osv):
 			}
 			# get other order line values from appointment procedures line product
 			order_line.update(sale.sale.sale_order_line.product_id_change(order_line_obj, cr, uid, [], order['pricelist_id'], \
-				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'])
+				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'], price_unit=procedures_id.procedures_id.list_price if doctor_appointment.tipo_usuario_id.id == 4 else valor ,)
 			# Put line taxes
 			order_line['tax_id'] = [(6, 0, tuple(order_line['tax_id']))]
 			# Put custom description
@@ -1546,7 +1553,6 @@ class doctor_configuracion(osv.osv):
 						for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
 							id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
 							modelo_asegur_plan.write(cr, uid, id_asegur_plan, dato, context=context)
-		
 				else:
 					buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('plan_id', '=', vals['parametrizacion_ids'][i][2]['plan_id']),
 								 ('contract_id', '=', vals['parametrizacion_ids'][i][2]['contract_id']), 
@@ -1581,10 +1587,8 @@ class doctor_configuracion(osv.osv):
 		return True
 
 	def unlink(self, cr, uid, ids, context=None):
-
 		modelo_asegur_plan = self.pool.get('doctor.insurer.plan.procedures')
 		modelo_datos_cambio = self.pool.get("doctor.parametrizacion")
-
 		if ids:
 			datos_param_eli_id = modelo_datos_cambio.search(cr, uid, [('doctor_configuracion_id', '=', ids)], context=context)
 			if datos_param_eli_id:
