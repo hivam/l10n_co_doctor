@@ -1063,23 +1063,30 @@ class doctor_otra_prescripcion(osv.osv):
 		
 		args = args or []
 		ids = []
-		
+		insttucion_procedimiento = self.pool.get('doctor.aseguradora.procedimiento')
 		ids_procedimientos = []
-
 		plan_id = context.get('plan_id')
 		professional_id = context.get('professional_id')
 		if plan_id and professional_id:				
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
+		
 		else:
-			if name:
-				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
-				if not ids:
-					ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
-			else:
-				ids = self.search(cr, uid, args, limit=limit, context=context)
+			ids_procedimientos = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
 			
-			ids_procedimientos = ids
+			if ids_procedimientos:
+				for i in insttucion_procedimiento.browse(cr, uid, ids_procedimientos, context=context):
+					ids.append(i.procedures_id.id)
 
+				ids_procedimientos = ids
+			else:
+				if name:
+					ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+					if not ids:
+						ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+				else:
+					ids = self.search(cr, uid, args, limit=limit, context=context)
+				ids_procedimientos = ids
+		
 		return self.name_get(cr, uid, ids_procedimientos, context)
 
 doctor_otra_prescripcion()
