@@ -50,7 +50,7 @@
               <label for="rangofacturas_desde" string="Desde"/>
               <field name="rangofacturas_desde" class="oe_inline"/>
               <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
-              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id)" context=""/>
+              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id)" context=""/>
             </fieldset>
             <group col="4">
               <field name="numero_radicado"/>
