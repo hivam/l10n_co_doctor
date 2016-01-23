@@ -219,11 +219,20 @@ class radicacion_cuentas(osv.osv):
 					archivo.write( '0' + ',')
 				#Fecha expedición de la factura
 				fecha_exp_factura = factura.date_invoice
-				archivo.write( fecha_exp_factura + ',')
+				fecha_exp_factura_date= datetime.strptime(fecha_exp_factura, "%Y-%m-%d")
+				fecha_exp_factura_string = fecha_exp_factura_date.strftime("%d/%m/%Y")
+				archivo.write( fecha_exp_factura_string + ',')
+			
 				#Fecha inicio Radicacion Cuentas
-				archivo.write( var.rangofacturas_desde + ',')
+				f_inicioradicacion= var.rangofacturas_desde 
+				f_inicioradicacion_format =  datetime.strptime(f_inicioradicacion, "%Y-%m-%d")
+				f_inicioradicacion_string = f_inicioradicacion_format.strftime("%d/%m/%Y")
+				archivo.write(f_inicioradicacion_string + ',')
 				#Fecha fin Radicacion Cuentas
-				archivo.write( var.rangofacturas_hasta + ',')
+				f_finradicacion= var.rangofacturas_hasta 
+				f_finradicacion_format = datetime.strptime(f_inicioradicacion, "%Y-%m-%d")
+				f_finradicacion_string = f_finradicacion_format.strftime("%d/%m/%Y")
+				archivo.write(f_finradicacion_string + ',')
 				#codigo aseguradora
 				archivo.write( var.cliente_id.code + ',')
 				#nombre aseguradora
@@ -262,6 +271,9 @@ class radicacion_cuentas(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		vals.update({'secuencia': self.getSecuencia(cr,uid), 'state': 'draft'})
+		if not vals['invoices_ids']:
+			raise osv.except_osv(_('Atención!'),
+							_('No se puede guardar esta radicación. No hay facturas agregadas.'))
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
 
 	def confirmar(self, cr, uid, ids, context=None):
