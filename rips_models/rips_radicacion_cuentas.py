@@ -247,6 +247,8 @@ class radicacion_cuentas(osv.osv):
 					archivo.write((var.tipo_usuario_id.name).upper() + ',')
 				else:
 					archivo.write(',')
+				#Numero de poliza 
+				
 				#valor total del pago copmartido (valor paciente)
 				archivo.write( str(factura.amount_patient) + ',')
 				#valor neto a pagar por la entidad contratante
