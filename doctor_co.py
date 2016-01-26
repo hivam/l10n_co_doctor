@@ -128,6 +128,13 @@ class doctor_patient_co(osv.osv):
 		'ver_nc': fields.boolean('Ver Nc', store=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
+
+		'poliza_medicina_prepagada': fields.boolean(u'Tiene Póliza de medicina prepagada'),
+		'insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", required=False, domain="[('tipousuario_id','=', 5)]"),
+		'plan_prepagada_id' : fields.many2one('doctor.insurer.plan', 'Plan', domain="[('insurer_id','=',insurer_prepagada_id)]"),
+		'numero_poliza_afiliacion': fields.char(u'Póliza- # Afiliación'),
+		'eps_predeterminada': fields.boolean('EPS Predeterminada'),
+		'prepagada_predeterminada': fields.boolean('Prepagada Predeterminada'),
 	}
 
 	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):
@@ -215,9 +222,17 @@ class doctor_patient_co(osv.osv):
 					return False
 
 			return True
+# Función para validar que solo se seleccione una aseguradora como predeterminada	
+	def _check_seleccion(self, cr, uid, ids, context=None):
+		for record in self.browse(cr, uid, ids):
+			if record.prepagada_predeterminada and record.eps_predeterminada:
+				return False
+			return True
+
 
 	_constraints = [(_check_unique_ident, '¡Error! Número de intentificación ya existe en el sistema', ['ref']),
 					(_check_email, 'El formato es inválido.', ['email']),
+					(_check_seleccion, 'Aviso importante!, Solamente puede tener una Aseguradora como predeterminada', ['prepagada_predeterminada', 'eps_predeterminada'])
 			   ]
 
 doctor_patient_co()
@@ -279,6 +294,8 @@ class doctor_appointment_co(osv.osv):
 		(5, u'Detección Temprana de enf. profesional'),
 	]
 
+
+
 	_columns = {
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato o póliza',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
@@ -289,6 +306,7 @@ class doctor_appointment_co(osv.osv):
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
+		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza')
 	}
 
 	_defaults = {
@@ -302,6 +320,33 @@ class doctor_appointment_co(osv.osv):
 			return values
 		patient = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context)
 		insurer_patient = patient.insurer.id
+		contrato_id = self.pool.get('doctor.contract.insurer').search(cr, uid, [('insurer_id','=',insurer_patient)], context=context)
+		
+		if patient.eps_predeterminada:
+			values.update({
+				'nro_afilicion_poliza' : patient.nro_afiliacion,
+				'plan_id': ''
+			})
+
+		elif patient.prepagada_predeterminada:
+			values.update({
+				'nro_afilicion_poliza' : patient.numero_poliza_afiliacion,
+				'plan_id': patient.plan_prepagada_id.id
+			})
+
+			if contrato_id == 1:
+				values.update({
+					'contract_id' : contract_id,
+				})
+
+
+
+		"""
+		if len(contrato_id) == 1:
+			values.update({
+				'contract_id' : contract_id,
+			})"""
+
 		tipo_usuario_patient = patient.tipo_usuario.id
 		ref_patient = patient.ref
 		values.update({
@@ -359,7 +404,6 @@ class doctor_appointment_co(osv.osv):
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
 		ids_procedimientos = []
-
 
 		if type_id:
 			procedures_appointment_type_ids = modelo_buscar.search(cr, uid, [('appointment_type_id', '=', type_id)], context=context)
