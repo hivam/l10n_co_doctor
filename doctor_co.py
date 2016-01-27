@@ -133,9 +133,20 @@ class doctor_patient_co(osv.osv):
 		'insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", required=False, domain="[('tipousuario_id','=', 5)]"),
 		'plan_prepagada_id' : fields.many2one('doctor.insurer.plan', 'Plan', domain="[('insurer_id','=',insurer_prepagada_id)]"),
 		'numero_poliza_afiliacion': fields.char(u'Póliza- # Afiliación'),
-		'eps_predeterminada': fields.boolean('EPS Predeterminada'),
-		'prepagada_predeterminada': fields.boolean('Prepagada Predeterminada'),
+		'eps_predeterminada': fields.boolean('Predeterminada'),
+		'prepagada_predeterminada': fields.boolean('Predeterminada'),
 	}
+
+
+	def onchange_seleccion(self, cr, uid, ids, poliza_medicina_prepagada, context=None):
+		res = {'value':{}}
+
+		if poliza_medicina_prepagada:
+			res['value']['prepagada_predeterminada'] = True
+			res['value']['eps_predeterminada'] = False
+
+		return res
+
 
 	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):
 		res = {'value':{}}
@@ -200,8 +211,9 @@ class doctor_patient_co(osv.osv):
 		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
 	_defaults = {
-		'zona' : 'U'
-		}
+		'zona' : 'U',
+		'eps_predeterminada': True,
+	}
 
 # Función para evitar número de documento duplicado
 
@@ -320,40 +332,44 @@ class doctor_appointment_co(osv.osv):
 			return values
 		patient = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context)
 		insurer_patient = patient.insurer.id
-		contrato_id = self.pool.get('doctor.contract.insurer').search(cr, uid, [('insurer_id','=',insurer_patient)], context=context)
-		
+		tipo_usuario_patient = patient.tipo_usuario.id
+
+
 		if patient.eps_predeterminada:
 			values.update({
+				'tipo_usuario_id' : tipo_usuario_patient,
+				'insurer_id': insurer_patient,
 				'nro_afilicion_poliza' : patient.nro_afiliacion,
-				'plan_id': ''
+				'plan_id': '',
+				'contract_id': '',
 			})
 
 		elif patient.prepagada_predeterminada:
+			contrato_id = self.pool.get('doctor.contract.insurer').search(cr, uid, [('insurer_id','=',patient.insurer_prepagada_id.id)], context=context)
+			
 			values.update({
+				'tipo_usuario_id' : 5,
+				'insurer_id': patient.insurer_prepagada_id.id,
+				'plan_id': patient.plan_prepagada_id.id,
 				'nro_afilicion_poliza' : patient.numero_poliza_afiliacion,
-				'plan_id': patient.plan_prepagada_id.id
+				'contract_id': contrato_id if len(contrato_id) == 1 else ''
 			})
 
-			if contrato_id == 1:
-				values.update({
-					'contract_id' : contract_id,
-				})
-
-
-
-		"""
-		if len(contrato_id) == 1:
+		else:
 			values.update({
-				'contract_id' : contract_id,
-			})"""
+				'tipo_usuario_id' : tipo_usuario_patient,
+				'insurer_id' : insurer_patient,
+				'nro_afilicion_poliza' : patient.nro_afiliacion,
+				'plan_id': '',
+				'contract_id': '',
+			})
 
-		tipo_usuario_patient = patient.tipo_usuario.id
 		ref_patient = patient.ref
 		values.update({
-			'insurer_id' : insurer_patient,
-			'tipo_usuario_id' : tipo_usuario_patient,
 			'ref' : ref_patient,
 		})
+
+
 		return {'value' : values}
 
 
@@ -374,26 +390,6 @@ class doctor_appointment_co(osv.osv):
 			self.onchange_limpiarformulario(cr, uid, ids, plan_id)
 			raise osv.except_osv(_('Aviso importante!'),_('El plan seleccionado no hace parte de este contrato o es posible que no esté vigente.\n\nComuníquese con la aseguradora para más información.'))
 		return True
-
-	def onchange_limpiarformulario(self, cr, uid, ids, plan_id, context=None):
-		values = {}
-		if plan_id:
-			values.update({
-			'plan_id' : '',
-			'contract_id': ''
-		})
-		return {'value' : values}
-
-	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, context=None):
-		
-		if context is None:
-			context = {}
-
-		res={'value':{},}
-		
-		if contract_id:
-			res['value']['contract_id'] = ''
-		return res
 
 			
 	def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=None):
