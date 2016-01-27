@@ -1115,13 +1115,16 @@ class doctor_otra_prescripcion(osv.osv):
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
 		
 		else:
-			ids_procedimientos = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
-			
-			if ids_procedimientos:
-				for i in insttucion_procedimiento.browse(cr, uid, ids_procedimientos, context=context):
-					ids.append(i.procedures_id.id)
-
-				ids_procedimientos = ids
+			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
+			if ids:
+				if name:
+					ids = insttucion_procedimiento.search(cr, uid, ['|',('procedures_id.name', operator, name), ('procedures_id.procedure_code', operator, name)], limit=limit, context=context)
+					if not ids:
+						ids = insttucion_procedimiento.search(cr, uid, [('procedures_id.name', operator, (name))] + args, limit=limit, context=context)
+				if ids:
+					for i in insttucion_procedimiento.browse(cr, uid, ids, context=context):
+						ids_procedimientos.append(i.procedures_id.id)
+					
 			else:
 				if name:
 					ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
