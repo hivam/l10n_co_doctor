@@ -87,7 +87,7 @@
                 <!--attrs="{'invisible': [('tipo_usuario','=', 5)]}-->
                 <xpath expr="/form[@string='Patient']/sheet/group[2]/fieldset[@class='fieldset_margen']/group[@col='2']" position="after">
                     <fieldset class="fieldset_margen">
-                        <legend class="texto_legend">EPS Y OTRAS</legend>
+                        <legend class="texto_legend">OTRAS</legend>
                         <group colspan="2" col="4">
                             <field name="poliza_medicina_prepagada" on_change="onchange_seleccion(poliza_medicina_prepagada)"/>
                             <field name="prepagada_predeterminada"  attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
