@@ -399,6 +399,9 @@ class doctor_appointment_co(osv.osv):
 		procedimientos = []
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
+		modelo_tipo_usuario = self.pool.get('doctor.tipousuario.regimen')
+	 	t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
+		t_usu_id_name = modelo_tipo_usuario.browse(cr, uid, t_usu_id[0], context=context).name
 		ids_procedimientos = []
 
 		if type_id:
@@ -413,7 +416,7 @@ class doctor_appointment_co(osv.osv):
 					if i:
 						res.append(i)
 				if res:
-					if tipo_usuario_id == 4:
+					if t_usu_id_name == 'Particular':
 						for x in res:
 							if x:
 								procedimientos.append((0,0,{'procedures_id' : x[0][0], 'quantity': 1}))
@@ -480,7 +483,8 @@ class doctor_appointment_co(osv.osv):
 		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
 		horarios = []
 		horario_cadena = []
-		horarios.append(time_begin) 
+		horarios.append(time_begin)
+		duracion = 0
 		#tener un rango de horas para poder decirle cual puede ser la proxima cita
 		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 1)
 		
@@ -502,7 +506,15 @@ class doctor_appointment_co(osv.osv):
 
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
-				duracion = int(fecha_agenda.type_id.duration / 1)
+
+				if not fecha_agenda.type_id.duration:
+					inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
+					fin = datetime.strptime(fecha_agenda.time_end, "%Y-%m-%d %H:%M:%S")
+					delta = fin - inicio
+					duracion = int(delta.seconds / 60)
+				else:
+					duracion = int(fecha_agenda.type_id.duration / 1)
+
 				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
 				minutos = 0
 				for i in range(0,duracion,1):
@@ -558,8 +570,6 @@ class doctor_appointment_co(osv.osv):
 			
 		return {'value': values}
 
-
-
 	def create_order(self, cr, uid, doctor_appointment, date, appointment_procedures, confirmed_flag, context={}):
 		"""
 		Method that creates an order from given data.
@@ -575,13 +585,12 @@ class doctor_appointment_co(osv.osv):
 		procedimientos_plan = self.pool.get('doctor.insurer.plan.procedures')
 		# Create order object
 
-		if doctor_appointment.tipo_usuario_id.id != 4 and not doctor_appointment.insurer_id:
+		if doctor_appointment.tipo_usuario_id.name != 'Particular' and not doctor_appointment.insurer_id:
 			raise osv.except_osv(_('Error!'),
 			_('Por favor ingrese la aseguradora a la que se le enviará la factura por los servicios prestados al paciente.'))
 
-		if doctor_appointment.tipo_usuario_id.id == 4:
+		if doctor_appointment.tipo_usuario_id.name == 'Particular':
 			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.patient_id.ref)])[0]
-			
 			for record in self.pool.get('res.partner').browse(cr, uid, [tercero]):
 				user = record.user_id.id
 		else:
@@ -606,7 +615,7 @@ class doctor_appointment_co(osv.osv):
 		# Create order lines objects
 		appointment_procedures_ids = []
 		for procedures_id in appointment_procedures:
-			if doctor_appointment.tipo_usuario_id.id != 4:
+			if doctor_appointment.tipo_usuario_id.name != 'Particular':
 				procedimiento_valor_id = procedimientos_plan.search(cr, uid, [('plan_id', '=', doctor_appointment.plan_id.id), ('procedure_id', '=', procedures_id.procedures_id.id)], context=context)
 				valor = procedimientos_plan.browse(cr, uid, procedimiento_valor_id[0], context=context).valor
 			
@@ -617,7 +626,7 @@ class doctor_appointment_co(osv.osv):
 			}
 			# get other order line values from appointment procedures line product
 			order_line.update(sale.sale.sale_order_line.product_id_change(order_line_obj, cr, uid, [], order['pricelist_id'], \
-				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'], price_unit=procedures_id.procedures_id.list_price if doctor_appointment.tipo_usuario_id.id == 4 else valor ,)
+				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'], price_unit=procedures_id.procedures_id.list_price if doctor_appointment.tipo_usuario_id.name == 'Particular' else valor ,)
 			# Put line taxes
 			order_line['tax_id'] = [(6, 0, tuple(order_line['tax_id']))]
 			# Put custom description
@@ -1018,9 +1027,12 @@ class doctor_co_schedule_inherit(osv.osv):
 						if diff > 0:
 							diff = 60 - diff
 						hora_inicio_agenda = datetime.strptime(hora_inicio_agenda, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
-						
-						res['date_begin'] = str(hora_inicio_agenda)
-						res['fecha_inicio'] = str(hora_inicio_agenda)
+						if hora_inicio_agenda > fecha_hora_actual:
+							res['date_begin'] = str(hora_inicio_agenda)
+							res['fecha_inicio'] = str(hora_inicio_agenda)
+						else:
+							res['date_begin'] = str(hora_inicio_agenda + timedelta(minutes=2))
+							res['fecha_inicio'] = str(hora_inicio_agenda + timedelta(minutes=2)) 
 
 					elif not ultima_agenda_id or  fecha_inicio_agenda < fecha_hora_actual:
 						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
