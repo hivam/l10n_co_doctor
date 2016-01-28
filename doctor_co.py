@@ -399,6 +399,9 @@ class doctor_appointment_co(osv.osv):
 		procedimientos = []
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
+		modelo_tipo_usuario = self.pool.get('doctor.tipousuario.regimen')
+	 	t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
+		t_usu_id_name = modelo_tipo_usuario.browse(cr, uid, t_usu_id[0], context=context).name
 		ids_procedimientos = []
 
 		if type_id:
@@ -413,7 +416,7 @@ class doctor_appointment_co(osv.osv):
 					if i:
 						res.append(i)
 				if res:
-					if tipo_usuario_id == 4:
+					if t_usu_id_name == 'Particular':
 						for x in res:
 							if x:
 								procedimientos.append((0,0,{'procedures_id' : x[0][0], 'quantity': 1}))
@@ -575,13 +578,12 @@ class doctor_appointment_co(osv.osv):
 		procedimientos_plan = self.pool.get('doctor.insurer.plan.procedures')
 		# Create order object
 
-		if doctor_appointment.tipo_usuario_id.id != 4 and not doctor_appointment.insurer_id:
+		if doctor_appointment.tipo_usuario_id.name != 'Particular' and not doctor_appointment.insurer_id:
 			raise osv.except_osv(_('Error!'),
 			_('Por favor ingrese la aseguradora a la que se le enviará la factura por los servicios prestados al paciente.'))
 
-		if doctor_appointment.tipo_usuario_id.id == 4:
+		if doctor_appointment.tipo_usuario_id.name == 'Particular':
 			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.patient_id.ref)])[0]
-			
 			for record in self.pool.get('res.partner').browse(cr, uid, [tercero]):
 				user = record.user_id.id
 		else:
@@ -606,7 +608,7 @@ class doctor_appointment_co(osv.osv):
 		# Create order lines objects
 		appointment_procedures_ids = []
 		for procedures_id in appointment_procedures:
-			if doctor_appointment.tipo_usuario_id.id != 4:
+			if doctor_appointment.tipo_usuario_id.name != 'Particular':
 				procedimiento_valor_id = procedimientos_plan.search(cr, uid, [('plan_id', '=', doctor_appointment.plan_id.id), ('procedure_id', '=', procedures_id.procedures_id.id)], context=context)
 				valor = procedimientos_plan.browse(cr, uid, procedimiento_valor_id[0], context=context).valor
 			
@@ -617,7 +619,7 @@ class doctor_appointment_co(osv.osv):
 			}
 			# get other order line values from appointment procedures line product
 			order_line.update(sale.sale.sale_order_line.product_id_change(order_line_obj, cr, uid, [], order['pricelist_id'], \
-				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'], price_unit=procedures_id.procedures_id.list_price if doctor_appointment.tipo_usuario_id.id == 4 else valor ,)
+				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'], price_unit=procedures_id.procedures_id.list_price if doctor_appointment.tipo_usuario_id.name == 'Particular' else valor ,)
 			# Put line taxes
 			order_line['tax_id'] = [(6, 0, tuple(order_line['tax_id']))]
 			# Put custom description
