@@ -483,7 +483,8 @@ class doctor_appointment_co(osv.osv):
 		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
 		horarios = []
 		horario_cadena = []
-		horarios.append(time_begin) 
+		horarios.append(time_begin)
+		duracion = 0
 		#tener un rango de horas para poder decirle cual puede ser la proxima cita
 		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 1)
 		
@@ -505,7 +506,15 @@ class doctor_appointment_co(osv.osv):
 
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
-				duracion = int(fecha_agenda.type_id.duration / 1)
+
+				if not fecha_agenda.type_id.duration:
+					inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
+					fin = datetime.strptime(fecha_agenda.time_end, "%Y-%m-%d %H:%M:%S")
+					delta = fin - inicio
+					duracion = int(delta.seconds / 60)
+				else:
+					duracion = int(fecha_agenda.type_id.duration / 1)
+
 				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
 				minutos = 0
 				for i in range(0,duracion,1):
