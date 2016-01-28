@@ -177,6 +177,16 @@ class radicacion_cuentas(osv.osv):
 			return 'known.txt'
 
 	def generar_rips(self, cr, uid, ids, context=None):
+		_logger.info("Generando archivo rips AF ................")
+		self.generar_rips_AF(cr, uid, ids, context)
+
+		return True
+
+	def generar_rips_AP(self, cr, uid, ids, context=None):
+		
+		return True
+
+	def generar_rips_AF(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
 			archivo = StringIO.StringIO()
 			for factura in var.invoices_ids:
@@ -248,11 +258,15 @@ class radicacion_cuentas(osv.osv):
 				else:
 					archivo.write(',')
 				#Numero de poliza 
-				
+				archivo.write(',')
 				#valor total del pago copmartido (valor paciente)
-				archivo.write( str(factura.amount_patient) + ',')
+				archivo.write( str(format(factura.amount_patient, '.2f')) + ',')
+				#valor de comision
+				archivo.write(str(format(0,'.2f')) + ',')
+				#valor total de descuentos
+				archivo.write(str(format(0,'.2f')) + ',')
 				#valor neto a pagar por la entidad contratante
-				archivo.write( str(factura.amount_total))
+				archivo.write( str(format(factura.amount_total, '.2f')))															
 				#salto de linea
 				archivo.write('\n')
 				# actualizar factura a radicada
