@@ -309,7 +309,7 @@ class doctor_appointment_co(osv.osv):
 
 
 	_columns = {
-		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato o póliza',required=False),
+		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
 										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
@@ -569,8 +569,6 @@ class doctor_appointment_co(osv.osv):
 			return {'value': values, 'warning': warning}
 			
 		return {'value': values}
-
-
 
 	def create_order(self, cr, uid, doctor_appointment, date, appointment_procedures, confirmed_flag, context={}):
 		"""
@@ -1029,9 +1027,12 @@ class doctor_co_schedule_inherit(osv.osv):
 						if diff > 0:
 							diff = 60 - diff
 						hora_inicio_agenda = datetime.strptime(hora_inicio_agenda, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
-						
-						res['date_begin'] = str(hora_inicio_agenda)
-						res['fecha_inicio'] = str(hora_inicio_agenda)
+						if hora_inicio_agenda > fecha_hora_actual:
+							res['date_begin'] = str(hora_inicio_agenda)
+							res['fecha_inicio'] = str(hora_inicio_agenda)
+						else:
+							res['date_begin'] = str(hora_inicio_agenda + timedelta(minutes=2))
+							res['fecha_inicio'] = str(hora_inicio_agenda + timedelta(minutes=2)) 
 
 					elif not ultima_agenda_id or  fecha_inicio_agenda < fecha_hora_actual:
 						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
@@ -1453,7 +1454,7 @@ class doctor_invoice_co (osv.osv):
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
-		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato o Póliza', required=False),	
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
 	}
 
 doctor_invoice_co()
@@ -1465,7 +1466,7 @@ class doctor_sales_order_co (osv.osv):
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
-		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato o Póliza', required=False),	
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
 	 }
 
 	def _prepare_invoice(self, cr, uid, order, lines, context=None):
