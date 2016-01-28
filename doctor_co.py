@@ -128,7 +128,25 @@ class doctor_patient_co(osv.osv):
 		'ver_nc': fields.boolean('Ver Nc', store=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
+
+		'poliza_medicina_prepagada': fields.boolean(u'Tiene Póliza de medicina prepagada'),
+		'insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", required=False, domain="[('tipousuario_id','=', 5)]"),
+		'plan_prepagada_id' : fields.many2one('doctor.insurer.plan', 'Plan', domain="[('insurer_id','=',insurer_prepagada_id)]"),
+		'numero_poliza_afiliacion': fields.char(u'Póliza- # Afiliación'),
+		'eps_predeterminada': fields.boolean('Predeterminada'),
+		'prepagada_predeterminada': fields.boolean('Predeterminada'),
 	}
+
+
+	def onchange_seleccion(self, cr, uid, ids, poliza_medicina_prepagada, context=None):
+		res = {'value':{}}
+
+		if poliza_medicina_prepagada:
+			res['value']['prepagada_predeterminada'] = True
+			res['value']['eps_predeterminada'] = False
+
+		return res
+
 
 	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):
 		res = {'value':{}}
@@ -193,8 +211,9 @@ class doctor_patient_co(osv.osv):
 		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
 	_defaults = {
-		'zona' : 'U'
-		}
+		'zona' : 'U',
+		'eps_predeterminada': True,
+	}
 
 # Función para evitar número de documento duplicado
 
@@ -215,9 +234,17 @@ class doctor_patient_co(osv.osv):
 					return False
 
 			return True
+# Función para validar que solo se seleccione una aseguradora como predeterminada	
+	def _check_seleccion(self, cr, uid, ids, context=None):
+		for record in self.browse(cr, uid, ids):
+			if record.prepagada_predeterminada and record.eps_predeterminada:
+				return False
+			return True
+
 
 	_constraints = [(_check_unique_ident, '¡Error! Número de intentificación ya existe en el sistema', ['ref']),
 					(_check_email, 'El formato es inválido.', ['email']),
+					(_check_seleccion, 'Aviso importante!, Solamente puede tener una Aseguradora como predeterminada', ['prepagada_predeterminada', 'eps_predeterminada'])
 			   ]
 
 doctor_patient_co()
@@ -279,6 +306,8 @@ class doctor_appointment_co(osv.osv):
 		(5, u'Detección Temprana de enf. profesional'),
 	]
 
+
+
 	_columns = {
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato o póliza',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
@@ -289,6 +318,7 @@ class doctor_appointment_co(osv.osv):
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
+		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza')
 	}
 
 	_defaults = {
@@ -303,12 +333,43 @@ class doctor_appointment_co(osv.osv):
 		patient = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context)
 		insurer_patient = patient.insurer.id
 		tipo_usuario_patient = patient.tipo_usuario.id
+
+
+		if patient.eps_predeterminada:
+			values.update({
+				'tipo_usuario_id' : tipo_usuario_patient,
+				'insurer_id': insurer_patient,
+				'nro_afilicion_poliza' : patient.nro_afiliacion,
+				'plan_id': '',
+				'contract_id': '',
+			})
+
+		elif patient.prepagada_predeterminada:
+			contrato_id = self.pool.get('doctor.contract.insurer').search(cr, uid, [('insurer_id','=',patient.insurer_prepagada_id.id)], context=context)
+			
+			values.update({
+				'tipo_usuario_id' : 5,
+				'insurer_id': patient.insurer_prepagada_id.id,
+				'plan_id': patient.plan_prepagada_id.id,
+				'nro_afilicion_poliza' : patient.numero_poliza_afiliacion,
+				'contract_id': contrato_id if len(contrato_id) == 1 else ''
+			})
+
+		else:
+			values.update({
+				'tipo_usuario_id' : tipo_usuario_patient,
+				'insurer_id' : insurer_patient,
+				'nro_afilicion_poliza' : patient.nro_afiliacion,
+				'plan_id': '',
+				'contract_id': '',
+			})
+
 		ref_patient = patient.ref
 		values.update({
-			'insurer_id' : insurer_patient,
-			'tipo_usuario_id' : tipo_usuario_patient,
 			'ref' : ref_patient,
 		})
+
+
 		return {'value' : values}
 
 
@@ -330,26 +391,6 @@ class doctor_appointment_co(osv.osv):
 			raise osv.except_osv(_('Aviso importante!'),_('El plan seleccionado no hace parte de este contrato o es posible que no esté vigente.\n\nComuníquese con la aseguradora para más información.'))
 		return True
 
-	def onchange_limpiarformulario(self, cr, uid, ids, plan_id, context=None):
-		values = {}
-		if plan_id:
-			values.update({
-			'plan_id' : '',
-			'contract_id': ''
-		})
-		return {'value' : values}
-
-	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, context=None):
-		
-		if context is None:
-			context = {}
-
-		res={'value':{},}
-		
-		if contract_id:
-			res['value']['contract_id'] = ''
-		return res
-
 			
 	def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=None):
 
@@ -359,7 +400,6 @@ class doctor_appointment_co(osv.osv):
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
 		ids_procedimientos = []
-
 
 		if type_id:
 			procedures_appointment_type_ids = modelo_buscar.search(cr, uid, [('appointment_type_id', '=', type_id)], context=context)
@@ -1075,13 +1115,16 @@ class doctor_otra_prescripcion(osv.osv):
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
 		
 		else:
-			ids_procedimientos = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
-			
-			if ids_procedimientos:
-				for i in insttucion_procedimiento.browse(cr, uid, ids_procedimientos, context=context):
-					ids.append(i.procedures_id.id)
-
-				ids_procedimientos = ids
+			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
+			if ids:
+				if name:
+					ids = insttucion_procedimiento.search(cr, uid, ['|',('procedures_id.name', operator, name), ('procedures_id.procedure_code', operator, name)], limit=limit, context=context)
+					if not ids:
+						ids = insttucion_procedimiento.search(cr, uid, [('procedures_id.name', operator, (name))] + args, limit=limit, context=context)
+				if ids:
+					for i in insttucion_procedimiento.browse(cr, uid, ids, context=context):
+						ids_procedimientos.append(i.procedures_id.id)
+					
 			else:
 				if name:
 					ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
