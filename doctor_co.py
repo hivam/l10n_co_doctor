@@ -128,7 +128,25 @@ class doctor_patient_co(osv.osv):
 		'ver_nc': fields.boolean('Ver Nc', store=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
+
+		'poliza_medicina_prepagada': fields.boolean(u'Tiene Póliza de medicina prepagada'),
+		'insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", required=False, domain="[('tipousuario_id','=', 5)]"),
+		'plan_prepagada_id' : fields.many2one('doctor.insurer.plan', 'Plan', domain="[('insurer_id','=',insurer_prepagada_id)]"),
+		'numero_poliza_afiliacion': fields.char(u'Póliza- # Afiliación'),
+		'eps_predeterminada': fields.boolean('Predeterminada'),
+		'prepagada_predeterminada': fields.boolean('Predeterminada'),
 	}
+
+
+	def onchange_seleccion(self, cr, uid, ids, poliza_medicina_prepagada, context=None):
+		res = {'value':{}}
+
+		if poliza_medicina_prepagada:
+			res['value']['prepagada_predeterminada'] = True
+			res['value']['eps_predeterminada'] = False
+
+		return res
+
 
 	def onchange_calcular_edad(self, cr, uid, ids, fecha_nacimiento, context=None):
 		res = {'value':{}}
@@ -193,8 +211,9 @@ class doctor_patient_co(osv.osv):
 		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
 	_defaults = {
-		'zona' : 'U'
-		}
+		'zona' : 'U',
+		'eps_predeterminada': True,
+	}
 
 # Función para evitar número de documento duplicado
 
@@ -215,9 +234,17 @@ class doctor_patient_co(osv.osv):
 					return False
 
 			return True
+# Función para validar que solo se seleccione una aseguradora como predeterminada	
+	def _check_seleccion(self, cr, uid, ids, context=None):
+		for record in self.browse(cr, uid, ids):
+			if record.prepagada_predeterminada and record.eps_predeterminada:
+				return False
+			return True
+
 
 	_constraints = [(_check_unique_ident, '¡Error! Número de intentificación ya existe en el sistema', ['ref']),
 					(_check_email, 'El formato es inválido.', ['email']),
+					(_check_seleccion, 'Aviso importante!, Solamente puede tener una Aseguradora como predeterminada', ['prepagada_predeterminada', 'eps_predeterminada'])
 			   ]
 
 doctor_patient_co()
@@ -279,6 +306,8 @@ class doctor_appointment_co(osv.osv):
 		(5, u'Detección Temprana de enf. profesional'),
 	]
 
+
+
 	_columns = {
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
@@ -289,6 +318,7 @@ class doctor_appointment_co(osv.osv):
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
+		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza')
 	}
 
 	_defaults = {
@@ -303,12 +333,43 @@ class doctor_appointment_co(osv.osv):
 		patient = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context)
 		insurer_patient = patient.insurer.id
 		tipo_usuario_patient = patient.tipo_usuario.id
+
+
+		if patient.eps_predeterminada:
+			values.update({
+				'tipo_usuario_id' : tipo_usuario_patient,
+				'insurer_id': insurer_patient,
+				'nro_afilicion_poliza' : patient.nro_afiliacion,
+				'plan_id': '',
+				'contract_id': '',
+			})
+
+		elif patient.prepagada_predeterminada:
+			contrato_id = self.pool.get('doctor.contract.insurer').search(cr, uid, [('insurer_id','=',patient.insurer_prepagada_id.id)], context=context)
+			
+			values.update({
+				'tipo_usuario_id' : 5,
+				'insurer_id': patient.insurer_prepagada_id.id,
+				'plan_id': patient.plan_prepagada_id.id,
+				'nro_afilicion_poliza' : patient.numero_poliza_afiliacion,
+				'contract_id': contrato_id if len(contrato_id) == 1 else ''
+			})
+
+		else:
+			values.update({
+				'tipo_usuario_id' : tipo_usuario_patient,
+				'insurer_id' : insurer_patient,
+				'nro_afilicion_poliza' : patient.nro_afiliacion,
+				'plan_id': '',
+				'contract_id': '',
+			})
+
 		ref_patient = patient.ref
 		values.update({
-			'insurer_id' : insurer_patient,
-			'tipo_usuario_id' : tipo_usuario_patient,
 			'ref' : ref_patient,
 		})
+
+
 		return {'value' : values}
 
 
@@ -330,26 +391,6 @@ class doctor_appointment_co(osv.osv):
 			raise osv.except_osv(_('Aviso importante!'),_('El plan seleccionado no hace parte de este contrato o es posible que no esté vigente.\n\nComuníquese con la aseguradora para más información.'))
 		return True
 
-	def onchange_limpiarformulario(self, cr, uid, ids, plan_id, context=None):
-		values = {}
-		if plan_id:
-			values.update({
-			'plan_id' : '',
-			'contract_id': ''
-		})
-		return {'value' : values}
-
-	def onchange_limpiarContrato(self, cr, uid, ids, contract_id, context=None):
-		
-		if context is None:
-			context = {}
-
-		res={'value':{},}
-		
-		if contract_id:
-			res['value']['contract_id'] = ''
-		return res
-
 			
 	def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=None):
 
@@ -358,8 +399,10 @@ class doctor_appointment_co(osv.osv):
 		procedimientos = []
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
+		modelo_tipo_usuario = self.pool.get('doctor.tipousuario.regimen')
+	 	t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
+		t_usu_id_name = modelo_tipo_usuario.browse(cr, uid, t_usu_id[0], context=context).name
 		ids_procedimientos = []
-
 
 		if type_id:
 			procedures_appointment_type_ids = modelo_buscar.search(cr, uid, [('appointment_type_id', '=', type_id)], context=context)
@@ -372,20 +415,22 @@ class doctor_appointment_co(osv.osv):
 				for i in resultado:
 					if i:
 						res.append(i)
-				
 				if res:
-					if tipo_usuario_id == 4:
+					if t_usu_id_name == 'Particular':
 						for x in res:
 							if x:
 								procedimientos.append((0,0,{'procedures_id' : x[0][0], 'quantity': 1}))
 						return procedimientos
 
-
 					if plan_id:
 						for j in res:
+
 							if j:
+								_logger.info(j[0][0])
 								procedimiento_id = modelo_procedimiento_plan.search(cr, uid, [('plan_id', '=', plan_id), ('procedure_id', '=', j[0][0])], context=context)
-								ids_procedimientos.append(procedimiento_id[0])
+								if procedimiento_id:
+									ids_procedimientos.append(procedimiento_id[0])
+
 					else:
 						raise osv.except_osv(_('Aviso importante!!'),
 								 _('No tiene ningun plan seleccionado'))	
@@ -394,6 +439,7 @@ class doctor_appointment_co(osv.osv):
 								 _('El procedimiento que esta enlazado con la cita no lo realiza el profesional encargado de esta agenda'))
 				
 				if ids_procedimientos:
+					_logger.info(ids_procedimientos)
 					for x in modelo_procedimiento_plan.browse(cr, uid, ids_procedimientos, context=context):
 						procedimientos.append((0,0,{'procedures_id' : x.procedure_id.id, 'quantity': 1}))
 				else:
@@ -421,10 +467,6 @@ class doctor_appointment_co(osv.osv):
 		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		professional_id = agenda_duracion.professional_id.id
 
-
-
-
-
 		if not time_begin:
 			return values
 
@@ -441,7 +483,8 @@ class doctor_appointment_co(osv.osv):
 		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
 		horarios = []
 		horario_cadena = []
-		horarios.append(time_begin) 
+		horarios.append(time_begin)
+		duracion = 0
 		#tener un rango de horas para poder decirle cual puede ser la proxima cita
 		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 1)
 		
@@ -450,7 +493,7 @@ class doctor_appointment_co(osv.osv):
 		
 		for i in horarios:
 			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:00'))
-		
+
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
 		
 		if ids_ingresos_diarios:
@@ -461,10 +504,17 @@ class doctor_appointment_co(osv.osv):
 					for borrar in range(0,index,1):
 						horario_cadena.pop(horario_cadena.index(horario_cadena[0]))
 
-
 			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
 				#con esto sabemos cuantos campos de la lista podemos quitar
-				duracion = int(fecha_agenda.type_id.duration / 1)
+
+				if not fecha_agenda.type_id.duration:
+					inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
+					fin = datetime.strptime(fecha_agenda.time_end, "%Y-%m-%d %H:%M:%S")
+					delta = fin - inicio
+					duracion = int(delta.seconds / 60)
+				else:
+					duracion = int(fecha_agenda.type_id.duration / 1)
+
 				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
 				minutos = 0
 				for i in range(0,duracion,1):
@@ -520,8 +570,6 @@ class doctor_appointment_co(osv.osv):
 			
 		return {'value': values}
 
-
-
 	def create_order(self, cr, uid, doctor_appointment, date, appointment_procedures, confirmed_flag, context={}):
 		"""
 		Method that creates an order from given data.
@@ -532,14 +580,16 @@ class doctor_appointment_co(osv.osv):
 		"""
 		insurer = ''
 		order_obj = self.pool.get('sale.order')
+		valor_procedimiento = 0
 		order_line_obj = self.pool.get('sale.order.line')
+		procedimientos_plan = self.pool.get('doctor.insurer.plan.procedures')
 		# Create order object
 
-		if doctor_appointment.tipo_usuario_id.id != 4 and not doctor_appointment.insurer_id:
+		if doctor_appointment.tipo_usuario_id.name != 'Particular' and not doctor_appointment.insurer_id:
 			raise osv.except_osv(_('Error!'),
 			_('Por favor ingrese la aseguradora a la que se le enviará la factura por los servicios prestados al paciente.'))
 
-		if doctor_appointment.tipo_usuario_id.id == 4:
+		if doctor_appointment.tipo_usuario_id.name == 'Particular':
 			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.patient_id.ref)])[0]
 			for record in self.pool.get('res.partner').browse(cr, uid, [tercero]):
 				user = record.user_id.id
@@ -555,6 +605,7 @@ class doctor_appointment_co(osv.osv):
 			'patient_id': doctor_appointment.patient_id.id,
 			'ref': doctor_appointment.ref,
 			'tipo_usuario_id' : doctor_appointment.tipo_usuario_id.id,
+			'contrato_id' : doctor_appointment.contract_id.id,
 			'state': 'draft',
 		}
 		# Get other order values from appointment partner
@@ -564,6 +615,10 @@ class doctor_appointment_co(osv.osv):
 		# Create order lines objects
 		appointment_procedures_ids = []
 		for procedures_id in appointment_procedures:
+			if doctor_appointment.tipo_usuario_id.name != 'Particular':
+				procedimiento_valor_id = procedimientos_plan.search(cr, uid, [('plan_id', '=', doctor_appointment.plan_id.id), ('procedure_id', '=', procedures_id.procedures_id.id)], context=context)
+				valor = procedimientos_plan.browse(cr, uid, procedimiento_valor_id[0], context=context).valor
+			
 			order_line = {
 				'order_id': order_id,
 				'product_id': procedures_id.procedures_id.id,
@@ -571,7 +626,7 @@ class doctor_appointment_co(osv.osv):
 			}
 			# get other order line values from appointment procedures line product
 			order_line.update(sale.sale.sale_order_line.product_id_change(order_line_obj, cr, uid, [], order['pricelist_id'], \
-				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'])
+				product=procedures_id.procedures_id.id, qty=procedures_id.quantity, partner_id=tercero, fiscal_position=order['fiscal_position'])['value'], price_unit=procedures_id.procedures_id.list_price if doctor_appointment.tipo_usuario_id.name == 'Particular' else valor ,)
 			# Put line taxes
 			order_line['tax_id'] = [(6, 0, tuple(order_line['tax_id']))]
 			# Put custom description
@@ -972,9 +1027,12 @@ class doctor_co_schedule_inherit(osv.osv):
 						if diff > 0:
 							diff = 60 - diff
 						hora_inicio_agenda = datetime.strptime(hora_inicio_agenda, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
-						
-						res['date_begin'] = str(hora_inicio_agenda)
-						res['fecha_inicio'] = str(hora_inicio_agenda)
+						if hora_inicio_agenda > fecha_hora_actual:
+							res['date_begin'] = str(hora_inicio_agenda)
+							res['fecha_inicio'] = str(hora_inicio_agenda)
+						else:
+							res['date_begin'] = str(hora_inicio_agenda + timedelta(minutes=2))
+							res['fecha_inicio'] = str(hora_inicio_agenda + timedelta(minutes=2)) 
 
 					elif not ultima_agenda_id or  fecha_inicio_agenda < fecha_hora_actual:
 						fecha_hora_actual = str(fecha_hora_actual + timedelta(minutes=2))
@@ -1061,23 +1119,33 @@ class doctor_otra_prescripcion(osv.osv):
 		
 		args = args or []
 		ids = []
-		
+		insttucion_procedimiento = self.pool.get('doctor.aseguradora.procedimiento')
 		ids_procedimientos = []
-
 		plan_id = context.get('plan_id')
 		professional_id = context.get('professional_id')
 		if plan_id and professional_id:				
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
+		
 		else:
-			if name:
-				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
-				if not ids:
-					ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
+			if ids:
+				if name:
+					ids = insttucion_procedimiento.search(cr, uid, ['|',('procedures_id.name', operator, name), ('procedures_id.procedure_code', operator, name)], limit=limit, context=context)
+					if not ids:
+						ids = insttucion_procedimiento.search(cr, uid, [('procedures_id.name', operator, (name))] + args, limit=limit, context=context)
+				if ids:
+					for i in insttucion_procedimiento.browse(cr, uid, ids, context=context):
+						ids_procedimientos.append(i.procedures_id.id)
+					
 			else:
-				ids = self.search(cr, uid, args, limit=limit, context=context)
-			
-			ids_procedimientos = ids
-
+				if name:
+					ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+					if not ids:
+						ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+				else:
+					ids = self.search(cr, uid, args, limit=limit, context=context)
+				ids_procedimientos = ids
+		
 		return self.name_get(cr, uid, ids_procedimientos, context)
 
 doctor_otra_prescripcion()
@@ -1386,7 +1454,8 @@ class doctor_invoice_co (osv.osv):
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
-				 }
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
+	}
 
 doctor_invoice_co()
 
@@ -1397,7 +1466,8 @@ class doctor_sales_order_co (osv.osv):
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
-				 }
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
+	 }
 
 	def _prepare_invoice(self, cr, uid, order, lines, context=None):
 		"""Prepare the dict of values to create the new invoice for a
@@ -1418,6 +1488,8 @@ class doctor_sales_order_co (osv.osv):
 		if not journal_ids:
 			raise osv.except_osv(_('Error!'),
 				_('Please define sales journal for this company: "%s" (id:%d).') % (order.company_id.name, order.company_id.id))
+		_logger.info("------------")
+		_logger.info(order.contrato_id.id)
 		invoice_vals = {
 			'name': order.client_order_ref or '',
 			'origin': order.name,
@@ -1429,6 +1501,7 @@ class doctor_sales_order_co (osv.osv):
 			'patient_id': order.patient_id.id,
 			'ref': order.ref,
 			'tipo_usuario_id': order.tipo_usuario_id.id,
+			'contrato_id' : order.contrato_id.id,
 			'journal_id': journal_ids[0],
 			'invoice_line': [(6, 0, lines)],
 			'currency_id': order.pricelist_id.currency_id.id,
@@ -1546,7 +1619,6 @@ class doctor_configuracion(osv.osv):
 						for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
 							id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
 							modelo_asegur_plan.write(cr, uid, id_asegur_plan, dato, context=context)
-		
 				else:
 					buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('plan_id', '=', vals['parametrizacion_ids'][i][2]['plan_id']),
 								 ('contract_id', '=', vals['parametrizacion_ids'][i][2]['contract_id']), 
@@ -1581,10 +1653,8 @@ class doctor_configuracion(osv.osv):
 		return True
 
 	def unlink(self, cr, uid, ids, context=None):
-
 		modelo_asegur_plan = self.pool.get('doctor.insurer.plan.procedures')
 		modelo_datos_cambio = self.pool.get("doctor.parametrizacion")
-
 		if ids:
 			datos_param_eli_id = modelo_datos_cambio.search(cr, uid, [('doctor_configuracion_id', '=', ids)], context=context)
 			if datos_param_eli_id:

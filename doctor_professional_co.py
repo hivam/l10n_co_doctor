@@ -113,7 +113,7 @@ class doctor_professional_co(osv.osv):
 		vals.update({'lastname': vals['lastname'].upper() })
 		vals.update({'firtsname': vals['firtsname'].upper() })
 		vals.update({'name' : "%s %s %s %s" % (vals['lastname'] , vals['surname'] or '' , vals['firtsname'] , vals['middlename'] or '')})
-		login= vals['firtsname'][:1]+vals['lastname'] #login por defecto (primera letraa de nombre y  todo el primer apellido)
+		login= vals['firtsname'].lower()+'.'+vals['lastname'].lower() #login por defecto (primera letraa de nombre y  todo el primer apellido)
 		user = self.pool.get('res.users').read(cr, uid, uid, ["company_id"]) #obteniendo compania actual
 		company_id = user['company_id'][0]
 		group_id = self.pool.get('res.groups').search(cr, uid,[('name','=', 'Profesional en salud')], context=context)

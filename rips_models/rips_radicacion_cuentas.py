@@ -131,17 +131,17 @@ class radicacion_cuentas(osv.osv):
 		dateuser = datetime.strftime(dateuser, "%Y-%m-%d")
 		return dateuser
 
-	def get_invoices(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, context=None):
+	def get_invoices(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, context=None):
 		id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
 		id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
 		invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
+																('contrato_id','=', contrato_id or False),
 																('state', '=', 'open'),
 																('date_invoice', '>=', rangofacturas_desde),
 																('date_invoice', '<=', rangofacturas_hasta),
 																('residual', '<>', 0.0),
 																('tipo_usuario_id', '=', tipo_usuario_id ),
 																('radicada', '=', False)])
-
 		return {'value': {'invoices_ids': invoices}}
 
 
@@ -177,6 +177,16 @@ class radicacion_cuentas(osv.osv):
 			return 'known.txt'
 
 	def generar_rips(self, cr, uid, ids, context=None):
+		_logger.info("Generando archivo rips AF ................")
+		self.generar_rips_AF(cr, uid, ids, context)
+
+		return True
+
+	def generar_rips_AP(self, cr, uid, ids, context=None):
+		
+		return True
+
+	def generar_rips_AF(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
 			archivo = StringIO.StringIO()
 			for factura in var.invoices_ids:
@@ -219,24 +229,44 @@ class radicacion_cuentas(osv.osv):
 					archivo.write( '0' + ',')
 				#Fecha expedición de la factura
 				fecha_exp_factura = factura.date_invoice
-				archivo.write( fecha_exp_factura + ',')
+				fecha_exp_factura_date= datetime.strptime(fecha_exp_factura, "%Y-%m-%d")
+				fecha_exp_factura_string = fecha_exp_factura_date.strftime("%d/%m/%Y")
+				archivo.write( fecha_exp_factura_string + ',')
+			
 				#Fecha inicio Radicacion Cuentas
-				archivo.write( var.rangofacturas_desde + ',')
+				f_inicioradicacion= var.rangofacturas_desde 
+				f_inicioradicacion_format =  datetime.strptime(f_inicioradicacion, "%Y-%m-%d")
+				f_inicioradicacion_string = f_inicioradicacion_format.strftime("%d/%m/%Y")
+				archivo.write(f_inicioradicacion_string + ',')
 				#Fecha fin Radicacion Cuentas
-				archivo.write( var.rangofacturas_hasta + ',')
+				f_finradicacion= var.rangofacturas_hasta 
+				f_finradicacion_format = datetime.strptime(f_inicioradicacion, "%Y-%m-%d")
+				f_finradicacion_string = f_finradicacion_format.strftime("%d/%m/%Y")
+				archivo.write(f_finradicacion_string + ',')
 				#codigo aseguradora
 				archivo.write( var.cliente_id.code + ',')
 				#nombre aseguradora
 				archivo.write( var.cliente_id.insurer.name + ',')
+				#Numero de contrato
+				if var.contrato_id.contract_code:	
+					archivo.write( var.contrato_id.contract_code + ',')
+				else:
+					archivo.write(',')
 				#plan de beneficios
 				if var.tipo_usuario_id:
 					archivo.write((var.tipo_usuario_id.name).upper() + ',')
 				else:
 					archivo.write(',')
+				#Numero de poliza 
+				archivo.write(',')
 				#valor total del pago copmartido (valor paciente)
-				archivo.write( str(factura.amount_patient) + ',')
+				archivo.write( str(format(factura.amount_patient, '.2f')) + ',')
+				#valor de comision
+				archivo.write(str(format(0,'.2f')) + ',')
+				#valor total de descuentos
+				archivo.write(str(format(0,'.2f')) + ',')
 				#valor neto a pagar por la entidad contratante
-				archivo.write( str(factura.amount_total) + ',')
+				archivo.write( str(format(factura.amount_total, '.2f')))															
 				#salto de linea
 				archivo.write('\n')
 				# actualizar factura a radicada
@@ -257,6 +287,9 @@ class radicacion_cuentas(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		vals.update({'secuencia': self.getSecuencia(cr,uid), 'state': 'draft'})
+		if not vals['invoices_ids']:
+			raise osv.except_osv(_('Atención!'),
+							_('No se puede guardar esta radicación. No hay facturas agregadas.'))
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
 
 	def confirmar(self, cr, uid, ids, context=None):
@@ -270,23 +303,6 @@ class radicacion_cuentas(osv.osv):
 	def validar(self, cr, uid, ids, context=None):
 		raise osv.except_osv(_('Aviso!'),
 				_('Funcionalidad no implementada.'))
-
-	def filtrarFacturas(self, cr, uid, ids, context=None):
-		for var in self.browse(cr, uid, ids):
-			cliente = var.cliente.id
-			rangofacturas_desde = var.rangofacturas_desde
-			rangofacturas_hasta = var.rangofacturas_hasta
-			tipo_usuario_id = var.tipo_usuario_id.id
-			id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente).insurer.id
-			id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
-			invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
-																	('state', '=', 'open'),
-																	('date_invoice', '>=', rangofacturas_desde),
-																	('date_invoice', '<=', rangofacturas_hasta),
-																	('residual', '<>', 0.0),
-																	('tipo_usuario_id', '=', tipo_usuario_id ),
-																	('radicada', '=', False)])
-		return {'value': {'valor_total': invoices}}
 
 	def onchange_contrato(self, cr, uid, ids, cliente,context=None):
 		res = {'value':{}}
