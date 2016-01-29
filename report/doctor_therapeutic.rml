@@ -95,7 +95,7 @@
   </stylesheet>
   <story>
 	<para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
-    <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) ]]</para>
+    <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
 
     <para style="Heading"><b>THERAPEUTIC ORDER</b></para>
 <!--
