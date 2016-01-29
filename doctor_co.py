@@ -1115,6 +1115,17 @@ class doctor_otra_prescripcion(osv.osv):
 				ids_procedimientos = procedimientos	
 		return ids_procedimientos
 
+	def parte_name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
+		ids = []
+		ids_procedimientos = []
+		if name:
+			ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+			if not ids:
+				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+		else:
+			ids = self.search(cr, uid, args, limit=limit, context=context)
+		return ids	
+
 	def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
 		
 		args = args or []
@@ -1123,9 +1134,12 @@ class doctor_otra_prescripcion(osv.osv):
 		ids_procedimientos = []
 		plan_id = context.get('plan_id')
 		professional_id = context.get('professional_id')
+		modelo = context.get('modelo')
+		
 		if plan_id and professional_id:				
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
-		
+		elif modelo:
+			ids_procedimientos = self.parte_name_search(cr, uid, name, args, operator, context=context, limit=100)
 		else:
 			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
 			if ids:
@@ -1138,13 +1152,7 @@ class doctor_otra_prescripcion(osv.osv):
 						ids_procedimientos.append(i.procedures_id.id)
 					
 			else:
-				if name:
-					ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
-					if not ids:
-						ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
-				else:
-					ids = self.search(cr, uid, args, limit=limit, context=context)
-				ids_procedimientos = ids
+				ids_procedimientos = ids_procedimientos = self.parte_name_search(cr, uid, name, args, operator, context=context, limit=100)
 		
 		return self.name_get(cr, uid, ids_procedimientos, context)
 
