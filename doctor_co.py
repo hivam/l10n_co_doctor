@@ -1150,6 +1150,43 @@ class doctor_otra_prescripcion(osv.osv):
 
 doctor_otra_prescripcion()
 
+
+
+class doctor_professional(osv.osv):
+	_name = "doctor.professional"
+	_inherit = 'doctor.professional'
+
+
+	_columns = {
+
+
+	}
+
+	def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+		
+		res = super(doctor_professional, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
+		doc = etree.XML(res['arch'])
+		for node in doc.xpath("//field[@name='procedures_ids']"):
+
+			codigos_procedimientos = []
+
+			modelo_buscar = self.pool.get('doctor.aseguradora.procedimiento')
+			record = modelo_buscar.search(cr, uid, [], context=context)
+
+			for datos in modelo_buscar.browse(cr, uid, record, context=context):
+				codigos_procedimientos.append(datos.procedures_id.id)
+
+			dominio=[('id','in',codigos_procedimientos),]
+			
+			node.set('domain', repr(dominio))
+			res['arch'] = etree.tostring(doc)
+			_logger.info(res)
+
+		_logger.info(res)
+		return res
+
+doctor_professional()
+
 class doctor_attention_medicamento_otro_elemento(osv.osv):
 
 	_name = 'doctor.attentions.medicamento_otro'
