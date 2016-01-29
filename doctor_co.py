@@ -1167,22 +1167,18 @@ class doctor_professional(osv.osv):
 		res = super(doctor_professional, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
 		doc = etree.XML(res['arch'])
 		for node in doc.xpath("//field[@name='procedures_ids']"):
-
 			codigos_procedimientos = []
-
 			modelo_buscar = self.pool.get('doctor.aseguradora.procedimiento')
 			record = modelo_buscar.search(cr, uid, [], context=context)
+			if record:
+				for datos in modelo_buscar.browse(cr, uid, record, context=context):
+					codigos_procedimientos.append(datos.procedures_id.id)
 
-			for datos in modelo_buscar.browse(cr, uid, record, context=context):
-				codigos_procedimientos.append(datos.procedures_id.id)
-
-			dominio=[('id','in',codigos_procedimientos),]
+				dominio=[('id','in',codigos_procedimientos),]
 			
-			node.set('domain', repr(dominio))
-			res['arch'] = etree.tostring(doc)
-			_logger.info(res)
-
-		_logger.info(res)
+				node.set('domain', repr(dominio))
+				res['arch'] = etree.tostring(doc)
+				
 		return res
 
 doctor_professional()
