@@ -101,6 +101,7 @@ class radicacion_cuentas(osv.osv):
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
 		#Facturas
 		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict', states={'done': [('readonly', True)]}),
+		
 		'numero_radicado' : fields.char("N° Radicado", size=200 ),
 		'plano' : fields.binary(string='Archivo RIP'),
 		'plano_nombre' : fields.char('File name', 40, readonly=True),
@@ -257,8 +258,17 @@ class radicacion_cuentas(osv.osv):
 					archivo.write((var.tipo_usuario_id.name).upper() + ',')
 				else:
 					archivo.write(',')
-				#Numero de poliza 
-				archivo.write(',')
+				#Numero de poliza
+				if factura.patient_id.eps_predeterminada:
+					if factura.patient_id.nro_afiliacion != False:
+						archivo.write(factura.patient_id.nro_afiliacion+',')
+					else:
+						archivo.write(',')
+				elif factura.patient_id.prepagada_predeterminada:
+					if factura.patient_id.numero_poliza_afiliacion != False:
+						archivo.write(factura.patient_id.numero_poliza_afiliacion+',')
+					else:
+						archivo.write(',')
 				#valor total del pago copmartido (valor paciente)
 				archivo.write( str(format(factura.amount_patient, '.2f')) + ',')
 				#valor de comision
