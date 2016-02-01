@@ -101,7 +101,6 @@ class radicacion_cuentas(osv.osv):
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
 		#Facturas
 		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict', states={'done': [('readonly', True)]}),
-		
 		'numero_radicado' : fields.char("N° Radicado", size=200 ),
 		'plano' : fields.binary(string='Archivo RIP'),
 		'plano_nombre' : fields.char('File name', 40, readonly=True),
@@ -121,7 +120,7 @@ class radicacion_cuentas(osv.osv):
 		'state' : 'draft',
 	}
 
-	
+
 	def _date_to_dateuser(self,cr, uid,date,context=None):
 		dateuser = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
 
@@ -180,11 +179,11 @@ class radicacion_cuentas(osv.osv):
 	def generar_rips(self, cr, uid, ids, context=None):
 		_logger.info("Generando archivo rips AF ................")
 		self.generar_rips_AF(cr, uid, ids, context)
-
+		_logger.info("Generando archivo rips US ................")
+		self.generar_rips_US(cr, uid, ids, context)
 		return True
 
-	def generar_rips_AP(self, cr, uid, ids, context=None):
-		
+	def generar_rips_US(self, cr, uid, ids, context=None):
 		return True
 
 	def generar_rips_AF(self, cr, uid, ids, context=None):
