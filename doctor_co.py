@@ -362,6 +362,7 @@ class doctor_appointment_co(osv.osv):
 				'nro_afilicion_poliza' : patient.nro_afiliacion,
 				'plan_id': '',
 				'contract_id': '',
+				'nro_afilicion_poliza':'',
 			})
 
 		ref_patient = patient.ref
