@@ -27,22 +27,13 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class rips_generados(osv.osv):
+class rips_tipo_archivo(osv.osv):
 	'''
-	This model allows to see in a second page on the notebook (Radicacion Cuentas) all generated files of RIPS.
+	Rips file's names.
 	'''
-	_name ='rips.generados'
-
+	_name ='rips.tipo.archivo'
 
 	_columns = {
-		'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Rips'),
-		'f_generacion' : fields.date('Fecha Generación Rips', help="Fecha de generación de RIPS"),
-		'nombre_archivo' : fields.char('Nombre Archivo',  40, readonly=True, required=True),
-		'f_inicio_radicacion' : fields.date('Fecha Inicio Radicación'),
-		'f_fin_radicacion' : fields.date('Fecha Fin Radicación'),
-		'archivo' : fields.binary('Archivo'),
-	}
-
-	_defaults = {
-
+		'name' : fields.char('Nombre', help="Nombre del tipo de archivo RIPS"),
+		'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Radicación Cuentas', required=False),
 	}
