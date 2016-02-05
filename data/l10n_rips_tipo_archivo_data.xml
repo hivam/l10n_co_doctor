@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record id="l10n_rips_tipo_archivo_0000001" model="rips.tipo.archivo">
+        <field name="name">AC</field>
+    </record>
+     <record id="l10n_rips_tipo_archivo_0000002" model="rips.tipo.archivo">
+        <field name="name">AD</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000003" model="rips.tipo.archivo">
+        <field name="name">AF</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000004" model="rips.tipo.archivo">
+        <field name="name">AH</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000005" model="rips.tipo.archivo">
+        <field name="name">AM</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000006" model="rips.tipo.archivo">
+        <field name="name">AP</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000007" model="rips.tipo.archivo">
+        <field name="name">AT</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000008" model="rips.tipo.archivo">
+        <field name="name">AU</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000009" model="rips.tipo.archivo">
+        <field name="name">CT</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000010" model="rips.tipo.archivo">
+        <field name="name">US</field>
+    </record>
+  </data>
+</openerp>

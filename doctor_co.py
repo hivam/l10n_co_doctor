@@ -96,7 +96,7 @@ class doctor_patient_co(osv.osv):
 	
 	_columns = {
 		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
-		'edad_calculada' : fields.function(_get_edad, type="integer", store= False, 
+		'edad_calculada' : fields.function(_get_edad, type="integer", store= True, 
 								readonly=True, method=True, string='Edad Actual',),
 		'email' : fields.char('Email'),
 		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
@@ -124,7 +124,7 @@ class doctor_patient_co(osv.osv):
 		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario'),
 
 		'unidad_edad_calculada': fields.function(_get_unidad_edad, type="selection", method=True, 
-								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True),
+								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True, store=True),
 		'ver_nc': fields.boolean('Ver Nc', store=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
@@ -362,6 +362,7 @@ class doctor_appointment_co(osv.osv):
 				'nro_afilicion_poliza' : patient.nro_afiliacion,
 				'plan_id': '',
 				'contract_id': '',
+				'nro_afilicion_poliza':'',
 			})
 
 		ref_patient = patient.ref
@@ -606,7 +607,7 @@ class doctor_appointment_co(osv.osv):
 			'ref': doctor_appointment.ref,
 			'tipo_usuario_id' : doctor_appointment.tipo_usuario_id.id,
 			'contrato_id' : doctor_appointment.contract_id.id,
-			'state': 'draft',
+			'state': 'manual',
 		}
 		# Get other order values from appointment partner
 		order.update(sale.sale.sale_order.onchange_partner_id(order_obj, cr, uid, [], tercero)['value'])
@@ -1115,6 +1116,17 @@ class doctor_otra_prescripcion(osv.osv):
 				ids_procedimientos = procedimientos	
 		return ids_procedimientos
 
+	def parte_name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
+		ids = []
+		ids_procedimientos = []
+		if name:
+			ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+			if not ids:
+				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+		else:
+			ids = self.search(cr, uid, args, limit=limit, context=context)
+		return ids	
+
 	def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
 		
 		args = args or []
@@ -1123,9 +1135,12 @@ class doctor_otra_prescripcion(osv.osv):
 		ids_procedimientos = []
 		plan_id = context.get('plan_id')
 		professional_id = context.get('professional_id')
+		modelo = context.get('modelo')
+		
 		if plan_id and professional_id:				
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
-		
+		elif modelo:
+			ids_procedimientos = self.parte_name_search(cr, uid, name, args, operator, context=context, limit=100)
 		else:
 			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
 			if ids:
@@ -1138,17 +1153,44 @@ class doctor_otra_prescripcion(osv.osv):
 						ids_procedimientos.append(i.procedures_id.id)
 					
 			else:
-				if name:
-					ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
-					if not ids:
-						ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
-				else:
-					ids = self.search(cr, uid, args, limit=limit, context=context)
-				ids_procedimientos = ids
+				ids_procedimientos = ids_procedimientos = self.parte_name_search(cr, uid, name, args, operator, context=context, limit=100)
 		
 		return self.name_get(cr, uid, ids_procedimientos, context)
 
 doctor_otra_prescripcion()
+
+
+
+class doctor_professional(osv.osv):
+	_name = "doctor.professional"
+	_inherit = 'doctor.professional'
+
+
+	_columns = {
+
+
+	}
+
+	def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+		
+		res = super(doctor_professional, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
+		doc = etree.XML(res['arch'])
+		for node in doc.xpath("//field[@name='procedures_ids']"):
+			codigos_procedimientos = []
+			modelo_buscar = self.pool.get('doctor.aseguradora.procedimiento')
+			record = modelo_buscar.search(cr, uid, [], context=context)
+			if record:
+				for datos in modelo_buscar.browse(cr, uid, record, context=context):
+					codigos_procedimientos.append(datos.procedures_id.id)
+
+				dominio=[('id','in',codigos_procedimientos),]
+			
+				node.set('domain', repr(dominio))
+				res['arch'] = etree.tostring(doc)
+				
+		return res
+
+doctor_professional()
 
 class doctor_attention_medicamento_otro_elemento(osv.osv):
 
