@@ -22,7 +22,9 @@
             <field name="tipo_usuario_id" style="width: 40%%" class="oe_inline"/>
             <label for="f_radicacion" string="Fecha Radicación" class="left-margin10"/>
             <field name="f_radicacion" class="oe_inline"/>
-
+            <label for="rips_tipo_archivo" string="Archivos Rips a Generar" class="left-margin10" attrs="{'invisible': ['|',('state','=', 'confirmed'), ('rips_tipo_archivo','=', False)]}"/>
+            <field name="rips_tipo_archivo" widget="many2many_tags" class="oe_inline"/>
+           
           </div>
 
           <group >
@@ -63,7 +65,7 @@
           <notebook>
             <page string="Facturas"  attrs="">
               <group>
-                <field name="invoices_ids" nolabel="1"/>
+                <field name="invoices_ids" nolabel="1" create="false"/>
               </group>
             </page>
 

@@ -6,12 +6,12 @@
       <field name="name">rips.generados</field>
       <field name="model">rips.generados</field>
       <field name="arch" type="xml">
-        <tree string="Category of ideas">
+        <tree string="">
           <field name="f_generacion"/>
           <field name="nombre_archivo"/>
           <field name="f_inicio_radicacion"/>
           <field name="f_fin_radicacion"/>
-          <field name="archivo" filename="nombre_archivo" nolabel="1"/>
+          <field name="archivo" nolabel="1"/>
         </tree>
       </field>
     </record>
