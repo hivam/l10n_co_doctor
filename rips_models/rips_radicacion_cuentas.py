@@ -120,7 +120,7 @@ class radicacion_cuentas(osv.osv):
 		'state' : 'draft',
 	}
 
-	
+
 	def _date_to_dateuser(self,cr, uid,date,context=None):
 		dateuser = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
 
@@ -179,11 +179,11 @@ class radicacion_cuentas(osv.osv):
 	def generar_rips(self, cr, uid, ids, context=None):
 		_logger.info("Generando archivo rips AF ................")
 		self.generar_rips_AF(cr, uid, ids, context)
-
+		_logger.info("Generando archivo rips US ................")
+		self.generar_rips_US(cr, uid, ids, context)
 		return True
 
-	def generar_rips_AP(self, cr, uid, ids, context=None):
-		
+	def generar_rips_US(self, cr, uid, ids, context=None):
 		return True
 
 	def generar_rips_AF(self, cr, uid, ids, context=None):
@@ -257,8 +257,17 @@ class radicacion_cuentas(osv.osv):
 					archivo.write((var.tipo_usuario_id.name).upper() + ',')
 				else:
 					archivo.write(',')
-				#Numero de poliza 
-				archivo.write(',')
+				#Numero de poliza
+				if factura.patient_id.eps_predeterminada:
+					if factura.patient_id.nro_afiliacion != False:
+						archivo.write(factura.patient_id.nro_afiliacion+',')
+					else:
+						archivo.write(',')
+				elif factura.patient_id.prepagada_predeterminada:
+					if factura.patient_id.numero_poliza_afiliacion != False:
+						archivo.write(factura.patient_id.numero_poliza_afiliacion+',')
+					else:
+						archivo.write(',')
 				#valor total del pago copmartido (valor paciente)
 				archivo.write( str(format(factura.amount_patient, '.2f')) + ',')
 				#valor de comision

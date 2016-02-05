@@ -780,7 +780,7 @@
                     <label string="Procedimientos Institucion" for="procedures_id" class="texto"/>
                     <field name="procedures_id" colspan="4" nolabel="1">
                         <tree string="Procedimientos en salud" editable="bottom">
-                            <field name="procedures_id"/>
+                            <field name="procedures_id" context="{'modelo':'confi'}"/>
                         </tree>
                     </field>
                 </form>
