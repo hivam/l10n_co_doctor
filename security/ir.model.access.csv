@@ -32,4 +32,5 @@ access_doctor_tipousuario_regimen,access_doctor_tipousuario_regimen,model_doctor
 access_doctor_tipousuario_regimen,access_doctor_tipousuario_regimen,model_doctor_tipousuario_regimen,doctor.group_doctor_physician,1,1,1,0
 access_rips_generados,access_rips_generados,model_rips_generados,doctor.group_doctor_assistant,1,1,1,0
 access_rips_generados,access_rips_generados,model_rips_generados,doctor.group_doctor_physician,1,1,1,0
-
+access_doctor_tipousuario_regimen,doctor.tipousuario.regimen,model_doctor_tipousuario_regimen,doctor.group_doctor_assistant,1,1,1,0
+access_doctor_appointment_type,doctor.appointment.type,model_doctor_appointment_type,doctor.group_doctor_assistant,1,1,1,0
