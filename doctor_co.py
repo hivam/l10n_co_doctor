@@ -96,7 +96,7 @@ class doctor_patient_co(osv.osv):
 	
 	_columns = {
 		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
-		'edad_calculada' : fields.function(_get_edad, type="integer", store= False, 
+		'edad_calculada' : fields.function(_get_edad, type="integer", store= True, 
 								readonly=True, method=True, string='Edad Actual',),
 		'email' : fields.char('Email'),
 		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
@@ -124,7 +124,7 @@ class doctor_patient_co(osv.osv):
 		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario'),
 
 		'unidad_edad_calculada': fields.function(_get_unidad_edad, type="selection", method=True, 
-								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True),
+								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True, store=True),
 		'ver_nc': fields.boolean('Ver Nc', store=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		'nro_afiliacion': fields.char(u'Nº de Afiliación'),

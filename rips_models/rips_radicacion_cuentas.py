@@ -199,6 +199,28 @@ class radicacion_cuentas(osv.osv):
 		return True
 
 	def generar_rips_US(self, cr, uid, ids, context=None):
+		for var in self.browse(cr, uid, ids):
+			archivo = StringIO.StringIO()
+			for factura in var.invoices_ids:
+				tipo_archivo = tipo_archivo_rips.get('10')
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+				parent_id = self.getParentid(cr,uid,ids)[0]
+				#***********GET CAMPOS********
+				#Tipo de identificación del usuario
+				archivo.write(tdoc_selection.get(factura.patient_id.tdoc or '' + ','))
+				#número de identificación del usuario
+				archivo.write(factura.patient_id.ref or ''+ ',')
+				#Código entidad administradora
+				archivo.write(var.cliente_id.code + ',')
+				output = base64.encodestring(archivo.getvalue())
+				id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																			'datas_fname': nombre_archivo,
+																			'type': 'binary',
+																			'datas': output,
+																			'parent_id' : parent_id,
+																			'res_model' : 'rips.radicacioncuentas',
+																			'res_id' : ids[0]},
+																			context= context)
 		return True
 
 	def generar_rips_AF(self, cr, uid, ids, context=None):
@@ -298,8 +320,14 @@ class radicacion_cuentas(osv.osv):
 
 
 			output = base64.encodestring(archivo.getvalue())
-			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 'datas_fname': nombre_archivo, 'type': 'binary', 'datas': output, 'parent_id' : parent_id, 'res_model' : 'rips.radicacioncuentas', 'res_id' : ids[0]}, context= context)
-
+			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																			'datas_fname': nombre_archivo,
+																			'type': 'binary',
+																			'datas': output,
+																			'parent_id' : parent_id,
+																			'res_model' : 'rips.radicacioncuentas',
+																			'res_id' : ids[0]},
+																			context= context)
 			for actual in self.browse(cr, uid, ids):
 				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
 																  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
