@@ -757,7 +757,10 @@ class doctor_attentions_co(osv.osv):
 	_defaults = {
 		'finalidad_consulta': '10',
 		'activar_notas_confidenciales' : True,
-		'inv' : True
+		'inv' : True,
+		'causa_externa':'13',
+		'finalidad_consulta':'07'
+
 	}
 
 	def write(self, cr, uid, ids, vals, context=None):
@@ -1053,7 +1056,7 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		for id_agenda in self.browse(cr,uid,ids):
 				agenda_id = id_agenda.id
-		
+
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
 			data_obj = self.pool.get('ir.model.data')
 			result = data_obj._get_id(cr, uid, 'doctor_multiroom', 'view_doctor_appointment')
