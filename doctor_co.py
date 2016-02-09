@@ -902,8 +902,11 @@ class doctor_co_schedule_inherit(osv.osv):
 			fecha_sin_hora = str(fecha_inicio)[0:10]
 			fecha_sin_hora = datetime.strptime(fecha_sin_hora, "%Y-%m-%d")
 
-			if not ':' in str(fecha_fin - fecha_inicio)[0:2].strip():
-				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:2].strip())
+			_logger.info(str(fecha_fin - fecha_inicio)[0:3])
+
+			if not ':' in str(fecha_fin - fecha_inicio)[0:3].strip():
+				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:3].strip())
+
 			else:
 				raise osv.except_osv(_('Error!'),_('Las fechas no coinciden para ser una agenda repetida ya que son iguales'))
 			
@@ -912,7 +915,6 @@ class doctor_co_schedule_inherit(osv.osv):
 
 			if not True in dias_usuario.values():
 				raise osv.except_osv(_('Error!'),_('Debe Seleccionar los dias que se repite la agenda'))
-
 
 			for dias in range(0, duracion_dias+1, 1):
 
