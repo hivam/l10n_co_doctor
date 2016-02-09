@@ -902,10 +902,11 @@ class doctor_co_schedule_inherit(osv.osv):
 			fecha_sin_hora = str(fecha_inicio)[0:10]
 			fecha_sin_hora = datetime.strptime(fecha_sin_hora, "%Y-%m-%d")
 
-			_logger.info(str(fecha_fin - fecha_inicio)[0:3])
-
 			if not ':' in str(fecha_fin - fecha_inicio)[0:3].strip():
-				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:3].strip())
+				if not str(fecha_fin - fecha_inicio)[0:3].strip().isdigit():
+					duracion_dias = int(str(fecha_fin - fecha_inicio)[0:1].strip())
+				else:
+					duracion_dias = int(str(fecha_fin - fecha_inicio)[0:3].strip())
 
 			else:
 				raise osv.except_osv(_('Error!'),_('Las fechas no coinciden para ser una agenda repetida ya que son iguales'))
@@ -915,9 +916,8 @@ class doctor_co_schedule_inherit(osv.osv):
 
 			if not True in dias_usuario.values():
 				raise osv.except_osv(_('Error!'),_('Debe Seleccionar los dias que se repite la agenda'))
-
+			
 			for dias in range(0, duracion_dias+1, 1):
-
 				fecha_sin_h = fecha_sin_hora + timedelta(days=dias)
 				dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
 				dia=dias_inicia_trabaja.weekday()
@@ -1051,6 +1051,9 @@ class doctor_co_schedule_inherit(osv.osv):
 
 	def asignar_cita(self, cr, uid, ids, context=None):
 
+		for id_agenda in self.browse(cr,uid,ids):
+				agenda_id = id_agenda.id
+		
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
 			data_obj = self.pool.get('ir.model.data')
 			result = data_obj._get_id(cr, uid, 'doctor_multiroom', 'view_doctor_appointment')
@@ -1061,19 +1064,33 @@ class doctor_co_schedule_inherit(osv.osv):
 
 			context['default_schedule_id'] = agenda_id
 
-		return {
-			'type': 'ir.actions.act_window',
-			'name': 'Asignar Cita',
-			'view_type': 'form',
-			'view_mode': 'form',
-			'res_id': False,
-			'res_model': 'doctor.appointment',
-			'context': context or None,
-			'view_id': [view_id],
-			'nodestroy': False,
-			'target': 'new'
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Asignar Cita',
+				'view_type': 'form',
+				'view_mode': 'form',
+				'res_id': False,
+				'res_model': 'doctor.appointment',
+				'context': context or None,
+				'view_id': [view_id] or False,
+				'nodestroy': False,
+				'target': 'new'
+			}
+		else:
+			context['default_schedule_id'] = agenda_id
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Asignar Cita',
+				'view_type': 'form',
+				'view_mode': 'form',
+				'res_id': False,
+				'res_model': 'doctor.appointment',
+				'context': context or None,
+				'view_id': False,
+				'nodestroy': False,
+				'target': 'new'
+			}
 
-		}
 
 
 doctor_co_schedule_inherit()
