@@ -60,7 +60,6 @@ class doctor(osv.osv):
 		modulo_instalado = self.pool.get('ir.module.module').search(cr,uid,[('name', '=', nombre_modulo), ('state', '=', 'installed')],context=context)
 		if modulo_instalado:
 			return True
-
 		return False
 
 	def company_nombre(self, cr, uid, context=None):
