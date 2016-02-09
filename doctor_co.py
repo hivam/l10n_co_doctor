@@ -927,13 +927,17 @@ class doctor_co_schedule_inherit(osv.osv):
 				mes = int(dias_inicia_trabaja.strftime('%m'))-1
 
 				if (dias_usuario[dia_semana[dia]] or str(fecha_sin_h)[0:10] in fecha_excepciones) and meses_usuario[meses_anio[mes]]:
+					
 					u['date_begin'] = dias_inicia_trabaja
 					u['date_end'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
-					_logger.info('pasa')
+					u['schedule_duration'] = vals['duracion_agenda']
+
 					u['fecha_inicio'] = dias_inicia_trabaja
 					u['fecha_fin'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
+					u['duracion_agenda'] = vals['duracion_agenda']
 					if 'consultorio_id' in vals:
 						u['consultorio_id'] = vals['consultorio_id']
+
 					u['professional_id'] = vals['professional_id']
 					u['repetir_agenda'] = vals['repetir_agenda']
 					u['lunes'] = vals['lunes']
