@@ -96,7 +96,7 @@ class doctor_patient_co(osv.osv):
 	
 	_columns = {
 		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
-		'edad_calculada' : fields.function(_get_edad, type="integer", store= False, 
+		'edad_calculada' : fields.function(_get_edad, type="integer", store= True, 
 								readonly=True, method=True, string='Edad Actual',),
 		'email' : fields.char('Email'),
 		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
@@ -124,7 +124,7 @@ class doctor_patient_co(osv.osv):
 		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario'),
 
 		'unidad_edad_calculada': fields.function(_get_unidad_edad, type="selection", method=True, 
-								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True),
+								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True, store=True),
 		'ver_nc': fields.boolean('Ver Nc', store=False),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
@@ -902,8 +902,12 @@ class doctor_co_schedule_inherit(osv.osv):
 			fecha_sin_hora = str(fecha_inicio)[0:10]
 			fecha_sin_hora = datetime.strptime(fecha_sin_hora, "%Y-%m-%d")
 
-			if not ':' in str(fecha_fin - fecha_inicio)[0:2].strip():
-				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:2].strip())
+			if not ':' in str(fecha_fin - fecha_inicio)[0:3].strip():
+				if not str(fecha_fin - fecha_inicio)[0:3].strip().isdigit():
+					duracion_dias = int(str(fecha_fin - fecha_inicio)[0:1].strip())
+				else:
+					duracion_dias = int(str(fecha_fin - fecha_inicio)[0:3].strip())
+
 			else:
 				raise osv.except_osv(_('Error!'),_('Las fechas no coinciden para ser una agenda repetida ya que son iguales'))
 			
@@ -912,10 +916,8 @@ class doctor_co_schedule_inherit(osv.osv):
 
 			if not True in dias_usuario.values():
 				raise osv.except_osv(_('Error!'),_('Debe Seleccionar los dias que se repite la agenda'))
-
-
+			
 			for dias in range(0, duracion_dias+1, 1):
-
 				fecha_sin_h = fecha_sin_hora + timedelta(days=dias)
 				dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
 				dia=dias_inicia_trabaja.weekday()
@@ -1049,6 +1051,9 @@ class doctor_co_schedule_inherit(osv.osv):
 
 	def asignar_cita(self, cr, uid, ids, context=None):
 
+		for id_agenda in self.browse(cr,uid,ids):
+				agenda_id = id_agenda.id
+		
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
 			data_obj = self.pool.get('ir.model.data')
 			result = data_obj._get_id(cr, uid, 'doctor_multiroom', 'view_doctor_appointment')
@@ -1059,19 +1064,33 @@ class doctor_co_schedule_inherit(osv.osv):
 
 			context['default_schedule_id'] = agenda_id
 
-		return {
-			'type': 'ir.actions.act_window',
-			'name': 'Asignar Cita',
-			'view_type': 'form',
-			'view_mode': 'form',
-			'res_id': False,
-			'res_model': 'doctor.appointment',
-			'context': context or None,
-			'view_id': [view_id],
-			'nodestroy': False,
-			'target': 'new'
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Asignar Cita',
+				'view_type': 'form',
+				'view_mode': 'form',
+				'res_id': False,
+				'res_model': 'doctor.appointment',
+				'context': context or None,
+				'view_id': [view_id] or False,
+				'nodestroy': False,
+				'target': 'new'
+			}
+		else:
+			context['default_schedule_id'] = agenda_id
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Asignar Cita',
+				'view_type': 'form',
+				'view_mode': 'form',
+				'res_id': False,
+				'res_model': 'doctor.appointment',
+				'context': context or None,
+				'view_id': False,
+				'nodestroy': False,
+				'target': 'new'
+			}
 
-		}
 
 
 doctor_co_schedule_inherit()

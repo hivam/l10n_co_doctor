@@ -108,6 +108,7 @@ class radicacion_cuentas(osv.osv):
 		'rangofacturas_hasta' : fields.date('Hasta', required=True),
 		#Rips
 		'rips_ids': fields.one2many('rips.generados', 'radicacioncuentas_id', string='RIPS', required=True, ondelete='restrict'),
+		'rips_tipo_archivo' : fields.one2many('rips.tipo.archivo','radicacioncuentas_id','Tipo Archivo', required=False),
 		'saldo' : fields.float('Saldo', readonly=True),
 		'secuencia' : fields.char("Cuenta N°", size=200 ),
 		'state': fields.selection([('draft','Borrador'),('confirmed','Confirmado'),('validated', 'Validado')], 'Status', readonly=True, required=False),
@@ -118,6 +119,7 @@ class radicacion_cuentas(osv.osv):
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
 		'state' : 'draft',
+		'rips_tipo_archivo' : [3,10],
 	}
 
 
@@ -158,13 +160,26 @@ class radicacion_cuentas(osv.osv):
 		return parent_id
 
 	def getSecuencia(self, cr, uid, context=None):
+		"""
+		Este metodo obtiene el ultimo archivo Rips generado.
+		"""
 		rips_generados_obj = self.pool.get('rips.generados')
 		todos = rips_generados_obj.search(cr, uid, [])
-		if todos:
+		if todos: #si hay archivos en rips.generados entonces...
 			ultimo_registro = todos[-1]
 			nombre = rips_generados_obj.browse(cr, uid, ultimo_registro).nombre_archivo
 		else:
-			nombre = 'XX000000.txt'
+			# Si no hay registros en rips.generados buscamos en ir.attachment
+			cr.execute("SELECT name, file_type FROM ir_attachment ORDER BY create_date DESC limit 1")
+			listFetch= cr.fetchall()
+			nombre= listFetch[0][0]
+			file_type= listFetch[0][1]
+			#si el ultimo archivo de ir.attachment es un txt/plano entonces lo obtenemos.
+			if  file_type == 'text/plain':
+				nombre = nombre= listFetch[0][0]
+			#sino es txt/plano iniciamos la secuencia desde 0.
+			else:
+				nombre = 'XX000000.txt'
 		get_secuencia = int(nombre[2:8])
 		aumentando_secuencia = '{0:06}'.format(get_secuencia + 1)
 		return aumentando_secuencia
@@ -184,6 +199,28 @@ class radicacion_cuentas(osv.osv):
 		return True
 
 	def generar_rips_US(self, cr, uid, ids, context=None):
+		for var in self.browse(cr, uid, ids):
+			archivo = StringIO.StringIO()
+			for factura in var.invoices_ids:
+				tipo_archivo = tipo_archivo_rips.get('10')
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+				parent_id = self.getParentid(cr,uid,ids)[0]
+				#***********GET CAMPOS********
+				#Tipo de identificación del usuario
+				archivo.write(tdoc_selection.get(factura.patient_id.tdoc or '' + ','))
+				#número de identificación del usuario
+				archivo.write(factura.patient_id.ref or ''+ ',')
+				#Código entidad administradora
+				archivo.write(var.cliente_id.code + ',')
+				output = base64.encodestring(archivo.getvalue())
+				id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																			'datas_fname': nombre_archivo,
+																			'type': 'binary',
+																			'datas': output,
+																			'parent_id' : parent_id,
+																			'res_model' : 'rips.radicacioncuentas',
+																			'res_id' : ids[0]},
+																			context= context)
 		return True
 
 	def generar_rips_AF(self, cr, uid, ids, context=None):
@@ -283,8 +320,14 @@ class radicacion_cuentas(osv.osv):
 
 
 			output = base64.encodestring(archivo.getvalue())
-			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 'datas_fname': nombre_archivo, 'type': 'binary', 'datas': output, 'parent_id' : parent_id, 'res_model' : 'rips.radicacioncuentas', 'res_id' : ids[0]}, context= context)
-
+			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																			'datas_fname': nombre_archivo,
+																			'type': 'binary',
+																			'datas': output,
+																			'parent_id' : parent_id,
+																			'res_model' : 'rips.radicacioncuentas',
+																			'res_id' : ids[0]},
+																			context= context)
 			for actual in self.browse(cr, uid, ids):
 				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
 																  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
