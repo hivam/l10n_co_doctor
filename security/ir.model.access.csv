@@ -37,3 +37,4 @@ access_doctor_tipousuario_regimen,doctor.tipousuario.regimen,model_doctor_tipous
 access_doctor_appointment_type,doctor.appointment.type,model_doctor_appointment_type,doctor.group_doctor_assistant,1,1,1,0
 access_doctor_attentions_medicamento_otro,doctor.attentions.medicamento_otro,model_doctor_attentions_medicamento_otro,doctor.group_doctor_assistant,1,0,0,0
 access_doctor_contract_insurer,doctor.contract.insurer,model_doctor_contract_insurer,doctor.group_doctor_assistant,1,1,1,0
+access_doctor_insurer_plan,doctor.insurer.plan,model_doctor_insurer_plan,doctor.group_doctor_assistant,1,1,1,0
