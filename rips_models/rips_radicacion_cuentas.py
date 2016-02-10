@@ -192,28 +192,82 @@ class radicacion_cuentas(osv.osv):
 			return 'known.txt'
 
 	def generar_rips(self, cr, uid, ids, context=None):
-		_logger.info("Generando archivo rips AF ................")
-		self.generar_rips_AF(cr, uid, ids, context)
-		_logger.info("Generando archivo rips US ................")
-		self.generar_rips_US(cr, uid, ids, context)
+		for var in self.browse(cr, uid, ids):
+			if var.rips_tipo_archivo:
+				tipo_archivo = var.rips_tipo_archivo
+				for rec in tipo_archivo:
+					generar_archivo = tipo_archivo_rips.get(str(rec.id))
+					if generar_archivo == 'AF':
+						self.generar_rips_AF(cr, uid, ids, context=None)
+					elif generar_archivo == 'US':
+						self.generar_rips_US(cr, uid, ids, context=None)
 		return True
 
 	def generar_rips_US(self, cr, uid, ids, context=None):
+		pacientes = []
 		for var in self.browse(cr, uid, ids):
 			archivo = StringIO.StringIO()
 			for factura in var.invoices_ids:
-				tipo_archivo = tipo_archivo_rips.get('10')
+				if factura.patient_id.id not in pacientes:
+					tipo_archivo = tipo_archivo_rips.get('10')
 				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
 				parent_id = self.getParentid(cr,uid,ids)[0]
 				#***********GET CAMPOS********
 				#Tipo de identificación del usuario
-				archivo.write(tdoc_selection.get(factura.patient_id.tdoc or '' + ','))
+				archivo.write(str(tdoc_selection.get(factura.patient_id.tdoc) + ','))
 				#número de identificación del usuario
-				archivo.write(factura.patient_id.ref or ''+ ',')
+				archivo.write(factura.patient_id.ref+ ',')
 				#Código entidad administradora
-				archivo.write(var.cliente_id.code + ',')
-				output = base64.encodestring(archivo.getvalue())
-				id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+				archivo.write(var.cliente_id.code+ ',')
+				#Tipo de usuario
+				archivo.write(str(factura.tipo_usuario_id.id)+ ',')
+				#Primer apellido del paciente
+				archivo.write(factura.patient_id.lastname+ ',')
+				#Segundo apellido del paciente
+				archivo.write(factura.patient_id.surname+ ',')
+				#Primer nombre del paciente
+				archivo.write(factura.patient_id.firstname+ ',')
+				#Segundo nombre del paciente
+				archivo.write(factura.patient_id.middlename+ ',')
+				#Edad del paciente al momento de la prestación del servicio
+				origin_invoice = factura.origin
+				cr.execute("""SELECT da.age_attention, da.age_unit FROM account_invoice ai, doctor_attentions da, sale_order so WHERE  ai.origin=so.name and so.origin=da.origin and ai.origin=%s""", [origin_invoice] )
+				edad=cr.fetchall()
+				if edad:
+					archivo.write(str(edad[0][0])+',')
+					#Unidad de medida de edad paciente
+					archivo.write(str(edad[0][1])+',')
+				else:
+					archivo.write(',,')
+				#Sexo del paciente
+				sexo_paciente = factura.patient_id.sex.upper()
+				if sexo_paciente:
+					archivo.write(sexo_paciente+ ',')
+				else:
+					archivo.write(',')
+				#Codigo de departamento de residencia
+				ciudad_paciente = factura.patient_id.city_id.id
+				if ciudad_paciente:
+					archivo.write(str(ciudad_paciente)+ ',')
+				else:
+					archivo.write(',')
+				#codigo de municipio de residencia
+				estado_paciente = factura.patient_id.state_id.id
+				if estado_paciente:
+					archivo.write(str(estado_paciente)+ ',')
+				else:
+					archivo.write(',')
+				#zona de residencia 
+				zona_paciente = factura.patient_id.zona
+				if zona_paciente:
+					archivo.write(zona_paciente + ',')
+				else:
+					archivo.write(',')
+				pacientes.append(factura.patient_id.id)
+
+			archivo.write('\n')
+			output = base64.encodestring(archivo.getvalue())
+			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
 																			'datas_fname': nombre_archivo,
 																			'type': 'binary',
 																			'datas': output,
@@ -221,6 +275,14 @@ class radicacion_cuentas(osv.osv):
 																			'res_model' : 'rips.radicacioncuentas',
 																			'res_id' : ids[0]},
 																			context= context)
+			for actual in self.browse(cr, uid, ids):
+				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
+																  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
+																 'nombre_archivo': nombre_archivo,
+																 'f_inicio_radicacion': actual.rangofacturas_desde,
+																 'f_fin_radicacion' : actual.rangofacturas_hasta,
+																 'archivo' : output}, context=context)	
+				
 		return True
 
 	def generar_rips_AF(self, cr, uid, ids, context=None):
