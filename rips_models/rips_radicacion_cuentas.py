@@ -274,15 +274,15 @@ class radicacion_cuentas(osv.osv):
 					else:
 						archivo.write(',')
 					#Codigo de departamento de residencia
-					ciudad_paciente = factura.patient_id.city_id.id
+					ciudad_paciente = factura.patient_id.city_id
 					if ciudad_paciente:
-						archivo.write(str(ciudad_paciente)+ ',')
+						archivo.write(str(ciudad_paciente.id)+ ',')
 					else:
 						archivo.write(',')
 					#codigo de municipio de residencia
-					estado_paciente = factura.patient_id.state_id.id
+					estado_paciente = factura.patient_id.state_id
 					if estado_paciente:
-						archivo.write(str(estado_paciente)+ ',')
+						archivo.write(str(estado_paciente.id)+ ',')
 					else:
 						archivo.write(',')
 					#zona de residencia 
