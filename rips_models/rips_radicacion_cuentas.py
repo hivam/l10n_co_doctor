@@ -193,7 +193,11 @@ class radicacion_cuentas(osv.osv):
 
 	def generar_rips(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
-			if var.rips_tipo_archivo:
+			if not var.rips_tipo_archivo:
+				_logger.info("Si entró")
+				self.generar_rips_AF(cr, uid, ids, context=None)
+				self.generar_rips_US(cr, uid, ids, context=None)
+			else:
 				tipo_archivo = var.rips_tipo_archivo
 				for rec in tipo_archivo:
 					generar_archivo = tipo_archivo_rips.get(str(rec.id))
@@ -210,62 +214,86 @@ class radicacion_cuentas(osv.osv):
 			for factura in var.invoices_ids:
 				if factura.patient_id.id not in pacientes:
 					tipo_archivo = tipo_archivo_rips.get('10')
-				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
-				parent_id = self.getParentid(cr,uid,ids)[0]
-				#***********GET CAMPOS********
-				#Tipo de identificación del usuario
-				archivo.write(str(tdoc_selection.get(factura.patient_id.tdoc) + ','))
-				#número de identificación del usuario
-				archivo.write(factura.patient_id.ref+ ',')
-				#Código entidad administradora
-				archivo.write(var.cliente_id.code+ ',')
-				#Tipo de usuario
-				archivo.write(str(factura.tipo_usuario_id.id)+ ',')
-				#Primer apellido del paciente
-				archivo.write(factura.patient_id.lastname+ ',')
-				#Segundo apellido del paciente
-				archivo.write(factura.patient_id.surname+ ',')
-				#Primer nombre del paciente
-				archivo.write(factura.patient_id.firstname+ ',')
-				#Segundo nombre del paciente
-				archivo.write(factura.patient_id.middlename+ ',')
-				#Edad del paciente al momento de la prestación del servicio
-				origin_invoice = factura.origin
-				cr.execute("""SELECT da.age_attention, da.age_unit FROM account_invoice ai, doctor_attentions da, sale_order so WHERE  ai.origin=so.name and so.origin=da.origin and ai.origin=%s""", [origin_invoice] )
-				edad=cr.fetchall()
-				if edad:
-					archivo.write(str(edad[0][0])+',')
-					#Unidad de medida de edad paciente
-					archivo.write(str(edad[0][1])+',')
-				else:
-					archivo.write(',,')
-				#Sexo del paciente
-				sexo_paciente = factura.patient_id.sex.upper()
-				if sexo_paciente:
-					archivo.write(sexo_paciente+ ',')
-				else:
-					archivo.write(',')
-				#Codigo de departamento de residencia
-				ciudad_paciente = factura.patient_id.city_id.id
-				if ciudad_paciente:
-					archivo.write(str(ciudad_paciente)+ ',')
-				else:
-					archivo.write(',')
-				#codigo de municipio de residencia
-				estado_paciente = factura.patient_id.state_id.id
-				if estado_paciente:
-					archivo.write(str(estado_paciente)+ ',')
-				else:
-					archivo.write(',')
-				#zona de residencia 
-				zona_paciente = factura.patient_id.zona
-				if zona_paciente:
-					archivo.write(zona_paciente + ',')
-				else:
-					archivo.write(',')
-				pacientes.append(factura.patient_id.id)
-
-			archivo.write('\n')
+					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+					parent_id = self.getParentid(cr,uid,ids)[0]
+					#***********GET CAMPOS********
+					#Tipo de identificación del usuario
+					if factura.patient_id.tdoc:
+						archivo.write(str(tdoc_selection.get(factura.patient_id.tdoc) + ','))
+					else:
+						archivo.write(",")
+					#número de identificación del usuario
+					if factura.patient_id.ref:
+						archivo.write(factura.patient_id.ref+ ',')
+					else:
+						archivo.write(",")
+					#Código entidad administradora
+					if var.cliente_id:
+						archivo.write(var.cliente_id.code+ ',')
+					else:
+						archivo.write(",")
+					#Tipo de usuario
+					if factura.tipo_usuario_id:
+						archivo.write(str(factura.tipo_usuario_id.id)+ ',')
+					else:
+						archivo.write(",")
+					#Primer apellido del paciente
+					if factura.patient_id.lastname:
+						archivo.write(factura.patient_id.lastname+ ',')
+					else:
+						archivo.write(",")
+					#Segundo apellido del paciente
+					if factura.patient_id.surname:
+						archivo.write(factura.patient_id.surname+ ',')
+					else:
+						archivo.write(",")
+					#Primer nombre del paciente
+					if factura.patient_id.firstname:
+						archivo.write(factura.patient_id.firstname+ ',')
+					else:
+						archivo.write(",")
+					#Segundo nombre del paciente
+					if factura.patient_id.middlename:
+						archivo.write(factura.patient_id.middlename+ ',')
+					else:
+						archivo.write(",")
+					#Edad del paciente al momento de la prestación del servicio
+					origin_invoice = factura.origin
+					cr.execute("""SELECT da.age_attention, da.age_unit FROM account_invoice ai, doctor_attentions da, sale_order so WHERE  ai.origin=so.name and so.origin=da.origin and ai.origin=%s""", [origin_invoice] )
+					edad=cr.fetchall()
+					if edad:
+						archivo.write(str(edad[0][0])+',')
+						#Unidad de medida de edad paciente
+						archivo.write(str(edad[0][1])+',')
+					else:
+						archivo.write(',,')
+					#Sexo del paciente
+					sexo_paciente = factura.patient_id.sex.upper()
+					if sexo_paciente:
+						archivo.write(sexo_paciente+ ',')
+					else:
+						archivo.write(',')
+					#Codigo de departamento de residencia
+					ciudad_paciente = factura.patient_id.city_id.id
+					if ciudad_paciente:
+						archivo.write(str(ciudad_paciente)+ ',')
+					else:
+						archivo.write(',')
+					#codigo de municipio de residencia
+					estado_paciente = factura.patient_id.state_id.id
+					if estado_paciente:
+						archivo.write(str(estado_paciente)+ ',')
+					else:
+						archivo.write(',')
+					#zona de residencia 
+					zona_paciente = factura.patient_id.zona
+					if zona_paciente:
+						archivo.write(zona_paciente + ',')
+					else:
+						archivo.write(',')
+					pacientes.append(factura.patient_id.id)
+					#salto de línea
+					archivo.write('\n')
 			output = base64.encodestring(archivo.getvalue())
 			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
 																			'datas_fname': nombre_archivo,
