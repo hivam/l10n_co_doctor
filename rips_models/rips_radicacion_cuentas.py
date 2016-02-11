@@ -32,6 +32,7 @@ from openerp.tools.translate import _
 import logging
 import StringIO
 import base64
+import unicodedata
 _logger = logging.getLogger(__name__)
 
 tdoc_selection = {
@@ -194,7 +195,6 @@ class radicacion_cuentas(osv.osv):
 	def generar_rips(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
 			if not var.rips_tipo_archivo:
-				_logger.info("Si entró")
 				self.generar_rips_AF(cr, uid, ids, context=None)
 				self.generar_rips_US(cr, uid, ids, context=None)
 			else:
@@ -239,22 +239,26 @@ class radicacion_cuentas(osv.osv):
 						archivo.write(",")
 					#Primer apellido del paciente
 					if factura.patient_id.lastname:
-						archivo.write(factura.patient_id.lastname+ ',')
+						lastname = unicodedata.normalize('NFKD', factura.patient_id.lastname).encode('ASCII', 'ignore')
+						archivo.write(lastname+ ',')
 					else:
 						archivo.write(",")
 					#Segundo apellido del paciente
 					if factura.patient_id.surname:
-						archivo.write(factura.patient_id.surname+ ',')
+						surname = unicodedata.normalize('NFKD', factura.patient_id.surname).encode('ASCII', 'ignore')
+						archivo.write(surname+ ',')
 					else:
 						archivo.write(",")
 					#Primer nombre del paciente
 					if factura.patient_id.firstname:
-						archivo.write(factura.patient_id.firstname+ ',')
+						firstname = unicodedata.normalize('NFKD', factura.patient_id.firstname).encode('ASCII', 'ignore')
+						archivo.write(firstname+ ',')
 					else:
 						archivo.write(",")
 					#Segundo nombre del paciente
 					if factura.patient_id.middlename:
-						archivo.write(factura.patient_id.middlename+ ',')
+						firstname = unicodedata.normalize('NFKD', factura.patient_id.middlename).encode('ASCII', 'ignore')
+						archivo.write(firstname+ ',')
 					else:
 						archivo.write(",")
 					#Edad del paciente al momento de la prestación del servicio
