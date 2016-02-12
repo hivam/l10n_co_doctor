@@ -607,7 +607,7 @@ class doctor_appointment_co(osv.osv):
 			'ref': doctor_appointment.ref,
 			'tipo_usuario_id' : doctor_appointment.tipo_usuario_id.id,
 			'contrato_id' : doctor_appointment.contract_id.id,
-			'state': 'drafy',
+			'state': 'draft',
 		}
 		# Get other order values from appointment partner
 		order.update(sale.sale.sale_order.onchange_partner_id(order_obj, cr, uid, [], tercero)['value'])
