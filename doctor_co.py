@@ -130,7 +130,7 @@ class doctor_patient_co(osv.osv):
 		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
 
 		'poliza_medicina_prepagada': fields.boolean(u'Tiene Póliza de medicina prepagada'),
-		'insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", required=False, domain="[('tipousuario_id','=', 5)]"),
+		'insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", required=False, domain="[('tipousuario_id.name','=', 'Otro')]"),
 		'plan_prepagada_id' : fields.many2one('doctor.insurer.plan', 'Plan', domain="[('insurer_id','=',insurer_prepagada_id)]"),
 		'numero_poliza_afiliacion': fields.char(u'Póliza- # Afiliación'),
 		'eps_predeterminada': fields.boolean('Predeterminada'),
@@ -607,7 +607,7 @@ class doctor_appointment_co(osv.osv):
 			'ref': doctor_appointment.ref,
 			'tipo_usuario_id' : doctor_appointment.tipo_usuario_id.id,
 			'contrato_id' : doctor_appointment.contract_id.id,
-			'state': 'manual',
+			'state': 'draft',
 		}
 		# Get other order values from appointment partner
 		order.update(sale.sale.sale_order.onchange_partner_id(order_obj, cr, uid, [], tercero)['value'])
@@ -757,7 +757,10 @@ class doctor_attentions_co(osv.osv):
 	_defaults = {
 		'finalidad_consulta': '10',
 		'activar_notas_confidenciales' : True,
-		'inv' : True
+		'inv' : True,
+		'causa_externa':'13',
+		'finalidad_consulta':'07'
+
 	}
 
 	def write(self, cr, uid, ids, vals, context=None):
@@ -924,13 +927,17 @@ class doctor_co_schedule_inherit(osv.osv):
 				mes = int(dias_inicia_trabaja.strftime('%m'))-1
 
 				if (dias_usuario[dia_semana[dia]] or str(fecha_sin_h)[0:10] in fecha_excepciones) and meses_usuario[meses_anio[mes]]:
+					
 					u['date_begin'] = dias_inicia_trabaja
 					u['date_end'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
-					_logger.info('pasa')
+					u['schedule_duration'] = vals['duracion_agenda']
+
 					u['fecha_inicio'] = dias_inicia_trabaja
 					u['fecha_fin'] = dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda'])
+					u['duracion_agenda'] = vals['duracion_agenda']
 					if 'consultorio_id' in vals:
 						u['consultorio_id'] = vals['consultorio_id']
+
 					u['professional_id'] = vals['professional_id']
 					u['repetir_agenda'] = vals['repetir_agenda']
 					u['lunes'] = vals['lunes']
@@ -1053,7 +1060,7 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		for id_agenda in self.browse(cr,uid,ids):
 				agenda_id = id_agenda.id
-		
+
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
 			data_obj = self.pool.get('ir.model.data')
 			result = data_obj._get_id(cr, uid, 'doctor_multiroom', 'view_doctor_appointment')
