@@ -130,7 +130,7 @@ class doctor_patient_co(osv.osv):
 		'nro_afiliacion': fields.char(u'Nº de Afiliación'),
 
 		'poliza_medicina_prepagada': fields.boolean(u'Tiene Póliza de medicina prepagada'),
-		'insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", required=False, domain="[('tipousuario_id','=', 5)]"),
+		'insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", required=False, domain="[('tipousuario_id.name','=', 'Otro')]"),
 		'plan_prepagada_id' : fields.many2one('doctor.insurer.plan', 'Plan', domain="[('insurer_id','=',insurer_prepagada_id)]"),
 		'numero_poliza_afiliacion': fields.char(u'Póliza- # Afiliación'),
 		'eps_predeterminada': fields.boolean('Predeterminada'),
