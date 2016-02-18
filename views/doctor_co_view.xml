@@ -423,6 +423,10 @@
                     <field name="otro_sintomas_revision_sistema"/>
                 </field>
 
+                <field name="actual_disease" position="attributes">
+                    <attribute name="placeholder" groups="doctor.group_doctor_psicologo">Historia actual</attribute>
+                </field>
+
                 <field name="attentions_past_ids" position="after">
                     <label for="otros_antecedentes" string="Otros Antecedentes"/>
                     <field name="otros_antecedentes" />
@@ -581,10 +585,23 @@
                 </xpath>
 
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="inside">
-                    <page string="Otra Prescripcion">
+                    <page string="Otra Prescripcion" groups="doctor.group_doctor_physician"> 
                         <separator string="Otra Prescripcion" colspan="4"/>
                         <field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
                             <form string="Otra Prescripcion">
+                                <group colspan='3' col='2'>
+                                    <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]"/>
+                                     <field name="prescripcion"/>
+                                     <field name="recomendacion"/>
+                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '03')]"/>
+                                </group>   
+                            </form>
+                        </field>
+                    </page>
+                    <page string="Prescripcion" groups="doctor.group_doctor_psicologo">
+                        <separator string="Prescripcion" colspan="4"/>
+                        <field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
+                            <form string="Prescripcion">
                                 <group colspan='3' col='2'>
                                     <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]"/>
                                      <field name="prescripcion"/>
