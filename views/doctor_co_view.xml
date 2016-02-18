@@ -463,6 +463,7 @@
                         <field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/> 
                     </group>
                 </field>
+                
 
                 <xpath expr="//notebook/page[@string='Others']" position="after">
                     <page string="Recomendaciones">
