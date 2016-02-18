@@ -446,17 +446,17 @@
                 </field>
 
                 <field name="analysis" position="after">
-                    <label for="reportes_paraclinicos" string="Reportes de Paraclínicos"/>
-                    <field name="reportes_paraclinicos" nolabel="1"/>
+                    <label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
+                    <field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>
                 </field>
 
                 <field name="conduct" position="after">
                     <field name="inv" invisible="1"/> 
                     <group col="2"> 
-                        <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician" attrs="{'invisible':[ ('inv','=',False)]}"/>
+                        <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
                     </group>
                     <group col="1" colspan="2">
-                        <field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician"/> 
+                        <field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/> 
                     </group>
                 </field>
 
