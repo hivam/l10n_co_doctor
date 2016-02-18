@@ -418,6 +418,13 @@
                 </group>
                 </xpath>
 
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='2']/page[@string='Review systems']" position="attributes">
+                    <attribute name="string" groups="doctor.group_doctor_psicologo">Sintomas (Cuestionarios-Entrevistas)</attribute>
+                    <attribute name="string" groups="doctor.group_doctor_psicologo">Revision por sistemas</attribute>
+                </xpath>
+                
+
+
                 <field name="review_systems_id" position="after">
                     <label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
                     <field name="otro_sintomas_revision_sistema"/>
