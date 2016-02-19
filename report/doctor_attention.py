@@ -64,7 +64,7 @@ class doctor_attention(report_sxw.rml_parse):
             str(age))
         return age_unit
 
-    def select_etiqueta_uno(self, user_id):
+    def select_etiqueta_uno(self, user_id, campo):
         resultado = []
         nombre = []
         context = {}
@@ -76,10 +76,24 @@ class doctor_attention(report_sxw.rml_parse):
         for i in resultado:
             nombre.append(self.pool.get('res.groups').browse(self.cr, self.uid, i, context=context).name)
 
-        if 'Psicologo' in nombre:
-            return 'Historia Actual'
-        elif 'Physician' in nombre:
-            return 'Enfermedad Actual'
+        if campo == 'enfer-hist':    
+            if 'Psicologo' in nombre:
+                return 'HISTORIA ACTUAL'
+            elif 'Physician' in nombre:
+                return 'ENFERMEDAD ACTUAL'
+        
+        elif campo == 'condu-planmanejo':
+            if 'Psicologo' in nombre:
+                return 'CONDUCTA (PLAN DE MANEJO)'
+            elif 'Physician' in nombre:
+                return 'CONDUCTA'
+
+        elif campo == 'cons-vita':
+            if 'Psicologo' in nombre:
+                return False
+            elif 'Physician' in nombre:
+                return True
+
 
 
 

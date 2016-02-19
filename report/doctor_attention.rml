@@ -185,7 +185,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P2">[[(select_etiqueta_uno(o.professional_id.user_id.id))]]</para>
+          <para style="P2">[[(select_etiqueta_uno(o.professional_id.user_id.id, 'enfer-hist'))]]</para>
         </td>
      </tr>
     </blockTable>
@@ -332,6 +332,7 @@
     </section>
 
     <blockTable colWidths="534.0" style="Table6">
+    [[select_etiqueta_uno(o.professional_id.user_id.id, 'cons-vita') or removeParentNode('blockTable')]]
       <tr>
         <td>
           <para style="P2">VITAL SIGNS</para>
@@ -340,6 +341,7 @@
     </blockTable>
 
     <blockTable colWidths="133.0,133.0,134.0,134.0" style="Table6">
+    [[select_etiqueta_uno(o.professional_id.user_id.id, 'cons-vita') or removeParentNode('blockTable')]]
         <tr>
      <td>
             <para style="P2">Height and weight</para>
@@ -471,7 +473,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P2">CONDUCT</para>
+          <para style="P2">[[(select_etiqueta_uno(o.professional_id.user_id.id, 'condu-planmanejo'))]]</para>
         </td>
      </tr>
     </blockTable>
