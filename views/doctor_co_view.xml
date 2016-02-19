@@ -422,11 +422,16 @@
                 <field name="review_systems_id" position="after">
                     <label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
                     <field name="otro_sintomas_revision_sistema"/>
+                    <label for="plantilla_sintomas_cuestionario_id" string="Plantillas" groups="doctor.group_doctor_psicologo"/>
+                    <field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' groups="doctor.group_doctor_psicologo" domain="[('tipo_plantilla', '=', '04')]"/>
+
                 </field>
 
                 <field name="attentions_past_ids" position="after">
                     <label for="otros_antecedentes" string="Otros Antecedentes"/>
                     <field name="otros_antecedentes" />
+                    <label for="plantilla_cuestionario_antecedentes_id" string="Plantillas" groups="doctor.group_doctor_psicologo"/>
+                    <field name="plantilla_cuestionario_antecedentes_id" on_change='onchange_plantillas(plantilla_cuestionario_antecedentes_id, "otros_antecedentes")' groups="doctor.group_doctor_psicologo" domain="[('tipo_plantilla', '=', '05')]"/>
                 </field>
 
 

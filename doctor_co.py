@@ -751,7 +751,9 @@ class doctor_attentions_co(osv.osv):
 		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas',states={'closed': [('readonly', True)]}),
 		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
 		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
-		}
+		'plantilla_sintomas_cuestionario_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'plantilla_cuestionario_antecedentes_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+	}
 
 
 	_defaults = {
@@ -762,6 +764,18 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta':'07'
 
 	}
+
+	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
+		res={'value':{}}
+		_logger.info(plantilla_id)
+		if plantilla_id:
+			cuerpo = self.pool.get('doctor.attentions.recomendaciones').browse(cr,uid,plantilla_id,context=context).cuerpo
+			res['value'][campo]=cuerpo
+		else:
+			res['value'][campo]=''
+
+		_logger.info(res)
+		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
@@ -1251,6 +1265,8 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('01','Recomendación'),
 		('02','Informes y Certificados'),
 		('03','Prescripciones'),
+		('04', 'Sintomas (Cuestionarios - Entrevistas)'),
+		('05', 'Antecedentes'),
 	]
 
 	_columns = {
