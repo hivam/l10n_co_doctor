@@ -429,10 +429,6 @@
                     <attribute name="string" groups="doctor.group_doctor_physician">Revision por sistemas</attribute>
                 </xpath>
 
-                <field name="actual_disease" position="attributes">
-                    <attribute name="placeholder" groups="doctor.group_doctor_psicologo">Historia actual</attribute>
-                </field>
-
                 <field name="attentions_past_ids" position="after">
                     <label for="otros_antecedentes" string="Otros Antecedentes"/>
                     <field name="otros_antecedentes" />
