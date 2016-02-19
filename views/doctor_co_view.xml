@@ -424,10 +424,10 @@
                     <field name="otro_sintomas_revision_sistema"/>
                 </field>
 
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='2']/page[@string='Review systems']/field[@name='review_systems_id']/tree[@string='Review systems']" position="attributes">
+                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='2']/page[@string='Review systems']" position="attributes">
                     <attribute name="string" groups="doctor.group_doctor_psicologo">Sintomas (Cuestionarios-Entrevistas)</attribute>
-                    <attribute name="string" groups="doctor.group_doctor_physician">Revision por sistemas</attribute>
                 </xpath>
+
 
                 <field name="attentions_past_ids" position="after">
                     <label for="otros_antecedentes" string="Otros Antecedentes"/>
