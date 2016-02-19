@@ -185,7 +185,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P2">ACTUAL DISEASE</para>
+          <para style="P2">[[(select_etiqueta_uno(o.professional_id.user_id.id))]]</para>
         </td>
      </tr>
     </blockTable>

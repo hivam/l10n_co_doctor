@@ -33,6 +33,7 @@ class doctor_attention(report_sxw.rml_parse):
             'select_type_attention': self.select_type_attention,
             'select_type_interconsultation': self.select_type_interconsultation,
             'select_age': self.select_age,
+            'select_etiqueta_uno': self.select_etiqueta_uno,
         })
 
     def select_type(self, tipo_usuario):
@@ -62,6 +63,27 @@ class doctor_attention(report_sxw.rml_parse):
         age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
             str(age))
         return age_unit
+
+    def select_etiqueta_uno(self, user_id):
+        resultado = []
+        nombre = []
+        context = {}
+        self.cr.execute("""SELECT gid FROM res_groups_users_rel WHERE uid = %s """, [user_id] )
+        
+        for x in (self.cr.fetchall()):
+            resultado.append(x[0])
+
+        for i in resultado:
+            nombre.append(self.pool.get('res.groups').browse(self.cr, self.uid, i, context=context).name)
+
+        if 'Psicologo' in nombre:
+            return 'Historia Actual'
+        elif 'Physician' in nombre:
+            return 'Enfermedad Actual'
+
+
+
+
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
                       'addons/l10n_co_doctor/report/doctor_attention.rml',
