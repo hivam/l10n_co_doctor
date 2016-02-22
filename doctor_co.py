@@ -108,9 +108,20 @@ class doctor_patient_co(osv.osv):
 		'nombre': fields.char('Nombre', size=70),
 		'nombre_acompaniante': fields.char('Nombre', size=70),
 		'nombre_responsable': fields.char('Nombre', size=70),
+
+		'nombre_madre':fields.char('Madre', size=70),
+		'telefono_madre':fields.char('Teléfono', size=12),
+		'direccion_madre':fields.char('Dirección', size=70),
+		'nombre_padre':fields.char('Padre', size=70),
+		'telefono_padre':fields.char('Teléfono', size=12),
+		'direccion_padre':fields.char('Dirección', size=70),
+		'completar_datos_acom':fields.boolean('Desea completar los datos de los padres:'),
 		'notas_paciente': fields.text('Notas'),
 		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , 'Ocupación' , required=False),
+		'ocupacion_madre' : fields.many2one('doctor.patient.ocupacion' , 'Ocupación Madre' , required=False),
+		'ocupacion_padre' : fields.many2one('doctor.patient.ocupacion' , 'Ocupación Padre' , required=False),
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
+		'parentesco_acompaniante_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 		'ref' :  fields.char('Identificación', required=True, ),
 		'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
 		'street' :  fields.char('Dirección', required=False),
@@ -122,7 +133,6 @@ class doctor_patient_co(osv.osv):
 		'telefono_acompaniante' : fields.char('Teléfono', size=12),
 		'telefono_responsable' : fields.char('Teléfono', size=12),
 		'tipo_usuario':  fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario'),
-
 		'unidad_edad_calculada': fields.function(_get_unidad_edad, type="selection", method=True, 
 								selection= SELECTION_LIST, string='Unidad de la edad',readonly=True, store=True),
 		'ver_nc': fields.boolean('Ver Nc', store=False),
@@ -136,6 +146,33 @@ class doctor_patient_co(osv.osv):
 		'eps_predeterminada': fields.boolean('Predeterminada'),
 		'prepagada_predeterminada': fields.boolean('Predeterminada'),
 	}
+
+	def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
+		res={'value':{}}
+		_logger.info('*****')
+		_logger.info(id_parentesco)
+		_logger.info('*****')
+		
+		if not id_parentesco:
+			
+			raise osv.except_osv(_('Aviso importante!'),_('Debe selecionar un parentesco'))
+			res['value']['completar_datos_acom'] = False
+
+		if (completar_datos_acompaniante):
+
+			name_parentesco= self.pool.get('doctor.patient.parentesco').browse(cr,uid, id_parentesco, context=context).name			 
+
+			if name_parentesco== 'Padre':
+				_logger.info(name_parentesco)
+				res['value']['nombre_padre'] = nom_acompanante  
+				res['value']['telefono_padre']= tel_acompaniante
+			if name_parentesco == 'Madre':
+				_logger.info(name_parentesco)
+				res['value']['nombre_madre'] = nom_acompanante  
+				res['value']['telefono_madre']= tel_acompaniante
+
+		return res
+			
 
 
 	def onchange_seleccion(self, cr, uid, ids, poliza_medicina_prepagada, context=None):
