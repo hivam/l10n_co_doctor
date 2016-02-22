@@ -132,6 +132,8 @@
                     <group col="2">
                       <field name="nombre_acompaniante"/>
                       <field name="telefono_acompaniante"/>
+                      <field name="parentesco_acompaniante_id"/>
+                      <field name="completar_datos_acom" on_change="onchange_completar_datos(parentesco_acompaniante_id,completar_datos_acom, nombre_acompaniante, telefono_acompaniante)"/>
                     </group>
                   </fieldset>
                 </xpath>
@@ -146,6 +148,33 @@
                     </group>
                   </fieldset>
                 </xpath>
+
+                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+                  <fieldset class="fieldset_margen" attrs="{'invisible': [('completar_datos_acom','=', False)]}">
+                    <legend class="texto_legend">Datos de la Madre</legend>
+                    <group col="2">
+                      <field name="nombre_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+                      <field name="ocupacion_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+                      <field name="telefono_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+                      <field name="direccion_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+                    </group>
+                  </fieldset>
+                </xpath>
+                
+                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+                  <fieldset class="fieldset_margen" attrs="{'invisible': [('completar_datos_acom','=', False)]}">
+                    <legend class="texto_legend">Datos del Padre</legend>
+                    <group col="2" colspan="2">
+                      <field name="nombre_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+                      <field name="ocupacion_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+                      <field name="telefono_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+                      <field name="direccion_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+                    </group>
+                  </fieldset>
+                </xpath>
+
+
+
 
                 <xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']" position="before">
                     <label for="notas_paciente" string="Notas"/>
