@@ -120,7 +120,7 @@ class radicacion_cuentas(osv.osv):
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
 		'state' : 'draft',
-		'rips_tipo_archivo' : [3,10],
+		'rips_tipo_archivo' : [3,10, 1],
 	}
 
 
@@ -197,6 +197,7 @@ class radicacion_cuentas(osv.osv):
 			if not var.rips_tipo_archivo:
 				self.generar_rips_AF(cr, uid, ids, context=None)
 				self.generar_rips_US(cr, uid, ids, context=None)
+				self.generar_rips_AC(cr, uid, ids, context=None)
 			else:
 				tipo_archivo = var.rips_tipo_archivo
 				for rec in tipo_archivo:
@@ -205,6 +206,40 @@ class radicacion_cuentas(osv.osv):
 						self.generar_rips_AF(cr, uid, ids, context=None)
 					elif generar_archivo == 'US':
 						self.generar_rips_US(cr, uid, ids, context=None)
+		return True
+
+	def generar_rips_AC(self, cr, uid, ids, context=None):
+		pacientes = []
+		for var in self.browse(cr, uid, ids):
+			archivo = StringIO.StringIO()
+			for factura in var.invoices_ids:
+				if factura.patient_id.id not in pacientes:
+					tipo_archivo = tipo_archivo_rips.get('1')
+					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+					parent_id = self.getParentid(cr,uid,ids)[0]
+					#***********GET CAMPOS********
+					#Número de la factura
+					if factura.number:
+						archivo.write(factura.number+ ',')
+					else:
+						archivo.write(",")
+			output = base64.encodestring(archivo.getvalue())
+			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																			'datas_fname': nombre_archivo,
+																			'type': 'binary',
+																			'datas': output,
+																			'parent_id' : parent_id,
+																			'res_model' : 'rips.radicacioncuentas',
+																			'res_id' : ids[0]},
+																			context= context)
+			for actual in self.browse(cr, uid, ids):
+				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
+																  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
+																 'nombre_archivo': nombre_archivo,
+																 'f_inicio_radicacion': actual.rangofacturas_desde,
+																 'f_fin_radicacion' : actual.rangofacturas_hasta,
+																 'archivo' : output}, context=context)	
+				
 		return True
 
 	def generar_rips_US(self, cr, uid, ids, context=None):
