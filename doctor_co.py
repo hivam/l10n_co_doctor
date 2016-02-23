@@ -153,23 +153,26 @@ class doctor_patient_co(osv.osv):
 		_logger.info(id_parentesco)
 		_logger.info('*****')
 		
-		if not id_parentesco:
-			
-			raise osv.except_osv(_('Aviso importante!'),_('Debe selecionar un parentesco'))
-			res['value']['completar_datos_acom'] = False
 
 		if (completar_datos_acompaniante):
 
-			name_parentesco= self.pool.get('doctor.patient.parentesco').browse(cr,uid, id_parentesco, context=context).name			 
+			if id_parentesco:
+				name_parentesco= self.pool.get('doctor.patient.parentesco').browse(cr,uid, id_parentesco, context=context).name			 
 
-			if name_parentesco== 'Padre':
-				_logger.info(name_parentesco)
-				res['value']['nombre_padre'] = nom_acompanante  
-				res['value']['telefono_padre']= tel_acompaniante
-			if name_parentesco == 'Madre':
-				_logger.info(name_parentesco)
-				res['value']['nombre_madre'] = nom_acompanante  
-				res['value']['telefono_madre']= tel_acompaniante
+				if name_parentesco== 'Padre':
+					_logger.info(name_parentesco)
+					res['value']['nombre_padre'] = nom_acompanante  
+					res['value']['telefono_padre']= tel_acompaniante
+				if name_parentesco == 'Madre':
+					_logger.info(name_parentesco)
+					res['value']['nombre_madre'] = nom_acompanante  
+					res['value']['telefono_madre']= tel_acompaniante
+
+		if not completar_datos_acompaniante:
+			res['value']['nombre_padre'] = ''  
+			res['value']['telefono_padre']= ''
+			res['value']['nombre_madre'] = '' 
+			res['value']['telefono_madre']= ''
 
 		return res
 			
