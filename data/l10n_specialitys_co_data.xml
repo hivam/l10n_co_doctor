@@ -701,6 +701,14 @@
                 <field name='code'>780</field>
                 <field name='name'>VIROLOGIA</field>
         </record> 
+        <record model='doctor.speciality' id='781'>
+                <field name='code'>781</field>
+                <field name='name'>PSICOLOGIA</field>
+        </record> 
+        <record model='doctor.speciality' id='782'>
+                <field name='code'>782</field>
+                <field name='name'>FONOAUDIOLOGIA</field>
+        </record> 
         <record model='doctor.speciality' id='999'>
                 <field name='code'>999</field>
                 <field name='name'>OTRA ESPECIALIDAD NO CLASIFICADA</field>
