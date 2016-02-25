@@ -1256,7 +1256,7 @@ class doctor_professional(osv.osv):
 
 		crear = super(doctor_professional, self).create(cr, uid, vals, context=context)
 		especialidad_id= vals['speciality_id']
-		identificación = vals['ref']
+		identificacion = vals['ref']
 		especialidad_nombre = self.pool.get('doctor.speciality').browse(cr, uid, especialidad_id, context=context).name
 
 		if especialidad_nombre.lower() == 'PSICOLOGIA'.lower():
