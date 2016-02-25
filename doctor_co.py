@@ -1262,7 +1262,7 @@ class doctor_professional(osv.osv):
 		if especialidad_nombre.lower() == 'PSICOLOGIA'.lower():
 			psicologo_grupo_id = self.pool.get('res.groups').search(cr, uid, [('name', '=', 'Psicologo')], context=context)
 			profesional_grupo_id = self.pool.get('res.groups').search(cr, uid, [('name', '=', 'Physician')], context=context)
-			profesional_id = self.search(cr, uid, [('ref', '=', identificación)], context=context)
+			profesional_id = self.search(cr, uid, [('ref', '=', identificacion)], context=context)
 			user_id = self.browse(cr, uid, profesional_id[0], context=context).user_id.id
 			cr.execute("SELECT gid FROM res_groups_users_rel WHERE uid = %s" %(user_id))
 
