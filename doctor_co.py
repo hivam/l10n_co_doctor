@@ -1251,6 +1251,27 @@ class doctor_professional(osv.osv):
 
 	}
 
+
+	def create(self, cr, uid, vals, context=None):
+
+		crear = super(doctor_professional, self).create(cr, uid, vals, context=context)
+		especialidad_id= vals['speciality_id']
+		identificacion = vals['ref']
+		especialidad_nombre = self.pool.get('doctor.speciality').browse(cr, uid, especialidad_id, context=context).name
+
+		if especialidad_nombre.lower() == 'PSICOLOGIA'.lower():
+			psicologo_grupo_id = self.pool.get('res.groups').search(cr, uid, [('name', '=', 'Psicologo')], context=context)
+			profesional_grupo_id = self.pool.get('res.groups').search(cr, uid, [('name', '=', 'Physician')], context=context)
+			profesional_id = self.search(cr, uid, [('ref', '=', identificacion)], context=context)
+			user_id = self.browse(cr, uid, profesional_id[0], context=context).user_id.id
+			cr.execute("SELECT gid FROM res_groups_users_rel WHERE uid = %s" %(user_id))
+
+			for i in cr.fetchall():
+				if i[0] in profesional_grupo_id:
+					cr.execute("UPDATE res_groups_users_rel SET gid = %s WHERE gid = %s AND uid= %s " %(psicologo_grupo_id[0], profesional_grupo_id[0], user_id))	
+
+		return crear
+
 	def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
 		
 		res = super(doctor_professional, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
@@ -1269,6 +1290,9 @@ class doctor_professional(osv.osv):
 				res['arch'] = etree.tostring(doc)
 				
 		return res
+
+
+
 
 doctor_professional()
 
