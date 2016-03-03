@@ -535,7 +535,7 @@ class doctor_appointment_co(osv.osv):
 		for i in horarios:
 			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:00'))
 
-		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id)],context=context)
+		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id), ('state', '!=', 'cancel')],context=context)
 		
 		if ids_ingresos_diarios:
 			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
