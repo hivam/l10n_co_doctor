@@ -386,21 +386,15 @@ class doctor_appointment_co(osv.osv):
 		date_begin=None
 		date_end=None
 		res={}
-		_logger.info('-*-*-*-*')
+
 		for i in self.browse(cr, uid, ids, context=context):
 			date_begin=i.time_begin
 			date_end=i.time_end
 			schedule_id_appointment= i.schedule_id.id
 				
-		_logger.info(vals)
-		_logger.info(date_begin)
-		_logger.info(date_end)
-		_logger.info(vals)
+
 		if state_appointment=='cancel':
-			_logger.info('fuecancelado')
-			_logger.info(vals)
-			_logger.info(date_begin)
-			_logger.info(date_end)
+			_logger.info('Cancelado')
 
 			res['schedule_espacio_id']=schedule_id_appointment
 			res['fecha_inicio']=date_begin
