@@ -391,16 +391,38 @@ class doctor_appointment_co(osv.osv):
 			date_begin=i.time_begin
 			date_end=i.time_end
 			schedule_id_appointment= i.schedule_id.id
+			type_id=i.type_id.duration
 				
 
 		if state_appointment=='cancel':
 			_logger.info('Cancelado')
 
-			res['schedule_espacio_id']=schedule_id_appointment
-			res['fecha_inicio']=date_begin
-			res['fecha_fin']=date_end
+			date_begin_cita= datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+			_logger.info('fecha begin cita')
+			_logger.info(date_begin_cita)
+			minuto_inicio=str(date_begin)[14:16]
+			_logger.info('minuto inicio:')
+			_logger.info(minuto_inicio)
+			_logger.info('type id es:')
+			_logger.info(type_id)
+			_logger.info('type id + 1 es:')
+			_logger.info(type_id+ 1)
+			_logger.info('El iterador es:')
+			_logger.info(int(minuto_inicio) + type_id)
 
-			self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
+			for i in range(int(minuto_inicio), int(minuto_inicio) + type_id, 5):
+				fecha_inicio_cita=date_begin_cita + timedelta(minutes=(i-int(minuto_inicio)))
+				fecha_fin=date_begin_cita + timedelta(minutes=(i-int(minuto_inicio))+5)
+				_logger.info(fecha_inicio_cita)
+				_logger.info(fecha_fin)
+
+				res['fecha_inicio'] = str(fecha_inicio_cita)
+				res['fecha_fin'] = str(fecha_fin)
+				res['schedule_espacio_id']= schedule_id_appointment
+
+				_logger.info(res)
+
+				self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
 		
 
 		return super(doctor_appointment_co,self).write(cr, uid, ids, vals, context)
