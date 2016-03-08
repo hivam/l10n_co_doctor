@@ -70,3 +70,13 @@ class doctor(osv.osv):
 		nombre_compania = self.pool.get("res.users").browse(cr, uid, uid, context=context).company_id.name
 
 		return nombre_compania
+
+
+	def finalidad_consulta_db(self, cr, uid, context=None):
+		
+		finalidad_consulta = '07'
+
+		if cr.dbname == 'DraConstanzaCastilla':
+			finalidad_consulta = '04'
+			
+		return finalidad_consulta

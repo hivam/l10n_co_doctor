@@ -859,11 +859,10 @@ class doctor_attentions_co(osv.osv):
 
 
 	_defaults = {
-		'finalidad_consulta': '10',
+		'finalidad_consulta': lambda self, cr, uid, context: self.pool.get('doctor.doctor').finalidad_consulta_db(cr, uid),
 		'activar_notas_confidenciales' : True,
 		'inv' : True,
 		'causa_externa':'13',
-		'finalidad_consulta':'07'
 
 	}
 
