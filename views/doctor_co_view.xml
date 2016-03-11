@@ -390,6 +390,21 @@
                         </group>
                     </page>
                 </notebook>
+
+                <notebook>
+                  <field invisible="1" name="id"/>
+                  <page string="Espacios Agenda" attrs="{'invisible': [('id', '=', False)]}">
+                     <legend class="texto_legend">Espacios de la Agenda</legend>
+                   
+                    <field name="schedule_espacios_ids" colspan="4" readonly="1">
+                        <tree string="Espacios">
+                         <field name="fecha_inicio"/>
+                         <field name="fecha_fin"/>
+                      </tree>
+                    
+                    </field>
+                  </page>
+                </notebook>
             </field>
         </record>
 
