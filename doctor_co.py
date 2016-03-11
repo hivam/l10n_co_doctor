@@ -346,8 +346,6 @@ class doctor_appointment_co(osv.osv):
 		(5, u'Detección Temprana de enf. profesional'),
 	]
 
-
-
 	_columns = {
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
@@ -358,7 +356,7 @@ class doctor_appointment_co(osv.osv):
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
-		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza')
+		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza'),
 	}
 
 	_defaults = {
@@ -503,7 +501,7 @@ class doctor_appointment_co(osv.osv):
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
 		modelo_tipo_usuario = self.pool.get('doctor.tipousuario.regimen')
-	 	t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
+		t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
 		t_usu_id_name = modelo_tipo_usuario.browse(cr, uid, t_usu_id[0], context=context).name
 		ids_procedimientos = []
 
@@ -952,13 +950,13 @@ class doctor_co_schedule_inherit(osv.osv):
 		'noviembre' : fields.boolean('Noviembre'),
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
-		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios')
+		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios'),
+		'multi_paciente': fields.boolean('Multipaciente'),
 	}
 
 	_defaults = {
 		'fecha_inicio' : lambda *a: datetime.now().strftime('%Y-%m-%d 13:00:00'),
 		'duracion_agenda' : 4,
-
 	}
 
 	def onchange_fecha_incio(self, cr, uid, ids, fecha_inicio, duracion_agenda, fecha_fin, context=None):
@@ -1248,8 +1246,6 @@ class doctor_co_schedule_inherit(osv.osv):
 				'target': 'new'
 			}
 
-
-
 doctor_co_schedule_inherit()
 
 class doctor_espacios(osv.osv):
@@ -1355,7 +1351,7 @@ class doctor_professional(osv.osv):
 
 
 	_columns = {
-
+		'multi_consultorio': fields.boolean('Multi Consultorio'),
 
 	}
 
