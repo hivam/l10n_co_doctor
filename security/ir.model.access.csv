@@ -63,3 +63,16 @@ access_doctor_aseguradora_procedimiento_physician,doctor.aseguradora.procedimien
 
 
 
+
+
+access_doctor_espacios_psicologo,doctor.espacios,model_doctor_espacios,doctor.group_doctor_psicologo,1,0,0,0
+access_doctor_espacios_physician,doctor.espacios,model_doctor_espacios,doctor.group_doctor_physician,1,0,0,0
+access_assistant_espacios_physician,doctor.espacios,model_doctor_espacios,doctor.group_doctor_assistant,1,1,1,1
+
+
+
+
+
+
+
+
