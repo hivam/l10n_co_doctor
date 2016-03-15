@@ -954,6 +954,15 @@ class doctor_co_schedule_inherit(osv.osv):
 
 	}
 
+	def eliminar_agendas(self, cr, uid, ids=False, context=None):
+
+		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+
+		search_schedule=self.pool.get('doctor.schedule').search(cr, uid, [('date_begin', '>', fecha_hora_actual)], context=context)
+		_logger.info(search_schedule)
+
+		return super(doctor_co_schedule_inherit, self).unlink(cr, uid, search_schedule, context=context)		
+
 	def onchange_fecha_incio(self, cr, uid, ids, fecha_inicio, duracion_agenda, fecha_fin, context=None):
 		values = {}
 		res = {}
