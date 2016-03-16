@@ -703,6 +703,43 @@
         <menuitem id="menu_doctor_plantillas" name="Plantillas" parent="doctor.menu_doctor_config" action="action_doctor_plantillas"/>
 
 
+
+        <!-- doctor max pacientes -->
+
+        <record model="ir.ui.view" id="view_doctor_nro_pacientes_form">
+            <field name="name">Numero Pacientes</field>
+            <field name="model">doctor.nro.pacientes</field>
+            <field name="arch" type="xml">
+                <form string="Numero Pacientes" version="7.0">
+                    <group colspan='3' col='2'>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_doctor_nro_pacientes_tree">
+            <field name="name">Numero Pacientes</field>
+            <field name="model">doctor.nro.pacientes</field>
+            <field name="arch" type="xml">
+                <tree string="Numero Pacientes" version="7.0">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+                <!-- doctor speciality Action -->
+        <record model="ir.actions.act_window" id="action_doctor_nro_pacientes">
+            <field name="name">Numero Pacientes</field>
+            <field name="res_model">doctor.nro.pacientes</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_doctor_nro_pacientes" name="Numero Pacientes" parent="doctor.menu_doctor_config" action="action_doctor_nro_pacientes"/>
+
+
         <!-- herencia Form View de product -->
         <record id="product_normal_form_view_inherit_medicamento_otro_elemento" model="ir.ui.view">
             <field name="name">Medicamentos / otro elemento</field>
