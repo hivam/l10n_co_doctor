@@ -346,8 +346,6 @@ class doctor_appointment_co(osv.osv):
 		(5, u'Detección Temprana de enf. profesional'),
 	]
 
-
-
 	_columns = {
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
@@ -358,7 +356,7 @@ class doctor_appointment_co(osv.osv):
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
-		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza')
+		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza'),
 	}
 
 	_defaults = {
@@ -401,13 +399,6 @@ class doctor_appointment_co(osv.osv):
 		id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', 'Eliminado')])
 
 		self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
-
-
-		#for i in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio, context=context):
-		#	vals['estado_cita_espacio']='Asignado'
-		#self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
-		
-		#self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, vals, context)
 
 		return super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
 
@@ -527,7 +518,7 @@ class doctor_appointment_co(osv.osv):
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
 		modelo_tipo_usuario = self.pool.get('doctor.tipousuario.regimen')
-	 	t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
+		t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
 		t_usu_id_name = modelo_tipo_usuario.browse(cr, uid, t_usu_id[0], context=context).name
 		ids_procedimientos = []
 
@@ -580,6 +571,10 @@ class doctor_appointment_co(osv.osv):
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
 		values = {}
 
+		modelo_buscar = self.pool.get("doctor.nro.pacientes") 
+		max_pacientes = 1
+		citas_restantes = 0
+
 		if not schedule_id:
 			warning = {
 				'title': 'Aviso importante!!!',
@@ -623,6 +618,15 @@ class doctor_appointment_co(osv.osv):
 
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id), ('state', '!=', 'cancel')],context=context)
 		
+
+		id_modelo_buscar = modelo_buscar.search(cr, uid, [], context=context)
+		
+		if id_modelo_buscar:
+			if agenda_duracion.multi_paciente:
+				max_pacientes = modelo_buscar.browse(cr, uid, id_modelo_buscar[0]).name
+			else:
+				max_pacientes = 1
+
 		if ids_ingresos_diarios:
 			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
 			if fecha_hora_actual > time_begin:
@@ -642,15 +646,25 @@ class doctor_appointment_co(osv.osv):
 				else:
 					duracion = int(fecha_agenda.type_id.duration / 1)
 
-				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
-				minutos = 0
-				for i in range(0,duracion,1):
-					inicios = inicio + timedelta(minutes=minutos)
-					inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
-					minutos+=1
-					if inicio_cadena in horario_cadena:
-						horario_cadena.pop(horario_cadena.index(inicio_cadena))	
+					horas_ids = self.search(cr, uid, [('time_begin', '=', fecha_agenda.time_begin), ('time_end', '=', fecha_agenda.time_end), ('schedule_id', '=', fecha_agenda.schedule_id.id)])
+					
+					if horas_ids:
+						citas_restantes = (max_pacientes - len(horas_ids))
+					else:
+						citas_restantes = max_pacientes
+						
+					inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
+					minutos = 0
+
+					if citas_restantes <= 0:
+						for i in range(0,duracion,1):
+							inicios = inicio + timedelta(minutes=minutos)
+							inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
+							minutos+=1
+							if inicio_cadena in horario_cadena:
+								horario_cadena.pop(horario_cadena.index(inicio_cadena))	
 				
+
 				if int(len(horario_cadena)) > 1:
 					if int(len(horario_cadena)) > int((appointment_type/1)):
 						values.update({
@@ -976,13 +990,13 @@ class doctor_co_schedule_inherit(osv.osv):
 		'noviembre' : fields.boolean('Noviembre'),
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
-		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios')
+		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios'),
+		'multi_paciente': fields.boolean('Multipaciente'),
 	}
 
 	_defaults = {
 		'fecha_inicio' : lambda *a: datetime.now().strftime('%Y-%m-%d 13:00:00'),
 		'duracion_agenda' : 4,
-
 	}
 
 	def onchange_fecha_incio(self, cr, uid, ids, fecha_inicio, duracion_agenda, fecha_fin, context=None):
@@ -1272,9 +1286,22 @@ class doctor_co_schedule_inherit(osv.osv):
 				'target': 'new'
 			}
 
-
-
 doctor_co_schedule_inherit()
+
+class doctor_nro_pacientes(osv.osv):
+
+	_name = 'doctor.nro.pacientes'
+
+	_columns = {
+		'name': fields.integer(u'Max pacientes', required=True),
+
+	}
+
+	_defaults = {
+		'name': 1,
+	}
+
+doctor_nro_pacientes()
 
 class doctor_espacios(osv.osv):
 
@@ -1436,7 +1463,7 @@ class doctor_professional(osv.osv):
 
 
 	_columns = {
-
+		'multi_consultorio': fields.boolean('Multi Consultorio'),
 
 	}
 
