@@ -622,8 +622,9 @@ class doctor_appointment_co(osv.osv):
 		id_modelo_buscar = modelo_buscar.search(cr, uid, [], context=context)
 		
 		if id_modelo_buscar:
-			if agenda_duracion.multi_paciente:
-				max_pacientes = modelo_buscar.browse(cr, uid, id_modelo_buscar[0]).name
+			if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
+				if agenda_duracion.consultorio_id.multi_paciente:
+					max_pacientes = modelo_buscar.browse(cr, uid, id_modelo_buscar[0]).name
 			else:
 				max_pacientes = 1
 
