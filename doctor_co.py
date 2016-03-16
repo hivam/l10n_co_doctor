@@ -632,10 +632,6 @@ class doctor_appointment_co(osv.osv):
 					inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
 					minutos = 0
 
-					_logger.info(max_pacientes)
-					_logger.info(horas_ids)
-					_logger.info(citas_restantes)
-
 					if citas_restantes <= 0:
 						for i in range(0,duracion,1):
 							inicios = inicio + timedelta(minutes=minutos)
