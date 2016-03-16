@@ -324,12 +324,6 @@
                     <field name="professional_id" required="True"/>
                 </field>
 
-                <field name="professional_id" position="after">
-                  <group colspan='2' col='4'>
-                    <field name="multi_paciente"/>
-                  </group>
-                </field>
-
                 <field name="patients_count" position="after" >
                     <field name="repetir_agenda"/>
                 </field>

@@ -967,7 +967,6 @@ class doctor_co_schedule_inherit(osv.osv):
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
 		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios'),
-		'multi_paciente': fields.boolean('Multipaciente'),
 	}
 
 	_defaults = {
