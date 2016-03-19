@@ -395,20 +395,37 @@
                   <field invisible="1" name="id"/>
                   <page string="Espacios Agenda" attrs="{'invisible': [('id', '=', False)]}">
                      <legend class="texto_legend">Espacios de la Agenda</legend>
-                   
-                    <field name="schedule_espacios_ids" colspan="4" readonly="1">
-                        <tree string="Espacios">
-                         <field name="fecha_inicio"/>
-                         <field name="fecha_fin"/>
-                      </tree>
-                    
-                    </field>
+
+                    <field name="schedule_espacios_ids" colspan="2" readonly="1">
+                        <tree string="Espacios" create="false">
+                          <field name="patient_id"/>
+                          <field name="fecha_inicio"/>
+                          <field name="fecha_fin"/>
+                          <field name="estado_cita_espacio"/>
+                          <button string="Asginar Cita" name="asignar_cita_espacio" type="object" groups="doctor.group_doctor_assistant" icon="gtk-jump-to" attrs="{'invisible': [('estado_cita_espacio', '=', 'Asignado')]}"/>
+                        </tree>
+                      </field>
                   </page>
                 </notebook>
             </field>
         </record>
 
 
+        <!--  Generar espacios-->
+        <record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
+            <field name="name">Habilitar Espacios</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">2</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'doctor.espacios'"/>
+            <field name="function" eval="'habilitar_espacios'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+
+        
         <!-- Modificando la busqueda en atencion anadiendo cambios -->
         <record id="attentions_filter" model="ir.ui.view">
         <field name="name">Attentions</field>
