@@ -370,35 +370,72 @@ class doctor_appointment_co(osv.osv):
 		appointment_date_begin= vals['time_begin']
 		appointment_date_end= vals['time_end']
 		patient_id_appointment=vals['patient_id']
+		type_id_appointment= vals['type_id']
+		estado=''
+		result_estado=False
 		res={}
 		res_editar={}
 
-		if schedule_id_appoitment:
-			fecha_inicio_appoitment= vals['time_begin']
-			fecha_fin_appoitment= vals['time_end']
+		id_type = self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)])
 
-		id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', fecha_inicio_appoitment), ('fecha_fin', '<=', fecha_fin_appoitment)], context=context)
+		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
+			duration_appointment=duration_appointment_id.duration
 
-		res_editar['estado_cita_espacio']= 'Eliminado'
-		res_editar['fecha_inicio']= None
-		res_editar['fecha_fin']= None
-		res_editar['patient_id']=''
-		res_editar['schedule_espacio_id']=''
+		_logger.info('La duracion de la cita es:')
+		_logger.info(duration_appointment)
 
-		self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
+		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
 
-		res['estado_cita_espacio']= 'Asignado'
-		res['fecha_inicio']= appointment_date_begin
-		res['fecha_fin']= appointment_date_end
-		res['patient_id']=patient_id_appointment
-		res['schedule_espacio_id']=schedule_id_appoitment
+		date_beging_appointment = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:00")
 
 
-		self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
+		if fecha_hora_actual < date_beging_appointment:
 
-		id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', 'Eliminado')])
+			if schedule_id_appoitment:
 
-		self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
+				if patient_id_appointment:
+
+					id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
+					_logger.info(id_sechedule_espacio)
+
+					for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio):
+						fecha= espacios.fecha_inicio
+						fecha_otra= espacios.fecha_fin
+						estado= espacios.estado_cita_espacio
+
+						if estado=='Asignado':
+							result_estado= True
+
+					if result_estado != True:
+
+						if id_sechedule_espacio:
+							res_editar['estado_cita_espacio']= 'Eliminado'
+							res_editar['fecha_inicio']= None
+							res_editar['fecha_fin']= None
+							res_editar['patient_id']=''
+							res_editar['schedule_espacio_id']=''
+
+							self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
+
+							res['estado_cita_espacio']= 'Asignado'
+							res['fecha_inicio']= appointment_date_begin
+							res['fecha_fin']= appointment_date_end
+							res['patient_id']=patient_id_appointment
+							res['schedule_espacio_id']=schedule_id_appoitment
+
+
+						self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
+
+						id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', 'Eliminado')])
+
+						self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
+					else:
+						raise osv.except_osv(_('Aviso importante!'),_('En este horario ya se ha asignado una cita.\n\n Escoja otro horario para la cita.'))
+						_logger.info('No se puede ya hay una cita asignada')
+		else:
+			raise osv.except_osv(_('Aviso importante!'),_('No se puede asignar la cita a esta hora.\n\nEscoja otro horario para la cita.'))
+
 
 		return super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
 
@@ -442,6 +479,39 @@ class doctor_appointment_co(osv.osv):
 
 		return super(doctor_appointment_co,self).write(cr, uid, ids, vals, context)
 
+	def unlink(self, cr, uid, ids, context=None):
+
+		if context is None:
+
+			res={}
+
+			for i in self.browse(cr, uid, ids, context=context):
+				date_begin=i.time_begin
+				date_end=i.time_end
+				schedule_id_appointment= i.schedule_id.id
+				type_id=i.type_id.duration
+
+			date_begin_cita= datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+			date_fin_cita= datetime.strptime(date_end, "%Y-%m-%d %H:%M:%S")
+			_logger.info('fecha begin cita')
+			_logger.info(date_begin_cita)
+			minuto_inicio=str(date_begin)[14:16]
+
+			for i in range(int(minuto_inicio), int(minuto_inicio) + type_id, 5):
+				fecha_inicio_cita=date_begin_cita + timedelta(minutes=(i-int(minuto_inicio)))
+				fecha_fin=date_begin_cita + timedelta(minutes=(i-int(minuto_inicio))+5)
+
+				res['fecha_inicio'] = str(fecha_inicio_cita)
+				res['fecha_fin'] = str(fecha_fin)
+				res['schedule_espacio_id']= schedule_id_appointment
+				res['estado_cita_espacio']= 'Sin asignar'
+
+				self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
+
+			id_espacio= id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('estado_cita_espacio', '=', 'Asignado')])
+			self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+
+		return super(doctor_appointment_co, self).unlink(cr, uid, ids, context=context)
 
 	def onchange_patient(self, cr, uid, ids, patient_id, insurer_id, tipo_usuario_id, ref, context=None):
 		values = {}
@@ -570,6 +640,7 @@ class doctor_appointment_co(osv.osv):
 
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
 		values = {}
+		fecha_agenda_espacio=time_begin
 
 		modelo_buscar = self.pool.get("doctor.nro.pacientes") 
 		max_pacientes = 1
@@ -602,9 +673,20 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+
+		if fecha_agenda_espacio >= time_begin:
+			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+			time_begin=date_begin_cita
+		else:
+
+			time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+
 		horarios = []
 		horario_cadena = []
+		_logger.info('Lo que vale time_begin')
+		_logger.info(time_begin)
 		horarios.append(time_begin)
 		duracion = 0
 		#tener un rango de horas para poder decirle cual puede ser la proxima cita
@@ -1130,18 +1212,35 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		return agenda_id
 
+	def unlink(self, cr, uid, ids, context=None):
+
+
+		for i in self.browse(cr, uid, ids, context=context):
+			time_begin=i.date_begin
+			time_end=i.date_end
+			schedule_id= i.id
+
+		date_begin_cita= datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		date_fin_cita= datetime.strptime(time_end, "%Y-%m-%d %H:%M:%S")
+
+		id_espacio= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '>=', str(date_begin_cita)),('fecha_fin', '<=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id)])
+		self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+		id_appointment= self.pool.get('doctor.appointment').search(cr, uid, [('schedule_id', '=', None)], context=context)
+
+		self.pool.get('doctor.appointment').unlink(cr, uid, id_appointment, context)
+		
+		return super(doctor_co_schedule_inherit, self).unlink(cr, uid, ids, context=context)
+
 	def generar_espacios(self, cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, context=None):
 		
 		test={}
-		_logger.info(fecha_inicio)
-		_logger.info(fecha_fin)
+
 		fecha_inicio_espacio=str(fecha_inicio)[11:13]
 		fecha_fin_espacio=str(fecha_fin)[11:13]
 		
 		duracion_agenda_espacio=int(fecha_fin_espacio)-int(fecha_inicio_espacio)
 
 		duracion_horas = duracion_horas * 60
-		_logger.info(duracion_horas)
 
 		for i in range(0, duracion_horas, 5):
 			fecha_espacio=fecha_inicio + timedelta(minutes=i)
