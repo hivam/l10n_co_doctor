@@ -381,58 +381,60 @@ class doctor_appointment_co(osv.osv):
 		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
 			duration_appointment=duration_appointment_id.duration
 
-		_logger.info('La duracion de la cita es:')
-		_logger.info(duration_appointment)
-
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
 		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
 
 		date_beging_appointment = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:00")
-
 
 		if fecha_hora_actual < date_beging_appointment:
 
 			if schedule_id_appoitment:
 
 				if patient_id_appointment:
+					validar_fecha_inicio= str(date_beging_appointment)[15:16]
 
-					id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
-					_logger.info(id_sechedule_espacio)
+					if (validar_fecha_inicio == '0') or (validar_fecha_inicio == '5'):
 
-					for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio):
-						fecha= espacios.fecha_inicio
-						fecha_otra= espacios.fecha_fin
-						estado= espacios.estado_cita_espacio
+						id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
+						_logger.info(id_sechedule_espacio)
 
-						if estado=='Asignado':
-							result_estado= True
+						for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio):
+							fecha= espacios.fecha_inicio
+							fecha_otra= espacios.fecha_fin
+							estado= espacios.estado_cita_espacio
 
-					if result_estado != True:
+							if estado=='Asignado':
+								result_estado= True
 
-						if id_sechedule_espacio:
-							res_editar['estado_cita_espacio']= 'Eliminado'
-							res_editar['fecha_inicio']= None
-							res_editar['fecha_fin']= None
-							res_editar['patient_id']=''
-							res_editar['schedule_espacio_id']=''
+						if result_estado != True:
 
-							self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
+							if id_sechedule_espacio:
+								res_editar['estado_cita_espacio']= 'Eliminado'
+								res_editar['fecha_inicio']= None
+								res_editar['fecha_fin']= None
+								res_editar['patient_id']=''
+								res_editar['schedule_espacio_id']=''
 
-							res['estado_cita_espacio']= 'Asignado'
-							res['fecha_inicio']= appointment_date_begin
-							res['fecha_fin']= appointment_date_end
-							res['patient_id']=patient_id_appointment
-							res['schedule_espacio_id']=schedule_id_appoitment
+								self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
+
+								res['estado_cita_espacio']= 'Asignado'
+								res['fecha_inicio']= appointment_date_begin
+								res['fecha_fin']= appointment_date_end
+								res['patient_id']=patient_id_appointment
+								res['schedule_espacio_id']=schedule_id_appoitment
 
 
-						self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
+							self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
 
-						id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', 'Eliminado')])
+							id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', 'Eliminado')])
 
-						self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
+							self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
+						else:
+							raise osv.except_osv(_('Aviso importante!'),_('En este horario ya se ha asignado una cita.\n\n Por favor escoja otro horario para la cita.'))
+							
 					else:
-						raise osv.except_osv(_('Aviso importante!'),_('En este horario ya se ha asignado una cita.\n\n Escoja otro horario para la cita.'))
-						_logger.info('No se puede ya hay una cita asignada')
+						raise osv.except_osv(_('Aviso importante!'),_('No se puede asignar la cita en esta hora.\n Sólo se puede en intervalos de cinco minutos'))
+						
 		else:
 			raise osv.except_osv(_('Aviso importante!'),_('No se puede asignar la cita a esta hora.\n\nEscoja otro horario para la cita.'))
 
@@ -1109,7 +1111,27 @@ class doctor_co_schedule_inherit(osv.osv):
 		fecha_begining= datetime.strptime(vals['date_begin'], "%Y-%m-%d %H:%M:%S")
 		fecha_fin_schedule= datetime.strptime(vals['date_end'], "%Y-%m-%d %H:%M:%S")
 
+		validar_hora= int(str(fecha_begining)[15:16])
+		validar_hora_fin= int(str(fecha_fin_schedule)[15:16])
+		validar_hora_repetir_agenda= int(str(fecha_inicio)[15:16])
+		validar_hora_repetir_agenda_fin= int(str(fecha_fin)[15:16])
+
+		if (validar_hora != 0) or (validar_hora != 5):
+			if (validar_hora == 0) or (validar_hora == 5):
+				fecha_begining= datetime.strptime(vals['date_begin'], "%Y-%m-%d %H:%M:%S")
+				fecha_fin_schedule= datetime.strptime(vals['date_end'], "%Y-%m-%d %H:%M:%S")
+			else:
+				fecha_begining = fecha_begining + timedelta(minutes=((-validar_hora)+5))
+				fecha_fin_schedule = fecha_fin_schedule + timedelta(minutes=((-validar_hora_fin)+5))
+
 		if vals['repetir_agenda']:
+			if (validar_hora_repetir_agenda != 0) or (validar_hora_repetir_agenda != 5):
+				if (validar_hora_repetir_agenda == 0) or (validar_hora_repetir_agenda == 5):
+					fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
+					fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
+				else:
+					fecha_inicio = fecha_inicio + timedelta(minutes=((-validar_hora_repetir_agenda)+5))
+					fecha_fin = fecha_fin + timedelta(minutes=((-validar_hora_repetir_agenda_fin)+5))
 
 			if vals['dias_excepciones_id']:
 				for i in range(0,len(vals['dias_excepciones_id']),1):
@@ -1204,9 +1226,11 @@ class doctor_co_schedule_inherit(osv.osv):
 
 					agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
 
-					self.generar_espacios(cr, uid, agenda_id, fecha_begining,fecha_fin_schedule, duracion_horas, test, context=None)
+					self.generar_espacios(cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, context=None)
 
 		if not vals['repetir_agenda']:
+			vals['date_begin']=fecha_begining
+			vals['date_end']= fecha_fin_schedule
 			agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, vals, context)
 			self.generar_espacios(cr, uid, agenda_id, fecha_begining,fecha_fin_schedule, duracion_horas, test, context=None)
 
@@ -1460,6 +1484,7 @@ class doctor_espacios(osv.osv):
 				'nodestroy': False,
 				'target': 'new'
 			}
+
 
 	def habilitar_espacios(self, cr, uid, ids=False, context=None):
 
