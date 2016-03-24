@@ -404,8 +404,8 @@
                       <field name="auto_refresh">5</field>
                         <tree string="Espacios" create="false" colors="red:estado_cita_espacio=='Asignado';">
                           <field name="patient_id"/>
-                          <field name="fecha_inicio"/>
-                          <field name="fecha_fin"/>
+                          <field name="fecha_inicio" widget="time"/>
+                          <field name="fecha_fin" widget="time"/>
                           <field name="estado_cita_espacio"/>
                           <button string="Asginar Cita" name="asignar_cita_espacio" type="object" groups="doctor.group_doctor_assistant" icon="gtk-jump-to" attrs="{'invisible': [('estado_cita_espacio', '=', 'Asignado')]}"/>
                         </tree>
