@@ -517,6 +517,12 @@
                     <field name="otros_hallazgos_examen_fisico" />
                 </field>
 
+                <field name="otros_hallazgos_examen_fisico" position="after">
+                    <label for="plantilla_examen_fisico_id" string="Plantillas"/>
+                    <field name="plantilla_examen_fisico_id" on_change='onchange_plantillas(plantilla_examen_fisico_id, "otros_hallazgos_examen_fisico")' domain="[('tipo_plantilla', '=', '06')]"/>
+                </field>
+
+
                 <field name="analysis" position="after">
                     <label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
                     <field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>

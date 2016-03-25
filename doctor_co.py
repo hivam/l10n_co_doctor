@@ -1017,6 +1017,9 @@ class doctor_attentions_co(osv.osv):
 		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
 		'plantilla_sintomas_cuestionario_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_cuestionario_antecedentes_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'plantilla_examen_fisico_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+	
+
 	}
 
 
@@ -1695,8 +1698,10 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('01','Recomendación'),
 		('02','Informes y Certificados'),
 		('03','Prescripciones'),
-		('04', 'Sintomas (Cuestionarios - Entrevistas)'),
-		('05', 'Antecedentes'),
+		('04','Sintomas (Cuestionarios - Entrevistas)'),
+		('05','Antecedentes'),
+		('06','Examen Fisico'),
+
 	]
 
 	_columns = {
