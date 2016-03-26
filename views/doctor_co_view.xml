@@ -301,7 +301,8 @@
                 <xpath expr="/form[@string='Schedule']" atrributes="inside">
                     <field invisible="1" name="id"/>
                     <footer>
-                        <button string="Asignar Cita" name="asignar_cita" type="object" groups="doctor.group_doctor_assistant" class="oe_highlight" attrs="{'invisible': [('id', '=', False)]}"/>
+                        <button string="Asignar Cita" name="asignar_cita" type="object" groups="doctor.group_doctor_assistant" class="
+                          " attrs="{'invisible': [('id', '=', False)]}"/>
                     </footer>
                 </xpath>
 
@@ -398,9 +399,13 @@
                 <notebook>
                   <field invisible="1" name="id"/>
                   <page string="Espacios Agenda" attrs="{'invisible': [('id', '=', False)]}">
-                     <legend class="texto_legend">Espacios de la Agenda</legend>
-
-                    <field name="schedule_espacios_ids" colspan="2" readonly="1">
+                    <legend class="texto_legend">Espacios de la Agenda</legend>
+                    <footer>
+                      <div align="right">
+                        <button string="Actualizar" name="refresh_espacios" type="object" groups="doctor.group_doctor_assistant" class="oe_highlight"/>
+                      </div>
+                    </footer>
+                    <field name="schedule_espacios_ids" colspan="4" readonly="1">
                       <field name="auto_refresh">5</field>
                         <tree string="Espacios" create="false" colors="red:estado_cita_espacio=='Asignado';">
                           <field name="patient_id"/>

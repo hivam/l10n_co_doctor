@@ -389,7 +389,6 @@ class doctor_appointment_co(osv.osv):
 		_logger.info(consultorio_numero_pacientes)
 
 
-
 		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
 			duration_appointment=duration_appointment_id.duration
 
@@ -409,6 +408,8 @@ class doctor_appointment_co(osv.osv):
 
 						if consultorio_multipaciente:
 
+							contador_citas=0;
+
 							id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
 							_logger.info(id_sechedule_espacio)
 
@@ -426,6 +427,7 @@ class doctor_appointment_co(osv.osv):
 								res['patient_id']=patient_id_appointment
 								res['schedule_espacio_id']=schedule_id_appoitment
 
+								
 								self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
 
 						else:
@@ -1125,6 +1127,12 @@ class doctor_co_schedule_inherit(osv.osv):
 		'duracion_agenda' : 4,
 	}
 
+	def refresh_espacios(self, cr, uid, ids=None, context=None):
+		#raise NotImplementedError("Ids is just there by convention! Please don't use it.")
+	
+		cr.execute("SELECT * FROM doctor_espacios")
+		return cr.fetchall()
+
 	def onchange_fecha_incio(self, cr, uid, ids, fecha_inicio, duracion_agenda, fecha_fin, context=None):
 		values = {}
 		res = {}
@@ -1521,7 +1529,10 @@ class doctor_espacios(osv.osv):
 
 		search_schedule=self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '<', fecha_hora_actual)], context=context)
 
-		return super(doctor_espacios, self).unlink(cr, uid, search_schedule, context=context)	
+		return super(doctor_espacios, self).unlink(cr, uid, search_schedule, context=context)
+
+
+
 
 doctor_espacios()
 
