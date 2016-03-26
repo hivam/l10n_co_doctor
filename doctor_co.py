@@ -346,8 +346,6 @@ class doctor_appointment_co(osv.osv):
 		(5, u'Detección Temprana de enf. profesional'),
 	]
 
-
-
 	_columns = {
 		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
@@ -358,7 +356,7 @@ class doctor_appointment_co(osv.osv):
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
-		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza')
+		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza'),
 	}
 
 	_defaults = {
@@ -371,37 +369,169 @@ class doctor_appointment_co(osv.osv):
 		schedule_id_appoitment=vals['schedule_id']
 		appointment_date_begin= vals['time_begin']
 		appointment_date_end= vals['time_end']
+		patient_id_appointment=vals['patient_id']
+		type_id_appointment= vals['type_id']
+		consultorio_id_appointment= vals['consultorio_id']
+		estado=''
+		result_estado=False
+		res={}
+		res_editar={}
 
-		if schedule_id_appoitment:
-			fecha_inicio_appoitment= vals['time_begin']
-			fecha_fin_appoitment= vals['time_end']
+		id_type = self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)])
 
-		id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', fecha_inicio_appoitment), ('fecha_fin', '<=', fecha_fin_appoitment)], context=context)
+		consultorio_id= self.pool.get('doctor.room').browse(cr, uid, consultorio_id_appointment, context=context)
 
-		for i in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio, context=context):
-			vals['estado_cita_espacio']='Asignado'	
-		
-		self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, vals, context)
+		consultorio_multipaciente= consultorio_id.multi_paciente
+		consultorio_numero_pacientes=consultorio_id.numero_pacientes
+
+		_logger.info('*************************')
+		_logger.info(consultorio_multipaciente)
+		_logger.info(consultorio_numero_pacientes)
+
+
+		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
+			duration_appointment=duration_appointment_id.duration
+
+		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+
+		date_beging_appointment = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:00")
+
+		if fecha_hora_actual < date_beging_appointment:
+
+			if schedule_id_appoitment:
+
+				if patient_id_appointment:
+					validar_fecha_inicio= str(date_beging_appointment)[15:16]
+
+					if (validar_fecha_inicio == '0') or (validar_fecha_inicio == '5'):
+
+						if consultorio_multipaciente:
+
+							contador_citas=0;
+
+							id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
+							_logger.info(id_sechedule_espacio)
+
+							for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio):
+								fecha= espacios.fecha_inicio
+								fecha_otra= espacios.fecha_fin
+								estado= espacios.estado_cita_espacio
+
+
+							if id_sechedule_espacio:
+
+								res['estado_cita_espacio']= 'Asignado'
+								res['fecha_inicio']= appointment_date_begin
+								res['fecha_fin']= appointment_date_end
+								res['patient_id']=patient_id_appointment
+								res['schedule_espacio_id']=schedule_id_appoitment
+
+								
+								self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
+
+						else:
+
+							id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
+							_logger.info(id_sechedule_espacio)
+
+							for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio):
+								fecha= espacios.fecha_inicio
+								fecha_otra= espacios.fecha_fin
+								estado= espacios.estado_cita_espacio
+
+								if estado=='Asignado':
+									result_estado= True
+
+							if result_estado != True:
+
+								if id_sechedule_espacio:
+									res_editar['estado_cita_espacio']= 'Eliminado'
+									res_editar['fecha_inicio']= None
+									res_editar['fecha_fin']= None
+									res_editar['patient_id']=''
+									res_editar['schedule_espacio_id']=''
+
+									self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
+
+									res['estado_cita_espacio']= 'Asignado'
+									res['fecha_inicio']= appointment_date_begin
+									res['fecha_fin']= appointment_date_end
+									res['patient_id']=patient_id_appointment
+									res['schedule_espacio_id']=schedule_id_appoitment
+
+
+								self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
+
+								id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', 'Eliminado')])
+
+								self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
+							else:
+								raise osv.except_osv(_('Aviso importante!'),_('En este horario ya se ha asignado una cita.\n\n Por favor escoja otro horario para la cita.'))
+							
+					else:
+						raise osv.except_osv(_('Aviso importante!'),_('No se puede asignar la cita en esta hora.\n Sólo se puede en intervalos de cinco minutos'))
+						
+		else:
+			raise osv.except_osv(_('Aviso importante!'),_('No se puede asignar la cita a esta hora.\n\nEscoja otro horario para la cita.'))
+
 
 		return super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
 
 
 	def write(self, cr, uid, ids, vals, context=None):
-		state_appointment= vals['state']
-		date_begin=None
-		date_end=None
-		res={}
+		
+		if 'state' in vals:
+			state_appointment= vals['state']
+			date_begin=None
+			date_end=None
+			res={}
 
-		for i in self.browse(cr, uid, ids, context=context):
-			date_begin=i.time_begin
-			date_end=i.time_end
-			schedule_id_appointment= i.schedule_id.id
-			type_id=i.type_id.duration
-				
-		if state_appointment=='cancel':
-			_logger.info('Cancelado')
+			if state_appointment=='cancel':
+				_logger.info('Cancelado')
+
+				for i in self.browse(cr, uid, ids, context=context):
+					date_begin=i.time_begin
+					date_end=i.time_end
+					schedule_id_appointment= i.schedule_id.id
+					type_id=i.type_id.duration
+
+				date_begin_cita= datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+				date_fin_cita= datetime.strptime(date_end, "%Y-%m-%d %H:%M:%S")
+				_logger.info('fecha begin cita')
+				_logger.info(date_begin_cita)
+				minuto_inicio=str(date_begin)[14:16]
+
+				for i in range(int(minuto_inicio), int(minuto_inicio) + type_id, 5):
+					fecha_inicio_cita=date_begin_cita + timedelta(minutes=(i-int(minuto_inicio)))
+					fecha_fin=date_begin_cita + timedelta(minutes=(i-int(minuto_inicio))+5)
+
+					res['fecha_inicio'] = str(fecha_inicio_cita)
+					res['fecha_fin'] = str(fecha_fin)
+					res['schedule_espacio_id']= schedule_id_appointment
+					res['estado_cita_espacio']= 'Sin asignar'
+
+					self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
+
+				id_espacio= id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('estado_cita_espacio', '=', 'Asignado')])
+				self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+
+		return super(doctor_appointment_co,self).write(cr, uid, ids, vals, context)
+
+	def unlink(self, cr, uid, ids, context=None):
+
+		if context is None:
+
+			res={}
+
+			for i in self.browse(cr, uid, ids, context=context):
+				date_begin=i.time_begin
+				date_end=i.time_end
+				schedule_id_appointment= i.schedule_id.id
+				type_id=i.type_id.duration
 
 			date_begin_cita= datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+			date_fin_cita= datetime.strptime(date_end, "%Y-%m-%d %H:%M:%S")
 			_logger.info('fecha begin cita')
 			_logger.info(date_begin_cita)
 			minuto_inicio=str(date_begin)[14:16]
@@ -416,10 +546,11 @@ class doctor_appointment_co(osv.osv):
 				res['estado_cita_espacio']= 'Sin asignar'
 
 				self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
-		
 
-		return super(doctor_appointment_co,self).write(cr, uid, ids, vals, context)
+			id_espacio= id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('estado_cita_espacio', '=', 'Asignado')])
+			self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
 
+		return super(doctor_appointment_co, self).unlink(cr, uid, ids, context=context)
 
 	def onchange_patient(self, cr, uid, ids, patient_id, insurer_id, tipo_usuario_id, ref, context=None):
 		values = {}
@@ -496,7 +627,7 @@ class doctor_appointment_co(osv.osv):
 		modelo_buscar = self.pool.get('doctor.appointment.type_procedures')
 		modelo_procedimiento_plan = self.pool.get('doctor.insurer.plan.procedures')
 		modelo_tipo_usuario = self.pool.get('doctor.tipousuario.regimen')
-	 	t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
+		t_usu_id = modelo_tipo_usuario.search(cr, uid, [('id', '=', tipo_usuario_id)], context=context)
 		t_usu_id_name = modelo_tipo_usuario.browse(cr, uid, t_usu_id[0], context=context).name
 		ids_procedimientos = []
 
@@ -548,6 +679,15 @@ class doctor_appointment_co(osv.osv):
 
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
 		values = {}
+		fecha_agenda_espacio=time_begin
+		_logger.info('time_begin')
+		_logger.info(time_begin)
+		
+		max_pacientes = 1
+		citas_restantes = 0
+
+		id_sechedule= self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
+		id_sechedule_consultorio=id_sechedule.consultorio_id.id
 
 		if not schedule_id:
 			warning = {
@@ -576,9 +716,21 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+
+		if fecha_agenda_espacio >= time_begin:
+			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+			time_begin=date_begin_cita
+		else:
+
+			time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+
 		horarios = []
 		horario_cadena = []
+		_logger.info('Lo que vale time_begin')
+		_logger.info(time_begin)
+
 		horarios.append(time_begin)
 		duracion = 0
 		#tener un rango de horas para poder decirle cual puede ser la proxima cita
@@ -592,6 +744,15 @@ class doctor_appointment_co(osv.osv):
 
 		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id), ('state', '!=', 'cancel')],context=context)
 		
+
+		
+		if id_sechedule_consultorio:
+			if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
+				if agenda_duracion.consultorio_id.multi_paciente:
+					max_pacientes = id_sechedule_consultorio
+			else:
+				max_pacientes = 1
+
 		if ids_ingresos_diarios:
 			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
 			if fecha_hora_actual > time_begin:
@@ -611,15 +772,25 @@ class doctor_appointment_co(osv.osv):
 				else:
 					duracion = int(fecha_agenda.type_id.duration / 1)
 
-				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
-				minutos = 0
-				for i in range(0,duracion,1):
-					inicios = inicio + timedelta(minutes=minutos)
-					inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
-					minutos+=1
-					if inicio_cadena in horario_cadena:
-						horario_cadena.pop(horario_cadena.index(inicio_cadena))	
+					horas_ids = self.search(cr, uid, [('time_begin', '=', fecha_agenda.time_begin), ('time_end', '=', fecha_agenda.time_end), ('schedule_id', '=', fecha_agenda.schedule_id.id)])
+					
+					if horas_ids:
+						citas_restantes = (max_pacientes - len(horas_ids))
+					else:
+						citas_restantes = max_pacientes
+						
+					inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
+					minutos = 0
+
+					if citas_restantes <= 0:
+						for i in range(0,duracion,1):
+							inicios = inicio + timedelta(minutes=minutos)
+							inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
+							minutos+=1
+							if inicio_cadena in horario_cadena:
+								horario_cadena.pop(horario_cadena.index(inicio_cadena))	
 				
+
 				if int(len(horario_cadena)) > 1:
 					if int(len(horario_cadena)) > int((appointment_type/1)):
 						values.update({
@@ -848,6 +1019,9 @@ class doctor_attentions_co(osv.osv):
 		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
 		'plantilla_sintomas_cuestionario_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_cuestionario_antecedentes_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'plantilla_examen_fisico_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+	
+
 	}
 
 
@@ -945,14 +1119,19 @@ class doctor_co_schedule_inherit(osv.osv):
 		'noviembre' : fields.boolean('Noviembre'),
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
-		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios')
+		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios'),
 	}
 
 	_defaults = {
 		'fecha_inicio' : lambda *a: datetime.now().strftime('%Y-%m-%d 13:00:00'),
 		'duracion_agenda' : 4,
-
 	}
+
+	def refresh_espacios(self, cr, uid, ids=None, context=None):
+		#raise NotImplementedError("Ids is just there by convention! Please don't use it.")
+	
+		cr.execute("SELECT * FROM doctor_espacios")
+		return cr.fetchall()
 
 	def onchange_fecha_incio(self, cr, uid, ids, fecha_inicio, duracion_agenda, fecha_fin, context=None):
 		values = {}
@@ -979,7 +1158,31 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 		fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
+		fecha_begining= datetime.strptime(vals['date_begin'], "%Y-%m-%d %H:%M:%S")
+		fecha_fin_schedule= datetime.strptime(vals['date_end'], "%Y-%m-%d %H:%M:%S")
+
+		validar_hora= int(str(fecha_begining)[15:16])
+		validar_hora_fin= int(str(fecha_fin_schedule)[15:16])
+		validar_hora_repetir_agenda= int(str(fecha_inicio)[15:16])
+		validar_hora_repetir_agenda_fin= int(str(fecha_fin)[15:16])
+
+		if (validar_hora != 0) or (validar_hora != 5):
+			if (validar_hora == 0) or (validar_hora == 5):
+				fecha_begining= datetime.strptime(vals['date_begin'], "%Y-%m-%d %H:%M:%S")
+				fecha_fin_schedule= datetime.strptime(vals['date_end'], "%Y-%m-%d %H:%M:%S")
+			else:
+				fecha_begining = fecha_begining + timedelta(minutes=((-validar_hora)+5))
+				fecha_fin_schedule = fecha_fin_schedule + timedelta(minutes=((-validar_hora_fin)+5))
+		
+
 		if vals['repetir_agenda']:
+			if (validar_hora_repetir_agenda != 0) or (validar_hora_repetir_agenda != 5):
+				if (validar_hora_repetir_agenda == 0) or (validar_hora_repetir_agenda == 5):
+					fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
+					fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
+				else:
+					fecha_inicio = fecha_inicio + timedelta(minutes=((-validar_hora_repetir_agenda)+5))
+					fecha_fin = fecha_fin + timedelta(minutes=((-validar_hora_repetir_agenda_fin)+5))
 
 			if vals['dias_excepciones_id']:
 				for i in range(0,len(vals['dias_excepciones_id']),1):
@@ -1073,18 +1276,40 @@ class doctor_co_schedule_inherit(osv.osv):
 					u['diciembre'] = vals['diciembre']
 
 					agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
+
 					self.generar_espacios(cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, context=None)
 
 		if not vals['repetir_agenda']:
+			vals['date_begin']=fecha_begining
+			vals['date_end']= fecha_fin_schedule
 			agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, vals, context)
-			self.generar_espacios(cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, context=None)
+			self.generar_espacios(cr, uid, agenda_id, fecha_begining,fecha_fin_schedule, duracion_horas, test, context=None)
 
 		return agenda_id
+
+	def unlink(self, cr, uid, ids, context=None):
+
+
+		for i in self.browse(cr, uid, ids, context=context):
+			time_begin=i.date_begin
+			time_end=i.date_end
+			schedule_id= i.id
+
+		date_begin_cita= datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		date_fin_cita= datetime.strptime(time_end, "%Y-%m-%d %H:%M:%S")
+
+		id_espacio= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '>=', str(date_begin_cita)),('fecha_fin', '<=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id)])
+		self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+		id_appointment= self.pool.get('doctor.appointment').search(cr, uid, [('schedule_id', '=', None)], context=context)
+
+		self.pool.get('doctor.appointment').unlink(cr, uid, id_appointment, context)
+		
+		return super(doctor_co_schedule_inherit, self).unlink(cr, uid, ids, context=context)
 
 	def generar_espacios(self, cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, context=None):
 		
 		test={}
-		
+
 		fecha_inicio_espacio=str(fecha_inicio)[11:13]
 		fecha_fin_espacio=str(fecha_fin)[11:13]
 		
@@ -1235,13 +1460,13 @@ class doctor_co_schedule_inherit(osv.osv):
 				'target': 'new'
 			}
 
-
-
 doctor_co_schedule_inherit()
+
 
 class doctor_espacios(osv.osv):
 
 	_name= 'doctor.espacios'
+	_order= 'fecha_inicio asc'
 
 	_columns = {
 		'schedule_espacio_id': fields.many2one('doctor.schedule', 'Agenda'),
@@ -1297,13 +1522,17 @@ class doctor_espacios(osv.osv):
 				'target': 'new'
 			}
 
+
 	def habilitar_espacios(self, cr, uid, ids=False, context=None):
 
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
 
 		search_schedule=self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '<', fecha_hora_actual)], context=context)
 
-		return super(doctor_espacios, self).unlink(cr, uid, search_schedule, context=context)	
+		return super(doctor_espacios, self).unlink(cr, uid, search_schedule, context=context)
+
+
+
 
 doctor_espacios()
 
@@ -1398,7 +1627,7 @@ class doctor_professional(osv.osv):
 
 
 	_columns = {
-
+		'multi_consultorio': fields.boolean('Multi Consultorio'),
 
 	}
 
@@ -1480,8 +1709,10 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('01','Recomendación'),
 		('02','Informes y Certificados'),
 		('03','Prescripciones'),
-		('04', 'Sintomas (Cuestionarios - Entrevistas)'),
-		('05', 'Antecedentes'),
+		('04','Sintomas (Cuestionarios - Entrevistas)'),
+		('05','Antecedentes'),
+		('06','Examen Fisico'),
+
 	]
 
 	_columns = {

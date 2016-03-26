@@ -253,6 +253,7 @@
                         <field name="aditional"/>
                     </group>
                 </xpath>
+
                 <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[3]" position="after">
                     <field name="nro_autorizacion"/>
                 </xpath>
@@ -300,13 +301,17 @@
                 <xpath expr="/form[@string='Schedule']" atrributes="inside">
                     <field invisible="1" name="id"/>
                     <footer>
-                        <button string="Asignar Cita" name="asignar_cita" type="object" groups="doctor.group_doctor_assistant" class="oe_highlight" attrs="{'invisible': [('id', '=', False)]}"/>
+                        <button string="Asignar Cita" name="asignar_cita" type="object" groups="doctor.group_doctor_assistant" class="
+                          " attrs="{'invisible': [('id', '=', False)]}"/>
                     </footer>
                 </xpath>
 
                 <field name="patient_id" position="replace">
                     <field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id)"/>
                 </field>
+
+
+
 
                 <field name="patient_id" position="after" >
                     <field name="ref"/>
@@ -394,13 +399,18 @@
                 <notebook>
                   <field invisible="1" name="id"/>
                   <page string="Espacios Agenda" attrs="{'invisible': [('id', '=', False)]}">
-                     <legend class="texto_legend">Espacios de la Agenda</legend>
-
-                    <field name="schedule_espacios_ids" colspan="2" readonly="1">
-                        <tree string="Espacios" create="false">
+                    <legend class="texto_legend">Espacios de la Agenda</legend>
+                    <footer>
+                      <div align="right">
+                        <button string="Actualizar" name="refresh_espacios" type="object" groups="doctor.group_doctor_assistant" class="oe_highlight"/>
+                      </div>
+                    </footer>
+                    <field name="schedule_espacios_ids" colspan="4" readonly="1">
+                      <field name="auto_refresh">5</field>
+                        <tree string="Espacios" create="false" colors="red:estado_cita_espacio=='Asignado';">
                           <field name="patient_id"/>
-                          <field name="fecha_inicio"/>
-                          <field name="fecha_fin"/>
+                          <field name="fecha_inicio" widget="time"/>
+                          <field name="fecha_fin" widget="time"/>
                           <field name="estado_cita_espacio"/>
                           <button string="Asginar Cita" name="asignar_cita_espacio" type="object" groups="doctor.group_doctor_assistant" icon="gtk-jump-to" attrs="{'invisible': [('estado_cita_espacio', '=', 'Asignado')]}"/>
                         </tree>
@@ -511,6 +521,12 @@
                     <label for="otros_hallazgos_examen_fisico" string="Otros hallazgos y signos clínicos en el examen físico"/>
                     <field name="otros_hallazgos_examen_fisico" />
                 </field>
+
+                <field name="otros_hallazgos_examen_fisico" position="after">
+                    <label for="plantilla_examen_fisico_id" string="Plantillas"/>
+                    <field name="plantilla_examen_fisico_id" on_change='onchange_plantillas(plantilla_examen_fisico_id, "otros_hallazgos_examen_fisico")' domain="[('tipo_plantilla', '=', '06')]"/>
+                </field>
+
 
                 <field name="analysis" position="after">
                     <label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
@@ -726,7 +742,17 @@
             </field>
         </record>
         <!-- fin de herencia Form View de product -->
-
+        <record id="doctor_professional_inherit" model="ir.ui.view">
+            <field name="name">Profesional de la salud</field>
+            <field name="model">doctor.professional</field>
+            <field eval="7" name="priority"/>
+            <field name="inherit_id" ref="doctor.view_doctor_professional_form"/>
+            <field name="arch" type="xml">
+              <field name="work_phone" position="after">
+                <field name="multi_consultorio"/> 
+              </field>       
+            </field>
+        </record>
         <!-- herencia Form View de drugs -->
         <record id="drugs_form_view_inherit_doctor_co_drugs" model="ir.ui.view">
             <field name="name">Drugs</field>
