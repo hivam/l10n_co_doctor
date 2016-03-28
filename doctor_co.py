@@ -680,14 +680,15 @@ class doctor_appointment_co(osv.osv):
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
 		values = {}
 		fecha_agenda_espacio=time_begin
-		_logger.info('time_begin')
-		_logger.info(time_begin)
 		
 		max_pacientes = 1
 		citas_restantes = 0
 
 		id_sechedule= self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
-		id_sechedule_consultorio=id_sechedule.consultorio_id.id
+		try:
+			id_sechedule_consultorio=id_sechedule.consultorio_id.id
+		except Exception, e:
+			id_sechedule_consultorio= None
 
 		if not schedule_id:
 			warning = {
@@ -728,8 +729,6 @@ class doctor_appointment_co(osv.osv):
 
 		horarios = []
 		horario_cadena = []
-		_logger.info('Lo que vale time_begin')
-		_logger.info(time_begin)
 
 		horarios.append(time_begin)
 		duracion = 0
