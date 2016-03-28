@@ -33,6 +33,10 @@ class doctor(osv.osv):
 
 		#Obtener TimeZone Usuario
 		tz = context.get('tz','America/Bogota')
+
+		if not tz:
+			raise osv.except_osv(_('Zona Horaria - Clinica Digital'),
+								 _('Por favor configure su zona horaria para acceder a esta funcionalidad del sistema o solicite soporte.'))
 		#Formato
 		localFormat = "%Y-%m-%d %H:%M:%S"
 
