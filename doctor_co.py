@@ -369,9 +369,14 @@ class doctor_appointment_co(osv.osv):
 		schedule_id_appoitment=vals['schedule_id']
 		appointment_date_begin= vals['time_begin']
 		appointment_date_end= vals['time_end']
-		patient_id_appointment=vals['patient_id']
 		type_id_appointment= vals['type_id']
-		consultorio_id_appointment= vals['consultorio_id']
+		patient_id_appointment=vals['patient_id']
+		
+		try:
+			consultorio_id_appointment= vals['consultorio_id']
+		except Exception, e:
+			consultorio_id_appointment= None
+			
 		estado=''
 		result_estado=False
 		res={}
@@ -379,15 +384,12 @@ class doctor_appointment_co(osv.osv):
 
 		id_type = self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)])
 
-		consultorio_id= self.pool.get('doctor.room').browse(cr, uid, consultorio_id_appointment, context=context)
-
-		consultorio_multipaciente= consultorio_id.multi_paciente
-		consultorio_numero_pacientes=consultorio_id.numero_pacientes
-
-		_logger.info('*************************')
-		_logger.info(consultorio_multipaciente)
-		_logger.info(consultorio_numero_pacientes)
-
+		if consultorio_id_appointment:
+			consultorio_id= self.pool.get('doctor.room').browse(cr, uid, consultorio_id_appointment, context=context)
+			consultorio_multipaciente= consultorio_id.multi_paciente
+			consultorio_numero_pacientes=consultorio_id.numero_pacientes
+		else:
+			consultorio_multipaciente = None
 
 		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
 			duration_appointment=duration_appointment_id.duration
