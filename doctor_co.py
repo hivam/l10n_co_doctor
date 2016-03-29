@@ -1025,7 +1025,7 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta': lambda self, cr, uid, context: self.pool.get('doctor.doctor').finalidad_consulta_db(cr, uid),
 		'activar_notas_confidenciales' : True,
 		'inv' : True,
-		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),,
+		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
 
 	}
 
