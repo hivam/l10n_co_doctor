@@ -439,7 +439,7 @@ class doctor_appointment_co(osv.osv):
 
 								if numero_pacientes == len(id_sechedule_espacio_asignado) +1:
 									id_sechedule_espacio_eliminar=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end), ('estado_cita_espacio', '=', 'Sin asignar')], context=context)
-									res_editar['estado_cita_espacio']= 'Eliminado'
+									res_editar['estado_cita_espacio']= ''
 									res_editar['fecha_inicio']= None
 									res_editar['fecha_fin']= None
 									res_editar['patient_id']=''
@@ -473,7 +473,7 @@ class doctor_appointment_co(osv.osv):
 							if result_estado != True:
 
 								if id_sechedule_espacio:
-									res_editar['estado_cita_espacio']= 'Eliminado'
+									res_editar['estado_cita_espacio']= ''
 									res_editar['fecha_inicio']= None
 									res_editar['fecha_fin']= None
 									res_editar['patient_id']=''
@@ -489,7 +489,7 @@ class doctor_appointment_co(osv.osv):
 
 								self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
 
-								id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', 'Eliminado')])
+								id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', '')])
 
 								self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
 							else:
@@ -543,39 +543,6 @@ class doctor_appointment_co(osv.osv):
 
 		return super(doctor_appointment_co,self).write(cr, uid, ids, vals, context)
 
-	def unlink(self, cr, uid, ids, context=None):
-
-		if context is None:
-
-			res={}
-
-			for i in self.browse(cr, uid, ids, context=context):
-				date_begin=i.time_begin
-				date_end=i.time_end
-				schedule_id_appointment= i.schedule_id.id
-				type_id=i.type_id.duration
-
-			date_begin_cita= datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
-			date_fin_cita= datetime.strptime(date_end, "%Y-%m-%d %H:%M:%S")
-			_logger.info('fecha begin cita')
-			_logger.info(date_begin_cita)
-			minuto_inicio=str(date_begin)[14:16]
-
-			for i in range(int(minuto_inicio), int(minuto_inicio) + type_id, 5):
-				fecha_inicio_cita=date_begin_cita + timedelta(minutes=(i-int(minuto_inicio)))
-				fecha_fin=date_begin_cita + timedelta(minutes=(i-int(minuto_inicio))+5)
-
-				res['fecha_inicio'] = str(fecha_inicio_cita)
-				res['fecha_fin'] = str(fecha_fin)
-				res['schedule_espacio_id']= schedule_id_appointment
-				res['estado_cita_espacio']= 'Sin asignar'
-
-				self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
-
-			id_espacio= id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('estado_cita_espacio', '=', 'Asignado')])
-			self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
-
-		return super(doctor_appointment_co, self).unlink(cr, uid, ids, context=context)
 
 	def onchange_patient(self, cr, uid, ids, patient_id, insurer_id, tipo_usuario_id, ref, context=None):
 		values = {}
@@ -1058,7 +1025,7 @@ class doctor_attentions_co(osv.osv):
 		'finalidad_consulta': lambda self, cr, uid, context: self.pool.get('doctor.doctor').finalidad_consulta_db(cr, uid),
 		'activar_notas_confidenciales' : True,
 		'inv' : True,
-		'causa_externa':'13',
+		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),,
 
 	}
 
@@ -1318,7 +1285,6 @@ class doctor_co_schedule_inherit(osv.osv):
 
 	def unlink(self, cr, uid, ids, context=None):
 
-
 		for i in self.browse(cr, uid, ids, context=context):
 			time_begin=i.date_begin
 			time_end=i.date_end
@@ -1329,10 +1295,7 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		id_espacio= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '>=', str(date_begin_cita)),('fecha_fin', '<=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id)])
 		self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
-		id_appointment= self.pool.get('doctor.appointment').search(cr, uid, [('schedule_id', '=', None)], context=context)
 
-		self.pool.get('doctor.appointment').unlink(cr, uid, id_appointment, context)
-		
 		return super(doctor_co_schedule_inherit, self).unlink(cr, uid, ids, context=context)
 
 	def generar_espacios(self, cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, context=None):
@@ -1495,7 +1458,7 @@ doctor_co_schedule_inherit()
 class doctor_espacios(osv.osv):
 
 	_name= 'doctor.espacios'
-	_order= 'fecha_inicio asc'
+	_order= 'fecha_inicio, fecha_fin asc'
 
 	_columns = {
 		'schedule_espacio_id': fields.many2one('doctor.schedule', 'Agenda'),
