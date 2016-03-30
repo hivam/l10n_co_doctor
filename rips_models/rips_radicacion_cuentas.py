@@ -120,7 +120,7 @@ class radicacion_cuentas(osv.osv):
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
 		'state' : 'draft',
-		'rips_tipo_archivo' : [3,10],
+		'rips_tipo_archivo' : [3,10, 1],
 	}
 
 
@@ -171,15 +171,15 @@ class radicacion_cuentas(osv.osv):
 			nombre = rips_generados_obj.browse(cr, uid, ultimo_registro).nombre_archivo
 		else:
 			# Si no hay registros en rips.generados buscamos en ir.attachment
-			cr.execute("SELECT name, file_type FROM ir_attachment ORDER BY create_date DESC limit 1")
-			listFetch= cr.fetchall()
-			nombre= listFetch[0][0]
-			file_type= listFetch[0][1]
-			#si el ultimo archivo de ir.attachment es un txt/plano entonces lo obtenemos.
-			if  file_type == 'text/plain':
-				nombre = nombre= listFetch[0][0]
-			#sino es txt/plano iniciamos la secuencia desde 0.
-			else:
+			try:
+				cr.execute("SELECT name FROM ir_attachment ORDER BY create_date DESC limit 1")
+				listFetch= cr.fetchall()
+				nombre= listFetch[0][0]
+				file_type= listFetch[0][1]
+				#si el ultimo archivo de ir.attachment es un txt/plano entonces lo obtenemos.
+				if  file_type == 'text/plain':
+					nombre = listFetch[0][0]
+			except:
 				nombre = 'XX000000.txt'
 		get_secuencia = int(nombre[2:8])
 		aumentando_secuencia = '{0:06}'.format(get_secuencia + 1)
@@ -197,6 +197,7 @@ class radicacion_cuentas(osv.osv):
 			if not var.rips_tipo_archivo:
 				self.generar_rips_AF(cr, uid, ids, context=None)
 				self.generar_rips_US(cr, uid, ids, context=None)
+				self.generar_rips_AC(cr, uid, ids, context=None)
 			else:
 				tipo_archivo = var.rips_tipo_archivo
 				for rec in tipo_archivo:
@@ -205,6 +206,77 @@ class radicacion_cuentas(osv.osv):
 						self.generar_rips_AF(cr, uid, ids, context=None)
 					elif generar_archivo == 'US':
 						self.generar_rips_US(cr, uid, ids, context=None)
+					elif generar_archivo == 'AC':
+						self.generar_rips_AC(cr, uid, ids, context=None)
+
+	def generar_rips_AC(self, cr, uid, ids, context=None):
+		pacientes = []
+		for var in self.browse(cr, uid, ids):
+			archivo = StringIO.StringIO()
+			for factura in var.invoices_ids:
+				if factura.patient_id.id not in pacientes:
+					tipo_archivo = tipo_archivo_rips.get('1')
+					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+					parent_id = self.getParentid(cr,uid,ids)[0]
+					#***********GET CAMPOS********
+					#Número de la factura
+					if factura.number:
+						archivo.write(factura.number+ ',')
+					else:
+						archivo.write(",")
+					#codigo del prestador de servicios de salud
+					todos = self.pool.get('res.company').search(cr, uid, [])
+					invoices = self.pool.get('account.invoice')
+					company_id = self.pool.get('res.company').browse(cr, uid, todos[0])
+					cod_prestadorservicio = company_id.cod_prestadorservicio
+					if cod_prestadorservicio:
+						archivo.write(cod_prestadorservicio+ ',')
+					else:
+						archivo.write(",")
+					#Tipo de identificacion del usuario
+					if factura.patient_id.tdoc:
+						archivo.write(str(tdoc_selection.get(factura.patient_id.tdoc) + ','))
+					else:
+						archivo.write(",")
+					#Numero de identificacion del usuario
+					if factura.patient_id.ref:
+						archivo.write(factura.patient_id.ref+ ',')
+					else:
+						archivo.write(",")
+					#fecha de la consulta
+					todos = self.pool.get('sale.order').search(cr, uid, [('name', '=', factura.origin)])
+					#Numero de autorizacion
+					#codigo de la consulta (CUPS)
+					#finalidad de la consulta
+					#Causa Externa
+					#Codigo del pronóstico principal
+					#Codigo del diagnóstico relacionado num1
+					#Codigo del diagnóstico relacionado num2
+					#codigo del diagnostico relacionado
+					#Otro diagnóstico relacionado si se requiere
+					#Valor de la consulta
+					#valor del copago del paciente
+					#valor neto a pagar
+					
+
+
+			output = base64.encodestring(archivo.getvalue())
+			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																			'datas_fname': nombre_archivo,
+																			'type': 'binary',
+																			'datas': output,
+																			'parent_id' : parent_id,
+																			'res_model' : 'rips.radicacioncuentas',
+																			'res_id' : ids[0]},
+																			context= context)
+			for actual in self.browse(cr, uid, ids):
+				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
+																  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
+																 'nombre_archivo': nombre_archivo,
+																 'f_inicio_radicacion': actual.rangofacturas_desde,
+																 'f_fin_radicacion' : actual.rangofacturas_hasta,
+																 'archivo' : output}, context=context)	
+				
 		return True
 
 	def generar_rips_US(self, cr, uid, ids, context=None):

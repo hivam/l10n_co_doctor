@@ -33,6 +33,10 @@ class doctor(osv.osv):
 
 		#Obtener TimeZone Usuario
 		tz = context.get('tz','America/Bogota')
+
+		if not tz:
+			raise osv.except_osv(_('Zona Horaria - Clinica Digital'),
+								 _('Por favor configure su zona horaria para acceder a esta funcionalidad del sistema o solicite soporte.'))
 		#Formato
 		localFormat = "%Y-%m-%d %H:%M:%S"
 
@@ -70,3 +74,23 @@ class doctor(osv.osv):
 		nombre_compania = self.pool.get("res.users").browse(cr, uid, uid, context=context).company_id.name
 
 		return nombre_compania
+
+
+	def finalidad_consulta_db(self, cr, uid, context=None):
+		
+		finalidad_consulta = '07'
+		
+		if cr.dbname == 'DraConstanzaCastilla':
+			finalidad_consulta = '04'
+		if cr.dbname == 'Tomatis':
+			finalidad_consulta = '10'
+			
+		return finalidad_consulta
+
+	def causa_externa(self, cr, uid, context=None):
+		causa_externa='13'
+		
+		if cr.dbname == 'Tomatis':
+			causa_externa='15'
+			
+		return causa_externa
