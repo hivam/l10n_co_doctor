@@ -486,10 +486,11 @@ class doctor_appointment_co(osv.osv):
 									res['fecha_fin']= appointment_date_end
 									res['patient_id']=patient_id_appointment
 									res['schedule_espacio_id']=schedule_id_appoitment
-
-								self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
-								id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', '')])
-								self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
+								#TODO: revisar si esta corrección quedó bien. at2 Capriatto
+								if id_sechedule_espacio:
+									self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
+									id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', '')])
+									self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
 							else:
 								raise osv.except_osv(_('Aviso importante!'),_('En este horario ya se ha asignado una cita.\n\n Por favor escoja otro horario para la cita.'))
 							
@@ -1271,7 +1272,7 @@ class doctor_co_schedule_inherit(osv.osv):
 
 					agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
 
-					self.generar_espacios(cr, uid, agenda_id, dias_inicia_trabaja,dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda']), duracion_horas, test, context=None)
+					self.generar_espacios(cr, uid, agenda_id, dias_inicia_trabaja,dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda']), vals['duracion_agenda'], test, context=None)
 
 		if not vals['repetir_agenda']:
 			vals['date_begin']=fecha_begining

@@ -434,7 +434,11 @@
             <field name="function" eval="'habilitar_espacios'"/>
             <field name="args" eval="'()'"/>
         </record>
+<<<<<<< HEAD
+      -->
+=======
         -->
+>>>>>>> f7109fd429360c17c6cc35a8e4b9611146c1529d
         
         <!-- Modificando la busqueda en atencion anadiendo cambios -->
         <record id="attentions_filter" model="ir.ui.view">
