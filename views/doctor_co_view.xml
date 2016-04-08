@@ -421,7 +421,7 @@
         </record>
 
 
-        <!--  Generar espacios-->
+        <!--  Generar espacios
         <record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
             <field name="name">Habilitar Espacios</field>
             <field name="active" eval="True"/>
@@ -434,7 +434,7 @@
             <field name="function" eval="'habilitar_espacios'"/>
             <field name="args" eval="'()'"/>
         </record>
-
+      -->
         
         <!-- Modificando la busqueda en atencion anadiendo cambios -->
         <record id="attentions_filter" model="ir.ui.view">
