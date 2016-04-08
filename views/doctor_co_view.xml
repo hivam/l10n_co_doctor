@@ -407,7 +407,7 @@
                     </footer>
                     <field name="schedule_espacios_ids" colspan="4" readonly="1">
                       <field name="auto_refresh">5</field>
-                        <tree string="Espacios" create="false" colors="red:estado_cita_espacio=='Asignado';">
+                        <tree string="Espacios" limit="100" create="false" colors="red:estado_cita_espacio=='Asignado';">
                           <field name="patient_id"/>
                           <field name="fecha_inicio" widget="time"/>
                           <field name="fecha_fin" widget="time"/>
@@ -434,7 +434,11 @@
             <field name="function" eval="'habilitar_espacios'"/>
             <field name="args" eval="'()'"/>
         </record>
+<<<<<<< HEAD
       -->
+=======
+        -->
+>>>>>>> f7109fd429360c17c6cc35a8e4b9611146c1529d
         
         <!-- Modificando la busqueda en atencion anadiendo cambios -->
         <record id="attentions_filter" model="ir.ui.view">
