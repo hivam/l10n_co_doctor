@@ -1272,7 +1272,7 @@ class doctor_co_schedule_inherit(osv.osv):
 
 					agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
 
-					self.generar_espacios(cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, context=None)
+					self.generar_espacios(cr, uid, agenda_id, dias_inicia_trabaja,dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda']), vals['duracion_agenda'], test, context=None)
 
 		if not vals['repetir_agenda']:
 			vals['date_begin']=fecha_begining
