@@ -23,6 +23,7 @@ import re
 import time
 import pytz
 import codecs
+import unicodedata
 from datetime import datetime, timedelta, date
 from dateutil import parser
 from dateutil import rrule
@@ -32,8 +33,10 @@ from openerp.tools.translate import _
 import logging
 import StringIO
 import base64
+import string
 import unicodedata
 _logger = logging.getLogger(__name__)
+
 
 tdoc_selection = {
 	'11' : 'RC',
@@ -70,6 +73,9 @@ class radicacion_cuentas(osv.osv):
 	_description='Modelo para la radicacion de cuentas de RIPS'
 	_name ='rips.radicacioncuentas'
 	_rec_name = 'secuencia'
+
+	def _remove_accents(self, cr, uid, ids, string):
+		return unicodedata.normalize('NFKD', unicode(string)).encode('ASCII', 'ignore')
 
 	def _contar_facturas(self, cr, uid, ids, context=None):
 		"""
@@ -193,6 +199,7 @@ class radicacion_cuentas(osv.osv):
 			return 'known.txt'
 
 	def generar_rips(self, cr, uid, ids, context=None):
+		
 		for var in self.browse(cr, uid, ids):
 			if not var.rips_tipo_archivo:
 				self.generar_rips_AF(cr, uid, ids, context=None)
@@ -218,6 +225,14 @@ class radicacion_cuentas(osv.osv):
 					tipo_archivo = tipo_archivo_rips.get('1')
 					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
 					parent_id = self.getParentid(cr,uid,ids)[0]
+
+					#Acceder a la atencion a la que pertenece la factura
+					sale_order = self.pool.get('sale.order').search(cr, uid, [('name', '=', factura.origin)])
+					sale_order_origin = self.pool.get('sale.order').browse(cr, uid, sale_order)[0].origin
+					appointments = self.pool.get('doctor.appointment').search(cr, uid, [('number', '=', sale_order_origin)])
+					appointment_number = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].number
+					doctor_attentions = self.pool.get('doctor.attentions').search(cr, uid, [('origin', '=', appointment_number)])
+
 					#***********GET CAMPOS********
 					#Número de la factura
 					if factura.number:
@@ -244,10 +259,27 @@ class radicacion_cuentas(osv.osv):
 					else:
 						archivo.write(",")
 					#fecha de la consulta
-					todos = self.pool.get('sale.order').search(cr, uid, [('name', '=', factura.origin)])
+					try:
+						
+						doctor_attention_date =  self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].date_attention
+
+						fecha_atencion_format =  datetime.strptime(doctor_attention_date, "%Y-%m-%d %H:%M:%S")
+						fecha_atencion_string =  fecha_atencion_format.strftime("%d/%m/%Y")
+						archivo.write(fecha_atencion_string + ',')
+					except Exception, e:
+						archivo.write(',')
 					#Numero de autorizacion
+					archivo.write(',')
 					#codigo de la consulta (CUPS)
+					appointment_number = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].realiza_procedimiento
+					_logger.info("-----------")
+					_logger.info(appointment_number)
+
 					#finalidad de la consulta
+					try:
+						archivo.write(doctor_attentions.finalidad_consulta+',')
+					except Exception, e:
+						archivo.write(",")
 					#Causa Externa
 					#Codigo del pronóstico principal
 					#Codigo del diagnóstico relacionado num1
@@ -449,7 +481,9 @@ class radicacion_cuentas(osv.osv):
 				#codigo aseguradora
 				archivo.write( var.cliente_id.code + ',')
 				#nombre aseguradora
-				archivo.write( var.cliente_id.insurer.name + ',')
+				aux = var.cliente_id.insurer.name
+				nombre_aseguradora = self._remove_accents(cr, uid, ids, aux)
+				archivo.write(nombre_aseguradora.decode('utf-8', 'ignore') + ',')
 				#Numero de contrato
 				if var.contrato_id.contract_code:	
 					archivo.write( var.contrato_id.contract_code + ',')
@@ -529,5 +563,8 @@ class radicacion_cuentas(osv.osv):
 		if len(buscar) == 1:
 			res['value']['contrato_id'] =  buscar[0]
 		return res
+
+	
+
 
 radicacion_cuentas()
