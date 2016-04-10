@@ -269,13 +269,13 @@ class radicacion_cuentas(osv.osv):
 					except Exception, e:
 						archivo.write(',')
 					#Numero de autorizacion
-					try:
+					##try:
 						# appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
 						# codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].procedures_id.nro_autorizacion
 						# _logger.info("--------")
 						# _logger.info(codigo_consulta)
-					except Exception, e:
-						archivo.write(',')
+					#except Exception, e:
+					#	archivo.write(',')
 					#codigo de la consulta (CUPS)
 					realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].realiza_procedimiento
 					if realiza_procedimiento == False:
