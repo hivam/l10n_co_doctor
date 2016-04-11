@@ -145,6 +145,7 @@ class doctor_patient_co(osv.osv):
 		'numero_poliza_afiliacion': fields.char(u'Póliza- # Afiliación'),
 		'eps_predeterminada': fields.boolean('Predeterminada'),
 		'prepagada_predeterminada': fields.boolean('Predeterminada'),
+		'particular_predeterminada': fields.boolean('Predeterminar Particular'),
 	}
 
 	def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
@@ -781,7 +782,7 @@ class doctor_appointment_co(osv.osv):
 		patient = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context)
 		insurer_patient = patient.insurer.id
 		tipo_usuario_patient = patient.tipo_usuario.id
-
+		tipo_usuario = self.pool.get('doctor.tipousuario.regimen').search(cr, uid, [('name', '=', 'Particular')], context=context)
 
 		if patient.eps_predeterminada:
 			values.update({
@@ -790,6 +791,11 @@ class doctor_appointment_co(osv.osv):
 				'nro_afilicion_poliza' : patient.nro_afiliacion,
 				'plan_id': '',
 				'contract_id': '',
+			})
+
+		elif patient.particular_predeterminada:
+			values.update({
+				'tipo_usuario_id' : tipo_usuario[0],
 			})
 
 		elif patient.prepagada_predeterminada:

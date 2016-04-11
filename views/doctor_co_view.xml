@@ -84,6 +84,10 @@
                 <field name="nro_afiliacion" position="after" >
                     <field name="eps_predeterminada"/>
                 </field>
+
+                <field name="eps_predeterminada" position="after" >
+                    <field name="particular_predeterminada"/>
+                </field>
                 <!--attrs="{'invisible': [('tipo_usuario','=', 5)]}-->
                 <xpath expr="/form[@string='Patient']/sheet/group[2]/fieldset[@class='fieldset_margen']/group[@col='2']" position="after">
                     <fieldset class="fieldset_margen">
