@@ -221,6 +221,8 @@
             <field eval="7" name="priority"/>
             <field name="inherit_id" ref="doctor.view_doctor_appointment_form"/>
             <field name="arch" type="xml">
+
+
                 <xpath expr="//form/group" position="replace">
                   <group>
                     <field name="schedule_id" domain="[('date_end','>=',time.strftime('%%Y-%%m-%%d %%H:%%M:%%S'))]" on_change="onchange_start_time(schedule_id, professional_id, time_begin)"/>
@@ -237,7 +239,7 @@
                         <field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
                     </group>
                     <group colspan="4" col="6">
-                      <field name="type_id" on_change="onchange_calcular_hora(schedule_id,type_id,time_begin, plan_id, tipo_usuario_id)"/>
+                      <field name="type_id" on_change="onchange_calcular_hora(schedule_id,type_id,time_begin, plan_id, tipo_usuario_id, repetir_cita)"/>
                       <field name="realiza_procedimiento"/>
                       <field name="nro_afilicion_poliza"/>
                     </group>
@@ -248,11 +250,66 @@
                     </group>
 
                     <group colspan='4' col='6'>
-                        <field name="time_begin" on_change="onchange_end_time(type_id, time_begin, time_end)"/>
-                        <field name="time_end"/>
+                        <field name="time_begin" on_change="onchange_end_time(type_id, time_begin, time_end)" attrs="{'invisible':[('repetir_cita', '=', True)]}"/>
+                        <field name="time_end" attrs="{'invisible':[('repetir_cita', '=', True)]}"/>
                         <field name="aditional"/>
                     </group>
+
+                    <group colspan="4" col="6">
+                      <field name="repetir_cita" on_change="onchange_cargar_hora(type_id, time_begin, time_end)"/>
+                    </group>
+
                 </xpath>
+
+
+                <notebook>
+
+                  <page string="Repetir Cita" attrs="{'invisible':[('repetir_cita', '!=', True)]}">
+                    
+
+                        <separator/>
+                        <fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
+                        <legend class="texto_legend">Repetir Cita</legend>
+                        <group colspan="2" col="4">
+                          <field name="repetir_cita_fecha_inicio" attrs="{'required':[('repetir_cita', '=', True)]}"/>
+                          <field name="repetir_cita_fecha_fin" attrs="{'required':[('repetir_cita', '=', True)]}"/>
+                        </group>
+                      </fieldset>
+                      <separator/>
+                      <fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
+                        <legend class="texto_legend">Dias de la Semana</legend>
+                        <group colspan="4" col="6">
+                            <field name="lunes"/>
+                            <field name="martes"/>
+                            <field name="miercoles"/>
+                            <field name="jueves"/>
+                            <field name="viernes"/>
+                            <field name="sabado"/>
+                            <field name="domingo"/>
+                            <field name="todos_los_dias_semana" on_change="onchange_seleccion(todos_los_dias_semana,'dias')"/>
+                        </group>
+                        </fieldset>
+                        <separator/>
+                        <fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
+                        <legend class="texto_legend">Meses</legend>
+                        <group colspan="4" col="6">
+                            <field name="enero"/>
+                            <field name="febrero"/>
+                            <field name="marzo"/>
+                            <field name="abril"/>
+                            <field name="mayo"/>
+                            <field name="junio"/>
+                            <field name="julio"/>
+                            <field name="agosto"/>
+                            <field name="septiembre"/>
+                            <field name="octubre"/>
+                            <field name="noviembre"/>
+                            <field name="diciembre"/>
+                            <field name="todos_los_meses" on_change="onchange_seleccion(todos_los_meses,'meses')"/>
+                        </group>
+                        </fieldset>
+                  </page>
+                </notebook>
 
                 <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[3]" position="after">
                     <field name="nro_autorizacion"/>
@@ -328,6 +385,7 @@
                 <field name="patients_count" position="after" >
                     <field name="repetir_agenda"/>
                 </field>
+
 
                 <field name="date_begin" position="attributes">
                     <attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
@@ -407,7 +465,7 @@
                     </footer>
                     <field name="schedule_espacios_ids" colspan="4" readonly="1">
                       <field name="auto_refresh">5</field>
-                        <tree string="Espacios" create="false" colors="red:estado_cita_espacio=='Asignado';">
+                        <tree string="Espacios" limit="100" create="false" colors="red:estado_cita_espacio=='Asignado';">
                           <field name="patient_id"/>
                           <field name="fecha_inicio" widget="time"/>
                           <field name="fecha_fin" widget="time"/>
@@ -419,7 +477,6 @@
                 </notebook>
             </field>
         </record>
-
 
         <!--  Generar espacios-->
         <record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
