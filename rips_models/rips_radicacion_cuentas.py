@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#	OpenERP, Open Source Management Solution
-#	Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#   OpenERP, Open Source Management Solution
+#   Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
-#	This program is free software: you can redistribute it and/or modify
-#	it under the terms of the GNU Affero General Public License as
-#	published by the Free Software Foundation, either version 3 of the
-#	License, or (at your option) any later version.
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU Affero General Public License as
+#   published by the Free Software Foundation, either version 3 of the
+#   License, or (at your option) any later version.
 #
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU Affero General Public License for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU Affero General Public License for more details.
 #
-#	You should have received a copy of the GNU Affero General Public License
-#	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   You should have received a copy of the GNU Affero General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 import openerp
@@ -259,16 +259,14 @@ class radicacion_cuentas(osv.osv):
 					else:
 						archivo.write(",")
 					#fecha de la consulta
-					try:
-						
+					try:                        
 						doctor_attention_date =  self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].date_attention
-
 						fecha_atencion_format =  datetime.strptime(doctor_attention_date, "%Y-%m-%d %H:%M:%S")
 						fecha_atencion_string =  fecha_atencion_format.strftime("%d/%m/%Y")
 						archivo.write(fecha_atencion_string + ',')
 					except Exception, e:
 						archivo.write(',')
-					#Numero de autorizacion
+					#codigo de la consulta (CUPS)
 					realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].realiza_procedimiento
 					if realiza_procedimiento == False:
 						appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
@@ -308,7 +306,7 @@ class radicacion_cuentas(osv.osv):
 																 'nombre_archivo': nombre_archivo,
 																 'f_inicio_radicacion': actual.rangofacturas_desde,
 																 'f_fin_radicacion' : actual.rangofacturas_hasta,
-																 'archivo' : output}, context=context)	
+																 'archivo' : output}, context=context)  
 				
 		return True
 
@@ -418,7 +416,7 @@ class radicacion_cuentas(osv.osv):
 																 'nombre_archivo': nombre_archivo,
 																 'f_inicio_radicacion': actual.rangofacturas_desde,
 																 'f_fin_radicacion' : actual.rangofacturas_hasta,
-																 'archivo' : output}, context=context)	
+																 'archivo' : output}, context=context)  
 				
 		return True
 
@@ -486,7 +484,7 @@ class radicacion_cuentas(osv.osv):
 				nombre_aseguradora = self._remove_accents(cr, uid, ids, aux)
 				archivo.write(nombre_aseguradora.decode('utf-8', 'ignore') + ',')
 				#Numero de contrato
-				if var.contrato_id.contract_code:	
+				if var.contrato_id.contract_code:   
 					archivo.write( var.contrato_id.contract_code + ',')
 				else:
 					archivo.write(',')
@@ -513,7 +511,7 @@ class radicacion_cuentas(osv.osv):
 				#valor total de descuentos
 				archivo.write(str(format(0,'.2f')) + ',')
 				#valor neto a pagar por la entidad contratante
-				archivo.write( str(format(factura.amount_total, '.2f')))															
+				archivo.write( str(format(factura.amount_total, '.2f')))                                                            
 				#salto de linea
 				archivo.write('\n')
 				# actualizar factura a radicada
