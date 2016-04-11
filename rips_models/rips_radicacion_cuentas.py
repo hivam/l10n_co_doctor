@@ -259,23 +259,21 @@ class radicacion_cuentas(osv.osv):
 					else:
 						archivo.write(",")
 					#fecha de la consulta
-					try:
-						
+					try:						
 						doctor_attention_date =  self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].date_attention
-
 						fecha_atencion_format =  datetime.strptime(doctor_attention_date, "%Y-%m-%d %H:%M:%S")
 						fecha_atencion_string =  fecha_atencion_format.strftime("%d/%m/%Y")
 						archivo.write(fecha_atencion_string + ',')
 					except Exception, e:
 						archivo.write(',')
 					#Numero de autorizacion
-					##try:
-						# appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
-						# codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].procedures_id.nro_autorizacion
-						# _logger.info("--------")
-						# _logger.info(codigo_consulta)
-					#except Exception, e:
-					#	archivo.write(',')
+					try:
+						appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
+						codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].procedures_id.nro_autorizacion
+						_logger.info("--------")
+						_logger.info(codigo_consulta)
+					except Exception, e:
+						archivo.write(',')
 					#codigo de la consulta (CUPS)
 					realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].realiza_procedimiento
 					if realiza_procedimiento == False:
