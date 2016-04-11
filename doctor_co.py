@@ -1629,8 +1629,8 @@ class doctor_professional(osv.osv):
 		especialidad_id= vals['speciality_id']
 		identificacion = vals['ref']
 		especialidad_nombre = self.pool.get('doctor.speciality').browse(cr, uid, especialidad_id, context=context).name
-
-		if especialidad_nombre.lower() == 'PSICOLOGIA'.lower():
+		especialidades = ['PSICOLOGIA'.lower(), 'FONOAUDIOLOGIA'.lower()]
+		if especialidad_nombre.lower() in especialidades:
 			psicologo_grupo_id = self.pool.get('res.groups').search(cr, uid, [('name', '=', 'Psicologo')], context=context)
 			profesional_grupo_id = self.pool.get('res.groups').search(cr, uid, [('name', '=', 'Physician')], context=context)
 			profesional_id = self.search(cr, uid, [('ref', '=', identificacion)], context=context)
