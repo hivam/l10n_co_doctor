@@ -478,7 +478,12 @@
             </field>
         </record>
 
+<<<<<<< HEAD
         <!--  Generar espacios-->
+=======
+
+        <!--  Generar espacios
+>>>>>>> d6acafe1ed81154c80826d74c0399ddededa0a11
         <record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
             <field name="name">Habilitar Espacios</field>
             <field name="active" eval="True"/>
@@ -491,7 +496,11 @@
             <field name="function" eval="'habilitar_espacios'"/>
             <field name="args" eval="'()'"/>
         </record>
-
+<<<<<<< HEAD
+      -->
+=======
+        -->
+>>>>>>> f7109fd429360c17c6cc35a8e4b9611146c1529d
         
         <!-- Modificando la busqueda en atencion anadiendo cambios -->
         <record id="attentions_filter" model="ir.ui.view">
