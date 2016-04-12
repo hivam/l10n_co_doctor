@@ -51,6 +51,8 @@ class doctor_account_voucher(report_sxw.rml_parse):
         
         cuenta_id = cuenta.search(self.cr, self.uid, [('patient_id', '=', paciente_id), ('date_invoice', '=', fecha), ('amount_patient', '=', pago_paciente)], context=context)
 
+        _logger.info(cuenta_id)
+        
         for i in cuenta.browse(self.cr, self.uid, cuenta_id, context=context):
             cuenta_ids.append(i.id)
 
@@ -79,7 +81,6 @@ class doctor_account_voucher(report_sxw.rml_parse):
         context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
         cuenta = self.pool.get('account.invoice.line')
         dato = ""
-        _logger.info(self.base(partner_id, fecha, pago_paciente))
         for i in cuenta.browse(self.cr, self.uid, self.base(partner_id, fecha, pago_paciente), context=context):
             dato += i.name + ", "
 
