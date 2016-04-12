@@ -49,7 +49,10 @@ class doctor_account_voucher(report_sxw.rml_parse):
         
         cuenta_id = cuenta.search(self.cr, self.uid, [('partner_id', '=', partner_id), ('date_invoice', '=', fecha), ('amount_patient', '=', pago_paciente)], context=context)
 
-        _logger.info(cuenta_id)
+        _logger.info(partner_id)
+        _logger.info(fecha)
+        _logger.info(pago_paciente)
+
 
         for i in cuenta.browse(self.cr, self.uid, cuenta_id, context=context):
             cuenta_ids.append(i.id)
