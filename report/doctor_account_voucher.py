@@ -22,6 +22,7 @@
 import time
 from openerp.report import report_sxw
 from openerp import pooler
+from datetime import date, datetime, timedelta
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -45,11 +46,9 @@ class doctor_account_voucher(report_sxw.rml_parse):
         cuenta = self.pool.get('account.invoice')
         cuenta_line = self.pool.get('account.invoice.line')
         paciente_id = doctor_paciente.search(self.cr, self.uid, [('patient', '=', partner_id)], context=context)
-        cuenta_ids = []
-        for i in  doctor_paciente.browse(self.cr, self.uid, paciente_id, context=context):
-            paciente_id = i.id
-        
-        cuenta_id = cuenta.search(self.cr, self.uid, [('patient_id', '=', paciente_id), ('date_invoice', '=', fecha), ('amount_patient', '=', pago_paciente)], context=context)
+        cuenta_ids = [] 
+        fecha = datetime.strptime(str(fecha), "%d-%m-%Y")
+        cuenta_id = cuenta.search(self.cr, self.uid, [('patient_id', '=', paciente_id[0]), ('date_invoice', '=', fecha), ('amount_patient', '=', pago_paciente)], context=context)
 
         for i in cuenta.browse(self.cr, self.uid, cuenta_id, context=context):
             cuenta_ids.append(i.id)
