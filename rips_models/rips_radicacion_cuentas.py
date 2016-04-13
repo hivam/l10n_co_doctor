@@ -266,6 +266,15 @@ class radicacion_cuentas(osv.osv):
 						archivo.write(fecha_atencion_string + ',')
 					except Exception, e:
 						archivo.write(',')
+
+					#Numero de autorizacion
+					try:
+						appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
+						codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].nro_autorizacion
+						archivo.write(codigo_consulta + ',')
+					except Exception, e:
+						archivo.write(',')
+
 					#codigo de la consulta (CUPS)
 					realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].realiza_procedimiento
 					if realiza_procedimiento == False:
@@ -276,19 +285,60 @@ class radicacion_cuentas(osv.osv):
 						return
 					#finalidad de la consulta
 					try:
-						archivo.write(doctor_attentions.finalidad_consulta+',')
+						finalidad_consulta = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].finalidad_consulta
+						archivo.write(finalidad_consulta + ',')
 					except Exception, e:
-						archivo.write(",")
+						archivo.write(',')
+	
 					#Causa Externa
+					try:
+						causa_externa = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].causa_externa
+						archivo.write(causa_externa + ',')
+					except Exception, e:
+						archivo.write(',')
+
 					#Codigo del pronóstico principal
-					#Codigo del diagnóstico relacionado num1
-					#Codigo del diagnóstico relacionado num2
-					#codigo del diagnostico relacionado
-					#Otro diagnóstico relacionado si se requiere
+					try:
+						pronosticos_ids = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].diseases_ids
+						for rec in pronosticos_ids:
+							principal = rec.diseases_type
+							if principal == 'main':
+								archivo.write(rec.diseases_id.code +',')
+					except Exception, e:
+						archivo.write(',')
+						
+					#Codigo del diagnósticos relacionados
+					try:
+						pronosticos_ids = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].diseases_ids
+						for rec in pronosticos_ids:
+							principal = rec.diseases_type
+							if principal == 'related':
+								archivo.write(rec.diseases_id.code +',')
+					except Exception, e:
+						pass
+
 					#Valor de la consulta
+					try:
+						monto_consulta= factura.amount_untaxed
+						monto_consulta_impuesto = factura.amount_tax
+						suma = monto_consulta+monto_consulta_impuesto
+						archivo.write(str(suma)+ ',')
+					except Exception, e:
+						archivo.write(',')
+
 					#valor del copago del paciente
+					try:
+						copago_paciente= factura.amount_patient
+						archivo.write(str(copago_paciente)+ ',')
+					except Exception, e:
+						archivo.write(',')
+
 					#valor neto a pagar
-					
+					try:
+						valor_neto= factura.residual
+						archivo.write(str(valor_neto)+ ',')
+					except Exception, e:
+						archivo.write(',')
 
 
 			output = base64.encodestring(archivo.getvalue())
