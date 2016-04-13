@@ -122,7 +122,7 @@
           <para style="P6"><b>Ciudad:</b> [[(o.partner_id.city_id.name)]], [[(o.partner_id.state_id.name)]]</para>
 		<spacer length="10"></spacer>
           <para style="P6"><b>Nombre Procedimiento(s):</b> [[select_nombre_procedimiento(o.partner_id.id, [[formatLang(o.date,date=True) ]], o.amount)]]</para>
-          <para style="P6"><b>Cantidad: </b> [[select_cantidad_procedimiento(o.part[[formatLang(o.date,date=True) ]]ner_id.id,[[formatLang(o.date,date=True) ]], o.amount)]]</para>
+          <para style="P6"><b>Cantidad: </b> [[select_cantidad_procedimiento(o.partner_id.id, [[formatLang(o.date,date=True) ]], o.amount)]]</para>
           <para style="P6"><b>Valor Procedimiento(s):</b> [[select_valor_procedimiento(o.partner_id.id, [[formatLang(o.date,date=True) ]], o.amount)]]</para>
           <para style="P6"><b>Copago:</b> [[(o.amount)]]</para>
         </td>
