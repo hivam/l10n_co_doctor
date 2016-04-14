@@ -688,7 +688,7 @@ class doctor_appointment_co(osv.osv):
 								id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
 
 								#Recorremos los ids para saber el estado de dichos espacios
-								for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio):
+								for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio, context=context):
 									fecha= espacios.fecha_inicio
 									fecha_otra= espacios.fecha_fin
 									estado= espacios.estado_cita_espacio
@@ -908,11 +908,14 @@ class doctor_appointment_co(osv.osv):
 	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, repetir_cita, context=None):
 		values = {}
 		fecha_agenda_espacio=time_begin
-		
+		fecha_comparacion=time_begin
+
 		max_pacientes = 1
 		citas_restantes = 0
 
 		id_sechedule= self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
+
+		fecha_inicio_comparacion_agenda=id_sechedule.date_begin
 		try:
 			id_sechedule_consultorio=id_sechedule.consultorio_id.id
 		except Exception, e:
@@ -1025,6 +1028,7 @@ class doctor_appointment_co(osv.osv):
 				if int(len(horario_cadena)) > 1:
 					if int(len(horario_cadena)) > int((appointment_type/1)):
 						if repetir_cita:
+
 							values.update({
 									'repetir_cita_fecha_inicio' : horario_cadena[0],
 									'repetir_cita_fecha_fin' : horario_cadena[int(appointment_type/1)],
@@ -1032,10 +1036,20 @@ class doctor_appointment_co(osv.osv):
 									'time_end' : horario_cadena[int(appointment_type/1)],
 							})
 						else:
-							values.update({
-								'time_begin' : horario_cadena[0],
-								'time_end' : horario_cadena[int(appointment_type/1)]
-							})
+
+							fecha= self.calcular_fecha_proxima_cita(cr,uid, horario_cadena[0], fecha_hora_actual, appointment_type, schedule_id, context=context)
+							_logger.info('La fecha es:')
+							_logger.info(fecha)
+							if fecha_comparacion != fecha_inicio_comparacion_agenda:
+								values.update({
+									'time_begin' : horario_cadena[0],
+									'time_end' : horario_cadena[int(appointment_type/1)]
+								})
+							else:
+								values.update({
+									'time_begin' : str(fecha),
+									'time_end' : horario_cadena[int(appointment_type/1)]
+								})
 
 					else:
 						raise osv.except_osv(_('Error!'),
@@ -1052,8 +1066,10 @@ class doctor_appointment_co(osv.osv):
 						'time_begin' :  str(fecha_hora_actual)
 					})
 				else:
+					#Hacemos llamado al metodo calcular fecha proxima 
+					fecha= self.calcular_fecha_proxima_cita(cr,uid, str(fecha_hora_actual), fecha_hora_actual, appointment_type, schedule_id, context=context)
 					values.update({
-						'time_begin' :  str(fecha_hora_actual)
+						'time_begin' :  str(fecha)
 					})
 
 
@@ -1098,6 +1114,82 @@ class doctor_appointment_co(osv.osv):
 			return {'value': values, 'warning': warning}
 			
 		return {'value': values}
+
+	#Funcion para calcular la hora en que este disponible una cita dependiendo de la hora actual
+	def calcular_fecha_proxima_cita(self, cr, uid, date_begin, date_today, appointment_type, schedule_id, context=None):
+
+		fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
+		#Capturamos la hora actual
+		hora_actual= str(date_today)[11:13]
+		#Capturamos el minuto actual
+		minuto_actual=str(date_today)[14:15]
+		#Variable para poder sumar si el minuto es mayor que 5
+		sumar_minuto=int(str(date_today)[14:15])
+
+		fecha_espacio= date_begin
+		result_estado=False
+
+		minuto_fecha_calculo=str(date_today)[15:16]
+		#Se compara el minuto actual y lo adelanta hasta ser igual a 5 
+		#De ser mayor a 5 se le suma uno
+		if int(minuto_fecha_calculo) <= 5:
+			#Si el minuto es menor que 5 le añadimos el 5 
+			minuto_actual=minuto_actual+ '5'
+		else:
+			#Si el minuto es mayor que le sumamos 1
+			sumar_minuto= sumar_minuto+1
+			minuto_actual= str(sumar_minuto)+ '0'
+
+		fecha_modificada = fecha_sin_minutos.strftime("%Y-%m-%d 00:00:00")
+
+		fecha_modificada_hora = datetime.strptime(str(fecha_modificada), "%Y-%m-%d %H:%M:00")
+		#Fecha actual de la agenda
+		fecha_modificada_hora_espacio = fecha_modificada_hora + timedelta(hours=int(hora_actual)) + timedelta(minutes=int(minuto_actual))
+
+		#Variable que nos permitira saber cuantos espacios disponibles
+		contadorDisponible=0
+
+		#Cantidad de espacios dependiendo el tipo de cita
+		cantidad_espacios=appointment_type/5
+		#Traemos todos los ids que esten apartir de la fecha actual
+		id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id), ('fecha_inicio', '>=', str(fecha_modificada_hora_espacio))], context=context)
+
+		fecha_inicio=None
+		estado_cita=None
+
+		#Recorremos todos los espacios que sean mayores a la fecha actual
+		#Para saber desde que horas estaria disponible la cita
+		for i in range(0, len(id_espacios), 1):
+			#Consultado el estado de cada espacio
+			estado_cita = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i], context=context).estado_cita_espacio
+			#Validamos si el estado del espacios es disponible 
+			if estado_cita != 'Asignado':
+				#Contamos cuantos espacios disponibles hay de forma consecutiva
+				contadorDisponible=contadorDisponible+1
+			#Validamos si el estado del espacio es asignado
+			if estado_cita == 'Asignado':
+				#Reiniciamos el contador de disponibles
+				contadorDisponible=0
+			#Validamos que los espacios disponibles sean iguales a la cantidad de espacios
+			if contadorDisponible== cantidad_espacios:
+				#Obtenemos la fecha inicio y fecha fin de dicho espacio de acuerdo al valor del iterador
+				fecha_inicio = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i-(cantidad_espacios-1)], context=context).fecha_inicio
+				fecha_fin = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i], context=context).fecha_fin
+
+
+		agenda=self.pool.get('doctor.schedule').browse(cr, uid, schedule_id)
+		fecha_inicio_agenda= agenda.date_begin
+		fecha_fin_agenda= agenda.date_end
+		fecha_comparar = datetime.strptime(str(date_today), "%Y-%m-%d %H:%M:00")
+		if str(date_today) < str(fecha_fin_agenda):
+			if result_estado != True:
+				date_begin= fecha_inicio
+				return date_begin
+		else:
+			return date_begin
+		
+
+		return date_begin
 
 	def create_order(self, cr, uid, doctor_appointment, date, appointment_procedures, confirmed_flag, context={}):
 		"""
@@ -1408,6 +1500,52 @@ class doctor_co_schedule_inherit(osv.osv):
 			'fecha_fin': date_end.strftime("%Y-%m-%d %H:%M:%S"),
 		})
 		return {'value': values}
+
+	def calcular_proxima_cita(self, cr, uid, ids, context=None):
+		agenda_id=''
+
+		for id_agenda in self.browse(cr,uid,ids):
+			agenda_id = id_agenda.id
+
+
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
+			data_obj = self.pool.get('ir.model.data')
+			result = data_obj._get_id(cr, uid, 'doctor_multiroom', 'view_doctor_appointment')
+			view_id = data_obj.browse(cr, uid, result).res_id
+
+			for id_agenda in self.browse(cr,uid,ids):
+				agenda_id = id_agenda.id
+
+
+			context['default_schedule_id'] = agenda_id
+
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Asignar Cita',
+				'view_type': 'form',
+				'view_mode': 'form',
+				'res_id': False,
+				'res_model': 'doctor.appointment',
+				'context': context or None,
+				'view_id': [view_id] or False,
+				'nodestroy': False,
+				'target': 'new'
+			}
+		else:
+			context['default_schedule_id'] = agenda_id
+			
+			return {
+				'type': 'ir.actions.act_window',
+				'name': 'Asignar Cita',
+				'view_type': 'form',
+				'view_mode': 'form',
+				'res_id': False,
+				'res_model': 'doctor.appointment',
+				'context': context or None,
+				'view_id': False,
+				'nodestroy': False,
+				'target': 'new'
+			}
 
 
 	def create(self, cr, uid, vals, context=None):
@@ -1788,6 +1926,7 @@ class doctor_espacios(osv.osv):
 				'nodestroy': False,
 				'target': 'new'
 			}
+
 
 
 	def habilitar_espacios(self, cr, uid, ids=False, context=None):
