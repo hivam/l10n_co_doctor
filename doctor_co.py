@@ -398,16 +398,20 @@ class doctor_appointment_co(osv.osv):
 		res= self.pool.get('doctor.schedule').onchange_seleccionar_todo(cr, uid, ids, marcar_todo, seleccion, context=context)
 		return res
 
-
+	#Funcion para validar cuando sea seccionado el check de repetir cita, que se encuentre seleccionado el tipo de cita
 	def onchange_cargar_hora(self, cr, uid, ids, type_id, time_begin, time_end, context=None):
-
+		res={'value':{}}
+		#Si se seleccionado el tipo de la cita se asignan los mismo valores que contengan el time_begin y time_end 
+		#En los campos de fecha de repetir cita
 		if type_id:
-			res={'value':{}}
 			res['value']['repetir_cita_fecha_inicio']=time_begin
 			res['value']['repetir_cita_fecha_fin']=time_end
+			return res
 		else:
+			res['value']['repetir_cita']=False
 			raise osv.except_osv(_('Aviso Importante!'),_('Debe Seleccionar el tipo de la cita'))
 
+			
 		return res
 
 
