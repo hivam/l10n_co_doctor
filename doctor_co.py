@@ -358,34 +358,35 @@ class doctor_appointment_co(osv.osv):
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
 		'nro_afilicion_poliza': fields.char(u'# Afiliación - Póliza'),
+		
 		'repetir_cita': fields.boolean('Repetir Cita'),
-		#'repetir_tipo_cita':fields.many2one('doctor.appointment.type', 'Tipo de Cita'),
-		'repetir_cita_fecha_inicio':fields.datetime('Asignar Cita Desde'),
-		'repetir_cita_fecha_fin':fields.datetime('Asignar Cita Hasta'),
+		#'repetir_cita_fecha_inicio':fields.datetime('Asignar Cita Desde'),
+		#'repetir_cita_fecha_fin':fields.datetime('Asignar Cita Hasta'),
 
 		
-		'lunes' : fields.boolean('Lunes'),
-		'martes' : fields.boolean('Martes'),
-		'miercoles' : fields.boolean('Miercoles'),
-		'jueves' : fields.boolean('Jueves'),
-		'viernes' : fields.boolean('Viernes'),
-		'sabado' : fields.boolean('sabado'),
-		'domingo' : fields.boolean('Domingo'),
-		'todos_los_dias_semana': fields.boolean('Marcar Todo'),
+		#'lunes' : fields.boolean('Lunes'),
+		#'martes' : fields.boolean('Martes'),
+		#'miercoles' : fields.boolean('Miercoles'),
+		#'jueves' : fields.boolean('Jueves'),
+		#'viernes' : fields.boolean('Viernes'),
+		#'sabado' : fields.boolean('sabado'),
+		#'domingo' : fields.boolean('Domingo'),
+		#'todos_los_dias_semana': fields.boolean('Marcar Todo'),
 
-		'enero' : fields.boolean('Enero'),
-		'febrero' : fields.boolean('Febrero'),
-		'marzo' : fields.boolean('Marzo'),
-		'abril' : fields.boolean('Abril'),
-		'mayo' : fields.boolean('Mayo'),
-		'junio' : fields.boolean('Junio'),
-		'julio' : fields.boolean('Julio'),
-		'agosto' : fields.boolean('Agosto'),
-		'septiembre' : fields.boolean('Septiembre'),
-		'octubre' : fields.boolean('Octubre'),
-		'noviembre' : fields.boolean('Noviembre'),
-		'diciembre' : fields.boolean('Diciembre'),
-		'todos_los_meses': fields.boolean('Marcar Todo'),
+		#'enero' : fields.boolean('Enero'),
+		#'febrero' : fields.boolean('Febrero'),
+		#'marzo' : fields.boolean('Marzo'),
+		#'abril' : fields.boolean('Abril'),
+		#'mayo' : fields.boolean('Mayo'),
+		#'junio' : fields.boolean('Junio'),
+		#'julio' : fields.boolean('Julio'),
+		#'agosto' : fields.boolean('Agosto'),
+		#'septiembre' : fields.boolean('Septiembre'),
+		#'octubre' : fields.boolean('Octubre'),
+		#'noviembre' : fields.boolean('Noviembre'),
+		#'diciembre' : fields.boolean('Diciembre'),
+		#'todos_los_meses': fields.boolean('Marcar Todo'),
+		
 	}
 
 	_defaults = {
@@ -397,19 +398,23 @@ class doctor_appointment_co(osv.osv):
 	def onchange_seleccion(self, cr, uid, ids, marcar_todo, seleccion, context=None):
 		res= self.pool.get('doctor.schedule').onchange_seleccionar_todo(cr, uid, ids, marcar_todo, seleccion, context=context)
 		return res
-
-
+	"""
+	#Funcion para validar cuando sea seccionado el check de repetir cita, que se encuentre seleccionado el tipo de cita
 	def onchange_cargar_hora(self, cr, uid, ids, type_id, time_begin, time_end, context=None):
-
+		res={'value':{}}
+		#Si se seleccionado el tipo de la cita se asignan los mismo valores que contengan el time_begin y time_end 
+		#En los campos de fecha de repetir cita
 		if type_id:
-			res={'value':{}}
 			res['value']['repetir_cita_fecha_inicio']=time_begin
 			res['value']['repetir_cita_fecha_fin']=time_end
+			return res
 		else:
+			res['value']['repetir_cita']=False
 			raise osv.except_osv(_('Aviso Importante!'),_('Debe Seleccionar el tipo de la cita'))
 
+			
 		return res
-
+	"""
 
 
 	def create(self, cr, uid, vals, context=None):
@@ -420,7 +425,7 @@ class doctor_appointment_co(osv.osv):
 		type_id_appointment= vals['type_id']
 		professional_appointment_id= vals['professional_id']
 		patient_id_appointment=vals['patient_id']
-		repetir_cita=vals['repetir_cita']
+		#repetir_cita=vals['repetir_cita']
 		fecha_inicio=None
 		fecha_fin=None
 
@@ -514,7 +519,7 @@ class doctor_appointment_co(osv.osv):
 								self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
 
 						else:
-
+							"""
 							#Si seleccionan repetir cita
 							if repetir_cita:
 
@@ -682,46 +687,47 @@ class doctor_appointment_co(osv.osv):
 											self.pool.get('doctor.espacios').unlink(cr, uid, id_sechedule_espacio_eliminado, context)
 										#Variable iteradora
 										i=i+1
+									"""
 							#Si no es una cita repetitiva
-							if not repetir_cita:
+							#if not repetir_cita:
 								#Buscamos en los espacios cuales de estos cumplen la condicion
-								id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
+							id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
 
-								#Recorremos los ids para saber el estado de dichos espacios
-								for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio, context=context):
-									fecha= espacios.fecha_inicio
-									fecha_otra= espacios.fecha_fin
-									estado= espacios.estado_cita_espacio
-									#Si el estado es Asignado la variable result_estado nos devolvera True
-									if estado=='Asignado':
-										result_estado= True
-								#Validamos si el estado del espacio no esta Asignado
-								if result_estado != True:
+							#Recorremos los ids para saber el estado de dichos espacios
+							for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio, context=context):
+								fecha= espacios.fecha_inicio
+								fecha_otra= espacios.fecha_fin
+								estado= espacios.estado_cita_espacio
+								#Si el estado es Asignado la variable result_estado nos devolvera True
+								if estado=='Asignado':
+									result_estado= True
+							#Validamos si el estado del espacio no esta Asignado
+							if result_estado != True:
 
-									if id_sechedule_espacio:
-										#Modificaremos dicho espacio, ya que no se puede eliminar el espacio aun
-										#Por talrazon pondremos valores vacios o nulos
-										res_editar['estado_cita_espacio']= ''
-										res_editar['fecha_inicio']= None
-										res_editar['fecha_fin']= None
-										res_editar['patient_id']=''
-										res_editar['schedule_espacio_id']=''
-										#Ejecutamos la modificacion del espacio
-										self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
+								if id_sechedule_espacio:
+									#Modificaremos dicho espacio, ya que no se puede eliminar el espacio aun
+									#Por talrazon pondremos valores vacios o nulos
+									res_editar['estado_cita_espacio']= ''
+									res_editar['fecha_inicio']= None
+									res_editar['fecha_fin']= None
+									res_editar['patient_id']=''
+									res_editar['schedule_espacio_id']=''
+									#Ejecutamos la modificacion del espacio
+									self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
 
-										res['estado_cita_espacio']= 'Asignado'
-										res['fecha_inicio']= appointment_date_begin
-										res['fecha_fin']= appointment_date_end
-										res['patient_id']=patient_id_appointment
-										res['schedule_espacio_id']=schedule_id_appoitment
+									res['estado_cita_espacio']= 'Asignado'
+									res['fecha_inicio']= appointment_date_begin
+									res['fecha_fin']= appointment_date_end
+									res['patient_id']=patient_id_appointment
+									res['schedule_espacio_id']=schedule_id_appoitment
 
-									self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
+								self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
 
-									id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', '')])
+								id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', '')])
 
-									self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
-								else:
-									raise osv.except_osv(_('Aviso importante!'),_('En este horario ya se ha asignado una cita.\n\n Por favor escoja otro horario para la cita.'))
+								self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
+							else:
+								raise osv.except_osv(_('Aviso importante!'),_('En este horario ya se ha asignado una cita.\n\n Por favor escoja otro horario para la cita.'))
 							
 					else:
 						raise osv.except_osv(_('Aviso importante!'),_('No se puede asignar la cita en esta hora.\n Sólo se puede en intervalos de cinco minutos'))
@@ -729,8 +735,8 @@ class doctor_appointment_co(osv.osv):
 		else:
 			raise osv.except_osv(_('Aviso importante!'),_('No se puede asignar la cita a esta hora.\n\nEscoja otro horario para la cita.'))
 
-		if not repetir_cita:
-			cita_id= super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
+		#if not repetir_cita:
+		cita_id= super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
 
 		return cita_id
 
@@ -905,7 +911,7 @@ class doctor_appointment_co(osv.osv):
 								 _('La cita no tiene procedimeintos enlazados'))
 		return procedimientos
 
-	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, repetir_cita, context=None):
+	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
 		values = {}
 		fecha_agenda_espacio=time_begin
 		fecha_comparacion=time_begin
@@ -1027,6 +1033,7 @@ class doctor_appointment_co(osv.osv):
 
 				if int(len(horario_cadena)) > 1:
 					if int(len(horario_cadena)) > int((appointment_type/1)):
+						""""
 						if repetir_cita:
 
 							values.update({
@@ -1036,20 +1043,20 @@ class doctor_appointment_co(osv.osv):
 									'time_end' : horario_cadena[int(appointment_type/1)],
 							})
 						else:
-
-							fecha= self.calcular_fecha_proxima_cita(cr,uid, horario_cadena[0], fecha_hora_actual, appointment_type, schedule_id, context=context)
-							_logger.info('La fecha es:')
-							_logger.info(fecha)
-							if fecha_comparacion != fecha_inicio_comparacion_agenda:
-								values.update({
-									'time_begin' : horario_cadena[0],
-									'time_end' : horario_cadena[int(appointment_type/1)]
-								})
-							else:
-								values.update({
-									'time_begin' : str(fecha),
-									'time_end' : horario_cadena[int(appointment_type/1)]
-								})
+						"""
+						fecha= self.calcular_fecha_proxima_cita(cr,uid, horario_cadena[0], fecha_hora_actual, appointment_type, schedule_id, context=context)
+						_logger.info('La fecha es:')
+						_logger.info(fecha)
+						if fecha_comparacion != fecha_inicio_comparacion_agenda:
+							values.update({
+								'time_begin' : horario_cadena[0],
+								'time_end' : horario_cadena[int(appointment_type/1)]
+							})
+						else:
+							values.update({
+								'time_begin' : str(fecha),
+								'time_end' : horario_cadena[int(appointment_type/1)]
+							})
 
 					else:
 						raise osv.except_osv(_('Error!'),
@@ -1060,20 +1067,23 @@ class doctor_appointment_co(osv.osv):
 		else:
 			if time_begin < fecha_hora_actual:
 				hora_fin = fecha_hora_actual + timedelta(minutes=appointment_type)
+				"""
 				if repetir_cita:
 					values.update({
 						'repetir_cita_fecha_inicio' : str(fecha_hora_actual),
 						'time_begin' :  str(fecha_hora_actual)
 					})
 				else:
+				"""
 					#Hacemos llamado al metodo calcular fecha proxima 
-					fecha= self.calcular_fecha_proxima_cita(cr,uid, str(fecha_hora_actual), fecha_hora_actual, appointment_type, schedule_id, context=context)
-					values.update({
-						'time_begin' :  str(fecha)
-					})
+				fecha= self.calcular_fecha_proxima_cita(cr,uid, str(fecha_hora_actual), fecha_hora_actual, appointment_type, schedule_id, context=context)
+				values.update({
+					'time_begin' :  str(fecha)
+				})
 
 
 			else:
+				"""
 				if repetir_cita:
 					values.update({
 						'repetir_cita_fecha_inicio' : str(time_begin),
@@ -1081,22 +1091,25 @@ class doctor_appointment_co(osv.osv):
 
 					})
 				else:
-					values.update({
-						'time_begin' :  str(time_begin)
-					})
+				"""
+				values.update({
+					'time_begin' :  str(time_begin)
+				})
 
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
 
 			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:00')
+			"""
 			if repetir_cita:
 				values.update({
 					'repetir_cita_fecha_fin' :  str(hora_fin),
 					'time_end' : hora_fin
 				})
 			else:
-				values.update({
-					'time_end' : hora_fin
-				})
+			"""
+			values.update({
+				'time_end' : hora_fin
+			})
 
 		try:
 			values.update({
