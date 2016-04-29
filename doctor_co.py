@@ -879,8 +879,11 @@ class doctor_appointment_co(osv.osv):
 		for procedures_id in appointment_procedures:
 			if doctor_appointment.tipo_usuario_id.name != 'Particular':
 				procedimiento_valor_id = procedimientos_plan.search(cr, uid, [('plan_id', '=', doctor_appointment.plan_id.id), ('procedure_id', '=', procedures_id.procedures_id.id)], context=context)
-				valor = procedimientos_plan.browse(cr, uid, procedimiento_valor_id[0], context=context).valor
-			
+				try:
+					valor = procedimientos_plan.browse(cr, uid, procedimiento_valor_id[0], context=context).valor
+				except Exception, e:
+					valor = 0.0
+				
 			order_line = {
 				'order_id': order_id,
 				'product_id': procedures_id.procedures_id.id,
