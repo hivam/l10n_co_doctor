@@ -595,10 +595,18 @@
                 </field>
 
 
-                <field name="analysis" position="after">
-                    <label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
-                    <field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>
-                </field>
+                <xpath expr="//group[@id='group_conduct']" position="after">
+                    <group colspan="2" col='1'>
+                      <label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
+                      <field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>
+                    </group>
+                    <group colspan="2" col='1'>
+                      <label for="complicacion_eventoadverso" string="Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
+                      <field name="complicacion_eventoadverso" nolabel="1" groups="doctor.group_doctor_physician"/>
+                      <label for="complicacion_eventoadverso_observacion" string="Observacion de Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
+                       <field name="complicacion_eventoadverso_observacion" nolabel="1" groups="doctor.group_doctor_physician"/>
+                    </group>
+                </xpath>
 
                 <field name="conduct" position="after">
                     <field name="inv" invisible="1"/> 

@@ -1251,8 +1251,11 @@ class doctor_appointment_co(osv.osv):
 		for procedures_id in appointment_procedures:
 			if doctor_appointment.tipo_usuario_id.name != 'Particular':
 				procedimiento_valor_id = procedimientos_plan.search(cr, uid, [('plan_id', '=', doctor_appointment.plan_id.id), ('procedure_id', '=', procedures_id.procedures_id.id)], context=context)
-				valor = procedimientos_plan.browse(cr, uid, procedimiento_valor_id[0], context=context).valor
-			
+				try:
+					valor = procedimientos_plan.browse(cr, uid, procedimiento_valor_id[0], context=context).valor
+				except Exception, e:
+					valor = 0.0
+				
 			order_line = {
 				'order_id': order_id,
 				'product_id': procedures_id.procedures_id.id,
@@ -1360,6 +1363,13 @@ class doctor_attentions_co(osv.osv):
 		'activar_notas_confidenciales':fields.boolean('NC', states={'closed': [('readonly', True)]}),
 		'causa_externa' : fields.selection(causa_externa, 'Causa Externa',states={'closed': [('readonly', True)]}),
 		'certificados_ids': fields.one2many('doctor.attentions.certificado', 'attentiont_id', 'Certificados',states={'closed': [('readonly', True)]}),
+		'complicacion_eventoadverso' : fields.selection([('01', 'Ninguno'),
+														('02', 'Alergia'),
+														('03', 'Traumatismo o caída'),
+														('04', 'Relacionado con medicamento aplicado'),
+														('05', 'Otro')
+														], 'Complicación o Evento Adverso', states={'closed':[('readonly',True)]}),
+		'complicacion_eventoadverso_observacion' : fields.text('Detalle de Complicacion(evento Adverso)',states={'closed': [('readonly', True)]}),
 		'finalidad_consulta':fields.selection([('01','Atención del parto -puerperio'),
 												('02','Atención del recién nacido'),
 												('03','Atención en planificación familiar'),
@@ -1397,7 +1407,7 @@ class doctor_attentions_co(osv.osv):
 		'activar_notas_confidenciales' : True,
 		'inv' : True,
 		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
-
+		'complicacion_eventoadverso' : '01'
 	}
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
