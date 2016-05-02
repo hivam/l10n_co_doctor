@@ -1133,6 +1133,8 @@ class doctor_appointment_co(osv.osv):
 		if str(date_today)[0:11] < str(date_begin)[0:11]:
 			return date_begin
 
+			
+
 		fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
 		#Capturamos la hora actual
 		hora_actual= str(date_today)[11:13]
