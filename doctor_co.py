@@ -531,7 +531,7 @@ class doctor_appointment_co(osv.osv):
 								dia_semana = ['lunes', 'martes', 'miercoles','jueves', 'viernes','sabado','domingo',]
 
 								meses_anio = ['enero', 'febrero', 'marzo', 'abril','mayo', 'junio','julio', 'agosto',
-									'septiembre', 'octubre', 'noviemb-re', 'diciembre',]
+									'septiembre', 'octubre', 'noviembre', 'diciembre',]
 
 								dias_usuario = {
 									'lunes': vals['lunes'], 'martes': vals['martes'], 'miercoles': vals['miercoles'],
@@ -1614,7 +1614,7 @@ class doctor_co_schedule_inherit(osv.osv):
 			meses_anio = [
 				'enero', 'febrero', 'marzo', 'abril',
 				'mayo', 'junio','julio', 'agosto',
-				'septiembre', 'octubre', 'noviemb-re', 'diciembre',
+				'septiembre', 'octubre', 'noviembre', 'diciembre',
 			]
 
 			dias_usuario = {
