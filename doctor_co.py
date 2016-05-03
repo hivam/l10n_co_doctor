@@ -948,8 +948,10 @@ class doctor_appointment_co(osv.osv):
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
 		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
 		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
-		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
-		
+		if type_id:
+			appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
+		else:
+			return False
 		diff = int(agenda_duracion.date_begin[17:])
 		if diff > 0:
 			diff = 60 - diff
@@ -1115,15 +1117,16 @@ class doctor_appointment_co(osv.osv):
 				'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=context),
 			})
 		except Exception as a:
-			warning = {
-				'title': 'Aviso importante!!!',
-				'message' : '%s' %(a[1])
-			}
-			values.update({
-				'procedures_id' : False,
-			})
+			if tipo_usuario_id:
+				warning = {
+					'title': 'Aviso importante!!!',
+					'message' : '%s' %(a[1])
+				}
+				values.update({
+					'procedures_id' : False,
+				})
 
-			return {'value': values, 'warning': warning}
+				return {'value': values, 'warning': warning}
 			
 		return {'value': values}
 
