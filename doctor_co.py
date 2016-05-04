@@ -1045,6 +1045,7 @@ class doctor_appointment_co(osv.osv):
 									'time_end' : horario_cadena[int(appointment_type/1)],
 							})
 						else:
+							_logger.info('Entro aca')
 							fecha= self.calcular_fecha_proxima_cita(cr,uid, horario_cadena[0], fecha_hora_actual, appointment_type, schedule_id, context=context)
 							_logger.info('La fecha es:')
 							_logger.info(fecha)
@@ -1116,16 +1117,16 @@ class doctor_appointment_co(osv.osv):
 				'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=context),
 			})
 		except Exception as a:
-			if tipo_usuario_id:
-				warning = {
-					'title': 'Aviso importante!!!',
-					'message' : '%s' %(a[1])
-				}
-				values.update({
-					'procedures_id' : False,
-				})
+			warning = {
+				'title': 'Aviso importante!!!',
+				#'message' : '%s' %(a[1])
+				'message' : 'No se pudo cargar los procedimientos \n No se seleccionaron los items esperados'
+			}
+			values.update({
+				'procedures_id' : False,
+			})
 
-				return {'value': values, 'warning': warning}
+			return {'value': values, 'warning': warning}
 			
 		return {'value': values}
 
