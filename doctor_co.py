@@ -1074,8 +1074,6 @@ class doctor_appointment_co(osv.osv):
 						'time_begin' :  str(fecha_hora_actual)
 					})
 				else:
-					_logger.info('-----------------------')
-					_logger.info(str(fecha_hora_actual)[0:11])
 					#Hacemos llamado al metodo calcular hora proxima 
 					fecha= self.calcular_fecha_proxima_cita(cr,uid, str(fecha_hora_actual), fecha_hora_actual, appointment_type, schedule_id, context=context)
 					values.update({
@@ -1131,12 +1129,8 @@ class doctor_appointment_co(osv.osv):
 
 	#Funcion para calcular la hora en que este disponible una cita dependiendo de la hora actual
 	def calcular_fecha_proxima_cita(self, cr, uid, date_begin, date_today, appointment_type, schedule_id, context=None):
-		_logger.info('*********************')
-		_logger.info(str(date_today)[0:11])
-		_logger.info(str(date_begin)[0:11])
 
 		if str(date_today)[0:11] < str(date_begin)[0:11]:
-			_logger.info('-----------------------')
 			return date_begin
 
 		fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
