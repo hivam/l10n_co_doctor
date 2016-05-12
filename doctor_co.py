@@ -541,15 +541,28 @@ class doctor_appointment_co(osv.osv):
 							#Estas variables se utilizan para poder calcular cuales agendas repetidas hay creadas en este rango de fechas
 							#Se hace una diferencia de 5 horas ya que la hora que guarda el openerp es + 5
 							cita_inicio= datetime.strptime(vals['repetir_cita_fecha_inicio'], "%Y-%m-%d %H:%M:%S")
+							_logger.info('Fecha inicio')
+							_logger.info(cita_inicio)
 							cita_fin= datetime.strptime(vals['repetir_cita_fecha_fin'], "%Y-%m-%d %H:%M:%S")
+							_logger.info('Fecha fin')
+							_logger.info(cita_fin)
 							cita_fin= cita_fin + timedelta(hours=5)
+							cita_fin=cita_fin+ timedelta(days=1)
+							_logger.info('Fecha fin modificada')
+							_logger.info(cita_fin)
 							cita_inicio= cita_inicio - timedelta(hours=5)
+							_logger.info('Fecha inicio modificada')
+							_logger.info(cita_inicio)
 							fecha_inicio_sin_hora = str(cita_inicio)[0:10]
 							fecha_inicio_sin_hora = datetime.strptime(fecha_inicio_sin_hora, "%Y-%m-%d")
+							_logger.info('fecha sin hora')
+							_logger.info(fecha_inicio_sin_hora)
+
+
 
 							#Hacemos la consulta para saber cuantas agendas repetidas hay
-							id_sechedule_cita= self.pool.get('doctor.schedule').search(cr, uid, [('professional_id', '=', professional_appointment_id), ('repetir_agenda', '=', True), ('id', '>=', schedule_id_appoitment), ('date_begin', '>=', str(fecha_inicio_sin_hora)),('date_end', '<=', str(cita_fin))], context=context)
-							
+							id_sechedule_cita= self.pool.get('doctor.schedule').search(cr, uid, [('professional_id', '=', professional_appointment_id), ('repetir_agenda', '=', True), ('id', '>=', schedule_id_appoitment), ('date_begin', '>=', str(fecha_inicio_sin_hora)),('date_end', '<', str(cita_fin))], context=context)
+							_logger.info(id_sechedule_cita)
 							#Calculamos la duracion de la cita
 							time_cita= self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)], context=context)
 							for duration in self.pool.get('doctor.appointment.type').browse(cr, uid , time_cita, context=context):
@@ -560,9 +573,11 @@ class doctor_appointment_co(osv.osv):
 
 							#Se valida la cantidad de agendas a las cuales se le van asignar dicha cita
 							#De ser mayor se envia un mensaje de alerta
+							_logger.info('Duracion dias')
+							_logger.info(duracion_dias+1)
 							if duracion_dias+1 > len(id_sechedule_cita):
 								raise osv.except_osv(_('Lo sentimos!'),_('Para poder crear las citas repetitivas. Debes crear primero una agenda. \n Verifica la fecha final de la citas.'))
-
+							_logger.info(len(id_sechedule_cita))
 
 							#Se encierra en un while para asignaler un valor diferente al vals['schedule_id']
 							#En cada iteracion de acuerdo a la lista del id_schedule_cita
@@ -572,15 +587,19 @@ class doctor_appointment_co(osv.osv):
 
 								#Se ejecuta este for para la creacion de un registro diferente en cada iteracion
 								for dias in range(0, duracion_dias+1, 1):
+									_logger.info('-------------')
 									fecha_sin_h = fecha_sin_hora + timedelta(days=dias)
 									dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
 									dia=dias_inicia_trabaja.weekday()
 									mes = int(dias_inicia_trabaja.strftime('%m'))-1
-
+									_logger.info(dias_usuario[dia_semana[dia]])
+									_logger.info(meses_usuario[meses_anio[mes]])
 									#Se valida si estan los dias y los meses
 									if (dias_usuario[dia_semana[dia]]) and meses_usuario[meses_anio[mes]]:
 										#La data_appointment contiene todos los valores de la cita
 										#Cambian de acuerdo a su iteracion
+										_logger.info('Inicia trabaja')
+										_logger.info(dias_inicia_trabaja)
 										data_appointment['time_begin'] = dias_inicia_trabaja
 										data_appointment['time_end'] = dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)
 										data_appointment['type_id'] = vals['type_id']
@@ -626,7 +645,9 @@ class doctor_appointment_co(osv.osv):
 										data_appointment['octubre'] = vals['octubre']
 										data_appointment['noviembre'] = vals['noviembre']
 										data_appointment['diciembre'] = vals['diciembre']
-								
+										_logger.info('*********')
+										_logger.info(id_sechedule_cita[i])
+										_logger.info(i)
 
 										res['estado_cita_espacio']= 'Asignado'
 										res['fecha_inicio']= dias_inicia_trabaja
