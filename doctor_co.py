@@ -1191,6 +1191,7 @@ class doctor_appointment_co(osv.osv):
 							_logger.info(fecha)
 							if fecha_comparacion != fecha_inicio_comparacion_agenda:
 								values.update({
+									
 									'time_begin' : horario_cadena[0],
 									'time_end' : horario_cadena[int(appointment_type/1)]
 								})
@@ -1216,9 +1217,8 @@ class doctor_appointment_co(osv.osv):
 						'time_begin' :  str(fecha_hora_actual)
 					})
 				else:
-					#Hacemos llamado al metodo calcular hora proxima 
-					#fecha= self.calcular_fecha_proxima_cita(cr,uid, str(fecha_hora_actual), fecha_hora_actual, appointment_type, schedule_id, context=context)
 					values.update({
+						
 						'time_begin' :  str(fecha_hora_actual)
 					})
 
@@ -1232,9 +1232,13 @@ class doctor_appointment_co(osv.osv):
 
 					})
 				else:
-				
+					_logger.info('dfgdhsdfghjgfdsdfgh')
+					_logger.info('Entro aca')
+					fecha= self.calcular_fecha_proxima_cita(cr,uid, horario_cadena[0], fecha_hora_actual, appointment_type, schedule_id, context=context)
+					_logger.info('La fecha es:')
+					_logger.info(fecha)
 					values.update({
-						'time_begin' :  str(time_begin)
+						'time_begin' :  str(fecha)
 					})
 
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
@@ -1273,11 +1277,12 @@ class doctor_appointment_co(osv.osv):
 	#Funcion para calcular la hora en que este disponible una cita dependiendo de la hora actual
 	def calcular_fecha_proxima_cita(self, cr, uid, date_begin, date_today, appointment_type, schedule_id, context=None):
 
-		if str(date_begin)[0:11] < str(date_today)[0:11]:
-			_logger.info('Es menor')
-			return date_begin
 
-			
+
+
+		fecha_inicio=date_begin
+		estado_cita=None
+		validar_fecha_agenda=False
 
 		fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
 		#Capturamos la hora actual
@@ -1315,8 +1320,7 @@ class doctor_appointment_co(osv.osv):
 		#Traemos todos los ids que esten apartir de la fecha actual
 		id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id), ('fecha_inicio', '>=', str(fecha_modificada_hora_espacio))], context=context)
 
-		fecha_inicio=date_begin
-		estado_cita=None
+
 
 		#Recorremos todos los espacios que sean mayores a la fecha actual
 		#Para saber desde que horas estaria disponible la cita
@@ -1341,14 +1345,38 @@ class doctor_appointment_co(osv.osv):
 		agenda=self.pool.get('doctor.schedule').browse(cr, uid, schedule_id)
 		fecha_inicio_agenda= agenda.date_begin
 		fecha_fin_agenda= agenda.date_end
-		fecha_comparar = datetime.strptime(str(date_today), "%Y-%m-%d %H:%M:00")
-		if str(date_today) < str(fecha_fin_agenda):
-			if result_estado != True:
-				date_begin= fecha_inicio
-				return date_begin
+
+
+		dia_fecha_actual=int(str(date_today)[8:11])
+
+		dia_fecha_begin=int(str(date_begin)[8:11])
+
+		diferencia_fechas= dia_fecha_begin - dia_fecha_actual
+
+		if diferencia_fechas > 0:
+			fecha_validacion_agenda= date_today + timedelta(days=int(diferencia_fechas))
+
+		if diferencia_fechas == 0:
+			fecha_validacion_agenda= date_today
+
+		#Comparamos si la fecha se encuentra en el rango del inicio y fin de la agenda actual
+		if (str(fecha_validacion_agenda) < str(fecha_inicio_agenda)) or (str(fecha_validacion_agenda) > str(fecha_fin_agenda)):
+			validar_fecha_agenda=True
+
+		_logger.info('Fecha validada')
+		_logger.info(validar_fecha_agenda)
+
+
+		#Se valida si la fecha se encuentra en el rango del inicio y fin de la agenda actual
+		if validar_fecha_agenda:
+			raise osv.except_osv(_('Lo sentimos!'),
+								 _('La fecha actual esta por fuera de la agenda \n Por favor dirijase a los espacios de la agenda'))
 		else:
 			return date_begin
-		
+		if fecha_inicio:
+			date_begin=fecha_inicio
+			return date_begin
+
 
 		return date_begin
 
