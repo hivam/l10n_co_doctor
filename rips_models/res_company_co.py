@@ -35,6 +35,6 @@ class res_company_co(osv.osv):
 	_inherit='res.company'
 
 	_columns = {
-		'cod_prestadorservicio' : fields.char('Código Prestador Servicio', size=8 , help="Código de Prestador del Servicio")
+		'cod_prestadorservicio' : fields.char(u'Código Prestador Servicio', size=8 , help=u'Código de Prestador del Servicio')
 
 	}

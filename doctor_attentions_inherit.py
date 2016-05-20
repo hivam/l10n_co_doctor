@@ -70,13 +70,13 @@ class doctor_attentions_co_inherit(osv.osv):
 			elif masa_corporal >= 35 and masa_corporal <= 39.99:
 				interpretacion = 'Obesidad Media'
 			elif masa_corporal >= 40:
-				interpretacion = 'Obesidad Mórbida'
+				interpretacion = u'Obesidad Mórbida'
 		res['value']['interpretacion_imc'] =  interpretacion
 		return res
 	
 
 	_columns = {
-		'interpretacion_imc' : fields.char('Interpretación', size=80, help="Interpretación de indice de masa corporal.", states={'closed': [('readonly', True)]}),
+		'interpretacion_imc' : fields.char(u'Interpretación', size=80, help=u'Interpretación de indice de masa corporal.', states={'closed': [('readonly', True)]}),
 	}
 
 	

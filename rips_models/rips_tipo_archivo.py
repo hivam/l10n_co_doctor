@@ -35,5 +35,5 @@ class rips_tipo_archivo(osv.osv):
 
 	_columns = {
 		'name' : fields.char('Nombre', help="Nombre del tipo de archivo RIPS"),
-		'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Radicación Cuentas', required=False),
+		'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', u'Radicación Cuentas', required=False),
 	}

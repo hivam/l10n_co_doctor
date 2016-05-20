@@ -321,10 +321,10 @@ class doctor_patient_co_ocupacion(osv.Model):
 	_name = 'doctor.patient.ocupacion'
 
 	_columns = {
-		'codigo' : fields.char('Código Ocupación' ,size = 3 ,required = False ),
-		'name' : fields.char('Descripción',required = False )
+		'codigo' : fields.char(u'Código Ocupación' ,size = 3 ,required = False ),
+		'name' : fields.char(u'Descripción',required = False )
 	}
-	_sql_constraints = [('ocupacion_constraint', 'unique(name)', 'Esta ocupación ya existe en la base de datos.')]
+	_sql_constraints = [(u'ocupacion_constraint', 'unique(name)', u'Esta ocupación ya existe en la base de datos.')]
 
 doctor_patient_co_ocupacion()
 
@@ -340,7 +340,7 @@ class doctor_appointment_co(osv.osv):
 
 
 	finalidad = [
-		(1, 'Diagnostico'),
+		(1, u'Diagnóstico'),
 		(2, u'Protección Especifica'),
 		(3, u'Terapéutica'),
 		(4, u'Detección Temprana de enf. General'),
@@ -352,7 +352,7 @@ class doctor_appointment_co(osv.osv):
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
 										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string=u'Nº de identificación', required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
@@ -1513,20 +1513,20 @@ class doctor_attentions_co(osv.osv):
 		'certificados_ids': fields.one2many('doctor.attentions.certificado', 'attentiont_id', 'Certificados',states={'closed': [('readonly', True)]}),
 		'complicacion_eventoadverso' : fields.selection([('01', 'Ninguno'),
 														('02', 'Alergia'),
-														('03', 'Traumatismo o caída'),
+														('03', u'Traumatismo o caída'),
 														('04', 'Relacionado con medicamento aplicado'),
 														('05', 'Otro')
-														], 'Complicación o Evento Adverso', states={'closed':[('readonly',True)]}),
-		'complicacion_eventoadverso_observacion' : fields.text('Detalle de Complicacion(evento Adverso)',states={'closed': [('readonly', True)]}),
-		'finalidad_consulta':fields.selection([('01','Atención del parto -puerperio'),
-												('02','Atención del recién nacido'),
-												('03','Atención en planificación familiar'),
-												('04','Detección de alteraciones del crecimiento y desarrollo del menor de diez años'),
-												('05','Detección de alteración del desarrollo joven'),
-												('06','Detección de alteraciones del embarazo'),
-												('07','Detección de alteración del adulto'),
-												('08','Detección de alteración de agudeza visual'),
-												('09','Detección de enfermedad profesional'),
+														], u'Complicación o Evento Adverso', states={'closed':[('readonly',True)]}),
+		'complicacion_eventoadverso_observacion' : fields.text(u'Detalle de Complicación(evento Adverso)',states={'closed': [('readonly', True)]}),
+		'finalidad_consulta':fields.selection([('01',u'Atención del parto -puerperio'),
+												('02',u'Atención del recién nacido'),
+												('03',u'Atención en planificación familiar'),
+												('04',u'Detección de alteraciones del crecimiento y desarrollo del menor de diez años'),
+												('05',u'Detección de alteración del desarrollo joven'),
+												('06',u'Detección de alteraciones del embarazo'),
+												('07',u'Detección de alteración del adulto'),
+												('08',u'Detección de alteración de agudeza visual'),
+												('09',u'Detección de enfermedad profesional'),
 												('10','No aplica'),
 											   ],'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
 		'inv': fields.function(_get_creador, type="boolean", store= False, 
@@ -1538,7 +1538,7 @@ class doctor_attentions_co(osv.osv):
 		'otros_antecedentes_farmacologicos' : fields.text(u'Otros Antecedentes farmacológicos',states={'closed': [('readonly', True)]}),
 		'otros_antecedentes_patologicos' : fields.text(u'Otros antecedentes patológicos',states={'closed': [('readonly', True)]}),
 		'otros_hallazgos_examen_fisico': fields.text(u'Otros hallazgos y signos clínicos en el examen físico',states={'closed': [('readonly', True)]}),
-		'otros_medicamentos_ids': fields.one2many('doctor.attentions.medicamento_otro', 'attentiont_id', 'Otra Prescripcion',states={'closed': [('readonly', True)]}),
+		'otros_medicamentos_ids': fields.one2many('doctor.attentions.medicamento_otro', 'attentiont_id', u'Otra Prescripción',states={'closed': [('readonly', True)]}),
 		'otro_sintomas_revision_sistema' : fields.text('Otros Sintomas',states={'closed': [('readonly', True)]}),
 		'recomendaciones_ids': fields.one2many('doctor.attentions.recomendaciones', 'attentiont_id', 'Agregar Recomendaciones',states={'closed': [('readonly', True)]}),
 		'reportes_paraclinicos': fields.text(u'Reportes de Paraclínicos',states={'closed': [('readonly', True)]}),
@@ -2277,12 +2277,12 @@ class doctor_attentions_recomendaciones(osv.osv):
 
 
 	tipo_plantillas = [
-		('01','Recomendación'),
+		('01',u'Recomendación'),
 		('02','Informes y Certificados'),
 		('03','Prescripciones'),
-		('04','Sintomas (Cuestionarios - Entrevistas)'),
+		('04',u'Sintomas (Cuestionarios - Entrevistas)'),
 		('05','Antecedentes'),
-		('06','Examen Fisico'),
+		('06',u'Examen Físico'),
 
 	]
 
