@@ -36,10 +36,10 @@ class rips_generados(osv.osv):
 
 	_columns = {
 		'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Rips'),
-		'f_generacion' : fields.date('Fecha Generación Rips', help="Fecha de generación de RIPS"),
+		'f_generacion' : fields.date(u'Fecha Generación Rips', help="Fecha de generación de RIPS"),
 		'nombre_archivo' : fields.char('Nombre Archivo',  40, readonly=True, required=True),
-		'f_inicio_radicacion' : fields.date('Fecha Inicio Radicación'),
-		'f_fin_radicacion' : fields.date('Fecha Fin Radicación'),
+		'f_inicio_radicacion' : fields.date(u'Fecha Inicio Radicación'),
+		'f_fin_radicacion' : fields.date(u'Fecha Fin Radicación'),
 		'archivo' : fields.binary('Archivo'),
 	}
 

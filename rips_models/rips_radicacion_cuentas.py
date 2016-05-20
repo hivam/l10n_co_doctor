@@ -108,7 +108,7 @@ class radicacion_cuentas(osv.osv):
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
 		#Facturas
 		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict', states={'done': [('readonly', True)]}),
-		'numero_radicado' : fields.char("N° Radicado", size=200 ),
+		'numero_radicado' : fields.char(u'N° Radicado', size=200 ),
 		'plano' : fields.binary(string='Archivo RIP'),
 		'plano_nombre' : fields.char('File name', 40, readonly=True),
 		'rangofacturas_desde' : fields.date('Desde', required=True),
@@ -117,7 +117,7 @@ class radicacion_cuentas(osv.osv):
 		'rips_ids': fields.one2many('rips.generados', 'radicacioncuentas_id', string='RIPS', required=True, ondelete='restrict'),
 		'rips_tipo_archivo' : fields.one2many('rips.tipo.archivo','radicacioncuentas_id','Tipo Archivo', required=False),
 		'saldo' : fields.float('Saldo', readonly=True),
-		'secuencia' : fields.char("Cuenta N°", size=200 ),
+		'secuencia' : fields.char(u'Cuenta N°', size=200 ),
 		'state': fields.selection([('draft','Borrador'),('confirmed','Confirmado'),('validated', 'Validado')], 'Status', readonly=True, required=False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
 		'valor_total' : fields.float('Valor Total', readonly=True),

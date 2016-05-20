@@ -70,7 +70,7 @@ class doctor_attentions_co_inherit(osv.osv):
 			elif masa_corporal >= 35 and masa_corporal <= 39.99:
 				interpretacion = 'Obesidad Media'
 			elif masa_corporal >= 40:
-				interpretacion = 'Obesidad Mórbida'
+				interpretacion = u'Obesidad Mórbida'
 		res['value']['interpretacion_imc'] =  interpretacion
 		return res
 	

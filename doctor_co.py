@@ -322,7 +322,8 @@ class doctor_patient_co_ocupacion(osv.Model):
 		'codigo' : fields.char(u'Código Ocupación' ,size = 3 ,required = False ),
 		'name' : fields.char(u'Descripción',required = False )
 	}
-	_sql_constraints = [('ocupacion_constraint', 'unique(name)', u'Esta ocupación ya existe en la base de datos.')]
+	
+	_sql_constraints = [(u'ocupacion_constraint', 'unique(name)', u'Esta ocupación ya existe en la base de datos.')]
 
 doctor_patient_co_ocupacion()
 
@@ -350,7 +351,7 @@ class doctor_appointment_co(osv.osv):
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
 										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
-		'ref' :  fields.related ('patient_id', 'ref', type='char', relation="doctor.patient", string=u'Nº de identificación', required=True, readonly= True),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string=u'Nº de identificación', required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
@@ -1361,6 +1362,13 @@ class doctor_attentions_co(osv.osv):
 		'activar_notas_confidenciales':fields.boolean('NC', states={'closed': [('readonly', True)]}),
 		'causa_externa' : fields.selection(causa_externa, 'Causa Externa',states={'closed': [('readonly', True)]}),
 		'certificados_ids': fields.one2many('doctor.attentions.certificado', 'attentiont_id', 'Certificados',states={'closed': [('readonly', True)]}),
+		'complicacion_eventoadverso' : fields.selection([('01', 'Ninguno'),
+														('02', 'Alergia'),
+														('03', u'Traumatismo o caída'),
+														('04', 'Relacionado con medicamento aplicado'),
+														('05', 'Otro')
+														], u'Complicación o Evento Adverso', states={'closed':[('readonly',True)]}),
+		'complicacion_eventoadverso_observacion' : fields.text(u'Detalle de Complicación(evento Adverso)',states={'closed': [('readonly', True)]}),
 		'finalidad_consulta':fields.selection([('01',u'Atención del parto -puerperio'),
 												('02',u'Atención del recién nacido'),
 												('03',u'Atención en planificación familiar'),
@@ -2129,7 +2137,7 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('01',u'Recomendación'),
 		('02','Informes y Certificados'),
 		('03','Prescripciones'),
-		('04','Sintomas (Cuestionarios - Entrevistas)'),
+		('04',u'Sintomas (Cuestionarios - Entrevistas)'),
 		('05','Antecedentes'),
 		('06',u'Examen Físico'),
 
