@@ -2205,8 +2205,7 @@ class doctor_otra_prescripcion(osv.osv):
 			if ids:
 				if name:
 					ids = insttucion_procedimiento.search(cr, uid, ['|',('procedures_id.name', operator, name), ('procedures_id.procedure_code', operator, name)], limit=limit, context=context)
-					if not ids:
-						ids = insttucion_procedimiento.search(cr, uid, [('procedures_id.name', operator, (name))] + args, limit=limit, context=context)
+					
 				if ids:
 					for i in insttucion_procedimiento.browse(cr, uid, ids, context=context):
 						ids_procedimientos.append(i.procedures_id.id)
