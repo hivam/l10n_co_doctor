@@ -191,6 +191,8 @@
                     <field name="nc_paciente" attrs="{'invisible':[('ver_nc', '=', False)]}"/>
                 </field>
 
+
+
                 <field name="birth_date" position="after">
                     <field name="lugar_nacimiento_id"/>
                 </field>
@@ -602,12 +604,19 @@
 
                 <field name="conduct" position="after">
                     <field name="inv" invisible="1"/> 
+                    <label for="plantilla_conducta_id" string="Plantillas"/>
+                    <field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]"/>
                     <group col="2"> 
                         <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
                     </group>
                     <group col="1" colspan="2">
                         <field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/> 
                     </group>
+                </field>
+
+                <field name="analysis" position="after">
+                    <label for="plantilla_analisis_id" string="Plantillas"/>
+                    <field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]"/>
                 </field>
                 
 

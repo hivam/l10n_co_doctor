@@ -1573,6 +1573,8 @@ class doctor_attentions_co(osv.osv):
 		'plantilla_sintomas_cuestionario_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_cuestionario_antecedentes_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_examen_fisico_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'plantilla_analisis_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'plantilla_conducta_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 	
 
 	}
@@ -2310,6 +2312,8 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('04',u'Sintomas (Cuestionarios - Entrevistas)'),
 		('05','Antecedentes'),
 		('06',u'Examen Físico'),
+		('07', u'Análisis'),
+		('08', 'Conducta'),
 
 	]
 
