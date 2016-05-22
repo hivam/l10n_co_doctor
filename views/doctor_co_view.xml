@@ -604,8 +604,8 @@
 
                 <field name="conduct" position="after">
                     <field name="inv" invisible="1"/> 
-                    <label for="plantilla_conducta_id" string="Plantillas"/>
-                    <field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]"/>
+                    <label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+                    <field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
                     <group col="2"> 
                         <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
                     </group>
@@ -615,8 +615,8 @@
                 </field>
 
                 <field name="analysis" position="after">
-                    <label for="plantilla_analisis_id" string="Plantillas"/>
-                    <field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]"/>
+                    <label for="plantilla_analisis_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+                    <field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
                 </field>
                 
 
