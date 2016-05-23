@@ -1233,13 +1233,13 @@ class doctor_appointment_co(osv.osv):
 
 					})
 				else:
-					_logger.info('dfgdhsdfghjgfdsdfgh')
+					_logger.info('dfg')
 					_logger.info('Entro aca')
 					fecha= self.calcular_fecha_proxima_cita(cr,uid, horario_cadena[0], fecha_hora_actual, appointment_type, schedule_id, context=context)
 					_logger.info('La fecha es:')
 					_logger.info(fecha)
 					values.update({
-						'time_begin' :  str(fecha)
+						'time_begin' :  str(horario_cadena[0])
 					})
 
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
