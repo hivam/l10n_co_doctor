@@ -910,222 +910,222 @@ class doctor_appointment_co(osv.osv):
 								 _('La cita no tiene procedimeintos enlazados'))
 		return procedimientos
 
-	def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
-		values = {}
-		fecha_agenda_espacio=time_begin
-		fecha_comparacion=time_begin
+	# def onchange_calcular_hora(self, cr, uid, ids, schedule_id, type_id, time_begin, plan_id, tipo_usuario_id, context=None):
+	# 	values = {}
+	# 	fecha_agenda_espacio=time_begin
+	# 	fecha_comparacion=time_begin
 
-		max_pacientes = 1
-		citas_restantes = 0
+	# 	max_pacientes = 1s
+	# 	citas_restantes = 0
 
-		id_sechedule= self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
+	# 	id_sechedule= self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 
-		fecha_inicio_comparacion_agenda=id_sechedule.date_begin
-		try:
-			id_sechedule_consultorio=id_sechedule.consultorio_id.id
-		except Exception, e:
-			id_sechedule_consultorio= None
+	# 	fecha_inicio_comparacion_agenda=id_sechedule.date_begin
+	# 	try:
+	# 		id_sechedule_consultorio=id_sechedule.consultorio_id.id
+	# 	except Exception, e:
+	# 		id_sechedule_consultorio= None
 
-		if not schedule_id:
-			warning = {
-				'title': 'Aviso importante!!!',
-				'message' : '%s' %('Debe de Seleccionar una Agenda')
-			}
-			values.update({
-				'type_id' : False,
-			})
+	# 	if not schedule_id:
+	# 		warning = {
+	# 			'title': 'Aviso importante!!!',
+	# 			'message' : '%s' %('Debe de Seleccionar una Agenda')
+	# 		}
+	# 		values.update({
+	# 			'type_id' : False,
+	# 		})
 
-			return {'value': values, 'warning': warning}
+	# 		return {'value': values, 'warning': warning}
 
-		agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
-		professional_id = agenda_duracion.professional_id.id
+	# 	agenda_duracion =  self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
+	# 	professional_id = agenda_duracion.professional_id.id
 
-		if not time_begin:
-			return values
+	# 	if not time_begin:
+	# 		return values
 
-		#obtener fecha actual para comparar cada que se quiera asignar una cita, se convierte a datetime para comparar
-		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
-		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
-		#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
-		appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
+	# 	#obtener fecha actual para comparar cada que se quiera asignar una cita, se convierte a datetime para comparar
+	# 	fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+	# 	fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+	# 	#obtenemos el tipo de cita y la duracion de la agenda. se utilizan mas adelante
+	# 	appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, type_id, context=context).duration
 		
-		diff = int(agenda_duracion.date_begin[17:])
-		if diff > 0:
-			diff = 60 - diff
+	# 	diff = int(agenda_duracion.date_begin[17:])
+	# 	if diff > 0:
+	# 		diff = 60 - diff
 
-		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
-		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+	# 	fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+	# 	time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
 
-		if fecha_agenda_espacio >= time_begin:
-			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
-			time_begin=date_begin_cita
-		else:
+	# 	if fecha_agenda_espacio >= time_begin:
+	# 		date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+	# 		time_begin=date_begin_cita
+	# 	else:
 
-			time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+	# 		time_begin = datetime.strptime(agenda_duracion.date_begin, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
 
-		horarios = []
-		horario_cadena = []
+	# 	horarios = []
+	# 	horario_cadena = []
 
-		horarios.append(time_begin)
-		duracion = 0
-		#tener un rango de horas para poder decirle cual puede ser la proxima cita
-		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 1)
+	# 	horarios.append(time_begin)
+	# 	duracion = 0
+	# 	#tener un rango de horas para poder decirle cual puede ser la proxima cita
+	# 	horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 1)
 		
-		for i in range(0,horarios_disponibles,1):
-			horarios.append(horarios[i] + timedelta(minutes=1)) 
+	# 	for i in range(0,horarios_disponibles,1):
+	# 		horarios.append(horarios[i] + timedelta(minutes=1)) 
 		
-		for i in horarios:
-			horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:00'))
+	# 	for i in horarios:
+	# 		horario_cadena.append(i.strftime('%Y-%m-%d %H:%M:00'))
 
-		ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id), ('state', '!=', 'cancel')],context=context)
+	# 	ids_ingresos_diarios = self.search(cr, uid, [('schedule_id', '=', schedule_id), ('state', '!=', 'cancel')],context=context)
 		
 
 
-		if id_sechedule_consultorio:
-			if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
-				if agenda_duracion.consultorio_id.multi_paciente:
-					max_pacientes = agenda_duracion.consultorio_id.numero_pacientes
-			else:
-				max_pacientes = 1
+	# 	if id_sechedule_consultorio:
+	# 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
+	# 			if agenda_duracion.consultorio_id.multi_paciente:
+	# 				max_pacientes = agenda_duracion.consultorio_id.numero_pacientes
+	# 		else:
+	# 			max_pacientes = 1
 
-		if ids_ingresos_diarios:
-			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
-			if fecha_hora_actual > time_begin:
-				if str(fecha_hora_actual) in horario_cadena:
-					index = horario_cadena.index(str(fecha_hora_actual))	
-					for borrar in range(0,index,1):
-						horario_cadena.pop(horario_cadena.index(horario_cadena[0]))
+	# 	if ids_ingresos_diarios:
+	# 		time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
+	# 		if fecha_hora_actual > time_begin:
+	# 			if str(fecha_hora_actual) in horario_cadena:
+	# 				index = horario_cadena.index(str(fecha_hora_actual))	
+	# 				for borrar in range(0,index,1):
+	# 					horario_cadena.pop(horario_cadena.index(horario_cadena[0]))
 
-			for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
-				#con esto sabemos cuantos campos de la lista podemos quitar
+	# 		for fecha_agenda in self.browse(cr,uid,ids_ingresos_diarios,context=context):
+	# 			#con esto sabemos cuantos campos de la lista podemos quitar
 
-				if not fecha_agenda.type_id.duration:
-					inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
-					fin = datetime.strptime(fecha_agenda.time_end, "%Y-%m-%d %H:%M:%S")
-					delta = fin - inicio
-					duracion = int(delta.seconds / 60)
-				else:
-					duracion = int(fecha_agenda.type_id.duration / 1)
+	# 			if not fecha_agenda.type_id.duration:
+	# 				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
+	# 				fin = datetime.strptime(fecha_agenda.time_end, "%Y-%m-%d %H:%M:%S")
+	# 				delta = fin - inicio
+	# 				duracion = int(delta.seconds / 60)
+	# 			else:
+	# 				duracion = int(fecha_agenda.type_id.duration / 1)
 
 
-					horas_ids = self.search(cr, uid, [('time_begin', '=', fecha_agenda.time_begin), ('time_end', '=', fecha_agenda.time_end), ('schedule_id', '=', fecha_agenda.schedule_id.id)])
-					_logger.info(horas_ids)
-					if horas_ids:
-						citas_restantes = (max_pacientes - len(horas_ids))
+	# 				horas_ids = self.search(cr, uid, [('time_begin', '=', fecha_agenda.time_begin), ('time_end', '=', fecha_agenda.time_end), ('schedule_id', '=', fecha_agenda.schedule_id.id)])
+	# 				_logger.info(horas_ids)
+	# 				if horas_ids:
+	# 					citas_restantes = (max_pacientes - len(horas_ids))
 
-					else:
-						citas_restantes = max_pacientes
+	# 				else:
+	# 					citas_restantes = max_pacientes
 
 						
-					inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
+	# 				inicio = datetime.strptime(fecha_agenda.time_begin, "%Y-%m-%d %H:%M:%S")
 
-					minutos = 0
+	# 				minutos = 0
 
-					if citas_restantes <= 0:
-						for i in range(0,duracion,1):
-							inicios = inicio + timedelta(minutes=minutos)
-							inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
-							minutos+=1
-							if inicio_cadena in horario_cadena:
-								horario_cadena.pop(horario_cadena.index(inicio_cadena))	
+	# 				if citas_restantes <= 0:
+	# 					for i in range(0,duracion,1):
+	# 						inicios = inicio + timedelta(minutes=minutos)
+	# 						inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
+	# 						minutos+=1
+	# 						if inicio_cadena in horario_cadena:
+	# 							horario_cadena.pop(horario_cadena.index(inicio_cadena))	
 				
 
-				if int(len(horario_cadena)) > 1:
-					if int(len(horario_cadena)) > int((appointment_type/1)):
-						""""
-						if repetir_cita:
+	# 			if int(len(horario_cadena)) > 1:
+	# 				if int(len(horario_cadena)) > int((appointment_type/1)):
+	# 					""""
+	# 					if repetir_cita:
 
-							values.update({
-									'repetir_cita_fecha_inicio' : horario_cadena[0],
-									'repetir_cita_fecha_fin' : horario_cadena[int(appointment_type/1)],
-									'time_begin' : horario_cadena[0],
-									'time_end' : horario_cadena[int(appointment_type/1)],
-							})
-						else:
-						"""
-						fecha= self.calcular_fecha_proxima_cita(cr,uid, horario_cadena[0], fecha_hora_actual, appointment_type, schedule_id, context=context)
-						_logger.info('La fecha es:')
-						_logger.info(fecha)
-						if fecha_comparacion != fecha_inicio_comparacion_agenda:
-							values.update({
-								'time_begin' : horario_cadena[0],
-								'time_end' : horario_cadena[int(appointment_type/1)]
-							})
-						else:
-							values.update({
-								'time_begin' : str(fecha),
-								'time_end' : horario_cadena[int(appointment_type/1)]
-							})
+	# 						values.update({
+	# 								'repetir_cita_fecha_inicio' : horario_cadena[0],
+	# 								'repetir_cita_fecha_fin' : horario_cadena[int(appointment_type/1)],
+	# 								'time_begin' : horario_cadena[0],
+	# 								'time_end' : horario_cadena[int(appointment_type/1)],
+	# 						})
+	# 					else:
+	# 					"""
+	# 					fecha= self.calcular_fecha_proxima_cita(cr,uid, horario_cadena[0], fecha_hora_actual, appointment_type, schedule_id, context=context)
+	# 					_logger.info('La fecha es:')
+	# 					_logger.info(fecha)
+	# 					if fecha_comparacion != fecha_inicio_comparacion_agenda:
+	# 						values.update({
+	# 							'time_begin' : horario_cadena[0],
+	# 							'time_end' : horario_cadena[int(appointment_type/1)]
+	# 						})
+	# 					else:
+	# 						values.update({
+	# 							'time_begin' : str(fecha),
+	# 							'time_end' : horario_cadena[int(appointment_type/1)]
+	# 						})
 
-					else:
-						raise osv.except_osv(_('Error!'),
-								 _('No se puede asignar la cita con este tiempo %s minutos' %(appointment_type)))
-				else:
-					raise osv.except_osv(_('Error!'),
-								 _('Las agenda ya esta toda asignada'))
-		else:
-			if time_begin < fecha_hora_actual:
-				hora_fin = fecha_hora_actual + timedelta(minutes=appointment_type)
-				"""
-				if repetir_cita:
-					values.update({
-						'repetir_cita_fecha_inicio' : str(fecha_hora_actual),
-						'time_begin' :  str(fecha_hora_actual)
-					})
-				else:
-				"""
-					#Hacemos llamado al metodo calcular fecha proxima 
-				fecha= self.calcular_fecha_proxima_cita(cr,uid, str(fecha_hora_actual), fecha_hora_actual, appointment_type, schedule_id, context=context)
-				values.update({
-					'time_begin' :  str(fecha)
-				})
+	# 				else:
+	# 					raise osv.except_osv(_('Error!'),
+	# 							 _('No se puede asignar la cita con este tiempo %s minutos' %(appointment_type)))
+	# 			else:
+	# 				raise osv.except_osv(_('Error!'),
+	# 							 _('Las agenda ya esta toda asignada'))
+	# 	else:
+	# 		if time_begin < fecha_hora_actual:
+	# 			hora_fin = fecha_hora_actual + timedelta(minutes=appointment_type)
+	# 			"""
+	# 			if repetir_cita:
+	# 				values.update({
+	# 					'repetir_cita_fecha_inicio' : str(fecha_hora_actual),
+	# 					'time_begin' :  str(fecha_hora_actual)
+	# 				})
+	# 			else:
+	# 			"""
+	# 				#Hacemos llamado al metodo calcular fecha proxima 
+	# 			fecha= self.calcular_fecha_proxima_cita(cr,uid, str(fecha_hora_actual), fecha_hora_actual, appointment_type, schedule_id, context=context)
+	# 			values.update({
+	# 				'time_begin' :  str(fecha)
+	# 			})
 
 
-			else:
-				"""
-				if repetir_cita:
-					values.update({
-						'repetir_cita_fecha_inicio' : str(time_begin),
-						'time_begin' :  str(time_begin)
+	# 		else:
+	# 			"""
+	# 			if repetir_cita:
+	# 				values.update({
+	# 					'repetir_cita_fecha_inicio' : str(time_begin),
+	# 					'time_begin' :  str(time_begin)
 
-					})
-				else:
-				"""
-				values.update({
-					'time_begin' :  str(time_begin)
-				})
+	# 				})
+	# 			else:
+	# 			"""
+	# 			values.update({
+	# 				'time_begin' :  str(time_begin)
+	# 			})
 
-				hora_fin = time_begin + timedelta(minutes=appointment_type)
+	# 			hora_fin = time_begin + timedelta(minutes=appointment_type)
 
-			hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:00')
-			"""
-			if repetir_cita:
-				values.update({
-					'repetir_cita_fecha_fin' :  str(hora_fin),
-					'time_end' : hora_fin
-				})
-			else:
-			"""
-			values.update({
-				'time_end' : hora_fin
-			})
+	# 		hora_fin = hora_fin.strftime('%Y-%m-%d %H:%M:00')
+	# 		"""
+	# 		if repetir_cita:
+	# 			values.update({
+	# 				'repetir_cita_fecha_fin' :  str(hora_fin),
+	# 				'time_end' : hora_fin
+	# 			})
+	# 		else:
+	# 		"""
+	# 		values.update({
+	# 			'time_end' : hora_fin
+	# 		})
 
-		try:
-			values.update({
-				'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=context),
-			})
-		except Exception as a:
-			warning = {
-				'title': 'Aviso importante!!!',
-				'message' : '%s' %(a[1])
-			}
-			values.update({
-				'procedures_id' : False,
-			})
+	# 	try:
+	# 		values.update({
+	# 			'procedures_id' : self.procedimiento_doctor_plan(cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=context),
+	# 		})
+	# 	except Exception as a:
+	# 		warning = {
+	# 			'title': 'Aviso importante!!!',
+	# 			'message' : '%s' %(a[1])
+	# 		}
+	# 		values.update({
+	# 			'procedures_id' : False,
+	# 		})
 
-			return {'value': values, 'warning': warning}
+	# 		return {'value': values, 'warning': warning}
 			
-		return {'value': values}
+	# 	return {'value': values}
 
 	#Funcion para calcular la hora en que este disponible una cita dependiendo de la hora actual
 	def calcular_fecha_proxima_cita(self, cr, uid, date_begin, date_today, appointment_type, schedule_id, context=None):
