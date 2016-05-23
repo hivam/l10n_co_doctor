@@ -987,7 +987,8 @@ class doctor_appointment_co(osv.osv):
 					for rec in planes_contrato:
 						if rec.id == int(plan_id):
 							return True
-			self.onchange_limpiarformulario(cr, uid, ids, plan_id)
+			_logger.info(plan_id)
+			#self.onchange_limpiarformulario(cr, uid, ids, plan_id)
 			raise osv.except_osv(_('Aviso importante!'),_('El plan seleccionado no hace parte de este contrato o es posible que no esté vigente.\n\nComuníquese con la aseguradora para más información.'))
 		return True
 
