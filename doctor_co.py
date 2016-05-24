@@ -1279,111 +1279,100 @@ class doctor_appointment_co(osv.osv):
 		estado_cita=None
 		validar_fecha_agenda=False
 
-		fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
-		#Capturamos la hora actual
-		hora_actual= str(date_today)[11:13]
-		#Capturamos el minuto actual
-		minuto_actual=str(date_today)[14:15]
-		#Variable para poder sumar si el minuto es mayor que 5
-		sumar_minuto=int(str(date_today)[14:15])
-
-		fecha_espacio= date_begin
-		result_estado=False
-
-		minuto_fecha_calculo=str(date_today)[15:16]
-		#Se compara el minuto actual y lo adelanta hasta ser igual a 5 
-		#De ser mayor a 5 se le suma uno
-		if int(minuto_fecha_calculo) <= 5:
-			#Si el minuto es menor que 5 le añadimos el 5 
-			minuto_actual=minuto_actual+ '5'
-		else:
-			#Si el minuto es mayor que le sumamos 1
-			sumar_minuto= sumar_minuto+1
-			minuto_actual= str(sumar_minuto)+ '0'
-
-		fecha_modificada = fecha_sin_minutos.strftime("%Y-%m-%d 00:00:00")
-
-		fecha_modificada_hora = datetime.strptime(str(fecha_modificada), "%Y-%m-%d %H:%M:00")
-		#Fecha actual de la agenda
-		fecha_modificada_hora_espacio = fecha_modificada_hora + timedelta(hours=int(hora_actual)) + timedelta(minutes=int(minuto_actual))
-
-		#Variable que nos permitira saber cuantos espacios disponibles
-		contadorDisponible=0
-
-		#Cantidad de espacios dependiendo el tipo de cita
-		cantidad_espacios=appointment_type/5
-		#Traemos todos los ids que esten apartir de la fecha actual
-		id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id), ('fecha_inicio', '>=', str(fecha_modificada_hora_espacio))], context=context)
-
-
-
-		#Recorremos todos los espacios que sean mayores a la fecha actual
-		#Para saber desde que horas estaria disponible la cita
-		for i in range(0, len(id_espacios), 1):
-			#Consultado el estado de cada espacio
-			estado_cita = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i], context=context).estado_cita_espacio
-			#Validamos si el estado del espacios es disponible 
-			if estado_cita != 'Asignado':
-				#Contamos cuantos espacios disponibles hay de forma consecutiva
-				contadorDisponible=contadorDisponible+1
-			#Validamos si el estado del espacio es asignado
-			if estado_cita == 'Asignado':
-				#Reiniciamos el contador de disponibles
-				contadorDisponible=0
-			#Validamos que los espacios disponibles sean iguales a la cantidad de espacios
-			if contadorDisponible== cantidad_espacios:
-				#Obtenemos la fecha inicio y fecha fin de dicho espacio de acuerdo al valor del iterador
-				fecha_inicio = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i-(cantidad_espacios-1)], context=context).fecha_inicio
-				fecha_fin = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i], context=context).fecha_fin
-
 
 		agenda=self.pool.get('doctor.schedule').browse(cr, uid, schedule_id)
 		fecha_inicio_agenda= agenda.date_begin
 		fecha_fin_agenda= agenda.date_end
+		consultorio_id=agenda.consultorio_id.numero_pacientes
+		_logger.info(consultorio_id)
 
 
-		dia_fecha_actual=int(str(date_today)[8:11])
-
-		dia_fecha_begin=int(str(date_begin)[8:11])
-		_logger.info(dia_fecha_begin)
-		_logger.info(dia_fecha_actual)
-
-		diferencia_fechas= dia_fecha_begin - dia_fecha_actual
-		_logger.info(diferencia_fechas)
-
-		if diferencia_fechas > 0:
-			fecha_validacion_agenda= date_today + timedelta(days=int(diferencia_fechas))
-
-		if diferencia_fechas == 0:
-			fecha_validacion_agenda= date_today
-
-		_logger.info('Fecha validada')
-		_logger.info(fecha_validacion_agenda)
-		_logger.info('Fecha inicio')
-		_logger.info(fecha_inicio_agenda)
-		_logger.info('Fecha validada')
-		_logger.info(fecha_fin_agenda)
-		_logger.info('Fecha hoy')
-		_logger.info(date_today)
-		#Comparamos si la fecha se encuentra en el rango del inicio y fin de la agenda actual
-		if (str(fecha_validacion_agenda) < str(fecha_inicio_agenda)) or (str(fecha_validacion_agenda) > str(fecha_fin_agenda)):
-			validar_fecha_agenda=True
-
-		_logger.info('Fecha validada')
-		_logger.info(validar_fecha_agenda)
-
-
-		#Se valida si la fecha se encuentra en el rango del inicio y fin de la agenda actual
-		if validar_fecha_agenda:
-			raise osv.except_osv(_('Lo sentimos!'),
-								 _('La fecha actual esta por fuera de la agenda \n Por favor dirijase a los espacios de la agenda'))
 		
 
-		if fecha_inicio:
-			_logger.info('listo')
-			date_begin=fecha_inicio
-			return date_begin
+		if date_begin == fecha_inicio_agenda:
+			
+			fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
+			#Capturamos la hora actual
+			hora_actual= str(date_today)[11:13]
+			#Capturamos el minuto actual
+			minuto_actual=str(date_today)[14:15]
+			#Variable para poder sumar si el minuto es mayor que 5
+			sumar_minuto=int(str(date_today)[14:15])
 
+			fecha_espacio= date_begin
+			result_estado=False
+
+			minuto_fecha_calculo=str(date_today)[15:16]
+			#Se compara el minuto actual y lo adelanta hasta ser igual a 5 
+			#De ser mayor a 5 se le suma uno
+			if int(minuto_fecha_calculo) <= 5:
+				#Si el minuto es menor que 5 le añadimos el 5 
+				minuto_actual=minuto_actual+ '5'
+			else:
+				#Si el minuto es mayor que le sumamos 1
+				sumar_minuto= sumar_minuto+1
+				minuto_actual= str(sumar_minuto)+ '0'
+
+			fecha_modificada = fecha_sin_minutos.strftime("%Y-%m-%d 00:00:00")
+
+			fecha_modificada_hora = datetime.strptime(str(fecha_modificada), "%Y-%m-%d %H:%M:00")
+			#Fecha actual de la agenda
+			fecha_modificada_hora_espacio = fecha_modificada_hora + timedelta(hours=int(hora_actual)) + timedelta(minutes=int(minuto_actual))
+			#Variable que nos permitira saber cuantos espacios disponibles
+			contadorDisponible=0
+
+			try:
+				consultorio_id=agenda.consultorio_id.numero_pacientes
+				_logger.info('Numero de pacientes')
+				_logger.info(consultorio_id)
+				if consultorio_id > 1:
+					return fecha_modificada_hora_espacio
+			except Exception, e:
+				_logger.info('No es multipaciente para calcular la hora')
+
+
+			#Cantidad de espacios dependiendo el tipo de cita
+			cantidad_espacios=appointment_type/5
+			#Traemos todos los ids que esten apartir de la fecha actual
+			id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id), ('fecha_inicio', '>=', str(fecha_modificada_hora_espacio)), ('fecha_fin', '<=', str(fecha_fin_agenda))], context=context)
+			_logger.info('Espacios')
+			_logger.info(id_espacios)
+
+
+			#Recorremos todos los espacios que sean mayores a la fecha actual
+			#Para saber desde que horas estaria disponible la cita
+			for i in range(0, len(id_espacios), 1):
+				#Consultado el estado de cada espacio
+				estado_cita = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i], context=context).estado_cita_espacio
+				#Validamos si el estado del espacios es disponible 
+				if estado_cita != 'Asignado':
+					#Contamos cuantos espacios disponibles hay de forma consecutiva
+					contadorDisponible=contadorDisponible+1
+				#Validamos si el estado del espacio es asignado
+				if estado_cita == 'Asignado':
+					#Reiniciamos el contador de disponibles
+					contadorDisponible=0
+				#Validamos que los espacios disponibles sean iguales a la cantidad de espacios
+				if contadorDisponible== cantidad_espacios:
+					#Obtenemos la fecha inicio y fecha fin de dicho espacio de acuerdo al valor del iterador
+					fecha_inicio = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i-(cantidad_espacios-1)], context=context).fecha_inicio
+					fecha_fin = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i], context=context).fecha_fin
+
+			#Comparamos si la fecha se encuentra en el rango del inicio y fin de la agenda actual
+			if (str(fecha_modificada_hora_espacio) > str(fecha_inicio_agenda)) or (str(fecha_modificada_hora_espacio) < str(fecha_fin_agenda)):
+				if fecha_inicio:
+					_logger.info('listo')
+					date_begin=fecha_inicio
+					_logger.info('La fecha inicio listo es')
+					_logger.info(date_begin)
+					return date_begin
+			#Se valida si la fecha se encuentra en el rango del inicio y fin de la agenda actual
+			else:
+				raise osv.except_osv(_('Lo sentimos!'),
+									 _('La fecha actual esta por fuera de la agenda \n Por favor dirijase a los espacios de la agenda'))
+
+		else:
+			return date_begin
 
 		return date_begin
 
