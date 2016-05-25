@@ -2484,12 +2484,14 @@ class doctor_prescription(osv.osv):
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 
 			if drugs_id:
+
 				for medicamento in modelo_buscar.browse(cr,uid,[drugs_id],context=None):
 					
 					forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)	
 					
 					via = medicamento.administration_route.id
 					concentracion = medicamento.drugs_concentration
+					indicaciones= medicamento.indication_drug	
 
 					if not forma_farmaceutica_id:
 						vals['code'] = ('%s' %medicamento.pharmaceutical_form.id)
@@ -2517,6 +2519,7 @@ class doctor_prescription(osv.osv):
 				res['value']['measuring_unit_q']=forma_farmaceutica_id
 				res['value']['dose_float']=numero
 				res['value']['dose_unit_id']=unidad_dosis_id
+				res['value']['indications']=indicaciones
 
 		return res
 
