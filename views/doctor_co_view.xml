@@ -481,13 +481,12 @@
             </field>
         </record>
 
-        <!--  Generar espacios
->>>>>>> d6acafe1ed81154c80826d74c0399ddededa0a11
+        <!--  Remueve los espacios que no fueron asignados en las agendas-->
         <record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
             <field name="name">Habilitar Espacios</field>
             <field name="active" eval="True"/>
             <field name="user_id" ref="base.user_root" />
-            <field name="interval_number">2</field>
+            <field name="interval_number">7</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="True"/>
@@ -495,8 +494,7 @@
             <field name="function" eval="'habilitar_espacios'"/>
             <field name="args" eval="'()'"/>
         </record>
-<<<<<<< HEAD
-      -->
+      
         <!-- Modificando la busqueda en atencion anadiendo cambios -->
         <record id="attentions_filter" model="ir.ui.view">
         <field name="name">Attentions</field>
