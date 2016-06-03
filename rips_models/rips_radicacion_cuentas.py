@@ -330,8 +330,12 @@ class radicacion_cuentas(osv.osv):
 					pass
 
 				#complicacion
-				archivo.write(',')
-
+				try:
+					complicacion = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].complicacion_eventoadverso
+					archivo.write(complicacion +',')
+				except Exception, e:
+					archivo.write(',')
+					
 				#forma de realización del acto quirurgico
 				archivo.write(',')
 
@@ -341,7 +345,7 @@ class radicacion_cuentas(osv.osv):
 					lineas_procedimientos_factura = factura.invoice_line
 					procedimiento_precio_unidad = lineas_procedimientos_factura[0].price_unit
 					procedimiento_cantidad = lineas_procedimientos_factura[0].quantity
-					archivo.write(str(procedimiento_precio_unidad*procedimiento_cantidad) + ',')
+					archivo.write(str(procedimiento_precio_unidad*procedimiento_cantidad))
 				except Exception, e:
 					archivo.write(',')
 
@@ -484,7 +488,7 @@ class radicacion_cuentas(osv.osv):
 				#valor neto a pagar
 				try:
 					valor_neto= factura.residual
-					archivo.write(str(valor_neto)+ ',')
+					archivo.write(str(valor_neto))
 				except Exception, e:
 					archivo.write(',')
 
@@ -593,7 +597,7 @@ class radicacion_cuentas(osv.osv):
 					#zona de residencia 
 					zona_paciente = factura.patient_id.zona
 					if zona_paciente:
-						archivo.write(zona_paciente + ',')
+						archivo.write(zona_paciente)
 					else:
 						archivo.write(',')
 					pacientes.append(factura.patient_id.id)

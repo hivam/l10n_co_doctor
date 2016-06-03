@@ -191,6 +191,8 @@
                     <field name="nc_paciente" attrs="{'invisible':[('ver_nc', '=', False)]}"/>
                 </field>
 
+
+
                 <field name="birth_date" position="after">
                     <field name="lugar_nacimiento_id"/>
                 </field>
@@ -243,10 +245,9 @@
                         <field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
                     </group>
                     <group colspan="4" col="6">
-                      <field name="type_id"/>
-                      <!--
+                      
                       <field name="type_id" on_change="onchange_calcular_hora(schedule_id,type_id,time_begin, plan_id, tipo_usuario_id, repetir_cita)"/>
-                    -->
+                    
                       <field name="realiza_procedimiento"/>
                       <field name="nro_afilicion_poliza"/>
                     </group>
@@ -257,13 +258,6 @@
                     </group>
 
                     <group colspan='4' col='6'>
-                        <field name="time_begin" on_change="onchange_end_time(type_id, time_begin, time_end)"/>
-                        <field name="time_end"/>
-                        <field name="aditional"/>
-                    </group>
-
-                  <!--
-                    <group colspan='4' col='6'>
                         <field name="time_begin" on_change="onchange_end_time(type_id, time_begin, time_end)" attrs="{'invisible':[('repetir_cita', '=', True)]}"/>
                         <field name="time_end" attrs="{'invisible':[('repetir_cita', '=', True)]}"/>
                         <field name="aditional"/>
@@ -272,11 +266,11 @@
                     <group colspan="4" col="6">
                       <field name="repetir_cita" on_change="onchange_cargar_hora(type_id, time_begin, time_end)"/>
                     </group>
-                  -->
+                  
 
                 </xpath>
 
-                <!-- Cita repetida
+                <!-- Cita repetida -->
 
                 <notebook>
 
@@ -326,7 +320,7 @@
                         </fieldset>
                   </page>
                 </notebook>
-              -->
+              
 
                 <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[3]" position="after">
                     <field name="nro_autorizacion"/>
@@ -487,13 +481,12 @@
             </field>
         </record>
 
-        <!--  Generar espacios
->>>>>>> d6acafe1ed81154c80826d74c0399ddededa0a11
+        <!--  Remueve los espacios que no fueron asignados en las agendas-->
         <record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
             <field name="name">Habilitar Espacios</field>
             <field name="active" eval="True"/>
             <field name="user_id" ref="base.user_root" />
-            <field name="interval_number">2</field>
+            <field name="interval_number">7</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="True"/>
@@ -501,8 +494,7 @@
             <field name="function" eval="'habilitar_espacios'"/>
             <field name="args" eval="'()'"/>
         </record>
-<<<<<<< HEAD
-      -->
+      
         <!-- Modificando la busqueda en atencion anadiendo cambios -->
         <record id="attentions_filter" model="ir.ui.view">
         <field name="name">Attentions</field>
@@ -595,19 +587,34 @@
                 </field>
 
 
-                <field name="analysis" position="after">
-                    <label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
-                    <field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>
-                </field>
+                <xpath expr="//group[@id='group_conduct']" position="after">
+                    <group colspan="2" col='1'>
+                      <label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
+                      <field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>
+                    </group>
+                    <group colspan="2" col='1'>
+                      <label for="complicacion_eventoadverso" string="Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
+                      <field name="complicacion_eventoadverso" nolabel="1" groups="doctor.group_doctor_physician"/>
+                      <label for="complicacion_eventoadverso_observacion" string="Observacion de Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
+                       <field name="complicacion_eventoadverso_observacion" nolabel="1" groups="doctor.group_doctor_physician"/>
+                    </group>
+                </xpath>
 
                 <field name="conduct" position="after">
                     <field name="inv" invisible="1"/> 
+                    <label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+                    <field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
                     <group col="2"> 
                         <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
                     </group>
                     <group col="1" colspan="2">
                         <field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/> 
                     </group>
+                </field>
+
+                <field name="analysis" position="after">
+                    <label for="plantilla_analisis_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+                    <field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
                 </field>
                 
 

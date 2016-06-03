@@ -94,3 +94,15 @@ class doctor(osv.osv):
 			causa_externa='15'
 			
 		return causa_externa
+
+	def fecha_utc(self, cr, uid, time_begin):
+		time_begin_user = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+
+		user = self.pool.get('res.users').browse(cr, uid, uid)
+		tz = pytz.timezone(user.tz) if user.tz else pytz.utc
+		time_begin_user = pytz.utc.localize(time_begin_user).astimezone(tz)
+
+		time_begin_user = datetime.strftime(time_begin_user, "%Y-%m-%d %H:%M:%S")
+		return time_begin_user
+
+
