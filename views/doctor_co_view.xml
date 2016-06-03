@@ -678,7 +678,7 @@
                 </xpath>
 
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
-                    <attribute name="string">Precripcion</attribute>
+                    <attribute name="string">prescripción</attribute>
                 </xpath>
 
 

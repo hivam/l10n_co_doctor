@@ -199,7 +199,6 @@
       </blockTable>
      </section>
     <section>
-    [[o.review_systems_id or o.otro_sintomas_revision_sistema or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
