@@ -2260,7 +2260,7 @@ class doctor_attention_medicamento_otro_elemento(osv.osv):
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
 		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
-		'prescripcion': fields.char('Prescripcion'),
+		'prescripcion': fields.char('Prescripción'),
 		'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
 		'recomendacion': fields.text('Recomendaciones'),
 	}
