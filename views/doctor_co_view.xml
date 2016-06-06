@@ -747,7 +747,7 @@
                                     <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]"/>
                                      <field name="prescripcion"/>
                                      <field name="recomendacion"/>
-                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '03')]"/>
+                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)"/>
                                 </group>   
                             </form>
                         </field>
