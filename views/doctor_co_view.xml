@@ -685,7 +685,7 @@
                 </xpath>
 
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
-                    <attribute name="string">prescripcion</attribute>
+                    <attribute name="string">Prescripcion</attribute>
                 </xpath>
 
 
@@ -740,9 +740,9 @@
 
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="inside">
                     <page string="Otra Prescripcion"> 
-                        <separator string="Otra Prescripcion" colspan="4"/>
+                        <separator string="Otra Prescripción" colspan="4"/>
                         <field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
-                            <form string="Otra Prescripcion">
+                            <form string="Otra Prescripción">
                                 <group colspan='3' col='2'>
                                     <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]"/>
                                      <field name="prescripcion"/>
