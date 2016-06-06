@@ -739,9 +739,9 @@
                 </xpath>
 
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="inside">
-                    <page string="Otra Prescripcion"> 
+                    <page string="Otra Prescripción"> 
                         <separator string="Otra Prescripción" colspan="4"/>
-                        <field name="otros_medicamentos_ids" nolabel="1">
+                        <field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
                             <form string="Otra Prescripción">
                                 <group colspan='3' col='2'>
                                     <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]"/>
