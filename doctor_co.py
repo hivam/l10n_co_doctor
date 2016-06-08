@@ -1592,24 +1592,6 @@ class doctor_attentions_co(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
-		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_nursing_assistant', context=context):
-			id_paciente = None
-			id_especialidad = self.pool.get('doctor.professional').browse(cr, uid, vals['aux_enfermeria_id'], context=context).speciality_id.id
-			if not 'patient_id' in vals:
-				id_paciente = context['default_patient_id']
-			else:
-				id_paciente = vals['patient_id']
-
-			fecha_nacimiento =  self.pool.get('doctor.patient').browse(cr, uid, id_paciente, context=context).birth_date
-			res={}
-			res['patient_id'] =  id_paciente
-			res['professional_id'] = vals['aux_enfermeria_id']
-			res['conducta_medico'] = vals['conduct']
-			res['speciality'] = id_especialidad
-			res['age_attention'] = self.calcular_edad(fecha_nacimiento)
-			res['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
-			self.pool.get('doctor.nursing.assistan').create(cr, uid, res, context)
-
 		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
 doctor_attentions_co()
