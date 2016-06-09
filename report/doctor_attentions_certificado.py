@@ -27,66 +27,65 @@ _logger = logging.getLogger(__name__)
 
 
 class doctor_attentions_certificado(report_sxw.rml_parse):
-    def __init__(self, cr, uid, name, context):
-        super(doctor_attentions_certificado, self).__init__(cr, uid, name, context=context)
-        self.localcontext.update({
-            'time': time,
-            'select_type': self.select_type,
-            'select_age': self.select_age,
-            'primera_foto': self.primera_foto,
-        })
+	def __init__(self, cr, uid, name, context):
+		super(doctor_attentions_certificado, self).__init__(cr, uid, name, context=context)
+		self.localcontext.update({
+			'time': time,
+			'select_type': self.select_type,
+			'select_age': self.select_age,
+			'primera_foto': self.primera_foto,
+		})
 
-    def select_type(self, tipo_usuario):
-        context = {}
-        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
-        patient = self.pool.get('doctor.patient')
-        tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario',context=context).get('tipo_usuario').get('selection')).get(
-            str(tipo_usuario))
-        return tipo
+	def select_type(self, tipo_usuario):
+		if tipo_usuario:
+			tipo = self.pool.get('doctor.tipousuario.regimen').browse(self.cr, self.uid, tipo_usuario).name
+		else:
+			tipo= None
+		return tipo
 
-    def select_age(self, age):
-        context = {}
-        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
-        attentions = self.pool.get('doctor.attentions')
-        age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
-            str(age))
-        return age_unit
+	def select_age(self, age):
+		context = {}
+		context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+		attentions = self.pool.get('doctor.attentions')
+		age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
+			str(age))
+		return age_unit
 
 
-    def cual_foto(self, n_foto):
-        retorno = -1
-        if n_foto == 1:
-            retorno = 0
-        elif n_foto == 2:
-            retorno = 1
-        elif n_foto == 3:
-            retorno = 2
-        elif n_foto == 4:
-            retorno = 3
-        elif n_foto == 5:
-            retorno = 4
-        elif n_foto == 6:
-            retorno = 5
-        return retorno
+	def cual_foto(self, n_foto):
+		retorno = -1
+		if n_foto == 1:
+			retorno = 0
+		elif n_foto == 2:
+			retorno = 1
+		elif n_foto == 3:
+			retorno = 2
+		elif n_foto == 4:
+			retorno = 3
+		elif n_foto == 5:
+			retorno = 4
+		elif n_foto == 6:
+			retorno = 5
+		return retorno
 
-    def primera_foto(self, certificado_id, n_foto):
-        foto = self.cual_foto(n_foto)
-        context = {}
-        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
-        image = self.pool.get('multi_imagen')
-        cantidad_imagen = image.search(self.cr, self.uid, [('certificados_id', '=', certificado_id)], context=context)
-        if cantidad_imagen:
-            if foto != -1:
-                for i in image.browse(self.cr, self.uid, [cantidad_imagen[foto]], context=context):
-                    return i.name
+	def primera_foto(self, certificado_id, n_foto):
+		foto = self.cual_foto(n_foto)
+		context = {}
+		context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+		image = self.pool.get('multi_imagen')
+		cantidad_imagen = image.search(self.cr, self.uid, [('certificados_id', '=', certificado_id)], context=context)
+		if cantidad_imagen:
+			if foto != -1:
+				for i in image.browse(self.cr, self.uid, [cantidad_imagen[foto]], context=context):
+					return i.name
 
-        
-        
+		
+		
 
 report_sxw.report_sxw('report.doctor_attentions_certificado', 'doctor.attentions',
-                      'addons/l10n_co_doctor/report/doctor_attentions_certificado.rml',
-                      parser=doctor_attentions_certificado)
-        
-        
-        
-        
+					  'addons/l10n_co_doctor/report/doctor_attentions_certificado.rml',
+					  parser=doctor_attentions_certificado)
+		
+		
+		
+		
