@@ -685,7 +685,7 @@
                 </xpath>
 
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
-                    <attribute name="string">prescripción</attribute>
+                    <attribute name="string">Prescripcion</attribute>
                 </xpath>
 
 
@@ -740,11 +740,11 @@
 
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="inside">
                     <page string="Otra Prescripcion"> 
-                        <separator string="Otra Prescripcion" colspan="4"/>
+                        <separator string="Otra Prescripción" colspan="4"/>
                         <field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
-                            <form string="Otra Prescripcion">
+                            <form string="Otra Prescripción">
                                 <group colspan='3' col='2'>
-                                    <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]"/>
+                                    <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]" context="{'medicamento':'medicamentos'}"/>
                                      <field name="prescripcion"/>
                                      <field name="recomendacion"/>
                                      <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '03')]"/>
@@ -900,11 +900,11 @@
             <field name="name">Precios de Procedimientos</field>
             <field name="model">doctor.configuracion</field>
             <field name="arch" type="xml">
-                <form string="Parametrizacion Contratos" version="7.0">
+                <form string="Parametrización Contratos" version="7.0">
                     <label string="Aseguradora" for="aseguradora_id" class="texto"/>
                     <field name="aseguradora_id" on_change="on_change_cargadatos(aseguradora_id)"/>
                     <field name="parametrizacion_ids" nolabel="1" attrs="{'invisible': [('aseguradora_id', '=', False)] }">
-                        <tree string="Parametrizacion" editable="top">
+                        <tree string="Parametrización" editable="top">
                             <field name="procedures_id"/>
                             <field name="contract_id"/>
                             <field name="plan_id"/> 
@@ -945,9 +945,9 @@
                     
                     <label string="Nombre Compañia" for="name" class="texto"/>
                     <field name="name"/>
-                    <label string="Procedimientos Institucion" for="procedures_id" class="texto"/>
+                    <label string="Procedimientos Institución" for="procedures_id" class="texto"/>
                     <field name="procedures_id" colspan="4" nolabel="1">
-                        <tree string="Procedimientos en salud" editable="bottom">
+                        <tree string="Procedimientos en Salud" editable="bottom">
                             <field name="procedures_id" context="{'modelo':'confi'}"/>
                         </tree>
                     </field>

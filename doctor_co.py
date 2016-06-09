@@ -2152,16 +2152,20 @@ class doctor_otra_prescripcion(osv.osv):
 				ids_procedimientos = procedimientos	
 		return ids_procedimientos
 
-	def parte_name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
+	def parte_name_search(self, cr, uid, name, modeloLLama, args=None, operator='ilike', context=None, limit=100):
 		ids = []
 		ids_procedimientos = []
+		
 		if name:
 			ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
 			if not ids:
 				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+		elif modeloLLama:
+			ids = self.search(cr, uid, [('is_medicamento_prescripcion', '=', True)], limit=limit, context=context)
 		else:
 			ids = self.search(cr, uid, args, limit=limit, context=context)
-		return ids	
+
+		return ids 	
 
 	def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
 		
@@ -2172,23 +2176,26 @@ class doctor_otra_prescripcion(osv.osv):
 		plan_id = context.get('plan_id')
 		professional_id = context.get('professional_id')
 		modelo = context.get('modelo')
+		medicamento = context.get('medicamento')
 		
-		if plan_id and professional_id:				
+
+		if plan_id and professional_id:
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
 		elif modelo:
-			ids_procedimientos = self.parte_name_search(cr, uid, name, args, operator, context=context, limit=100)
+			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
+		elif medicamento:
+			ids_procedimientos = self.parte_name_search(cr, uid, name, medicamento, args, operator, context=context, limit=100)
 		else:
 			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
 			if ids:
 				if name:
 					ids = insttucion_procedimiento.search(cr, uid, ['|',('procedures_id.name', operator, name), ('procedures_id.procedure_code', operator, name)], limit=limit, context=context)
-					
 				if ids:
 					for i in insttucion_procedimiento.browse(cr, uid, ids, context=context):
 						ids_procedimientos.append(i.procedures_id.id)
 					
 			else:
-				ids_procedimientos = ids_procedimientos = self.parte_name_search(cr, uid, name, args, operator, context=context, limit=100)
+				ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		
 		return self.name_get(cr, uid, ids_procedimientos, context)
 
@@ -2260,7 +2267,7 @@ class doctor_attention_medicamento_otro_elemento(osv.osv):
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Attention'),
 		'plantilla_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
-		'prescripcion': fields.char('Prescripcion'),
+		'prescripcion': fields.char('Prescripción'),
 		'procedures_id': fields.many2one('product.product', 'Medicamento/Otro elemento', required=True, ondelete='restrict'),
 		'recomendacion': fields.text('Recomendaciones'),
 	}
