@@ -42,7 +42,7 @@ class doctor_attention(report_sxw.rml_parse):
 		if tipo_usuario:
 			tipo = self.pool.get('doctor.tipousuario.regimen').browse(self.cr, self.uid, tipo_usuario).name
 		else:
-			tipo= ''
+			tipo= None
 		_logger.info(tipo)
 		return tipo
 
