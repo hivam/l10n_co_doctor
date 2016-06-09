@@ -24,48 +24,49 @@ from openerp.report import report_sxw
 from openerp import pooler
 
 class doctor_referral(report_sxw.rml_parse):
-    def __init__(self, cr, uid, name, context):
-        super(doctor_referral, self).__init__(cr, uid, name, context=context)
-        self.localcontext.update({
-            'time': time,
-            'select_type': self.select_type,
-            'select_type_attention': self.select_type_attention,
-            'select_type_interconsultation': self.select_type_interconsultation,
-            'select_age': self.select_age,
-        })
+	def __init__(self, cr, uid, name, context):
+		super(doctor_referral, self).__init__(cr, uid, name, context=context)
+		self.localcontext.update({
+			'time': time,
+			'select_type': self.select_type,
+			'select_type_attention': self.select_type_attention,
+			'select_type_interconsultation': self.select_type_interconsultation,
+			'select_age': self.select_age,
+		})
 
-    def select_type(self, tipo_usuario):
-        patient = self.pool.get('doctor.patient')
-        tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario').get('tipo_usuario').get('selection')).get(
-            str(tipo_usuario))
-        return tipo
+	def select_type(self, tipo_usuario):
+		if tipo_usuario:
+			tipo = self.pool.get('doctor.tipousuario.regimen').browse(self.cr, self.uid, tipo_usuario).name
+		else:
+			tipo= None
+		return tipo
 
-    def select_type_attention(self, type_atention):
-        context = {}
-        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+	def select_type_attention(self, type_atention):
+		context = {}
+		context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
 
-        patient = self.pool.get('doctor.attentions.referral')
-        type = dict(patient.fields_get(self.cr, self.uid, 'referral_ids',context=context).get('referral_ids').get('selection')).get(
-            str(type_atention))
-        return type
+		patient = self.pool.get('doctor.attentions.referral')
+		type = dict(patient.fields_get(self.cr, self.uid, 'referral_ids',context=context).get('referral_ids').get('selection')).get(
+			str(type_atention))
+		return type
 
-    def select_type_interconsultation(self, type_interconsultation):
-        if type_interconsultation:
-            return "Si"
-        return "No"
+	def select_type_interconsultation(self, type_interconsultation):
+		if type_interconsultation:
+			return "Si"
+		return "No"
 
-    def select_age(self, age):
-        context = {}
-        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
-        attentions = self.pool.get('doctor.attentions')
-        age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
-            str(age))
-        return age_unit
+	def select_age(self, age):
+		context = {}
+		context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+		attentions = self.pool.get('doctor.attentions')
+		age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
+			str(age))
+		return age_unit
 
 report_sxw.report_sxw('report.doctor_referral', 'doctor.attentions',
-                      'addons/l10n_co_doctor/report/doctor_referral.rml',
-                      parser=doctor_referral)
-        
-        
-        
-        
+					  'addons/l10n_co_doctor/report/doctor_referral.rml',
+					  parser=doctor_referral)
+		
+		
+		
+		

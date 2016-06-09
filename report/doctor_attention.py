@@ -36,7 +36,6 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_type_interconsultation': self.select_type_interconsultation,
 			'select_age': self.select_age,
 			'select_etiqueta_uno': self.select_etiqueta_uno,
-			'select_insurer': self.select_insurer,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -46,13 +45,6 @@ class doctor_attention(report_sxw.rml_parse):
 			tipo= ''
 		_logger.info(tipo)
 		return tipo
-
-	def select_insurer(self, insurer):
-		if insurer:
-			insurer_name= self.pool.get('res.partner').browse(self.cr, self.uid, insurer).name
-		else:
-			insurer_name=''
-		return insurer_name
 
 	def select_type_attention(self, type_atention):
 		context = {}

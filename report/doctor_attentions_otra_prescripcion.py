@@ -25,31 +25,30 @@ from openerp import pooler
 
 
 class doctor_attentions_otra_prescripcion(report_sxw.rml_parse):
-    def __init__(self, cr, uid, name, context):
-        super(doctor_attentions_otra_prescripcion, self).__init__(cr, uid, name, context=context)
-        self.localcontext.update({
-            'time': time,
-            'select_type': self.select_type,
-            'select_age': self.select_age,
-        })
+	def __init__(self, cr, uid, name, context):
+		super(doctor_attentions_otra_prescripcion, self).__init__(cr, uid, name, context=context)
+		self.localcontext.update({
+			'time': time,
+			'select_type': self.select_type,
+			'select_age': self.select_age,
+		})
 
-    def select_type(self, tipo_usuario):
-        context = {}
-        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
-        patient = self.pool.get('doctor.patient')
-        tipo = dict(patient.fields_get(self.cr, self.uid, 'tipo_usuario',context=context).get('tipo_usuario').get('selection')).get(
-            str(tipo_usuario))
-        return tipo
+	def select_type(self, tipo_usuario):
+		if tipo_usuario:
+			tipo = self.pool.get('doctor.tipousuario.regimen').browse(self.cr, self.uid, tipo_usuario).name
+		else:
+			tipo= None
+		return tipo
 
-    def select_age(self, age):
-        context = {}
-        context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
-        attentions = self.pool.get('doctor.attentions')
-        age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
-            str(age))
-        return age_unit
-        
+	def select_age(self, age):
+		context = {}
+		context.update({'lang' : self.pool.get('res.users').browse(self.cr, self.uid, self.uid, context=context).lang})
+		attentions = self.pool.get('doctor.attentions')
+		age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
+			str(age))
+		return age_unit
+		
 report_sxw.report_sxw('report.doctor_attentions_otra_prescripcion', 'doctor.attentions',
-                      'addons/l10n_co_doctor/report/doctor_attentions_otra_prescripcion.rml',
-                      parser=doctor_attentions_otra_prescripcion)
-        
+					  'addons/l10n_co_doctor/report/doctor_attentions_otra_prescripcion.rml',
+					  parser=doctor_attentions_otra_prescripcion)
+		
