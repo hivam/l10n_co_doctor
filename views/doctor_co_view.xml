@@ -640,7 +640,7 @@
                                 <group colspan='3' col='2'>
                                     <field name="name"/>
                                      <field name="expedicion_certificado"/>
-                                     <field name="asunto" placeholder="El Dr. Certifica Qué"/>
+                                     <field name="asunto" placeholder="El Dr. Certifica Que"/>
                                      <field name="professional_id"/>
                                      <field name="cuerpo"/>
                                      <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '02')]"/>
@@ -660,13 +660,13 @@
                 </xpath>
 
 
-                <!--añadiendo onchange a campo drugs_id de medicamentos-->
+                <!--anadiendo onchange a campo drugs_id de medicamentos-->
             
                 <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group/group[@colspan='3']/field[@name='drugs_id']" position="attributes">
                     <attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
                 </xpath>
 
-                <!--fin de añadiendo onchange a campo drugs_id de medicamentos-->
+                <!--fin de anadiendo onchange a campo drugs_id de medicamentos-->
 
                 <!--quitando campos de medicamentos-->
 

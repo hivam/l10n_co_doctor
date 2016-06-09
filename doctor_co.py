@@ -283,9 +283,9 @@ class doctor_patient_co(osv.osv):
 			return True
 
 
-	_constraints = [(_check_unique_ident, '¡Error! Número de intentificación ya existe en el sistema', ['ref']),
-					(_check_email, 'El formato es inválido.', ['email']),
-					(_check_seleccion, 'Aviso importante!, Solamente puede tener una Aseguradora como predeterminada', ['prepagada_predeterminada', 'eps_predeterminada'])
+	_constraints = [(_check_unique_ident, u'¡Error! Número de intentificación ya existe en el sistema', ['ref']),
+					(_check_email, u'El formato es inválido.', ['email']),
+					(_check_seleccion, u'Aviso importante!, Solamente puede tener una Aseguradora como predeterminada', ['prepagada_predeterminada', 'eps_predeterminada'])
 			   ]
 
 doctor_patient_co()
