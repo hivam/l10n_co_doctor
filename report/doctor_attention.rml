@@ -147,7 +147,7 @@
           <para style="P6">[[ '' ]]</para>
         </td>
         <td>
-          <para style="P6">Insurer: [[ select_insurer(o.patient_id.insurer.id) or removeParentNode('para')]]</para>
+          <para style="P6">Insurer: [[ (o.patient_id.insurer.id) or removeParentNode('para')]]</para>
     </td>
      </tr>
     </blockTable>
@@ -198,8 +198,9 @@
         </tr>
       </blockTable>
      </section>
+
     <section>
-    [[o.review_systems_id or o.otro_sintomas_revision_sistema or removeParentNode('section') ]]
+    [[o.review_systems_id or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -218,7 +219,11 @@
           </td>
         </tr>
       </blockTable>
-      <blockTable colWidths="100.0,434.0" style="Table6">
+    </section>
+
+    <section>
+    [[o.otro_sintomas_revision_sistema or removeParentNode('section')]]
+    <blockTable colWidths="100.0,434.0" style="Table6">
       <tr>
         <td>
           <para style="p1">Otros Síntomas</para>
@@ -229,9 +234,8 @@
      </tr>
     </blockTable>
     </section>
-
     <section>
-    [[o.past_ids or o.otros_antecedentes or removeParentNode('section') ]]
+    [[o.past_ids or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -239,7 +243,6 @@
         </td>
      </tr>
     </blockTable>
-        
     <blockTable colWidths="120,414.0" style="Table6">
         [[ o.past_ids or removeParentNode('blockTable') ]]
         <tr>
@@ -252,6 +255,9 @@
           </td>
         </tr>
       </blockTable>
+    </section>
+    <section>
+      [[o.otros_antecedentes or removeParentNode('section') ]]
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
@@ -265,7 +271,7 @@
     </section>
 
     <section>
-    [[o.pathological_past_ids or o.otros_antecedentes_patologicos or removeParentNode('section') ]]
+    [[o.pathological_past_ids or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -286,6 +292,9 @@
           </td>
         </tr>
       </blockTable>
+    </section>
+    <section>
+       [[o.otros_antecedentes_patologicos or removeParentNode('section') ]]
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
@@ -297,8 +306,9 @@
      </tr>
     </blockTable>
     </section>
+
     <section>
-    [[o.drugs_past_ids or o.otros_antecedentes_farmacologicos or removeParentNode('section') ]]
+    [[o.drugs_past_ids or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -319,6 +329,9 @@
           </td>
         </tr>
       </blockTable>
+    </section>
+    <section>
+    [[o.otros_antecedentes_farmacologicos or removeParentNode('section') ]]
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>

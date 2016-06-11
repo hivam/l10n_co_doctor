@@ -32,7 +32,6 @@ class doctor_attention(report_sxw.rml_parse):
 		self.localcontext.update({
 			'time': time,
 			'select_type': self.select_type,
-			'select_insurer': self.select_insurer,
 			'select_type_attention': self.select_type_attention,
 			'select_type_interconsultation': self.select_type_interconsultation,
 			'select_age': self.select_age,
@@ -46,13 +45,6 @@ class doctor_attention(report_sxw.rml_parse):
 			tipo= None
 		_logger.info(tipo)
 		return tipo
-
-	def select_insurer(self, insurer):
-		if insurer:
-			insurer_name= self.pool.get('res.partner').browse(self.cr, self.uid, insurer).name
-		else:
-			insurer_name=''
-		return insurer_name
 
 	def select_type_attention(self, type_atention):
 		context = {}
