@@ -599,7 +599,7 @@
 											 <field name="complicacion_eventoadverso_observacion" nolabel="1" groups="doctor.group_doctor_physician"/>
 										</group>
 										<group colspan='3' col='1'>
-											<notebook>
+												<notebook>
 												<page string="Seguimientos Paraclínicos">
 													<legend class="texto_legend">Seguimientos Paraclínicos</legend>
 													<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
