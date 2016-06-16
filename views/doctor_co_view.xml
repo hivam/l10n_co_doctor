@@ -1,978 +1,1006 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
-        
-        <!-- Modificando la busqueda de los pacientes anadiendo filtros-->
-        <record id="patient_filter" model="ir.ui.view">
-        <field name="name">Patient</field>
-        <field name="model">doctor.patient</field>
-        <field name="arch" type="xml">
-        <search string="Search Patient" version="7.0">
-            <field name="patient"/>
-            <field name="ref"/>
-            <field name="insurer"/>
-            <separator/>
-            <filter name="patient" string="Nombre" domain="[('patient','=',patient)]" help="Nombre" />
-            <filter name="ref" string="Identificacion" domain="[('ref','=',ref)]" help="Identificacion" />
-            <filter name="insurer" string="Aseguradora" domain="[('insurer','=',insurer)]" help="Aseguradora" />
-        </search>
-        </field>
-        </record>
-
-        <!-- Patient Form View -->
-        <record id="view_doctor_patient_form_inherit" model="ir.ui.view">
-            <field name="name">Patient</field>
-            <field name="model">doctor.patient</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_patient_form"/>
-            <field name="arch" type="xml">
-                <field name="id" invisible="1"/>
-                <xpath expr="//field[@name='patient']" position="replace">
-                    <label string="Número de Identificación" for="ref" style="width:50%%" class="texto"/>
-                    <br></br>
-                      <field name="ref" on_change="onchange_existe(ref)" nolabel="1" default_focus="1" style="width:50%%" />
-                    <br></br>
-
-
-                    <label string="Nombre Paciente" for="nombre" class="texto"/>
-              <br></br>
-                  <h2>
-                    <group col="2" colspan="6">
-                      <field name="lastname" nolabel="1" placeholder="Primer Apellido" />
-                      <field name="surname" nolabel="1"  placeholder="Segundo Apellido" />
-                      <field name="firstname" nolabel="1" placeholder="Primer Nombre" />
-                      <field name="middlename" nolabel="1" placeholder="Segundo Nombre" />
-                    </group>
-                  </h2>
-                </xpath>
-
-                <xpath expr="//field[@name='birth_date']" position="attributes">
-                    <attribute name="on_change">onchange_calcular_edad(birth_date)</attribute>
-                </xpath>
-
-                <xpath expr="//div[@name='div_atenderpaciente']" position="after">
-                  <div name="div_mensaje" class="oe_form_box_info oe_text_center" attrs="{'invisible': [('ref','!=',False)]}">
-                    <b> <span class="oe_e">c</span>Presione ENTER al escribir la identificacion. Si esta registrada, los datos seran cargados.</b>
-                  </div>
-                </xpath>
-
-
-                <xpath expr="//group[@name='datos_personales']" position="before">
-                  <group>
-                    <field name="tdoc"/>
-                  </group>
-                    <div>
-                        <h4>
-                            <field name='edad_calculada' nolabel='1' style="width:10%%"/>
-                            <field name='unidad_edad_calculada' nolabel='1' style="width:10%%"/>
-                        </h4>
-                    </div>
-                </xpath>
-
-                <field name="insurer" position="replace" >
-                  <field name="insurer" attrs="{'invisible': [('tipo_usuario','=', 4)]}" domain="[('tipousuario_id','=',tipo_usuario)]" />
-                </field>
-
-                <field name="insurer" position="before" >
-                    <field name="tipo_usuario"/>
-                </field>
-
-                <field name="insurer" position="after" >
-                    <field name="nro_afiliacion"/>
-                </field>
-
-                <field name="nro_afiliacion" position="after" >
-                    <field name="eps_predeterminada"/>
-                </field>
-
-                <field name="eps_predeterminada" position="after" >
-                    <field name="particular_predeterminada"/>
-                </field>
-                <!--attrs="{'invisible': [('tipo_usuario','=', 5)]}-->
-                <xpath expr="/form[@string='Patient']/sheet/group[2]/fieldset[@class='fieldset_margen']/group[@col='2']" position="after">
-                    <fieldset class="fieldset_margen">
-                        <legend class="texto_legend">OTRAS</legend>
-                        <group colspan="2" col="4">
-                            <field name="poliza_medicina_prepagada" on_change="onchange_seleccion(poliza_medicina_prepagada)"/>
-                            <field name="prepagada_predeterminada"  attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
-                        </group>
-                        <group colspan="2" col="4">
-                            <field name="insurer_prepagada_id" attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
-                            <field name="plan_prepagada_id" attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
-                        </group>
-                        <group>
-                            <field name="numero_poliza_afiliacion" attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
-                        </group>
-                     </fieldset>
-                </xpath>
-
-                <field name="deceased" position="after" >
-                  <field name="es_profesionalsalud"/>
-                </field>
-
-                <field name="sex" position="after" >
-                  <field name="estadocivil_id"/>
-                  <field name="ocupacion_id"/>
-                  <field name="email"/>
-                  <field name="telefono"/>
-                  <field name="movil"/>
-                </field>
-
-                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
-                <fieldset class="fieldset_margen">
-                  <legend class="texto_legend">Datos de residencia</legend>
-                        <group col="2">
-                          <field name="state_id"/>
-                          <field name="city_id"/>
-                          <field name="street"/>
-                          <field name="zona" style="width: 45%%"/>
-                      </group>
-                </fieldset>
-                </xpath>
-
-                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
-                  <fieldset class="fieldset_margen">
-                    <legend class="texto_legend">Datos del Acompañante</legend>
-                    <group col="2">
-                      <field name="nombre_acompaniante"/>
-                      <field name="telefono_acompaniante"/>
-                      <field name="parentesco_acompaniante_id"/>
-                      <field name="completar_datos_acom" on_change="onchange_completar_datos(parentesco_acompaniante_id,completar_datos_acom, nombre_acompaniante, telefono_acompaniante)"/>
-                    </group>
-                  </fieldset>
-                </xpath>
-
-                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
-                  <fieldset class="fieldset_margen">
-                    <legend class="texto_legend">Datos del Responsable</legend>
-                    <group col="2" colspan="2">
-                      <field name="nombre_responsable"/>
-                      <field name="telefono_responsable"/>
-                      <field name="parentesco_id"/>
-                    </group>
-                  </fieldset>
-                </xpath>
-
-                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
-                  <fieldset class="fieldset_margen" attrs="{'invisible': [('completar_datos_acom','=', False)]}">
-                    <legend class="texto_legend">Datos de la Madre</legend>
-                    <group col="2">
-                      <field name="nombre_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
-                      <field name="ocupacion_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
-                      <field name="telefono_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
-                      <field name="direccion_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
-                    </group>
-                  </fieldset>
-                </xpath>
-                
-                <xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
-                  <fieldset class="fieldset_margen" attrs="{'invisible': [('completar_datos_acom','=', False)]}">
-                    <legend class="texto_legend">Datos del Padre</legend>
-                    <group col="2" colspan="2">
-                      <field name="nombre_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
-                      <field name="ocupacion_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
-                      <field name="telefono_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
-                      <field name="direccion_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
-                    </group>
-                  </fieldset>
-                </xpath>
-
-
-
-
-                <xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']" position="before">
-                    <label for="notas_paciente" string="Notas"/>
-                    <field name="notas_paciente" nolabel="1"/>
-                </xpath>
-
-                <field name="notas_paciente" position="after">
-                    <label for="ver_nc" string="Ver NC"/>
-                    <field name="ver_nc" nolabel="1"/>
-                    <field name="nc_paciente" attrs="{'invisible':[('ver_nc', '=', False)]}"/>
-                </field>
-
-
-
-                <field name="birth_date" position="after">
-                    <field name="lugar_nacimiento_id"/>
-                </field>
-
-                <xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@string='Attentions']" position="replace"/>
-
-            </field>
-        </record>
-
-        <!-- Patient Tree View -->
-        <record id="view_doctor_patient_tree_inherit" model="ir.ui.view">
-            <field name="name">Patient</field>
-            <field name="model">doctor.patient</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_patient_tree"/>
-            <field name="arch" type="xml">
-              <field name="sex" position="before">
-                    <field name="tdoc" string="Tipo doc"/>
-                    <field name="ref" string="Nº doc"/>
-              </field>
-              <field name="ref" position="after">
-                <field name="nombre" string="Nombre Paciente"/>
-              </field>
-
-            </field>
-          </record>
-
-        <!-- appointment Form View -->
-        <record id="view_doctor_appointment_form_inherit" model="ir.ui.view">
-            <field name="name">Appointment</field>
-            <field name="model">doctor.appointment</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_appointment_form"/>
-            <field name="arch" type="xml">
-
-               
-                <xpath expr="//form/group" position="replace">
-                  <group>
-                    <field name="schedule_id" domain="[('date_end','>=',time.strftime('%%Y-%%m-%%d %%H:%%M:%%S'))]" on_change="onchange_start_time(schedule_id, professional_id, time_begin)"/>
-                    <field name="professional_id" invisible="True"/>
-                    <field name="attended" invisible="True"/>
-
-                    <field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id,ref)"/>
-                    <field name="ref" />
-                    <field name="tipo_usuario_id"/>
-                  </group>    
-                    <group colspan='4' col='6' attrs="{'invisible': [('tipo_usuario_id', '=', 4)]}">
-                        <field name="insurer_id" domain="[('tipousuario_id','=',tipo_usuario_id )]"/>
-                        <field name="plan_id" domain="[('insurer_id','=', insurer_id)]"  />
-                        <field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
-                    </group>
-                    <group colspan="4" col="6">
-                      
-                      <field name="type_id" on_change="onchange_calcular_hora(schedule_id,type_id,time_begin, plan_id, tipo_usuario_id, repetir_cita)"/>
-                    
-                      <field name="realiza_procedimiento"/>
-                      <field name="nro_afilicion_poliza"/>
-                    </group>
-                    <field name="appointment_today" invisible="True"/>
-                    <group colspan="2" col="4">
-                        <field name="ambito" attrs="{'invisible': [('realiza_procedimiento', '=', False)]}"/>
-                        <field name="finalidad" attrs="{'invisible': [('realiza_procedimiento', '=', False)]}"/>
-                    </group>
-
-                    <group colspan='4' col='6'>
-                        <field name="time_begin" on_change="onchange_end_time(type_id, time_begin, time_end)" attrs="{'invisible':[('repetir_cita', '=', True)]}"/>
-                        <field name="time_end" attrs="{'invisible':[('repetir_cita', '=', True)]}"/>
-                        <field name="aditional"/>
-                    </group>
-
-                    <group colspan="4" col="6">
-                      <field name="repetir_cita" on_change="onchange_cargar_hora(type_id, time_begin, time_end)"/>
-                    </group>
-                  
-
-                </xpath>
-
-                <!-- Cita repetida -->
-
-                <notebook>
-
-                  <page string="Repetir Cita" attrs="{'invisible':[('repetir_cita', '!=', True)]}">
-                    
-
-                        <separator/>
-                        <fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
-                        <legend class="texto_legend">Repetir Cita</legend>
-                        <group colspan="2" col="4">
-                          <field name="repetir_cita_fecha_inicio" attrs="{'required':[('repetir_cita', '=', True)]}"/>
-                          <field name="repetir_cita_fecha_fin" attrs="{'required':[('repetir_cita', '=', True)]}"/>
-                        </group>
-                      </fieldset>
-                      <separator/>
-                      <fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
-                        <legend class="texto_legend">Dias de la Semana</legend>
-                        <group colspan="4" col="6">
-                            <field name="lunes"/>
-                            <field name="martes"/>
-                            <field name="miercoles"/>
-                            <field name="jueves"/>
-                            <field name="viernes"/>
-                            <field name="sabado"/>
-                            <field name="domingo"/>
-                            <field name="todos_los_dias_semana" on_change="onchange_seleccion(todos_los_dias_semana,'dias')"/>
-                        </group>
-                        </fieldset>
-                        <separator/>
-                        <fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
-                        <legend class="texto_legend">Meses</legend>
-                        <group colspan="4" col="6">
-                            <field name="enero"/>
-                            <field name="febrero"/>
-                            <field name="marzo"/>
-                            <field name="abril"/>
-                            <field name="mayo"/>
-                            <field name="junio"/>
-                            <field name="julio"/>
-                            <field name="agosto"/>
-                            <field name="septiembre"/>
-                            <field name="octubre"/>
-                            <field name="noviembre"/>
-                            <field name="diciembre"/>
-                            <field name="todos_los_meses" on_change="onchange_seleccion(todos_los_meses,'meses')"/>
-                        </group>
-                        </fieldset>
-                  </page>
-                </notebook>
-              
-
-                <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[3]" position="after">
-                    <field name="nro_autorizacion"/>
-                </xpath>
-
-
-
-                <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']" position="attributes">
-                    <attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
-                </xpath>
-      
-                <xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[2]" position="attributes">
-                    <attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
-                </xpath>
-
-
-            </field>
-        </record>
-
-
-        <record id="view_doctor_appointment_type_from_view" model="ir.ui.view">
-            <field name="name">Tipo Cita</field>
-            <field name="model">doctor.appointment.type</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_appointment_type_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="/form[@string='Appointment type']/group" position="after">
-                    <field name="procedures_id" colspan="4" nolabel="1">
-                        <tree string="Procedimientos en salud" editable="bottom">
-                            <field name="procedures_id"/>
-                            <field name="quantity"/>
-                        </tree>
-                    </field>
-                </xpath>
-            </field>
-          </record>
-
-
-        <!-- schedule Form View -->
-        <record id="view_doctor_schedule_form_inherit" model="ir.ui.view">
-            <field name="name">Schedule</field>
-            <field name="model">doctor.schedule</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_schedule_form"/>
-            <field name="arch" type="xml">
-                 <xpath expr="/form[@string='Schedule']" atrributes="inside">
-                    <field invisible="1" name="id"/>
-                </xpath>
-                <field name="patient_id" position="replace">
-                    <field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id)"/>
-                </field>
-
-
-                <field name="patient_id" position="after" >
-                    <field name="ref"/>
-                </field>
-
-                <field name="insurer_id" position="after" >
-                    <field name="tipo_usuario_id"/>
-                </field>
-
-                <field name="professional_id" position="replace" >
-                    <field name="professional_id" required="True"/>
-                </field>
-
-                <field name="patients_count" position="after" >
-                    <field name="repetir_agenda"/>
-                </field>
-
-                <field name="date_begin" position="attributes">
-                    <attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
-                        'required': [('repetir_agenda', '!=', True)]}</attribute>
-                </field>
-
-                <field name="date_end" position="attributes">
-                    <attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
-                        'required': [('repetir_agenda', '!=', True)]}</attribute>
-                </field>
-
-                <field name="schedule_duration" position="attributes">
-                    <attribute name="attrs">
-                        {'invisible': [('repetir_agenda', '=', True)],
-                        'required': [('repetir_agenda', '!=', True)]}
-                    </attribute>
-                </field>
-
-                <notebook>
-                    <page string="Configuracion Repetir Agenda" attrs="{'invisible':[('repetir_agenda', '!=', True)]}">
-                        <legend class="texto_legend">Configuracion Fecha y Hora</legend>
-                        <group colspan="3">
-                            <field name="fecha_inicio" attrs="{'required':[('repetir_agenda', '=', True)]}" on_change="onchange_fecha_incio(fecha_inicio, duracion_agenda, fecha_fin)"/>
-                            <field name="duracion_agenda" attrs="{'required':[('repetir_agenda', '=', True)]}" on_change="onchange_fecha_incio(fecha_inicio, duracion_agenda, fecha_fin)"/>
-                            <field name="fecha_fin" attrs="{'required':[('repetir_agenda', '=', True)]}"/>
-                        </group>
-                        <separator/>
-                        <legend class="texto_legend">Excepcion Fechas</legend>
-                        <group colspan="3">
-                        <field name="dias_excepciones_id" nolabel="1" editable="bottom">
-                            <tree string="Dias excepciones" editable="bottom">
-                                <field name="schedule_id" invisible="1"/>
-                                <field name="dias_excepciones"/>
-                            </tree>
-                        </field>
-                        </group>
-                        <separator/>
-                        <legend class="texto_legend">Dias de la Semana</legend>
-                        <group colspan="4" col="6">
-                            <field name="lunes"/>
-                            <field name="martes"/>
-                            <field name="miercoles"/>
-                            <field name="jueves"/>
-                            <field name="viernes"/>
-                            <field name="sabado"/>
-                            <field name="domingo"/>
-                            <field name="todos_los_dias_semana" on_change="onchange_seleccionar_todo(todos_los_dias_semana,'dias')"/>
-                        </group>
-                        <separator/>
-                        <legend class="texto_legend">Meses</legend>
-                        <group colspan="4" col="6">
-                            <field name="enero"/>
-                            <field name="febrero"/>
-                            <field name="marzo"/>
-                            <field name="abril"/>
-                            <field name="mayo"/>
-                            <field name="junio"/>
-                            <field name="julio"/>
-                            <field name="agosto"/>
-                            <field name="septiembre"/>
-                            <field name="octubre"/>
-                            <field name="noviembre"/>
-                            <field name="diciembre"/>
-                            <field name="todos_los_meses" on_change="onchange_seleccionar_todo(todos_los_meses,'meses')"/>
-                        </group>
-                    </page>
-                </notebook>
-
-                <notebook>
-                  <field invisible="1" name="id"/>
-                  <page string="Espacios Agenda" attrs="{'invisible': [('id', '=', False)]}">
-                    <legend class="texto_legend">Espacios de la Agenda</legend>
-                    <footer>
-                      <div align="right">
-                        <button string="Actualizar" name="refresh_espacios" type="object" groups="doctor.group_doctor_assistant" class="oe_highlight"/>
-                      </div>
-                    </footer>
-                    <field name="schedule_espacios_ids" colspan="4" readonly="1">
-                      <field name="auto_refresh">5</field>
-                        <tree string="Espacios" limit="100" create="false" colors="red:estado_cita_espacio=='Asignado';">
-                          <field name="patient_id"/>
-                          <field name="fecha_inicio" widget="time"/>
-                          <field name="fecha_fin" widget="time"/>
-                          <field name="estado_cita_espacio"/>
-                          <button string="Asginar Cita" name="asignar_cita_espacio" type="object" groups="doctor.group_doctor_assistant" icon="gtk-jump-to" attrs="{'invisible': [('estado_cita_espacio', '=', 'Asignado')]}"/>
-                        </tree>
-                      </field>
-                  </page>
-                </notebook>
-            </field>
-        </record>
-
-        <!--  Remueve los espacios que no fueron asignados en las agendas-->
-        <record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
-            <field name="name">Habilitar Espacios</field>
-            <field name="active" eval="True"/>
-            <field name="user_id" ref="base.user_root" />
-            <field name="interval_number">7</field>
-            <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
-            <field name="doall" eval="True"/>
-            <field name="model" eval="'doctor.espacios'"/>
-            <field name="function" eval="'habilitar_espacios'"/>
-            <field name="args" eval="'()'"/>
-        </record>
-      
-        <!-- Modificando la busqueda en atencion anadiendo cambios -->
-        <record id="attentions_filter" model="ir.ui.view">
-        <field name="name">Attentions</field>
-        <field name="model">doctor.attentions</field>
-        <field name="arch" type="xml">
-        <search string="Search Attentions" version="7.0">
-            <field name="patient_id"/>
-            <field name="professional_id"/>
-            <field name="speciality"/>
-            <field name="diseases_ids"/>
-            <field name="date_attention"/>
-            
-            <separator/>
-            <filter name="patient_id" string="Nombre" domain="[('patient_id','=',patient_id)]" help="Nombre" />
-
-            <filter name="professional_id" string="Doctor" domain="[('professional_id','=',professional_id)]" help="Doctor" />
-
-            <filter name="speciality" string="Especialidad" domain="[('speciality','=',speciality)]" help="Especialidad" />
-
-            <filter name="diseases_ids" string="Diagnostico" domain="[('diseases_idsdiseases_ids','=',diseases_ids)]" help="Diagnostico" />
-
-            <group expand="0" string= "Agrupar Por...">
-                <filter string="Professional" domain="[]" context="{'group_by' : 'professional_id'}" />
-                <separator/>
-
-                <filter string="Atenciones Hoy"
-                    name="atenciones_hoy"
-                    domain="[('date_attention','&gt;=', (context_today()).strftime('%%m-%%d-%%Y 00:00:00')),('date_attention','&lt;=',(context_today()).strftime('%%m-%%d-%%Y 23:59:59'))]"
-                    help="Dia Actual"/>
-                <filter string="Atenciones Meses" domain="[]" context="{'group_by' : 'date_attention'}" />
-            </group>
-
-        </search>
-        </field>
-        </record>
-
-        <!-- Attentions Form View -->
-        <record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
-            <field name="name">Attentions</field>
-            <field name="model">doctor.attentions</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_attentions_form"/>
-            <field name="arch" type="xml">
-                
-                <xpath expr="//form/group/group" position="after">
-                <group colspan='2' >
-                    <field name="finalidad_consulta"/>
-                </group>
-                <group colspan="2">
-                  <field name="causa_externa" />
-                </group>
-                </xpath>
-
-
-                <field name="review_systems_id" position="after">
-                    <label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
-                    <field name="otro_sintomas_revision_sistema"/>
-                    <label for="plantilla_sintomas_cuestionario_id" string="Plantillas" groups="doctor.group_doctor_psicologo"/>
-                    <field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' groups="doctor.group_doctor_psicologo" domain="[('tipo_plantilla', '=', '04')]"/>
-
-                </field>
-
-                <field name="attentions_past_ids" position="after">
-                    <label for="otros_antecedentes" string="Otros Antecedentes"/>
-                    <field name="otros_antecedentes" />
-                    <label for="plantilla_cuestionario_antecedentes_id" string="Plantillas" groups="doctor.group_doctor_psicologo"/>
-                    <field name="plantilla_cuestionario_antecedentes_id" on_change='onchange_plantillas(plantilla_cuestionario_antecedentes_id, "otros_antecedentes")' groups="doctor.group_doctor_psicologo" domain="[('tipo_plantilla', '=', '05')]"/>
-                </field>
-
-
-                <field name="pathological_past" position="after">
-                    <label for="otros_antecedentes_patologicos" string="Otros Antecedentes Patológicos"/>
-                    <field name="otros_antecedentes_patologicos"/>
-                </field>
-
-                <field name="drugs_past" position="after">
-                    <label for="otros_antecedentes_patologicos" string="Otros Antecedentes farmacológicos"/>
-                    <field name="otros_antecedentes_farmacologicos"/>
-                </field>
-
-                
-                <field name="attentions_exam_ids" position="after">
-                    <label for="otros_hallazgos_examen_fisico" string="Otros hallazgos y signos clínicos en el examen físico"/>
-                    <field name="otros_hallazgos_examen_fisico" />
-                </field>
-
-                <field name="otros_hallazgos_examen_fisico" position="after">
-                    <label for="plantilla_examen_fisico_id" string="Plantillas"/>
-                    <field name="plantilla_examen_fisico_id" on_change='onchange_plantillas(plantilla_examen_fisico_id, "otros_hallazgos_examen_fisico")' domain="[('tipo_plantilla', '=', '06')]"/>
-                </field>
-
-
-                <xpath expr="//group[@id='group_conduct']" position="after">
-                    <group colspan="2" col='1'>
-                      <label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
-                      <field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>
-                    </group>
-                    <group colspan="2" col='1'>
-                      <label for="complicacion_eventoadverso" string="Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
-                      <field name="complicacion_eventoadverso" nolabel="1" groups="doctor.group_doctor_physician"/>
-                      <label for="complicacion_eventoadverso_observacion" string="Observacion de Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
-                       <field name="complicacion_eventoadverso_observacion" nolabel="1" groups="doctor.group_doctor_physician"/>
-                    </group>
-                </xpath>
-
-                <field name="conduct" position="after">
-                    <field name="inv" invisible="1"/> 
-                    <label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
-                    <field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
-                    <group col="2"> 
-                        <field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
-                    </group>
-                    <group col="1" colspan="2">
-                        <field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/> 
-                    </group>
-                </field>
-
-                <field name="analysis" position="after">
-                    <label for="plantilla_analisis_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
-                    <field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
-                </field>
-                
-
-                <xpath expr="//notebook/page[@string='Others']" position="after">
-                    <page string="Recomendaciones">
-                    <separator string="Recomendaciones" colspan="4"/>
-                    <div>
-                        <group colspan="1" col="1">  
-                            <field name='recomendaciones_ids' nolabel="1" placeholder="Recomendaciones" widget="many2many_tags" domain="[('tipo_plantilla', '=', '01')]"/>
-                        </group> 
-                    </div>
-                     </page> 
-                    <br/>
-                    <br/>
-                    <br/>
-                </xpath>
-
-                <xpath expr="//notebook/page[@string='Others']" position="inside">
-                    <page string="Informes y Certificados">
-                        <separator string="Informes y Certificados" colspan="4"/>
-                        <field name="certificados_ids" nolabel="1" context="{'professional_id' : professional_id, 'tipo_plantilla' : '02'}">
-                            <form string="Informes y Certificados">
-                                <group colspan='3' col='2'>
-                                    <field name="name"/>
-                                     <field name="expedicion_certificado"/>
-                                     <field name="asunto" placeholder="El Dr. Certifica Que"/>
-                                     <field name="professional_id"/>
-                                     <field name="cuerpo"/>
-                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '02')]"/>
-                                </group>  
-                                <group colspan="3" col="2">
-                                    <div>
-                                        <field name="multi_images" nolabel="1">
-                                            <tree string="Imagenes" editable="top">
-                                                <field name="name"/>
-                                            </tree>
-                                        </field>
-                                    </div>
-                                </group> 
-                            </form>
-                        </field>
-                    </page>
-                </xpath>
-
-
-                <!--anadiendo onchange a campo drugs_id de medicamentos-->
-            
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group/group[@colspan='3']/field[@name='drugs_id']" position="attributes">
-                    <attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
-                </xpath>
-
-                <!--fin de anadiendo onchange a campo drugs_id de medicamentos-->
-
-                <!--quitando campos de medicamentos-->
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
-        
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
-                     <attribute name="invisible">1</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[2]" position="attributes">
-                     <attribute name="invisible">1</attribute>
-                </xpath>
-
-                <xpath expr="//form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[2]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
-                    <attribute name="string">Prescripcion</attribute>
-                </xpath>
-
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div/label[@for='total_quantity']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[2]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[1]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]//group[2]" position="replace"/>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="after">
-                    <field name="cantidad_total"/>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[1]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[2]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[3]" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]//group[1]" position="after">
-                    <field name="indicacion_tomar" nolabel="1"/>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[2]" position="replace"/>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" position="replace"/>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="attributes">
-                     <attribute name="string">Prescripcion</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']" position="attributes">
-                     <attribute name="string">Medicamentos</attribute>
-                </xpath>
-
-                <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="inside">
-                    <page string="Otra Prescripcion"> 
-                        <separator string="Otra Prescripción" colspan="4"/>
-                        <field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
-                            <form string="Otra Prescripción">
-                                <group colspan='3' col='2'>
-                                    <field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]" context="{'medicamento':'medicamentos'}"/>
-                                     <field name="prescripcion"/>
-                                     <field name="recomendacion"/>
-                                     <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '03')]"/>
-                                </group>   
-                            </form>
-                        </field>
-                    </page>
-                </xpath>
-
-                <!--fin quitando campos de medicamentos-->
-
-            </field>
-        </record>  
-
-
-        <!-- doctor speciality Form View -->
-        <record model="ir.ui.view" id="view_doctor_recomendaciones_form">
-            <field name="name">Plantillas</field>
-            <field name="model">doctor.attentions.recomendaciones</field>
-            <field name="arch" type="xml">
-                <form string="Plantillas" version="7.0">
-                    <group colspan='3' col='2'>
-                        <field name="name"/>
-                        <field name="cuerpo"/>
-                        <field name="tipo_plantilla"/>
-                        <field name="active"/>
-                    </group>
-                </form>
-            </field>
-        </record>
-
-        <!-- doctor speciality Tree View -->
-        <record model="ir.ui.view" id="view_doctor_recomendaciones_tree">
-            <field name="name">Plantillas</field>
-            <field name="model">doctor.attentions.recomendaciones</field>
-            <field name="arch" type="xml">
-                <tree string="Plantillas" version="7.0">
-                    <field name="name"/>
-                    <field name="tipo_plantilla"/>
-                    <field name="cuerpo"/>
-                </tree>
-            </field>
-        </record>
-
-        <!-- doctor speciality Action -->
-        <record model="ir.actions.act_window" id="action_doctor_plantillas">
-            <field name="name">Plantillas</field>
-            <field name="res_model">doctor.attentions.recomendaciones</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-
-        <menuitem id="menu_doctor_plantillas" name="Plantillas" parent="doctor.menu_doctor_config" action="action_doctor_plantillas" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration"/>
-
-
-        <!-- herencia Form View de product -->
-        <record id="product_normal_form_view_inherit_medicamento_otro_elemento" model="ir.ui.view">
-            <field name="name">Medicamentos / otro elemento</field>
-            <field name="model">product.product</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="product.product_normal_form_view"/>
-            <field name="arch" type="xml">
-                <field name="categ_id" position="after">
-                    <div>
-                    <field name="is_medicamento_prescripcion"/>
-                    <label for="is_medicamento_prescripcion" string="Es Un medicamento / Otro Elemento?"/>
-                    </div>
-                </field>            
-            </field>
-        </record>
-        <!-- fin de herencia Form View de product -->
-        <record id="doctor_professional_inherit" model="ir.ui.view">
-            <field name="name">Profesional de la salud</field>
-            <field name="model">doctor.professional</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_professional_form"/>
-            <field name="arch" type="xml">
-              <field name="work_phone" position="after">
-                <field name="multi_consultorio"/> 
-              </field>       
-            </field>
-        </record>
-        <!-- herencia Form View de drugs -->
-        <record id="drugs_form_view_inherit_doctor_co_drugs" model="ir.ui.view">
-            <field name="name">Drugs</field>
-            <field name="model">doctor.drugs</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_drugs_form"/>
-            <field name="arch" type="xml">
-                <field name="atc_id" position="attributes">
-                    <attribute name="required">0</attribute>
-                    <attribute name="string">Generico</attribute>
-                </field>
-
-                <field name="code" position="attributes">
-                    <attribute name="required">0</attribute>
-                    <attribute name="invisible">1</attribute>
-                </field>
-            
-            </field>
-        </record>
-        <!-- fin de herencia Form View de drugs -->
-
-        <!-- herencia Form View de atc -->
-        <record id="atc_form_view_inherit_doctor_co_atc" model="ir.ui.view">
-            <field name="name">Drugs ATC</field>
-            <field name="model">doctor.atc</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.view_doctor_atc_form"/>
-            <field name="arch" type="xml">
-                <field name="code" position="attributes">
-                    <attribute name="required">0</attribute>
-                    <attribute name="invisible">1</attribute>
-                </field>
-            </field>
-        </record>
-        <!-- fin de herencia Form View de atc -->
-
-    <!-- invoice Form View -->
-        <record id="invoice_form_view_inherit_doctor_co_invoice" model="ir.ui.view">
-            <field name="name">Doctor Invoice</field>
-            <field name="model">account.invoice</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.invoice_form_view_inherit_doctor_invoice"/>
-            <field name="arch" type="xml">
-                <field name="patient_id" position="after">
-                    <field name="ref"/>
-                    <field name="tipo_usuario_id"/>
-                    <field name="contrato_id"/>
-                </field>
-            </field>
-        </record>
-
-    <!-- sales order Form View -->
-        <record id="sales_order_form_view_inherit_doctor_co_sales_order" model="ir.ui.view">
-            <field name="name">Doctor Sales Order</field>
-            <field name="model">sale.order</field>
-            <field eval="7" name="priority"/>
-            <field name="inherit_id" ref="doctor.sales_order_form_view_inherit_doctor_sales_order"/>
-            <field name="arch" type="xml">
-
-                <field name="patient_id" position="after">
-                    <field name="ref"/>
-                    <field name="tipo_usuario_id"/>
-                    <field name="contrato_id"/>
-                </field>
-
-            </field>
-        </record>
-
-               <!-- doctor speciality Form View -->
-        <record model="ir.ui.view" id="view_doctor_configuracion_form">
-            <field name="name">Precios de Procedimientos</field>
-            <field name="model">doctor.configuracion</field>
-            <field name="arch" type="xml">
-                <form string="Parametrización Contratos" version="7.0">
-                    <label string="Aseguradora" for="aseguradora_id" class="texto"/>
-                    <field name="aseguradora_id" on_change="on_change_cargadatos(aseguradora_id)"/>
-                    <field name="parametrizacion_ids" nolabel="1" attrs="{'invisible': [('aseguradora_id', '=', False)] }">
-                        <tree string="Parametrización" editable="top">
-                            <field name="procedures_id"/>
-                            <field name="contract_id"/>
-                            <field name="plan_id"/> 
-                            <field name="valor"/> 
-                        </tree>
-                    </field>
-                </form>
-            </field>
-        </record>
-
-        <!-- doctor speciality Tree View -->
-        <record model="ir.ui.view" id="view_doctor_configuracion_tree">
-            <field name="name">Precios de Procedimientos</field>
-            <field name="model">doctor.configuracion</field>
-            <field name="arch" type="xml">
-                <tree string="Parametrizacion Contratos" version="7.0">
-                    <field name="aseguradora_id"/>
-                </tree>
-            </field>
-        </record>
-
-        <!-- doctor speciality Action -->
-        <record model="ir.actions.act_window" id="action_doctor_configuracion">
-            <field name="name">Precios de Procedimientos</field>
-            <field name="res_model">doctor.configuracion</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-
-        <menuitem id="menu_doctor_configuracion" name="Precios de Procedimientos" parent="doctor.menu_doctor_config" action="action_doctor_configuracion"/>
-
-        <!-- doctor_aseguradora_procedimiento -->
-        <record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_form">
-            <field name="name">Configuracion Procedimientos Institucion</field>
-            <field name="model">doctor.configuracion_procedimientos_institucion</field>
-            <field name="arch" type="xml">
-                <form string="Configuracion Procedimientos Institucion" version="7.0">
-                    
-                    <label string="Nombre Compañia" for="name" class="texto"/>
-                    <field name="name"/>
-                    <label string="Procedimientos Institución" for="procedures_id" class="texto"/>
-                    <field name="procedures_id" colspan="4" nolabel="1">
-                        <tree string="Procedimientos en Salud" editable="bottom">
-                            <field name="procedures_id" context="{'modelo':'confi'}"/>
-                        </tree>
-                    </field>
-                </form>
-            </field>
-        </record>
-
-        <!-- doctor speciality Tree View -->
-        <record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_tree">
-            <field name="name">Configuracion Procedimientos Institucion</field>
-            <field name="model">doctor.configuracion_procedimientos_institucion</field>
-            <field name="arch" type="xml">
-                <field name="name"/>
-            </field>
-        </record>
-
-        <!-- doctor speciality Action -->
-        <record model="ir.actions.act_window" id="action_doctor_configuracion_procedimientos_institucion">
-            <field name="name">Configuracion Procedimientos Institucion</field>
-            <field name="res_model">doctor.configuracion_procedimientos_institucion</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-
-        <menuitem id="menu_doctor_configuracion_procedimientos_institucion" name="Confi. Procedimientos Institucion" parent="doctor.menu_doctor_config" action="action_doctor_configuracion_procedimientos_institucion"/>
-
-    </data>
+		<data>
+				
+				<!-- Modificando la busqueda de los pacientes anadiendo filtros-->
+				<record id="patient_filter" model="ir.ui.view">
+				<field name="name">Patient</field>
+				<field name="model">doctor.patient</field>
+				<field name="arch" type="xml">
+				<search string="Search Patient" version="7.0">
+						<field name="patient"/>
+						<field name="ref"/>
+						<field name="insurer"/>
+						<separator/>
+						<filter name="patient" string="Nombre" domain="[('patient','=',patient)]" help="Nombre" />
+						<filter name="ref" string="Identificacion" domain="[('ref','=',ref)]" help="Identificacion" />
+						<filter name="insurer" string="Aseguradora" domain="[('insurer','=',insurer)]" help="Aseguradora" />
+				</search>
+				</field>
+				</record>
+
+				<!-- Patient Form View -->
+				<record id="view_doctor_patient_form_inherit" model="ir.ui.view">
+						<field name="name">Patient</field>
+						<field name="model">doctor.patient</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_patient_form"/>
+						<field name="arch" type="xml">
+								<field name="id" invisible="1"/>
+								<xpath expr="//field[@name='patient']" position="replace">
+										<label string="Número de Identificación" for="ref" style="width:50%%" class="texto"/>
+										<br></br>
+											<field name="ref" on_change="onchange_existe(ref)" nolabel="1" default_focus="1" style="width:50%%" />
+										<br></br>
+
+
+										<label string="Nombre Paciente" for="nombre" class="texto"/>
+							<br></br>
+									<h2>
+										<group col="2" colspan="6">
+											<field name="lastname" nolabel="1" placeholder="Primer Apellido" />
+											<field name="surname" nolabel="1"  placeholder="Segundo Apellido" />
+											<field name="firstname" nolabel="1" placeholder="Primer Nombre" />
+											<field name="middlename" nolabel="1" placeholder="Segundo Nombre" />
+										</group>
+									</h2>
+								</xpath>
+
+								<xpath expr="//field[@name='birth_date']" position="attributes">
+										<attribute name="on_change">onchange_calcular_edad(birth_date)</attribute>
+								</xpath>
+
+								<xpath expr="//div[@name='div_atenderpaciente']" position="after">
+									<div name="div_mensaje" class="oe_form_box_info oe_text_center" attrs="{'invisible': [('ref','!=',False)]}">
+										<b> <span class="oe_e">c</span>Presione ENTER al escribir la identificacion. Si esta registrada, los datos seran cargados.</b>
+									</div>
+								</xpath>
+
+
+								<xpath expr="//group[@name='datos_personales']" position="before">
+									<group>
+										<field name="tdoc"/>
+									</group>
+										<div>
+												<h4>
+														<field name='edad_calculada' nolabel='1' style="width:10%%"/>
+														<field name='unidad_edad_calculada' nolabel='1' style="width:10%%"/>
+												</h4>
+										</div>
+								</xpath>
+
+								<field name="insurer" position="replace" >
+									<field name="insurer" attrs="{'invisible': [('tipo_usuario','=', 4)]}" domain="[('tipousuario_id','=',tipo_usuario)]" />
+								</field>
+
+								<field name="insurer" position="before" >
+										<field name="tipo_usuario"/>
+								</field>
+
+								<field name="insurer" position="after" >
+										<field name="nro_afiliacion"/>
+								</field>
+
+								<field name="nro_afiliacion" position="after" >
+										<field name="eps_predeterminada"/>
+								</field>
+
+								<field name="eps_predeterminada" position="after" >
+										<field name="particular_predeterminada"/>
+								</field>
+								<!--attrs="{'invisible': [('tipo_usuario','=', 5)]}-->
+								<xpath expr="/form[@string='Patient']/sheet/group[2]/fieldset[@class='fieldset_margen']/group[@col='2']" position="after">
+										<fieldset class="fieldset_margen">
+												<legend class="texto_legend">OTRAS</legend>
+												<group colspan="2" col="4">
+														<field name="poliza_medicina_prepagada" on_change="onchange_seleccion(poliza_medicina_prepagada)"/>
+														<field name="prepagada_predeterminada"  attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
+												</group>
+												<group colspan="2" col="4">
+														<field name="insurer_prepagada_id" attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
+														<field name="plan_prepagada_id" attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
+												</group>
+												<group>
+														<field name="numero_poliza_afiliacion" attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
+												</group>
+										 </fieldset>
+								</xpath>
+
+								<field name="deceased" position="after" >
+									<field name="es_profesionalsalud"/>
+								</field>
+
+								<field name="sex" position="after" >
+									<field name="estadocivil_id"/>
+									<field name="ocupacion_id"/>
+									<field name="email"/>
+									<field name="telefono"/>
+									<field name="movil"/>
+								</field>
+
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+								<fieldset class="fieldset_margen">
+									<legend class="texto_legend">Datos de residencia</legend>
+												<group col="2">
+													<field name="state_id"/>
+													<field name="city_id"/>
+													<field name="street"/>
+													<field name="zona" style="width: 45%%"/>
+											</group>
+								</fieldset>
+								</xpath>
+
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Datos del Acompañante</legend>
+										<group col="2">
+											<field name="nombre_acompaniante"/>
+											<field name="telefono_acompaniante"/>
+											<field name="parentesco_acompaniante_id"/>
+											<field name="completar_datos_acom" on_change="onchange_completar_datos(parentesco_acompaniante_id,completar_datos_acom, nombre_acompaniante, telefono_acompaniante)"/>
+										</group>
+									</fieldset>
+								</xpath>
+
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Datos del Responsable</legend>
+										<group col="2" colspan="2">
+											<field name="nombre_responsable"/>
+											<field name="telefono_responsable"/>
+											<field name="parentesco_id"/>
+										</group>
+									</fieldset>
+								</xpath>
+
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('completar_datos_acom','=', False)]}">
+										<legend class="texto_legend">Datos de la Madre</legend>
+										<group col="2">
+											<field name="nombre_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+											<field name="ocupacion_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+											<field name="telefono_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+											<field name="direccion_madre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+										</group>
+									</fieldset>
+								</xpath>
+								
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('completar_datos_acom','=', False)]}">
+										<legend class="texto_legend">Datos del Padre</legend>
+										<group col="2" colspan="2">
+											<field name="nombre_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+											<field name="ocupacion_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+											<field name="telefono_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+											<field name="direccion_padre"  attrs="{'invisible': [('completar_datos_acom','=', False)]}"/>
+										</group>
+									</fieldset>
+								</xpath>
+
+
+
+
+								<xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']" position="before">
+										<label for="notas_paciente" string="Notas"/>
+										<field name="notas_paciente" nolabel="1"/>
+								</xpath>
+
+								<field name="notas_paciente" position="after">
+										<label for="ver_nc" string="Ver NC"/>
+										<field name="ver_nc" nolabel="1"/>
+										<field name="nc_paciente" attrs="{'invisible':[('ver_nc', '=', False)]}"/>
+								</field>
+
+
+
+								<field name="birth_date" position="after">
+										<field name="lugar_nacimiento_id"/>
+								</field>
+
+								<xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@string='Attentions']" position="replace"/>
+
+						</field>
+				</record>
+
+				<!-- Patient Tree View -->
+				<record id="view_doctor_patient_tree_inherit" model="ir.ui.view">
+						<field name="name">Patient</field>
+						<field name="model">doctor.patient</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_patient_tree"/>
+						<field name="arch" type="xml">
+							<field name="sex" position="before">
+										<field name="tdoc" string="Tipo doc"/>
+										<field name="ref" string="Nº doc"/>
+							</field>
+							<field name="ref" position="after">
+								<field name="nombre" string="Nombre Paciente"/>
+							</field>
+
+						</field>
+					</record>
+
+				<!-- appointment Form View -->
+				<record id="view_doctor_appointment_form_inherit" model="ir.ui.view">
+						<field name="name">Appointment</field>
+						<field name="model">doctor.appointment</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_appointment_form"/>
+						<field name="arch" type="xml">
+
+							 
+								<xpath expr="//form/group" position="replace">
+									<group>
+										<field name="schedule_id" domain="[('date_end','>=',time.strftime('%%Y-%%m-%%d %%H:%%M:%%S'))]" on_change="onchange_start_time(schedule_id, professional_id, time_begin)"/>
+										<field name="professional_id" invisible="True"/>
+										<field name="attended" invisible="True"/>
+
+										<field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id,ref)"/>
+										<field name="ref" />
+										<field name="tipo_usuario_id"/>
+									</group>    
+										<group colspan='4' col='6' attrs="{'invisible': [('tipo_usuario_id', '=', 4)]}">
+												<field name="insurer_id" domain="[('tipousuario_id','=',tipo_usuario_id )]"/>
+												<field name="plan_id" domain="[('insurer_id','=', insurer_id)]"  />
+												<field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
+										</group>
+										<group colspan="4" col="6">
+											
+											<field name="type_id" on_change="onchange_calcular_hora(schedule_id,type_id,time_begin, plan_id, tipo_usuario_id, repetir_cita)"/>
+										
+											<field name="realiza_procedimiento"/>
+											<field name="nro_afilicion_poliza"/>
+										</group>
+										<field name="appointment_today" invisible="True"/>
+										<group colspan="2" col="4">
+												<field name="ambito" attrs="{'invisible': [('realiza_procedimiento', '=', False)]}"/>
+												<field name="finalidad" attrs="{'invisible': [('realiza_procedimiento', '=', False)]}"/>
+										</group>
+
+										<group colspan='4' col='6'>
+												<field name="time_begin" on_change="onchange_end_time(type_id, time_begin, time_end)" attrs="{'invisible':[('repetir_cita', '=', True)]}"/>
+												<field name="time_end" attrs="{'invisible':[('repetir_cita', '=', True)]}"/>
+												<field name="aditional"/>
+										</group>
+
+										<group colspan="4" col="6">
+											<field name="repetir_cita" on_change="onchange_cargar_hora(type_id, time_begin, time_end)"/>
+										</group>
+									
+
+								</xpath>
+
+								<!-- Cita repetida -->
+
+								<notebook>
+
+									<page string="Repetir Cita" attrs="{'invisible':[('repetir_cita', '!=', True)]}">
+										
+
+												<separator/>
+												<fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
+												<legend class="texto_legend">Repetir Cita</legend>
+												<group colspan="2" col="4">
+													<field name="repetir_cita_fecha_inicio" attrs="{'required':[('repetir_cita', '=', True)]}"/>
+													<field name="repetir_cita_fecha_fin" attrs="{'required':[('repetir_cita', '=', True)]}"/>
+												</group>
+											</fieldset>
+											<separator/>
+											<fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
+												<legend class="texto_legend">Dias de la Semana</legend>
+												<group colspan="4" col="6">
+														<field name="lunes"/>
+														<field name="martes"/>
+														<field name="miercoles"/>
+														<field name="jueves"/>
+														<field name="viernes"/>
+														<field name="sabado"/>
+														<field name="domingo"/>
+														<field name="todos_los_dias_semana" on_change="onchange_seleccion(todos_los_dias_semana,'dias')"/>
+												</group>
+												</fieldset>
+												<separator/>
+												<fieldset class="fieldset_margen" attrs="{'invisible': [('repetir_cita','=', False)]}">
+												<legend class="texto_legend">Meses</legend>
+												<group colspan="4" col="6">
+														<field name="enero"/>
+														<field name="febrero"/>
+														<field name="marzo"/>
+														<field name="abril"/>
+														<field name="mayo"/>
+														<field name="junio"/>
+														<field name="julio"/>
+														<field name="agosto"/>
+														<field name="septiembre"/>
+														<field name="octubre"/>
+														<field name="noviembre"/>
+														<field name="diciembre"/>
+														<field name="todos_los_meses" on_change="onchange_seleccion(todos_los_meses,'meses')"/>
+												</group>
+												</fieldset>
+									</page>
+								</notebook>
+							
+
+								<xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[3]" position="after">
+										<field name="nro_autorizacion"/>
+								</xpath>
+
+
+
+								<xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']" position="attributes">
+										<attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
+								</xpath>
+			
+								<xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[2]" position="attributes">
+										<attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
+								</xpath>
+
+
+						</field>
+				</record>
+
+
+				<record id="view_doctor_appointment_type_from_view" model="ir.ui.view">
+						<field name="name">Tipo Cita</field>
+						<field name="model">doctor.appointment.type</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_appointment_type_form"/>
+						<field name="arch" type="xml">
+								<xpath expr="/form[@string='Appointment type']/group" position="after">
+										<field name="procedures_id" colspan="4" nolabel="1">
+												<tree string="Procedimientos en salud" editable="bottom">
+														<field name="procedures_id"/>
+														<field name="quantity"/>
+												</tree>
+										</field>
+								</xpath>
+						</field>
+					</record>
+
+
+				<!-- schedule Form View -->
+				<record id="view_doctor_schedule_form_inherit" model="ir.ui.view">
+						<field name="name">Schedule</field>
+						<field name="model">doctor.schedule</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_schedule_form"/>
+						<field name="arch" type="xml">
+								 <xpath expr="/form[@string='Schedule']" atrributes="inside">
+										<field invisible="1" name="id"/>
+								</xpath>
+								<field name="patient_id" position="replace">
+										<field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id)"/>
+								</field>
+
+
+								<field name="patient_id" position="after" >
+										<field name="ref"/>
+								</field>
+
+								<field name="insurer_id" position="after" >
+										<field name="tipo_usuario_id"/>
+								</field>
+
+								<field name="professional_id" position="replace" >
+										<field name="professional_id" required="True"/>
+								</field>
+
+								<field name="patients_count" position="after" >
+										<field name="repetir_agenda"/>
+								</field>
+
+								<field name="date_begin" position="attributes">
+										<attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
+												'required': [('repetir_agenda', '!=', True)]}</attribute>
+								</field>
+
+								<field name="date_end" position="attributes">
+										<attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
+												'required': [('repetir_agenda', '!=', True)]}</attribute>
+								</field>
+
+								<field name="schedule_duration" position="attributes">
+										<attribute name="attrs">
+												{'invisible': [('repetir_agenda', '=', True)],
+												'required': [('repetir_agenda', '!=', True)]}
+										</attribute>
+								</field>
+
+								<notebook>
+										<page string="Configuracion Repetir Agenda" attrs="{'invisible':[('repetir_agenda', '!=', True)]}">
+												<legend class="texto_legend">Configuracion Fecha y Hora</legend>
+												<group colspan="3">
+														<field name="fecha_inicio" attrs="{'required':[('repetir_agenda', '=', True)]}" on_change="onchange_fecha_incio(fecha_inicio, duracion_agenda, fecha_fin)"/>
+														<field name="duracion_agenda" attrs="{'required':[('repetir_agenda', '=', True)]}" on_change="onchange_fecha_incio(fecha_inicio, duracion_agenda, fecha_fin)"/>
+														<field name="fecha_fin" attrs="{'required':[('repetir_agenda', '=', True)]}"/>
+												</group>
+												<separator/>
+												<legend class="texto_legend">Excepcion Fechas</legend>
+												<group colspan="3">
+												<field name="dias_excepciones_id" nolabel="1" editable="bottom">
+														<tree string="Dias excepciones" editable="bottom">
+																<field name="schedule_id" invisible="1"/>
+																<field name="dias_excepciones"/>
+														</tree>
+												</field>
+												</group>
+												<separator/>
+												<legend class="texto_legend">Dias de la Semana</legend>
+												<group colspan="4" col="6">
+														<field name="lunes"/>
+														<field name="martes"/>
+														<field name="miercoles"/>
+														<field name="jueves"/>
+														<field name="viernes"/>
+														<field name="sabado"/>
+														<field name="domingo"/>
+														<field name="todos_los_dias_semana" on_change="onchange_seleccionar_todo(todos_los_dias_semana,'dias')"/>
+												</group>
+												<separator/>
+												<legend class="texto_legend">Meses</legend>
+												<group colspan="4" col="6">
+														<field name="enero"/>
+														<field name="febrero"/>
+														<field name="marzo"/>
+														<field name="abril"/>
+														<field name="mayo"/>
+														<field name="junio"/>
+														<field name="julio"/>
+														<field name="agosto"/>
+														<field name="septiembre"/>
+														<field name="octubre"/>
+														<field name="noviembre"/>
+														<field name="diciembre"/>
+														<field name="todos_los_meses" on_change="onchange_seleccionar_todo(todos_los_meses,'meses')"/>
+												</group>
+										</page>
+								</notebook>
+
+								<notebook>
+									<field invisible="1" name="id"/>
+									<page string="Espacios Agenda" attrs="{'invisible': [('id', '=', False)]}">
+										<legend class="texto_legend">Espacios de la Agenda</legend>
+										<footer>
+											<div align="right">
+												<button string="Actualizar" name="refresh_espacios" type="object" groups="doctor.group_doctor_assistant" class="oe_highlight"/>
+											</div>
+										</footer>
+										<field name="schedule_espacios_ids" colspan="4" readonly="1">
+											<field name="auto_refresh">5</field>
+												<tree string="Espacios" limit="100" create="false" colors="red:estado_cita_espacio=='Asignado';">
+													<field name="patient_id"/>
+													<field name="fecha_inicio" widget="time"/>
+													<field name="fecha_fin" widget="time"/>
+													<field name="estado_cita_espacio"/>
+													<button string="Asginar Cita" name="asignar_cita_espacio" type="object" groups="doctor.group_doctor_assistant" icon="gtk-jump-to" attrs="{'invisible': [('estado_cita_espacio', '=', 'Asignado')]}"/>
+												</tree>
+											</field>
+									</page>
+								</notebook>
+						</field>
+				</record>
+
+				<!--  Remueve los espacios que no fueron asignados en las agendas-->
+				<record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
+						<field name="name">Habilitar Espacios</field>
+						<field name="active" eval="True"/>
+						<field name="user_id" ref="base.user_root" />
+						<field name="interval_number">7</field>
+						<field name="interval_type">days</field>
+						<field name="numbercall">-1</field>
+						<field name="doall" eval="True"/>
+						<field name="model" eval="'doctor.espacios'"/>
+						<field name="function" eval="'habilitar_espacios'"/>
+						<field name="args" eval="'()'"/>
+				</record>
+			
+				<!-- Modificando la busqueda en atencion anadiendo cambios -->
+				<record id="attentions_filter" model="ir.ui.view">
+				<field name="name">Attentions</field>
+				<field name="model">doctor.attentions</field>
+				<field name="arch" type="xml">
+				<search string="Search Attentions" version="7.0">
+						<field name="patient_id"/>
+						<field name="professional_id"/>
+						<field name="speciality"/>
+						<field name="diseases_ids"/>
+						<field name="date_attention"/>
+						
+						<separator/>
+						<filter name="patient_id" string="Nombre" domain="[('patient_id','=',patient_id)]" help="Nombre" />
+
+						<filter name="professional_id" string="Doctor" domain="[('professional_id','=',professional_id)]" help="Doctor" />
+
+						<filter name="speciality" string="Especialidad" domain="[('speciality','=',speciality)]" help="Especialidad" />
+
+						<filter name="diseases_ids" string="Diagnostico" domain="[('diseases_idsdiseases_ids','=',diseases_ids)]" help="Diagnostico" />
+
+						<group expand="0" string= "Agrupar Por...">
+								<filter string="Professional" domain="[]" context="{'group_by' : 'professional_id'}" />
+								<separator/>
+
+								<filter string="Atenciones Hoy"
+										name="atenciones_hoy"
+										domain="[('date_attention','&gt;=', (context_today()).strftime('%%m-%%d-%%Y 00:00:00')),('date_attention','&lt;=',(context_today()).strftime('%%m-%%d-%%Y 23:59:59'))]"
+										help="Dia Actual"/>
+								<filter string="Atenciones Meses" domain="[]" context="{'group_by' : 'date_attention'}" />
+						</group>
+
+				</search>
+				</field>
+				</record>
+
+				<!-- Attentions Form View -->
+				<record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
+						<field name="name">Attentions</field>
+						<field name="model">doctor.attentions</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_attentions_form"/>
+						<field name="arch" type="xml">
+								
+								<xpath expr="//form/group/group" position="after">
+								<group colspan='2' >
+										<field name="finalidad_consulta"/>
+								</group>
+								<group colspan="2">
+									<field name="causa_externa" />
+								</group>
+								</xpath>
+
+
+								<field name="review_systems_id" position="after">
+										<label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
+										<field name="otro_sintomas_revision_sistema"/>
+										<label for="plantilla_sintomas_cuestionario_id" string="Plantillas" groups="doctor.group_doctor_psicologo"/>
+										<field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' groups="doctor.group_doctor_psicologo" domain="[('tipo_plantilla', '=', '04')]"/>
+
+								</field>
+
+								<field name="attentions_past_ids" position="after">
+										<label for="otros_antecedentes" string="Otros Antecedentes"/>
+										<field name="otros_antecedentes" />
+										<label for="plantilla_cuestionario_antecedentes_id" string="Plantillas" groups="doctor.group_doctor_psicologo"/>
+										<field name="plantilla_cuestionario_antecedentes_id" on_change='onchange_plantillas(plantilla_cuestionario_antecedentes_id, "otros_antecedentes")' groups="doctor.group_doctor_psicologo" domain="[('tipo_plantilla', '=', '05')]"/>
+								</field>
+
+
+								<field name="pathological_past" position="after">
+										<label for="otros_antecedentes_patologicos" string="Otros Antecedentes Patológicos"/>
+										<field name="otros_antecedentes_patologicos"/>
+								</field>
+
+								<field name="drugs_past" position="after">
+										<label for="otros_antecedentes_patologicos" string="Otros Antecedentes farmacológicos"/>
+										<field name="otros_antecedentes_farmacologicos"/>
+								</field>
+
+								
+								<field name="attentions_exam_ids" position="after">
+										<label for="otros_hallazgos_examen_fisico" string="Otros hallazgos y signos clínicos en el examen físico"/>
+										<field name="otros_hallazgos_examen_fisico" />
+								</field>
+
+								<field name="otros_hallazgos_examen_fisico" position="after">
+										<label for="plantilla_examen_fisico_id" string="Plantillas"/>
+										<field name="plantilla_examen_fisico_id" on_change='onchange_plantillas(plantilla_examen_fisico_id, "otros_hallazgos_examen_fisico")' domain="[('tipo_plantilla', '=', '06')]"/>
+								</field>
+
+
+								<xpath expr="//group[@id='group_conduct']" position="after">
+										<group colspan="2" col='1'>
+											<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
+											<field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>
+										</group>
+										<group colspan="2" col='1'>
+											<label for="complicacion_eventoadverso" string="Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
+											<field name="complicacion_eventoadverso" nolabel="1" groups="doctor.group_doctor_physician"/>
+											<label for="complicacion_eventoadverso_observacion" string="Observacion de Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
+											 <field name="complicacion_eventoadverso_observacion" nolabel="1" groups="doctor.group_doctor_physician"/>
+										</group>
+										<group colspan='3' col='1'>
+											<notebook>
+												<page string="Seguimientos Paraclínicos">
+													<legend class="texto_legend">Seguimientos Paraclínicos</legend>
+													<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
+														<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+															<group colspan='3' col='2'>
+															<field name="name"/>
+															<field name="result"/>
+															<field name="regitration_date"/>
+															<field name="patient_id"/>
+															<field name="doctor_id"/>
+															</group> 
+														</form>
+														<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+															<field name="doctor_id"/>
+															<field name="name"/>
+															<field name="result"/>
+															<field name="regitration_date"/>
+														</tree>
+													</field>
+												</page>
+											</notebook>
+										</group >
+									
+								</xpath>
+
+								<field name="conduct" position="after">
+										<field name="inv" invisible="1"/> 
+										<label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+										<group col="2"> 
+												<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
+										</group>
+										<group col="1" colspan="2">
+												<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/> 
+										</group>
+								</field>
+
+								<field name="analysis" position="after">
+										<label for="plantilla_analisis_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+										<field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+								</field>
+								
+
+								<xpath expr="//notebook/page[@string='Others']" position="after">
+										<page string="Recomendaciones">
+										<separator string="Recomendaciones" colspan="4"/>
+										<div>
+												<group colspan="1" col="1">  
+														<field name='recomendaciones_ids' nolabel="1" placeholder="Recomendaciones" widget="many2many_tags" domain="[('tipo_plantilla', '=', '01')]"/>
+												</group> 
+										</div>
+										 </page> 
+										<br/>
+										<br/>
+										<br/>
+								</xpath>
+
+								<xpath expr="//notebook/page[@string='Others']" position="inside">
+										<page string="Informes y Certificados">
+												<separator string="Informes y Certificados" colspan="4"/>
+												<field name="certificados_ids" nolabel="1" context="{'professional_id' : professional_id, 'tipo_plantilla' : '02'}">
+														<form string="Informes y Certificados">
+																<group colspan='3' col='2'>
+																		<field name="name"/>
+																		 <field name="expedicion_certificado"/>
+																		 <field name="asunto" placeholder="El Dr. Certifica Qué"/>
+																		 <field name="professional_id"/>
+																		 <field name="cuerpo"/>
+																		 <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '02')]"/>
+																</group>  
+																<group colspan="3" col="2">
+																		<div>
+																				<field name="multi_images" nolabel="1">
+																						<tree string="Imagenes" editable="top">
+																								<field name="name"/>
+																						</tree>
+																				</field>
+																		</div>
+																</group> 
+														</form>
+												</field>
+										</page>
+								</xpath>
+
+
+								<!--añadiendo onchange a campo drugs_id de medicamentos-->
+						
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group/group[@colspan='3']/field[@name='drugs_id']" position="attributes">
+										<attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
+								</xpath>
+
+								<!--fin de añadiendo onchange a campo drugs_id de medicamentos-->
+
+								<!--quitando campos de medicamentos-->
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
+				
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
+										 <attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[2]" position="attributes">
+										 <attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="//form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[2]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
+										<attribute name="string">Prescripcion</attribute>
+								</xpath>
+
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div/label[@for='total_quantity']" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[2]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[1]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]//group[2]" position="replace"/>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="after">
+										<field name="cantidad_total"/>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[1]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[2]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[3]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]//group[1]" position="after">
+										<field name="indicacion_tomar" nolabel="1"/>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[2]" position="replace"/>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" position="replace"/>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="attributes">
+										 <attribute name="string">Prescripcion</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']" position="attributes">
+										 <attribute name="string">Medicamentos</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[6]//page[2]" position="inside">
+										<page string="Otra Prescripcion"> 
+												<separator string="Otra Prescripción" colspan="4"/>
+												<field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
+														<form string="Otra Prescripción">
+																<group colspan='3' col='2'>
+																		<field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]" context="{'medicamento':'medicamentos'}"/>
+																		 <field name="prescripcion"/>
+																		 <field name="recomendacion"/>
+																		 <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '03')]"/>
+																</group>   
+														</form>
+												</field>
+										</page>
+								</xpath>
+
+								<!--fin quitando campos de medicamentos-->
+
+						</field>
+				</record>  
+
+
+				<!-- doctor speciality Form View -->
+				<record model="ir.ui.view" id="view_doctor_recomendaciones_form">
+						<field name="name">Plantillas</field>
+						<field name="model">doctor.attentions.recomendaciones</field>
+						<field name="arch" type="xml">
+								<form string="Plantillas" version="7.0">
+										<group colspan='3' col='2'>
+												<field name="name"/>
+												<field name="cuerpo"/>
+												<field name="tipo_plantilla"/>
+												<field name="active"/>
+										</group>
+								</form>
+						</field>
+				</record>
+
+				<!-- doctor speciality Tree View -->
+				<record model="ir.ui.view" id="view_doctor_recomendaciones_tree">
+						<field name="name">Plantillas</field>
+						<field name="model">doctor.attentions.recomendaciones</field>
+						<field name="arch" type="xml">
+								<tree string="Plantillas" version="7.0">
+										<field name="name"/>
+										<field name="tipo_plantilla"/>
+										<field name="cuerpo"/>
+								</tree>
+						</field>
+				</record>
+
+
+
+
+				<!-- doctor speciality Action -->
+				<record model="ir.actions.act_window" id="action_doctor_plantillas">
+						<field name="name">Plantillas</field>
+						<field name="res_model">doctor.attentions.recomendaciones</field>
+						<field name="view_type">form</field>
+						<field name="view_mode">tree,form</field>
+				</record>
+
+				<menuitem id="menu_doctor_plantillas" name="Plantillas" parent="doctor.menu_doctor_config" action="action_doctor_plantillas" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration"/>
+
+
+				<!-- herencia Form View de product -->
+				<record id="product_normal_form_view_inherit_medicamento_otro_elemento" model="ir.ui.view">
+						<field name="name">Medicamentos / otro elemento</field>
+						<field name="model">product.product</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="product.product_normal_form_view"/>
+						<field name="arch" type="xml">
+								<field name="categ_id" position="after">
+										<div>
+										<field name="is_medicamento_prescripcion"/>
+										<label for="is_medicamento_prescripcion" string="Es Un medicamento / Otro Elemento?"/>
+										</div>
+								</field>            
+						</field>
+				</record>
+				<!-- fin de herencia Form View de product -->
+				<record id="doctor_professional_inherit" model="ir.ui.view">
+						<field name="name">Profesional de la salud</field>
+						<field name="model">doctor.professional</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_professional_form"/>
+						<field name="arch" type="xml">
+							<field name="work_phone" position="after">
+								<field name="multi_consultorio"/> 
+							</field>       
+						</field>
+				</record>
+				<!-- herencia Form View de drugs -->
+				<record id="drugs_form_view_inherit_doctor_co_drugs" model="ir.ui.view">
+						<field name="name">Drugs</field>
+						<field name="model">doctor.drugs</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_drugs_form"/>
+						<field name="arch" type="xml">
+								<field name="atc_id" position="attributes">
+										<attribute name="required">0</attribute>
+										<attribute name="string">Generico</attribute>
+								</field>
+
+								<field name="code" position="attributes">
+										<attribute name="required">0</attribute>
+										<attribute name="invisible">1</attribute>
+								</field>
+						
+						</field>
+				</record>
+				<!-- fin de herencia Form View de drugs -->
+
+				<!-- herencia Form View de atc -->
+				<record id="atc_form_view_inherit_doctor_co_atc" model="ir.ui.view">
+						<field name="name">Drugs ATC</field>
+						<field name="model">doctor.atc</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.view_doctor_atc_form"/>
+						<field name="arch" type="xml">
+								<field name="code" position="attributes">
+										<attribute name="required">0</attribute>
+										<attribute name="invisible">1</attribute>
+								</field>
+						</field>
+				</record>
+				<!-- fin de herencia Form View de atc -->
+
+		<!-- invoice Form View -->
+				<record id="invoice_form_view_inherit_doctor_co_invoice" model="ir.ui.view">
+						<field name="name">Doctor Invoice</field>
+						<field name="model">account.invoice</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.invoice_form_view_inherit_doctor_invoice"/>
+						<field name="arch" type="xml">
+								<field name="patient_id" position="after">
+										<field name="ref"/>
+										<field name="tipo_usuario_id"/>
+										<field name="contrato_id"/>
+								</field>
+						</field>
+				</record>
+
+		<!-- sales order Form View -->
+				<record id="sales_order_form_view_inherit_doctor_co_sales_order" model="ir.ui.view">
+						<field name="name">Doctor Sales Order</field>
+						<field name="model">sale.order</field>
+						<field eval="7" name="priority"/>
+						<field name="inherit_id" ref="doctor.sales_order_form_view_inherit_doctor_sales_order"/>
+						<field name="arch" type="xml">
+
+								<field name="patient_id" position="after">
+										<field name="ref"/>
+										<field name="tipo_usuario_id"/>
+										<field name="contrato_id"/>
+								</field>
+
+						</field>
+				</record>
+
+							 <!-- doctor speciality Form View -->
+				<record model="ir.ui.view" id="view_doctor_configuracion_form">
+						<field name="name">Precios de Procedimientos</field>
+						<field name="model">doctor.configuracion</field>
+						<field name="arch" type="xml">
+								<form string="Parametrización Contratos" version="7.0">
+										<label string="Aseguradora" for="aseguradora_id" class="texto"/>
+										<field name="aseguradora_id" on_change="on_change_cargadatos(aseguradora_id)"/>
+										<field name="parametrizacion_ids" nolabel="1" attrs="{'invisible': [('aseguradora_id', '=', False)] }">
+												<tree string="Parametrización" editable="top">
+														<field name="procedures_id"/>
+														<field name="contract_id"/>
+														<field name="plan_id"/> 
+														<field name="valor"/> 
+												</tree>
+										</field>
+								</form>
+						</field>
+				</record>
+
+				<!-- doctor speciality Tree View -->
+				<record model="ir.ui.view" id="view_doctor_configuracion_tree">
+						<field name="name">Precios de Procedimientos</field>
+						<field name="model">doctor.configuracion</field>
+						<field name="arch" type="xml">
+								<tree string="Parametrizacion Contratos" version="7.0">
+										<field name="aseguradora_id"/>
+								</tree>
+						</field>
+				</record>
+
+				<!-- doctor speciality Action -->
+				<record model="ir.actions.act_window" id="action_doctor_configuracion">
+						<field name="name">Precios de Procedimientos</field>
+						<field name="res_model">doctor.configuracion</field>
+						<field name="view_type">form</field>
+						<field name="view_mode">tree,form</field>
+				</record>
+
+				<menuitem id="menu_doctor_configuracion" name="Precios de Procedimientos" parent="doctor.menu_doctor_config" action="action_doctor_configuracion"/>
+
+				<!-- doctor_aseguradora_procedimiento -->
+				<record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_form">
+						<field name="name">Configuracion Procedimientos Institucion</field>
+						<field name="model">doctor.configuracion_procedimientos_institucion</field>
+						<field name="arch" type="xml">
+								<form string="Configuracion Procedimientos Institucion" version="7.0">
+										
+										<label string="Nombre Compañia" for="name" class="texto"/>
+										<field name="name"/>
+										<label string="Procedimientos Institución" for="procedures_id" class="texto"/>
+										<field name="procedures_id" colspan="4" nolabel="1">
+												<tree string="Procedimientos en Salud" editable="bottom">
+														<field name="procedures_id" context="{'modelo':'confi'}"/>
+												</tree>
+										</field>
+								</form>
+						</field>
+				</record>
+
+				<!-- doctor speciality Tree View -->
+				<record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_tree">
+						<field name="name">Configuracion Procedimientos Institucion</field>
+						<field name="model">doctor.configuracion_procedimientos_institucion</field>
+						<field name="arch" type="xml">
+								<field name="name"/>
+						</field>
+				</record>
+
+				<!-- doctor speciality Action -->
+				<record model="ir.actions.act_window" id="action_doctor_configuracion_procedimientos_institucion">
+						<field name="name">Configuracion Procedimientos Institucion</field>
+						<field name="res_model">doctor.configuracion_procedimientos_institucion</field>
+						<field name="view_type">form</field>
+						<field name="view_mode">tree,form</field>
+				</record>
+
+				<menuitem id="menu_doctor_configuracion_procedimientos_institucion" name="Confi. Procedimientos Institucion" parent="doctor.menu_doctor_config" action="action_doctor_configuracion_procedimientos_institucion"/>
+
+		</data>
 </openerp>
