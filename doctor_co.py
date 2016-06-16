@@ -150,9 +150,6 @@ class doctor_patient_co(osv.osv):
 
 	def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
 		res={'value':{}}
-		_logger.info('*****')
-		_logger.info(id_parentesco)
-		_logger.info('*****')
 		
 
 		if (completar_datos_acompaniante):
@@ -1507,6 +1504,15 @@ class doctor_attentions_co(osv.osv):
 		_logger.info(res)
 		return res
 
+ 
+ 	#Funcion para cargar los seguimientos paraclinicos que tenga el paciente
+	def _get_paraclinical_monitoring(self, cr, uid, ids, context=None):
+		if ids:
+			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient'])] )
+			return self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('patient_id', '=', id_patient[0])])
+		return self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [])
+
+
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean('NC', states={'closed': [('readonly', True)]}),
 		'causa_externa' : fields.selection(causa_externa, 'Causa Externa',states={'closed': [('readonly', True)]}),
@@ -1547,8 +1553,7 @@ class doctor_attentions_co(osv.osv):
 		'plantilla_examen_fisico_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_analisis_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_conducta_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
-	
-
+		'paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', 'Seguimiento Paraclínico'),
 	}
 
 
@@ -1557,7 +1562,8 @@ class doctor_attentions_co(osv.osv):
 		'activar_notas_confidenciales' : True,
 		'inv' : True,
 		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
-		'complicacion_eventoadverso' : '01'
+		'complicacion_eventoadverso' : '01',
+		'paraclinical_monitoring_ids':_get_paraclinical_monitoring,
 	}
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
@@ -1595,6 +1601,32 @@ class doctor_attentions_co(osv.osv):
 		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
 doctor_attentions_co()
+
+
+#Seguimientos paraclinicos del paciente
+class doctor_paraclinical_monitoring(osv.osv):
+
+	_name= 'doctor.paraclinical_monitoring'
+	_rec_name='name'
+	_order= 'regitration_date desc'
+
+
+	_columns = {
+		'attentiont_id': fields.many2one('doctor.attentions', 'Seguimiento Paraclínico'),
+		'name':fields.text('Descripción Seguimiento'),
+		'result':fields.integer('Resultado'),
+		'regitration_date':fields.datetime('Fecha Seguimiento'),
+		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
+		'doctor_id':fields.many2one('doctor.professional', 'Profesional En La Salud'),
+	}
+
+	_defaults = {
+		'regitration_date' : lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+		'patient_id': lambda self, cr, uid, context: context.get('patient_id', False),
+		'doctor_id': lambda self, cr, uid, context: context.get('doctor_id', False),
+	}
+	
+doctor_paraclinical_monitoring()
 
 class doctor_co_schedule_dias_excepciones(osv.osv):
 
