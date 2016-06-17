@@ -2168,7 +2168,6 @@ class doctor_otra_prescripcion(osv.osv):
 		return ids 	
 
 	def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
-		
 		args = args or []
 		ids = []
 		insttucion_procedimiento = self.pool.get('doctor.aseguradora.procedimiento')
@@ -2177,14 +2176,16 @@ class doctor_otra_prescripcion(osv.osv):
 		professional_id = context.get('professional_id')
 		modelo = context.get('modelo')
 		medicamento = context.get('medicamento')
-		
+		clinical_laboratory = context.get('clinical_laboratory')
+		diagnostic_images = context.get('diagnostic_images')
 
 		if plan_id and professional_id:
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
-		elif modelo:
-			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		elif medicamento:
 			ids_procedimientos = self.parte_name_search(cr, uid, name, medicamento, args, operator, context=context, limit=100)
+		#procedimientos en salud para imagenes diagnosticas, laboratorios clinicos y modelo. -Capriatto 
+		elif clinical_laboratory or diagnostic_images or modelo:
+			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		else:
 			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
 			if ids:
