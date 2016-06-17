@@ -123,7 +123,9 @@ class doctor_patient_co(osv.osv):
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 		'parentesco_acompaniante_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 		'ref' :  fields.char('Identificación', required=True, ),
-		'state_id' : fields.many2one('res.country.state', 'Departamento', required=False),
+		'state_id' : fields.many2one('res.country.state', 'Departamento/Provincia', required=False, domain="[('country_id','=',country_id)]"),
+		'country_id':fields.many2one('res.country', 'País/Nación'),
+		'localidad_id':fields.many2one('doctor.res.country.state.localidad', 'Localidad', domain="[('state_id','=',state_id)]"),
 		'street' :  fields.char('Dirección', required=False),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
 								  ('13','Cédula de ciudadanía'), ('21','Cédula de extranjería'), ('41','Pasaporte'),
@@ -286,6 +288,23 @@ class doctor_patient_co(osv.osv):
 			   ]
 
 doctor_patient_co()
+
+
+#Localidades
+class doctor_localidad(osv.Model):
+
+	_name = 'doctor.res.country.state.localidad'
+
+	_columns = {
+		'codigo' : fields.char('Código Localidad' ,size = 3 ,required = True ),
+		'name' : fields.char('Nombre Localidad',required = False),
+		'state_id' : fields.many2one('res.country.state', 'Departamento', required=True),
+
+	}
+	_sql_constraints = [('ec_constraint', 'unique(codigo)', 'La Localidad ya existe en la base de datos.')]
+
+doctor_localidad()
+
 
 class doctor_patient_co_estadocivil(osv.Model):
 
@@ -1565,6 +1584,12 @@ class doctor_attentions_co(osv.osv):
 		'complicacion_eventoadverso' : '01',
 		'paraclinical_monitoring_ids':_get_paraclinical_monitoring,
 	}
+
+	def paraclinical_monitoring_filter(self, cr, uid, ids, filtro, context=None):
+		id_patient= self.pool.get('doctor.paraclinical_monitoring').search(cr, uid,[('id', '=', 1)] )
+		_logger.info('Los ids son:')
+		_logger.info(id_patient)
+		return id_patient
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
 		res={'value':{}}

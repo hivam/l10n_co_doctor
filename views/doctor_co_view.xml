@@ -122,7 +122,9 @@
 								<fieldset class="fieldset_margen">
 									<legend class="texto_legend">Datos de residencia</legend>
 												<group col="2">
+													<field name="country_id"/>
 													<field name="state_id"/>
+													<field name="localidad_id"/>
 													<field name="city_id"/>
 													<field name="street"/>
 													<field name="zona" style="width: 45%%"/>
@@ -601,6 +603,11 @@
 										<group colspan='3' col='1'>
 											<notebook>
 												<page string="Seguimientos Paraclínicos">
+												<!--
+												<div align="right">
+													<button string="Filtro Seguimientos" name="paraclinical_monitoring_filter" type="object" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" class="oe_highlight"/>
+												</div>
+											-->
 													<legend class="texto_legend">Seguimientos Paraclínicos</legend>
 													<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
 														<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
