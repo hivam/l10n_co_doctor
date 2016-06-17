@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <!-- Localidades -->
+    <data noupdate="1">
+
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_0">
+			<field name="codigo">0</field>
+			<field name="name">USAQUEN</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">0</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_1">
+			<field name="codigo">1</field>
+			<field name="name">CHAPINERO</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">1</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_2">
+			<field name="codigo">2</field>
+			<field name="name">SANTAFE</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">2</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_3">
+			<field name="codigo">3</field>
+			<field name="name">SAN CRISTOBAL</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">3</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_4">
+			<field name="codigo">4</field>
+			<field name="name">USME</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">4</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_5">
+			<field name="codigo">5</field>
+			<field name="name">TUNJUELITO</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">5</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_6">
+			<field name="codigo">6</field>
+			<field name="name">BOSA</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">6</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_7">
+			<field name="codigo">7</field>
+			<field name="name">KENNEDY</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">7</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_8">
+			<field name="codigo">8</field>
+			<field name="name">FONTIBON</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">8</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_9">
+			<field name="codigo">9</field>
+			<field name="name">ENGATIVA</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">9</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_10">
+			<field name="codigo">10</field>
+			<field name="name">SUBA</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">10</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_11">
+			<field name="codigo">11</field>
+			<field name="name">BARRIOS UNIDOS</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">11</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_12">
+			<field name="codigo">12</field>
+			<field name="name">TEUSAQUILLO</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">12</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_13">
+			<field name="codigo">13</field>
+			<field name="name">LOS MARTIRES</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">13</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_14">
+			<field name="codigo">14</field>
+			<field name="name">ANTONIO NARIÑO</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">14</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_15">
+			<field name="codigo">15</field>
+			<field name="name">PUENTE ARANDA</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">15</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_16">
+			<field name="codigo">16</field>
+			<field name="name">LA CANDELARIA</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">16</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_17">
+			<field name="codigo">17</field>
+			<field name="name">RAFAEL URIBE</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">17</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_18">
+			<field name="codigo">18</field>
+			<field name="name">CIUDAD BOLIVAR</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">18</field>
+		</record>
+		
+		<record model="doctor.res.country.state.localidad" id="res_country_state_localidad_19">
+			<field name="codigo">19</field>
+			<field name="name">SUMAPAZ</field>
+			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
+			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
+			<field name="code">19</field>
+		</record>
+		
+
+    </data>
+</openerp>
