@@ -95,7 +95,7 @@ class doctor_patient_co(osv.osv):
 		return res	
 	
 	_columns = {
-		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
+		'city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]"),
 		'edad_calculada' : fields.function(_get_edad, type="integer", store= True, 
 								readonly=True, method=True, string='Edad Actual',),
 		'email' : fields.char('Email'),
@@ -125,7 +125,6 @@ class doctor_patient_co(osv.osv):
 		'ref' :  fields.char('Identificación', required=True, ),
 		'state_id' : fields.many2one('res.country.state', 'Departamento/Provincia', required=False, domain="[('country_id','=',country_id)]"),
 		'country_id':fields.many2one('res.country', 'País/Nación'),
-		'localidad_id':fields.many2one('doctor.res.country.state.localidad', 'Localidad', domain="[('state_id','=',state_id)]"),
 		'street' :  fields.char('Dirección', required=False),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
 								  ('13','Cédula de ciudadanía'), ('21','Cédula de extranjería'), ('41','Pasaporte'),
@@ -288,22 +287,6 @@ class doctor_patient_co(osv.osv):
 			   ]
 
 doctor_patient_co()
-
-
-#Localidades
-class doctor_localidad(osv.Model):
-
-	_name = 'doctor.res.country.state.localidad'
-
-	_columns = {
-		'codigo' : fields.char('Código Localidad' ,size = 3 ,required = True ),
-		'name' : fields.char('Nombre Localidad',required = False),
-		'state_id' : fields.many2one('res.country.state', 'Departamento', required=True),
-
-	}
-	_sql_constraints = [('ec_constraint', 'unique(codigo)', 'La Localidad ya existe en la base de datos.')]
-
-doctor_localidad()
 
 
 class doctor_patient_co_estadocivil(osv.Model):
@@ -1585,12 +1568,6 @@ class doctor_attentions_co(osv.osv):
 		'paraclinical_monitoring_ids':_get_paraclinical_monitoring,
 	}
 
-	def paraclinical_monitoring_filter(self, cr, uid, ids, filtro, context=None):
-		id_patient= self.pool.get('doctor.paraclinical_monitoring').search(cr, uid,[('id', '=', 1)] )
-		_logger.info('Los ids son:')
-		_logger.info(id_patient)
-		return id_patient
-
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
 		res={'value':{}}
 		_logger.info(plantilla_id)
@@ -1638,7 +1615,8 @@ class doctor_paraclinical_monitoring(osv.osv):
 
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Seguimiento Paraclínico'),
-		'name':fields.text('Descripción Seguimiento'),
+		'seguimientos_id': fields.many2one('doctor.paraclinical_monitoring', 'Seguimiento Paraclínico'),
+		'name':fields.char('Descripción Seguimiento', required=True, size=92),
 		'result':fields.integer('Resultado'),
 		'regitration_date':fields.datetime('Fecha Seguimiento'),
 		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
@@ -1650,7 +1628,27 @@ class doctor_paraclinical_monitoring(osv.osv):
 		'patient_id': lambda self, cr, uid, context: context.get('patient_id', False),
 		'doctor_id': lambda self, cr, uid, context: context.get('doctor_id', False),
 	}
-	
+
+
+	def create(self, cr, uid, vals, context=None):
+		id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', context['patient'])])
+		vals['doctor_id']= context['professional_id']
+		vals['patient_id'] = id_patient[0]
+		nombre_seguimiento=vals['name']
+		vals['name']= nombre_seguimiento.upper()
+		return super(doctor_paraclinical_monitoring,self).create(cr, uid, vals, context)
+
+	def onchange_cargar_seguimiento(self, cr, uid, ids, seguimiento_id, context=None):
+		res={'value':{}}
+
+		if seguimiento_id:
+			id_seguimiento= self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('id', '=', seguimiento_id)])
+			seguimiento= self.pool.get('doctor.paraclinical_monitoring').browse(cr, uid, id_seguimiento[0])
+			res['value']['name']= seguimiento.name
+
+		return res
+
+
 doctor_paraclinical_monitoring()
 
 class doctor_co_schedule_dias_excepciones(osv.osv):
