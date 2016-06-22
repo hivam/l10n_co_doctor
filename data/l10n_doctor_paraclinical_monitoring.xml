@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <!-- Paraclinical Monitoring -->
+    <data noupdate="1">
+
+        <record model="doctor.name_paraclinical_monitoring" id="doctor_name_paraclinical_monitoring_co_0000">
+            <field name="code">0000</field>
+            <field name="name">CARGAR TODOS</field>
+        </record>
+
+    </data>
+</openerp>

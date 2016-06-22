@@ -1571,19 +1571,22 @@ class doctor_attentions_co(osv.osv):
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
-		_logger.info(patient_id)
 
-		_logger.info('Este es el id')
 		_logger.info(seguimiento_id)
-		#id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient'])] )
-		#otro= self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('patient_id', '=', id_patient[0])])
-		seguimientos_ids = self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('seguimientos_id', '=', seguimiento_id), ('patient_id', '=', patient_id)])
-		_logger.info(seguimientos_ids)
-		patient=None
-		for datos in self.browse(cr, uid, ids):
-			patient = datos.patient_id
-		_logger.info(patient)
-		_logger.info('-----')
+
+		if seguimiento_id:
+			todos_los_seguimientos_id = self.pool.get('doctor.name_paraclinical_monitoring').search(cr, uid, [('id', '=', seguimiento_id)])
+			for todos_los_seguimientos in self.pool.get('doctor.name_paraclinical_monitoring').browse(cr, uid, todos_los_seguimientos_id):
+				nombre_seguimiento= todos_los_seguimientos.code
+				_logger.info(todos_los_seguimientos.name)
+
+			if nombre_seguimiento == 0:
+				seguimientos_ids = self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('patient_id', '=', patient_id)])
+				_logger.info('Si')
+			else:
+				seguimientos_ids = self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('seguimientos_id', '=', seguimiento_id), ('patient_id', '=', patient_id)])
+				_logger.info(seguimientos_ids)
+
 		return {'value': {'paraclinical_monitoring_ids': seguimientos_ids}}
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
@@ -1632,7 +1635,7 @@ class doctor_paraclinical_monitoring(osv.osv):
 
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Seguimiento Paraclínico'),
-		'seguimientos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico'),
+		'seguimientos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico', domain="[('name','!=','CARGAR TODOS')]"),
 		#'seguimientos_nuevos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico'),
 		#'name':fields.char('Descripción Seguimiento', required=True, size=92),
 		'result':fields.integer('Resultado'),
@@ -1647,13 +1650,6 @@ class doctor_paraclinical_monitoring(osv.osv):
 		'doctor_id': lambda self, cr, uid, context: context.get('doctor_id', False),
 	}
 
-	def create(self, cr, uid, vals, context=None):
-		_logger.info(vals)
-		#nombre_seguimiento=vals['name']
-		#vals['name']= nombre_seguimiento.upper()
-		return super(doctor_paraclinical_monitoring,self).create(cr, uid, vals, context)
-
-
 doctor_paraclinical_monitoring()
 
 #Nombre de los seguimientos paraclinicos del paciente
@@ -1667,10 +1663,15 @@ class doctor_name_paraclinical_monitoring(osv.osv):
 		'name':fields.char('Descripción Del Seguimiento', required=True, size=92),
 	}
 
+
 	def create(self, cr, uid, vals, context=None):
 		nombre_seguimiento=vals['name']
 		vals['name']= nombre_seguimiento.upper()
 		return super(doctor_name_paraclinical_monitoring,self).create(cr, uid, vals, context)
+
+	_sql_constraints = [('seguimiento_uniq', 'unique(name)', 'Esta seguimiento ya existe en la base de datos. \n Por favor ingrese otro nombre para crear un nuevo seguimiento')]
+	#_constraints = [(_check_seguimiento, 'Esto ya existe !', ['name'])]
+
 
 doctor_name_paraclinical_monitoring()
 
