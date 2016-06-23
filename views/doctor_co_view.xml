@@ -113,6 +113,7 @@
 								<field name="sex" position="after" >
 									<field name="estadocivil_id"/>
 									<field name="ocupacion_id" on_change="onchange_ocupacion_id(ocupacion_id)"/>
+									<field name="es_estudiante" invisible="1"/>
 									<field name="email"/>
 									<field name="telefono"/>
 									<field name="movil"/>
@@ -128,7 +129,7 @@
 													<field name="street"/>
 													<field name="zona" style="width: 45%%"/>
 											</group>
-									<fieldset class="fieldset_margen" attrs="{'invisible': [('ocupacion_id','!=', 16476)]}">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('es_estudiante','!=', True)]}">
 										<legend class="texto_legend">Datos del Estudiante</legend>
 										<group col="2" colspan="2">
 											<field name="nivel_estudio"/>

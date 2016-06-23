@@ -172,15 +172,28 @@ class doctor_patient_co(osv.osv):
 		'semestre_actual':fields.selection(semestre, 'Semestre Actual'),
 		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios'),
 		'programa_academico_id': fields.many2one('doctor.programa_academico', 'Programa Académico'),
+		'es_estudiante': fields.boolean('Estudiante'),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
 		res={'value':{}}
 		_logger.info(ocupacion_id)
-		if ocupacion_id != 16476:
+
+		nombre_ocupacion=''
+
+		if ocupacion_id:
+			for ocupacion in self.pool.get('doctor.patient.ocupacion').browse(cr, uid, [ocupacion_id]):
+				nombre_ocupacion= ocupacion.name
+
+		
+		if nombre_ocupacion == 'Estudiante':
+			res['value']['es_estudiante'] = True  
+
+		if nombre_ocupacion != 'Estudiante':
 			res['value']['semestre_actual'] = ''  
 			res['value']['nivel_estudio']= ''
 			res['value']['programa_academico_id']= ''
+			res['value']['es_estudiante'] = False
 
 		return res
 
