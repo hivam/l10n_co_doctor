@@ -1702,7 +1702,7 @@ class doctor_paraclinical_monitoring(osv.osv):
 		'attentiont_id': fields.many2one('doctor.attentions', 'Seguimiento Paraclínico'),
 		'seguimientos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico', domain="[('name','!=','CARGAR TODOS')]"),
 		#'seguimientos_nuevos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico'),
-		#'name':fields.char('Descripción Seguimiento', required=True, size=92),
+		'name':fields.char('Descripción Seguimiento', required=True, size=92),
 		'result':fields.integer('Resultado'),
 		'regitration_date':fields.datetime('Fecha Seguimiento'),
 		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
