@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <!-- Programas Academicos -->
+    <data noupdate="1">
+    	
+    	<!-- Pregrado -->
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_00">
+			<field name="code">00</field>
+			<field name="name">Derecho</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_01">
+			<field name="code">01</field>
+			<field name="name">Ingeniería Electrónica</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_02">
+			<field name="code">02</field>
+			<field name="name">Ingeniería Electromecánica</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_03">
+			<field name="code">03</field>
+			<field name="name">Ingeniería Ambiental</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_04">
+			<field name="code">04</field>
+			<field name="name">Diseño Industrial</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_05">
+			<field name="code">05</field>
+			<field name="name">Ingeniería Sistemas</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_06">
+			<field name="code">06</field>
+			<field name="name">Diseño Grafico</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_07">
+			<field name="code">07</field>
+			<field name="name">Contaduría Pública</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_08">
+			<field name="code">08</field>
+			<field name="name">Relaciones Económicas internacionales</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_09">
+			<field name="code">09</field>
+			<field name="name">Administración de empresas</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_010">
+			<field name="code">010</field>
+			<field name="name">Economía</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_011">
+			<field name="code">011</field>
+			<field name="name">Estudios Literarios</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_012">
+			<field name="code">012</field>
+			<field name="name">Filosofía</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_013">
+			<field name="code">013</field>
+			<field name="name">Historia</field>
+			<field name="nivel_estudio">1</field>
+		</record>
+		<!-- Fin pregrado -->
+
+
+		<!-- Posgrado -->
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_014">
+			<field name="code">014</field>
+			<field name="name">DERECHO PROCESAL CIVIL</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_015">
+			<field name="code">015</field>
+			<field name="name">DERECHO FAMILIA</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_016">
+			<field name="code">016</field>
+			<field name="name">DERECHO PUBLICO</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_017">
+			<field name="code">017</field>
+			<field name="name">DERECHO PENAL Y JUSTICIA TRANSICIONAL</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_018">
+			<field name="code">018</field>
+			<field name="name">GERENCIA FINANCIERA</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_019">
+			<field name="code">019</field>
+			<field name="name">GERENCIA TRIBUTARIA</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_020">
+			<field name="code">020</field>
+			<field name="name">COMUNICACIÓN ELECTRONICA EN EDUCACION</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_021">
+			<field name="code">021</field>
+			<field name="name">EDUMATICA POSGRADO</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_022">
+			<field name="code">022</field>
+			<field name="name">GESTION DE PROYECTOS EDUCATIVOS INSTITUCIONALES</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_023">
+			<field name="code">023</field>
+			<field name="name">LEGISLACION EDUCATIVA Y PROCEDIMIENTOS</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_024">
+			<field name="code">024</field>
+			<field name="name">LUDOMATICA APLICADA A LA EDUCACION</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_025">
+			<field name="code">025</field>
+			<field name="name">AUTOMATICA E INFORMATICA</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_026">
+			<field name="code">026</field>
+			<field name="name">GESTION DE PRODUCTIVIDAD Y CALIDAD</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_027">
+			<field name="code">027</field>
+			<field name="name">GERENCIA DE TECNOLOGIA</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_028">
+			<field name="code">028</field>
+			<field name="name">INFORMATICA PARA LA GERENCIA DE PROYECTOS</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_029">
+			<field name="code">029</field>
+			<field name="name">PLANEAMIENTO ENERGETICO</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_030">
+			<field name="code">030</field>
+			<field name="name">INVESTIGACION OPERATIVA Y ESTADISTICA</field>
+			<field name="nivel_estudio">2</field>
+		</record>
+		<!-- Fin pregrado -->
+
+
+		<!-- Maestria -->
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_031">
+			<field name="code">031</field>
+			<field name="name">CIENCIAS PENALES Y FORENSES</field>
+			<field name="nivel_estudio">3</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_032">
+			<field name="code">032</field>
+			<field name="name">DIDACTICA DE LAS CIENCIAS</field>
+			<field name="nivel_estudio">3</field>
+		</record>
+		<record model="doctor.programa_academico" id="doctor_programa_academico_co_033">
+			<field name="code">033</field>
+			<field name="name">EDUMATICA MAESTRÍA</field>
+			<field name="nivel_estudio">3</field>
+		</record>
+		<!-- Fin maestria -->
+
+    </data>
+</openerp>

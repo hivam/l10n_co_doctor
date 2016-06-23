@@ -56,7 +56,6 @@ Location change for "Doctor" module in Colombia
               'data/l10n_doctor_patient_ocupacion_resumido.xml',
               'data/l10n_states_co_data.xml',
               'data/l10n_cities_co_data.xml',
-              'data/l10n_localidades_co_data.xml',
               'data/l10n_specialitys_co_data.xml',
               'data/l10n_diseases_co_data.xml',
               'data/l10n_doctor_atc_co_data.xml',
@@ -68,6 +67,8 @@ Location change for "Doctor" module in Colombia
               'data/l10n_doctor_res_partner_data.xml',
               'data/l10n_doctor_insurer_data.xml',
               'data/l10n_doctor_insurer_plan_data.xml',
+              'data/l10n_doctor_paraclinical_monitoring.xml',
+              'data/l10n_doctor_co_programas_academicos.xml',
               'doctor_report.xml',
 
     ],

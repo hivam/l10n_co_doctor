@@ -62,6 +62,28 @@ class doctor_patient_co(osv.osv):
 		('3', 'Dias'),
 	]
 
+	#Niveles de estudio
+	nivel = [
+		('1', 'PREGRADO'),
+		('2', 'POSGRADO'),
+		('3', 'MAESTRÍAS'),
+	]
+
+	#Semestre actual
+	semestre = [
+		(1, 'UNO'),
+		(2, 'DOS'),
+		(3, 'TRES'),
+		(4, 'CUATRO'),
+		(5, 'CINCO'),
+		(6, 'SEIS'),
+		(7, 'SIETE'),
+		(8, 'OCHO'),
+		(9, 'NUEVE'),
+		(10, 'DIEZ'),
+		(11, 'ONCE'),
+		(12, 'DOCE'),
+	]
 
 	def _get_edad(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
@@ -95,7 +117,7 @@ class doctor_patient_co(osv.osv):
 		return res	
 	
 	_columns = {
-		'city_id' : fields.many2one('res.country.state.city', 'Ciudad', required=False , domain="[('state_id','=',state_id)]"),
+		'city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]"),
 		'edad_calculada' : fields.function(_get_edad, type="integer", store= True, 
 								readonly=True, method=True, string='Edad Actual',),
 		'email' : fields.char('Email'),
@@ -125,7 +147,6 @@ class doctor_patient_co(osv.osv):
 		'ref' :  fields.char('Identificación', required=True, ),
 		'state_id' : fields.many2one('res.country.state', 'Departamento/Provincia', required=False, domain="[('country_id','=',country_id)]"),
 		'country_id':fields.many2one('res.country', 'País/Nación'),
-		'localidad_id':fields.many2one('doctor.res.country.state.localidad', 'Localidad', domain="[('state_id','=',state_id)]"),
 		'street' :  fields.char('Dirección', required=False),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
 								  ('13','Cédula de ciudadanía'), ('21','Cédula de extranjería'), ('41','Pasaporte'),
@@ -148,7 +169,33 @@ class doctor_patient_co(osv.osv):
 		'eps_predeterminada': fields.boolean('Predeterminada'),
 		'prepagada_predeterminada': fields.boolean('Predeterminada'),
 		'particular_predeterminada': fields.boolean('Predeterminar Particular'),
+		'semestre_actual':fields.selection(semestre, 'Semestre Actual'),
+		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios'),
+		'programa_academico_id': fields.many2one('doctor.programa_academico', 'Programa Académico'),
+		'es_estudiante': fields.boolean('Estudiante'),
 	}
+
+	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
+		res={'value':{}}
+		_logger.info(ocupacion_id)
+
+		nombre_ocupacion=''
+
+		if ocupacion_id:
+			for ocupacion in self.pool.get('doctor.patient.ocupacion').browse(cr, uid, [ocupacion_id]):
+				nombre_ocupacion= ocupacion.name
+
+		
+		if nombre_ocupacion == 'Estudiante':
+			res['value']['es_estudiante'] = True  
+
+		if nombre_ocupacion != 'Estudiante':
+			res['value']['semestre_actual'] = ''  
+			res['value']['nivel_estudio']= ''
+			res['value']['programa_academico_id']= ''
+			res['value']['es_estudiante'] = False
+
+		return res
 
 	def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
 		res={'value':{}}
@@ -290,20 +337,34 @@ class doctor_patient_co(osv.osv):
 doctor_patient_co()
 
 
-#Localidades
-class doctor_localidad(osv.Model):
+#Programas academicos
+class doctor_programa_academico(osv.osv):
 
-	_name = 'doctor.res.country.state.localidad'
+	#Niveles de estudio
+	nivel = [
+		('1', 'PREGRADO'),
+		('2', 'POSGRADO'),
+		('3', 'MAESTRÍAS'),
+	]
+
+	_name= 'doctor.programa_academico'
+	_rec_name='name'
 
 	_columns = {
-		'codigo' : fields.char('Código Localidad' ,size = 3 ,required = True ),
-		'name' : fields.char('Nombre Localidad',required = False),
-		'state_id' : fields.many2one('res.country.state', 'Departamento', required=True),
-
+		'code':fields.integer('Código', size=4, required=True),
+		'name':fields.char('Programa Académico', required=True, size=92),
+		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios', required=True),
 	}
-	_sql_constraints = [('ec_constraint', 'unique(codigo)', 'La Localidad ya existe en la base de datos.')]
 
-doctor_localidad()
+	def create(self, cr, uid, vals, context=None):
+		nombre_programa=vals['name']
+		vals['name']= nombre_programa.upper()
+		return super(doctor_programa_academico,self).create(cr, uid, vals, context)
+
+	_sql_constraints = [('programa_uniq', 'unique(name)', 'Esta Programa Académico ya existe en la base de datos. \n Por favor ingrese otro nombre para crear un nuevo programa'),
+						('code_uniq', 'unique(code)', 'Esta código ya existe en la base de datos. \n Por favor ingrese otro código para crear un nuevo programa')]
+
+doctor_programa_academico()
 
 
 class doctor_patient_co_estadocivil(osv.Model):
@@ -1524,7 +1585,7 @@ class doctor_attentions_co(osv.osv):
 		return res
 
  
- 	#Funcion para cargar los seguimientos paraclinicos que tenga el paciente
+	#Funcion para cargar los seguimientos paraclinicos que tenga el paciente
 	def _get_paraclinical_monitoring(self, cr, uid, ids, context=None):
 		if ids:
 			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient'])] )
@@ -1573,6 +1634,7 @@ class doctor_attentions_co(osv.osv):
 		'plantilla_analisis_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_conducta_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', 'Seguimiento Paraclínico'),
+		'filter_segumiento_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico'),
 	}
 
 
@@ -1585,11 +1647,25 @@ class doctor_attentions_co(osv.osv):
 		'paraclinical_monitoring_ids':_get_paraclinical_monitoring,
 	}
 
-	def paraclinical_monitoring_filter(self, cr, uid, ids, filtro, context=None):
-		id_patient= self.pool.get('doctor.paraclinical_monitoring').search(cr, uid,[('id', '=', 1)] )
-		_logger.info('Los ids son:')
-		_logger.info(id_patient)
-		return id_patient
+	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
+	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
+
+		_logger.info(seguimiento_id)
+
+		if seguimiento_id:
+			todos_los_seguimientos_id = self.pool.get('doctor.name_paraclinical_monitoring').search(cr, uid, [('id', '=', seguimiento_id)])
+			for todos_los_seguimientos in self.pool.get('doctor.name_paraclinical_monitoring').browse(cr, uid, todos_los_seguimientos_id):
+				nombre_seguimiento= todos_los_seguimientos.code
+				_logger.info(todos_los_seguimientos.name)
+
+			if nombre_seguimiento == 0:
+				seguimientos_ids = self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('patient_id', '=', patient_id)])
+				_logger.info('Si')
+			else:
+				seguimientos_ids = self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('seguimientos_id', '=', seguimiento_id), ('patient_id', '=', patient_id)])
+				_logger.info(seguimientos_ids)
+
+		return {'value': {'paraclinical_monitoring_ids': seguimientos_ids}}
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
 		res={'value':{}}
@@ -1632,13 +1708,14 @@ doctor_attentions_co()
 class doctor_paraclinical_monitoring(osv.osv):
 
 	_name= 'doctor.paraclinical_monitoring'
-	_rec_name='name'
 	_order= 'regitration_date desc'
 
 
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Seguimiento Paraclínico'),
-		'name':fields.text('Descripción Seguimiento'),
+		'seguimientos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico', domain="[('name','!=','CARGAR TODOS')]"),
+		#'seguimientos_nuevos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico'),
+		#'name':fields.char('Descripción Seguimiento', required=True, size=92),
 		'result':fields.integer('Resultado'),
 		'regitration_date':fields.datetime('Fecha Seguimiento'),
 		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
@@ -1650,8 +1727,31 @@ class doctor_paraclinical_monitoring(osv.osv):
 		'patient_id': lambda self, cr, uid, context: context.get('patient_id', False),
 		'doctor_id': lambda self, cr, uid, context: context.get('doctor_id', False),
 	}
-	
+
 doctor_paraclinical_monitoring()
+
+#Nombre de los seguimientos paraclinicos del paciente
+class doctor_name_paraclinical_monitoring(osv.osv):
+
+	_name= 'doctor.name_paraclinical_monitoring'
+	_rec_name='name'
+
+	_columns = {
+		'code':fields.integer('Código', size=4, required=True),
+		'name':fields.char('Descripción Del Seguimiento', required=True, size=92),
+	}
+
+
+	def create(self, cr, uid, vals, context=None):
+		nombre_seguimiento=vals['name']
+		vals['name']= nombre_seguimiento.upper()
+		return super(doctor_name_paraclinical_monitoring,self).create(cr, uid, vals, context)
+
+	_sql_constraints = [('seguimiento_uniq', 'unique(name)', 'Esta seguimiento ya existe en la base de datos. \n Por favor ingrese otro nombre para crear un nuevo seguimiento')]
+	#_constraints = [(_check_seguimiento, 'Esto ya existe !', ['name'])]
+
+
+doctor_name_paraclinical_monitoring()
 
 class doctor_co_schedule_dias_excepciones(osv.osv):
 
