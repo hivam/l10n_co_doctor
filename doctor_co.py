@@ -171,7 +171,7 @@ class doctor_patient_co(osv.osv):
 		'particular_predeterminada': fields.boolean('Predeterminar Particular'),
 		'semestre_actual':fields.selection(semestre, 'Semestre Actual'),
 		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios'),
-		'programa_academico_id': fields.many2one('doctor.programa_academico', 'Programa Académico'),
+		'programa_academico_id': fields.many2one('doctor.programa_academico', 'Programa Académico', domain="[('nivel_estudio','=',nivel_estudio)]"),
 		'es_estudiante': fields.boolean('Estudiante'),
 	}
 
@@ -348,21 +348,29 @@ class doctor_programa_academico(osv.osv):
 	]
 
 	_name= 'doctor.programa_academico'
-	_rec_name='name'
+	#_rec_name='name'
 
 	_columns = {
-		'code':fields.integer('Código', size=4, required=True),
-		'name':fields.char('Programa Académico', required=True, size=92),
+		'code':fields.char('Código', required=True),
+		'name':fields.char('Programa Académico', required=True),
 		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios', required=True),
 	}
 
 	def create(self, cr, uid, vals, context=None):
-		nombre_programa=vals['name']
-		vals['name']= nombre_programa.upper()
-		return super(doctor_programa_academico,self).create(cr, uid, vals, context)
+		vals.update({'name': vals['name'].upper()})
+		descripcion= vals['name']
+		codigo= vals['code']
 
-	_sql_constraints = [('programa_uniq', 'unique(name)', 'Esta Programa Académico ya existe en la base de datos. \n Por favor ingrese otro nombre para crear un nuevo programa'),
-						('code_uniq', 'unique(code)', 'Esta código ya existe en la base de datos. \n Por favor ingrese otro código para crear un nuevo programa')]
+		name_id= self.search(cr, uid, [('name', '=', descripcion)])
+		code_id= self.search(cr, uid, [('code', '=', codigo)])
+
+		if len(name_id) > 0:
+			raise osv.except_osv(_('AVISO IMPORTANTE!'),_('ESTE PROGRAMA YA ESTA EN LA BASE DE DATOS \n POR FAVOR INTENTE CON OTRO PROGRAMA ACADÉMICO'))
+
+		if len(code_id) > 0:
+			raise osv.except_osv(_('AVISO IMPORTANTE!'),_('ESTE CÓDIGO YA ESTA EN LA BASE DE DATOS \n POR FAVOR INTENTE CON OTRO CÓDIGO'))
+
+		return super(doctor_programa_academico, self).create(cr, uid, vals, context)
 
 doctor_programa_academico()
 
@@ -1714,8 +1722,6 @@ class doctor_paraclinical_monitoring(osv.osv):
 	_columns = {
 		'attentiont_id': fields.many2one('doctor.attentions', 'Seguimiento Paraclínico'),
 		'seguimientos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico', domain="[('name','!=','CARGAR TODOS')]"),
-		#'seguimientos_nuevos_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico'),
-		#'name':fields.char('Descripción Seguimiento', required=True, size=92),
 		'result':fields.integer('Resultado'),
 		'regitration_date':fields.datetime('Fecha Seguimiento'),
 		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
@@ -1737,19 +1743,19 @@ class doctor_name_paraclinical_monitoring(osv.osv):
 	_rec_name='name'
 
 	_columns = {
-		'code':fields.integer('Código', size=4, required=True),
-		'name':fields.char('Descripción Del Seguimiento', required=True, size=92),
+		'code':fields.char('Código', required=True),
+		'name':fields.char('Descripción Del Seguimiento', required=True,),
 	}
 
+	_defaults = {
+		'code': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'name.paraclinical'), 
+	}
 
 	def create(self, cr, uid, vals, context=None):
-		nombre_seguimiento=vals['name']
-		vals['name']= nombre_seguimiento.upper()
-		return super(doctor_name_paraclinical_monitoring,self).create(cr, uid, vals, context)
+		vals.update({'name': vals['name'].upper()})
+		return super(doctor_name_paraclinical_monitoring, self).create(cr, uid, vals, context)
 
-	_sql_constraints = [('seguimiento_uniq', 'unique(name)', 'Esta seguimiento ya existe en la base de datos. \n Por favor ingrese otro nombre para crear un nuevo seguimiento')]
-	#_constraints = [(_check_seguimiento, 'Esto ya existe !', ['name'])]
-
+	_sql_constraints = [('seguimiento_uniq', 'unique(name)', u'Este seguimiento ya existe en la base de datos. \n Por favor ingrese otro nombre para crear un nuevo seguimiento.')]
 
 doctor_name_paraclinical_monitoring()
 

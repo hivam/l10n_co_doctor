@@ -636,7 +636,14 @@
 															<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
 																<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
 																	<group colspan='1' col='1'>
-																		<field name="seguimientos_id"/>
+																		<field name="seguimientos_id">
+																			<form>
+																				<group colspan='4' col='2'>
+																				<field name="code" invisible="1"/>
+																				<field name="name"/>
+																				</group>
+																			</form>
+																		</field>
 																	</group> 
 																	<group colspan='4' col='2'>
 																		<field name="result"/>
@@ -821,6 +828,20 @@
 
 						</field>
 				</record>  
+
+				<!-- Secuencia para la creacion de los nombres de los seguimientos paraclinicos -->
+				<record id="seq_type_name_paraclinical" model="ir.sequence.type">
+				     <field name="name">Nombre Segumiento</field>
+				     <field name="code">name.paraclinical</field>
+				</record>
+				<record id="seq_name_paraclinical" model="ir.sequence">
+				     <field name="name">Nombre Segumiento</field>
+				     <field name="code">name.paraclinical</field>            
+				     <field name="padding">4</field>
+				     <field name="number_increment">1</field>
+				 </record> 
+				 <!-- Fin de la secuencia -->
+
 
 
 				<!-- doctor speciality Form View -->
