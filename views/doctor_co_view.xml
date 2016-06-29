@@ -126,6 +126,17 @@
 													<field name="country_id"/>
 													<field name="state_id"/>
 													<field name="city_id"/>
+													<field name="neighborhood_id" context="{'country_id' : country_id, 'state_id': state_id, 'city_id': city_id}">
+														<form>
+															<group col="2">
+																<field name="country_id"/>
+																<field name="state_id"/>
+																<field name="city_id"/>
+																<field name="codigo"/>
+																<field name="name"/>
+															</group>
+														</form>
+													</field>
 													<field name="street"/>
 													<field name="zona" style="width: 45%%"/>
 											</group>
@@ -552,6 +563,34 @@
 				</field>
 				</record>
 
+
+				<!-- doctor disability Form View -->
+				<record model="ir.ui.view" id="view_doctor_attentions_disability_form_inherit">
+					<field name="name">Incapacidad</field>
+					<field name="model">doctor.attentions.disability</field>
+					<field eval="7" name="priority"/>
+					<field name="inherit_id" ref="doctor.view_doctor_attentions_disability_form"/>
+					<field name="arch" type="xml">
+							<field name="disability_ids" position="after">
+								<field name="date_end" on_change="onchange_disability(disability_ids, date_end)"/>
+							</field>
+					</field>
+				</record>
+
+
+				<!-- doctor disability Form View -->
+				<record model="ir.ui.view" id="view_doctor_attentions_disability_tree_inherit">
+					<field name="name">Incapacidad</field>
+					<field name="model">doctor.attentions.disability</field>
+					<field eval="7" name="priority"/>
+					<field name="inherit_id" ref="doctor.view_doctor_attentions_disability_tree"/>
+					<field name="arch" type="xml">
+						<field name="disability_ids" position="after">
+							<field name="date_end" on_change="onchange_disability(disability_ids, date_end)"/>
+						</field>
+					</field>
+				</record>
+
 				<!-- Attentions Form View -->
 				<record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
 						<field name="name">Attentions</field>
@@ -609,30 +648,33 @@
 
 
 								<xpath expr="//group[@id='group_conduct']" position="after">
+									<!--
 										<group colspan="2" col='1'>
 											<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician"/>
 											<field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician"/>
 										</group>
+									-->
 										<group colspan="2" col='1'>
-											<label for="complicacion_eventoadverso" string="Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
-											<field name="complicacion_eventoadverso" nolabel="1" groups="doctor.group_doctor_physician"/>
-											<label for="complicacion_eventoadverso_observacion" string="Observacion de Complicación/Evento Adverso" groups="doctor.group_doctor_physician"/>
-											 <field name="complicacion_eventoadverso_observacion" nolabel="1" groups="doctor.group_doctor_physician"/>
+											
+										</group>
+										<group colspan="2" col='1'>
+											<group colspan="4" col='2'>
+											<field name="is_complicacion_eventoadverso" groups="doctor.group_doctor_physician"/>
+											</group>
+											<label for="complicacion_eventoadverso" string="Complicación/Evento Adverso" groups="doctor.group_doctor_physician" attrs="{'invisible': [('is_complicacion_eventoadverso', '=', False)]}"/>
+											<field name="complicacion_eventoadverso" nolabel="1" groups="doctor.group_doctor_physician" attrs="{'invisible': [('is_complicacion_eventoadverso', '=', False)]}"/>
+											<label for="complicacion_eventoadverso_observacion" string="Observacion de Complicación/Evento Adverso" groups="doctor.group_doctor_physician" attrs="{'invisible': [('is_complicacion_eventoadverso', '=', False)]}"/>
+											 <field name="complicacion_eventoadverso_observacion" nolabel="1" groups="doctor.group_doctor_physician" attrs="{'invisible': [('is_complicacion_eventoadverso', '=', False)]}"/>
 										</group>
 										<group colspan='3' col='1'>
 											<notebook>
 												<page string="Seguimientos Paraclínicos">
-													<group colspan='4' col='2'>
+													<group col='1'>
 														<fieldset class="fieldset_margen">
-															<legend class="texto_legend">Filtro de Seguimientos</legend>
-															<field name="filter_segumiento_id" on_change='onchange_paraclinical_monitoring(filter_segumiento_id, patient_id)' create="false" nolabel="1" context="{'patient_id' : patient_id, 'doctor_id': professional_id}"/>
-															<br/>
-															<br/>
-															<br/>
-															<br/>
-														</fieldset>
-														<fieldset class="fieldset_margen">
-															<legend class="texto_legend">Seguimientos Paraclínicos</legend>
+														<legend class="texto_legend">Seguimientos Paraclínicos</legend>
+															<group colspan="3" col="2">
+																<field name="paraclinical_monitoring"/>
+															</group>
 															<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
 																<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
 																	<group colspan='1' col='1'>
@@ -655,6 +697,45 @@
 																	</group>			
 																</form>
 																<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+																	<field name="seguimientos_id"/>
+																	<field name="result"/>
+																	<field name="regitration_date"/>
+																	<field name="patient_id" invisible="1"/>
+																	<field name="doctor_id" invisible="1"/>
+																</tree>
+															</field>
+														</fieldset>
+													</group>
+													<group colspan='2' col='2'>
+														<fieldset class="fieldset_margen" attrs="{'invisible': [('paraclinical_monitoring', '=', False)]}">
+															<legend class="texto_legend">Filtro de Seguimientos</legend>
+															<br/>
+															<group colspan="4" col="2">
+																<label for="filter_segumiento_id" string="Filtrar Por:" groups="doctor.group_doctor_physician"/>
+																<field name="filter_segumiento_id" style="width:45%%" on_change='onchange_paraclinical_monitoring(filter_segumiento_id, patient_id)' create="false" nolabel="1" context="{'patient_id' : patient_id, 'doctor_id': professional_id}"/>
+															</group>
+															<field name="filter_paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
+																<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+																	<group colspan='1' col='1'>
+																		<field name="seguimientos_id">
+																			<form>
+																				<group colspan='4' col='2'>
+																				<field name="code" invisible="1"/>
+																				<field name="name"/>
+																				</group>
+																			</form>
+																		</field>
+																	</group> 
+																	<group colspan='4' col='2'>
+																		<field name="result"/>
+																		<field name="regitration_date"/>
+																	</group> 
+																	<group colspan='4' col='2'>
+																		<field name="patient_id" invisible="1"/>
+																		<field name="doctor_id" invisible="1"/>
+																	</group>			
+																</form>
+																<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]" create="false">
 																	<field name="seguimientos_id"/>
 																	<field name="result"/>
 																	<field name="regitration_date"/>
@@ -831,14 +912,14 @@
 
 				<!-- Secuencia para la creacion de los nombres de los seguimientos paraclinicos -->
 				<record id="seq_type_name_paraclinical" model="ir.sequence.type">
-				     <field name="name">Nombre Segumiento</field>
-				     <field name="code">name.paraclinical</field>
+					 <field name="name">Nombre Segumiento</field>
+					 <field name="code">name.paraclinical</field>
 				</record>
 				<record id="seq_name_paraclinical" model="ir.sequence">
-				     <field name="name">Nombre Segumiento</field>
-				     <field name="code">name.paraclinical</field>            
-				     <field name="padding">4</field>
-				     <field name="number_increment">1</field>
+					 <field name="name">Nombre Segumiento</field>
+					 <field name="code">name.paraclinical</field>            
+					 <field name="padding">4</field>
+					 <field name="number_increment">1</field>
 				 </record> 
 				 <!-- Fin de la secuencia -->
 

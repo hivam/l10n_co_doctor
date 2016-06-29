@@ -173,6 +173,7 @@ class doctor_patient_co(osv.osv):
 		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios'),
 		'programa_academico_id': fields.many2one('doctor.programa_academico', 'Programa Académico', domain="[('nivel_estudio','=',nivel_estudio)]"),
 		'es_estudiante': fields.boolean('Estudiante'),
+		'neighborhood_id':fields.many2one('res.country.state.city.neighborhood', 'Barrio', required=False, domain="[('country_id','=',country_id),('state_id','=',state_id), ('city_id','=',city_id)]"),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -1643,6 +1644,9 @@ class doctor_attentions_co(osv.osv):
 		'plantilla_conducta_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', 'Seguimiento Paraclínico'),
 		'filter_segumiento_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico'),
+		'filter_paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', 'Seguimiento Paraclínico'),
+		'is_complicacion_eventoadverso':fields.boolean('Complicación o Evento Adverso'),
+		'paraclinical_monitoring':fields.boolean('Consultar Seguimientos')
 	}
 
 
@@ -1652,14 +1656,14 @@ class doctor_attentions_co(osv.osv):
 		'inv' : True,
 		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
 		'complicacion_eventoadverso' : '01',
-		'paraclinical_monitoring_ids':_get_paraclinical_monitoring,
+		'filter_paraclinical_monitoring_ids':_get_paraclinical_monitoring,
 	}
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
 
 		_logger.info(seguimiento_id)
-
+		seguimientos_ids=''
 		if seguimiento_id:
 			todos_los_seguimientos_id = self.pool.get('doctor.name_paraclinical_monitoring').search(cr, uid, [('id', '=', seguimiento_id)])
 			for todos_los_seguimientos in self.pool.get('doctor.name_paraclinical_monitoring').browse(cr, uid, todos_los_seguimientos_id):
@@ -1673,7 +1677,7 @@ class doctor_attentions_co(osv.osv):
 				seguimientos_ids = self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('seguimientos_id', '=', seguimiento_id), ('patient_id', '=', patient_id)])
 				_logger.info(seguimientos_ids)
 
-		return {'value': {'paraclinical_monitoring_ids': seguimientos_ids}}
+		return {'value': {'filter_paraclinical_monitoring_ids': seguimientos_ids}}
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
 		res={'value':{}}
@@ -1773,6 +1777,32 @@ class doctor_co_schedule_dias_excepciones(osv.osv):
 	}
 
 doctor_co_schedule_dias_excepciones()
+
+
+
+#Localidades
+class doctor_neighborhood(osv.Model):
+
+	_name = 'res.country.state.city.neighborhood'
+
+	_columns = {
+	'codigo' : fields.char('Código', required = True ),
+	'name' : fields.char('Nombre', required = True),
+	'country_id':fields.many2one('res.country', 'País/Nación', required=True),
+	'state_id' : fields.many2one('res.country.state', 'Departamento/Provincia', required=True, domain="[('country_id','=',country_id)]"),
+	'city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=True , domain="[('state_id','=',state_id)]"),
+	}
+
+
+	_defaults = {
+		'country_id' : lambda self, cr, uid, context: context.get('country_id', False),
+		'state_id' : lambda self, cr, uid, context: context.get('state_id', False),
+		'city_id' : lambda self, cr, uid, context: context.get('city_id', False),
+	}
+
+	_sql_constraints = [('codigo_constraint', 'unique(codigo)', 'El Barrio ya existe en la base de datos. \n Por favor ingrese otro código')]
+
+doctor_neighborhood()
 
 class doctor_co_schedule_inherit(osv.osv):
 
@@ -3010,4 +3040,37 @@ class doctor_aseguradora_procedimiento(osv.osv):
 	}
 
 doctor_aseguradora_procedimiento()
+
+
+
+class doctor_attentions_disability(osv.osv):
+	_inherit = "doctor.attentions.disability"
+	
+	_columns = {
+		'date_end': fields.date('Hasta', required=True, ondelete='restrict'),
+	}
+
+	#Funcion para calcular los dias de incapacidad
+	def onchange_disability(self, cr, uid, ids, date_begin, date_end, context=None):
+		res={'value':{}}
+		_logger.info(date_begin)
+		_logger.info(date_end)
+		
+
+		if not date_begin:
+			raise osv.except_osv(_('Aviso Importante!'),_('Para calcular los dias de incapacidad. \n Es necesario seleccionar primero la fecha de inicio.'))
+			
+		fecha_inicio = datetime.strptime(date_begin, '%Y-%m-%d')
+		fecha_fin = datetime.strptime(date_end, '%Y-%m-%d')
+
+		if fecha_inicio and fecha_fin:
+			if fecha_fin < fecha_inicio or fecha_inicio > fecha_fin:
+				raise osv.except_osv(_('Aviso Importante!'),_('Para calcular los dias de incapacidad. \n Es necesario que la fecha final sea mayor a la inicial. \n Asegurese de seleccionar bien las fechas.'))
+			_logger.info('Si')
+			diferencia_dias= fecha_fin - fecha_inicio
+			res['value']['duration']=diferencia_dias.days
+
+		return res
+
+doctor_attentions_disability()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
