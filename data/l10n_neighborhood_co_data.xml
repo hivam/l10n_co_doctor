@@ -6,7 +6,7 @@
 
     	<!-- Barrios de USAQUEN -->
 		<record model="res.country.state.city.neighborhood" id="res_country_state_city_neighborhood_co_00">
-			<field name="codigo">00</field>
+			<field name="codigo">2032</field>
 			<field name="name">CANAIMA</field>
 			<field search="[('code','=','CO')]" model="res.country" name="country_id"/>
 			<field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
