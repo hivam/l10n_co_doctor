@@ -2,7 +2,7 @@
 
 <openerp>
     <!-- States -->
-    <data noupdate="1">
+    <data noupdate="0">
 
         <record model="res.country.state.city" id="res_country_state_co_05001">
             <field name="code">05001</field>
