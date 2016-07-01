@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <!-- Dependencias Empleado -->
+    <data noupdate="1">
+
+		<record model="doctor.dependencia" id="doctor_dependencia_co_01">
+			<field name="code">01</field>
+			<field name="name">ACREDITACIÓN</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_02">
+			<field name="code">02</field>
+			<field name="name">ALMACÉN E INVENTARIOS</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_03">
+			<field name="code">03</field>
+			<field name="name">ARCHIVO INSTITUCIONAL</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_04">
+			<field name="code">04</field>
+			<field name="name">ASESORÍA JURÍDICA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_05">
+			<field name="code">05</field>
+			<field name="name">BIENESTAR UNIVERSITARIO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_06">
+			<field name="code">06</field>
+			<field name="name">BU - ARTE Y CULTURA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_07">
+			<field name="code">07</field>
+			<field name="name">BU - CONSULTORIO MEDICO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_08">
+			<field name="code">08</field>
+			<field name="name">BU - DEPORTES</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_09">
+			<field name="code">09</field>
+			<field name="name">BU - DESARROLLO HUMANO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_010">
+			<field name="code">010</field>
+			<field name="name">BU - PROMOCION SOCIO ECONOMICA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_011">
+			<field name="code">011</field>
+			<field name="name">BU - PSICOLOGIA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_012">
+			<field name="code">012</field>
+			<field name="name">CENTRO DE ATENCIÓN AL USUARIO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_013">
+			<field name="code">013</field>
+			<field name="name">CENTRO DE ATENCIÓN POSGRADOS</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_014">
+			<field name="code">014</field>
+			<field name="name">CIENCIAS NATURALES Y EXACTAS</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_015">
+			<field name="code">015</field>
+			<field name="name">CONSULTORIO JURÍDICO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_016">
+			<field name="code">016</field>
+			<field name="name">CONSULTORIO JURIDICO  -  CONCILIACIÓN</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_017">
+			<field name="code">017</field>
+			<field name="name">CONTROL DOCENTE</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_018">
+			<field name="code">018</field>
+			<field name="name">DISEÑO INDUSTRIAL</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_019">
+			<field name="code">019</field>
+			<field name="name">EDICIONES Y PUBLICACIONES</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_020">
+			<field name="code">020</field>
+			<field name="name">EXTENSIÓN UNIVERSITARIA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_021">
+			<field name="code">021</field>
+			<field name="name">GESTIÓN  Y DESARROLLO EMPRESARIAL</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_022">
+			<field name="code">022</field>
+			<field name="name">INGLES</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_023">
+			<field name="code">023</field>
+			<field name="name">INSTITUTO SUPERIOR DE PEDAGOGÍA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_024">
+			<field name="code">024</field>
+			<field name="name">LABORATORIO DE AUTOMATIZACIÓN</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_025">
+			<field name="code">025</field>
+			<field name="name">LABORATORIO DE ELECTRÓNICA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_026">
+			<field name="code">026</field>
+			<field name="name">LABORATORIO DISEÑO INDUSTRIAL</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_027">
+			<field name="code">027</field>
+			<field name="name">LABORATORIOS DE INFORMÁTICA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_028">
+			<field name="code">028</field>
+			<field name="name">LIBRERÍA Y VENTA DE LIBROS</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_029">
+			<field name="code">029</field>
+			<field name="name">LOGÍSTICA Y AUDIOVISUALES</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_030">
+			<field name="code">030</field>
+			<field name="name">OBSERVATORIO DESARROLLO HUMANO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_031">
+			<field name="code">031</field>
+			<field name="name">OFICINA DE COMUNICACIONES</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_032">
+			<field name="code">032</field>
+			<field name="name">OFICINA DE CONTROL INTERNO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_033">
+			<field name="code">033</field>
+			<field name="name">OFICINA INFORMÁTICA Y SISTEMAS (OIS)</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_034">
+			<field name="code">034</field>
+			<field name="name">PASANTES</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_035">
+			<field name="code">035</field>
+			<field name="name">PASANTES PSICOLOGIA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_036">
+			<field name="code">036</field>
+			<field name="name">PASANTES SENA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_037">
+			<field name="code">037</field>
+			<field name="name">PLANEACIÓN</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_038">
+			<field name="code">038</field>
+			<field name="name">PRESIDENCIA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_039">
+			<field name="code">039</field>
+			<field name="name">RECTORÍA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_040">
+			<field name="code">040</field>
+			<field name="name">SEGURIDAD Y SALUD E3N EL TRABAJO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_041">
+			<field name="code">041</field>
+			<field name="name">SECRETARIA GENERAL</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_042">
+			<field name="code">042</field>
+			<field name="name">SINPROFUAC</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_043">
+			<field name="code">043</field>
+			<field name="name">SINTRAFUAC</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_044">
+			<field name="code">044</field>
+			<field name="name">SISTEMA UNIFICADO DE INVESTIGACIÓN (SUI)</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_045">
+			<field name="code">045</field>
+			<field name="name">TALLER MODELO Y PROTOTIPOS</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_046">
+			<field name="code">046</field>
+			<field name="name">UNIDAD DE ADMISIONES Y REGISTRO ACADÉMICO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_047">
+			<field name="code">047</field>
+			<field name="name">UNIDAD DE BIBLIOTECA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_048">
+			<field name="code">048</field>
+			<field name="name">UNIDAD DE CONTABILIDAD</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_049">
+			<field name="code">049</field>
+			<field name="name">UNIDAD DE CRÉDITO Y CARTERA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_050">
+			<field name="code">050</field>
+			<field name="name">UNIDAD DE PAGADURÍA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_051">
+			<field name="code">051</field>
+			<field name="name">UNIDAD DE SERVICIOS GENERALES</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_052">
+			<field name="code">052</field>
+			<field name="name">UNIDAD DE TALENTO HUMANO</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_053">
+			<field name="code">053</field>
+			<field name="name">UVED</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_054">
+			<field name="code">054</field>
+			<field name="name">VICEPRESIDENCIA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_055">
+			<field name="code">055</field>
+			<field name="name">VICERRECTORÍA ACADÉMICA</field>
+		</record>
+		<record model="doctor.dependencia" id="doctor_dependencia_co_056">
+			<field name="code">056</field>
+			<field name="name">VICERRECTORÍA ADMINISTRATIVA</field>
+		</record>
+
+	</data>
+</openerp>

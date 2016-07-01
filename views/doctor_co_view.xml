@@ -113,7 +113,7 @@
 								<field name="sex" position="after" >
 									<field name="estadocivil_id"/>
 									<field name="ocupacion_id" on_change="onchange_ocupacion_id(ocupacion_id)"/>
-									<field name="es_estudiante" invisible="1"/>
+									<field name="filter_ocupacion" invisible="1"/>
 									<field name="email"/>
 									<field name="telefono"/>
 									<field name="movil"/>
@@ -140,7 +140,7 @@
 													<field name="street"/>
 													<field name="zona" style="width: 45%%"/>
 											</group>
-									<fieldset class="fieldset_margen" attrs="{'invisible': [('es_estudiante','!=', True)]}">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'estu')]}">
 										<legend class="texto_legend">Datos del Estudiante</legend>
 										<group col="2" colspan="2">
 											<field name="nivel_estudio"/>
@@ -150,14 +150,62 @@
 													<field name="code"/>
 													<field name="name"/>
 													<field name="nivel_estudio"/>
+
 													</group>
 												</form>
 											</field>
 											<field name="semestre_actual"/>
+											<field name="lateralidad_id"/>
 										</group>
 									</fieldset>
-								<br/>
-								<br/>
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'doc')]}">
+										<legend class="texto_legend">Datos del Docente</legend>
+										<group col="2" colspan="2">
+											<field name="nivel_estudio"/>
+											<field name="programa_academico_id" String="Programa">
+												<form>
+													<group>
+													<field name="code"/>
+													<field name="name"/>
+													<field name="nivel_estudio"/>
+													</group>
+												</form>
+											</field>
+											<field name="lateralidad_id"/>
+										</group>
+									</fieldset>
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'egre')]}">
+										<legend class="texto_legend">Datos del Egresado</legend>
+										<group col="2" colspan="2">
+											<field name="nivel_estudio"/>
+											<field name="programa_academico_id" String="Programa">
+												<form>
+													<group>
+													<field name="code"/>
+													<field name="name"/>
+													<field name="nivel_estudio"/>
+													</group>
+												</form>
+											</field>
+											<field name="lateralidad_id"/>
+										</group>
+									</fieldset>
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'emp')]}">
+										<legend class="texto_legend">Datos del Empleado</legend>
+										<group col="2" colspan="2">
+											<field name="dependencia_empleado_id"/>
+											<field name="lateralidad_id"/>
+										</group>
+										<br/>
+									</fieldset>
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'otro')]}">
+										<legend class="texto_legend">Datos Complementarios</legend>
+										<group col="2" colspan="2">
+											<field name="description_others"/>
+											<field name="lateralidad_id"/>
+										</group>
+										<br/>
+									</fieldset>
 								</fieldset>
 								</xpath>
 
