@@ -147,7 +147,7 @@
           <para style="P6">[[ '' ]]</para>
         </td>
         <td>
-          <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Insurer: [[ (o.patient_id.insurer.id) or removeParentNode('para')]]</para>
     </td>
      </tr>
     </blockTable>
@@ -781,10 +781,12 @@
       </tr>
     </blockTable>
     </section>
+
 <!--
     <para style="P7">
       <font color="white"> </font>
     </para>
 -->
+
   </story>
 </document>

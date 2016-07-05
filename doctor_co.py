@@ -330,9 +330,9 @@ class doctor_patient_co(osv.osv):
 			return True
 
 
-	_constraints = [(_check_unique_ident, '¡Error! Número de intentificación ya existe en el sistema', ['ref']),
-					(_check_email, 'El formato es inválido.', ['email']),
-					(_check_seleccion, 'Aviso importante!, Solamente puede tener una Aseguradora como predeterminada', ['prepagada_predeterminada', 'eps_predeterminada'])
+	_constraints = [(_check_unique_ident, u'¡Error! Número de intentificación ya existe en el sistema', ['ref']),
+					(_check_email, u'El formato es inválido.', ['email']),
+					(_check_seleccion, u'Aviso importante!, Solamente puede tener una Aseguradora como predeterminada', ['prepagada_predeterminada', 'eps_predeterminada'])
 			   ]
 
 doctor_patient_co()
@@ -2361,7 +2361,6 @@ class doctor_otra_prescripcion(osv.osv):
 		return ids 	
 
 	def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
-		
 		args = args or []
 		ids = []
 		insttucion_procedimiento = self.pool.get('doctor.aseguradora.procedimiento')
@@ -2370,14 +2369,19 @@ class doctor_otra_prescripcion(osv.osv):
 		professional_id = context.get('professional_id')
 		modelo = context.get('modelo')
 		medicamento = context.get('medicamento')
-		
+		clinical_laboratory = context.get('clinical_laboratory')
+		diagnostic_images = context.get('diagnostic_images')
+		odontologia = context.get('odontologia')
 
 		if plan_id and professional_id:
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
-		elif modelo:
-			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		elif medicamento:
 			ids_procedimientos = self.parte_name_search(cr, uid, name, medicamento, args, operator, context=context, limit=100)
+		#procedimientos en salud para imagenes diagnosticas, laboratorios clinicos y modelo. -Capriatto 
+		elif clinical_laboratory or diagnostic_images or modelo:
+			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
+		elif odontologia:
+			ids_procedimientos = self.search(cr, uid, [('procedure_code','>=','230100'),('procedure_code','<=','249100')], order='procedure_code asc',limit=limit, context=context)
 		else:
 			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
 			if ids:
