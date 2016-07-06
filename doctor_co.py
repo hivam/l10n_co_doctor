@@ -395,21 +395,8 @@ class doctor_programa_academico(osv.osv):
 		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios', required=True),
 	}
 
-	def create(self, cr, uid, vals, context=None):
-		vals.update({'name': vals['name'].upper()})
-		descripcion= vals['name']
-		codigo= vals['code']
-
-		name_id= self.search(cr, uid, [('name', '=', descripcion)])
-		code_id= self.search(cr, uid, [('code', '=', codigo)])
-
-		if len(name_id) > 0:
-			raise osv.except_osv(_('AVISO IMPORTANTE!'),_('ESTE PROGRAMA YA ESTA EN LA BASE DE DATOS \n POR FAVOR INTENTE CON OTRO PROGRAMA ACADÉMICO'))
-
-		if len(code_id) > 0:
-			raise osv.except_osv(_('AVISO IMPORTANTE!'),_('ESTE CÓDIGO YA ESTA EN LA BASE DE DATOS \n POR FAVOR INTENTE CON OTRO CÓDIGO'))
-
-		return super(doctor_programa_academico, self).create(cr, uid, vals, context)
+	_sql_constraints = [('programa_academico_code_constraint', 'unique(code)', u'Este código de programa académico ya existe en la base de datos.'),
+						('programa_academico_name_constraint', 'unique(name)', u'Este nombre de programa académico ya existe en la base de datos.') ]
 
 doctor_programa_academico()
 
@@ -1637,7 +1624,8 @@ class doctor_attentions_co(osv.osv):
 	#Funcion para cargar los seguimientos paraclinicos que tenga el paciente
 	def _get_paraclinical_monitoring(self, cr, uid, ids, context=None):
 		if ids:
-			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient'])] )
+			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient_id'])] )
+		if 	id_patient:
 			return self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('patient_id', '=', id_patient[0])])
 		return self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [])
 
