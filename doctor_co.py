@@ -179,7 +179,7 @@ class doctor_patient_co(osv.osv):
 		'particular_predeterminada': fields.boolean('Predeterminar Particular'),
 		'semestre_actual':fields.selection(semestre, 'Semestre Actual'),
 		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios'),
-		'programa_academico_id': fields.many2one('doctor.programa_academico', 'Programa Académico', domain="[('nivel_estudio','=',nivel_estudio)]"),
+		'programa_academico_id': fields.many2one('doctor.programa_academico', 'Programa Académico'),
 		'filter_ocupacion': fields.char('Filtro ocupación', size=5),
 		'neighborhood_id':fields.many2one('res.country.state.city.neighborhood', 'Barrio', required=False, domain="[('country_id','=',country_id),('state_id','=',state_id), ('city_id','=',city_id)]"),
 		'lateralidad_id':fields.selection(lateralidad, 'Lateralidad'),
