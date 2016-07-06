@@ -70,6 +70,7 @@ Location change for "Doctor" module in Colombia
               'data/l10n_doctor_paraclinical_monitoring.xml',
               'data/l10n_doctor_co_programas_academicos.xml',
               'data/l10n_neighborhood_co_data.xml',
+              'data/l10n_dependencias_co_data.xml',
               'doctor_report.xml',
 
     ],

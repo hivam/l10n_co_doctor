@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data noupdate="0">
+  <data noupdate="1">
         <record id="res_partner_id_0001" model="res.partner">
             <field name="is_company">True</field>
             <field name="tdoc">31</field>

@@ -1777,5 +1777,21 @@
 			<field name="name">Obreros y Ayudantes en la Elaboración de Alimentos y Bebidas</field>
 			<field name="codigo">9615</field>
 		</record>
+		<record id="tipo_ocupacion_445" model="doctor.patient.ocupacion">
+			<field name="name">Egresado</field>
+			<field name="codigo">9616</field>
+		</record>
+		<record id="tipo_ocupacion_446" model="doctor.patient.ocupacion">
+			<field name="name">Docente</field>
+			<field name="codigo">9617</field>
+		</record>
+		<record id="tipo_ocupacion_447" model="doctor.patient.ocupacion">
+			<field name="name">Empleado</field>
+			<field name="codigo">9618</field>
+		</record>
+		<record id="tipo_ocupacion_448" model="doctor.patient.ocupacion">
+			<field name="name">Otros</field>
+			<field name="codigo">9619</field>
+		</record>
 	</data>
 </openerp>
