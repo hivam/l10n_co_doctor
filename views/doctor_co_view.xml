@@ -144,16 +144,7 @@
 										<legend class="texto_legend">Datos del Estudiante</legend>
 										<group col="2" colspan="2">
 											<field name="nivel_estudio"/>
-											<field name="programa_academico_id">
-												<form>
-													<group>
-													<field name="code"/>
-													<field name="name"/>
-													<field name="nivel_estudio"/>
-
-													</group>
-												</form>
-											</field>
+											<field name="programa_academico_id"/>
 											<field name="semestre_actual"/>
 											<field name="lateralidad_id"/>
 										</group>
@@ -162,15 +153,7 @@
 										<legend class="texto_legend">Datos del Docente</legend>
 										<group col="2" colspan="2">
 											<field name="nivel_estudio"/>
-											<field name="programa_academico_id" String="Programa">
-												<form>
-													<group>
-													<field name="code"/>
-													<field name="name"/>
-													<field name="nivel_estudio"/>
-													</group>
-												</form>
-											</field>
+											<field name="programa_academico_id" String="Programa"/>
 											<field name="lateralidad_id"/>
 										</group>
 									</fieldset>
@@ -178,15 +161,7 @@
 										<legend class="texto_legend">Datos del Egresado</legend>
 										<group col="2" colspan="2">
 											<field name="nivel_estudio"/>
-											<field name="programa_academico_id" String="Programa">
-												<form>
-													<group>
-													<field name="code"/>
-													<field name="name"/>
-													<field name="nivel_estudio"/>
-													</group>
-												</form>
-											</field>
+											<field name="programa_academico_id" String="Programa"/>
 											<field name="lateralidad_id"/>
 										</group>
 									</fieldset>
