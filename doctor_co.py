@@ -2521,6 +2521,7 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('06',u'Examen Físico'),
 		('07', u'Análisis'),
 		('08', 'Conducta'),
+		('09', 'Auxiliar de enfermermeria'),
 
 	]
 
