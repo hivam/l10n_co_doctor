@@ -62,20 +62,6 @@ class doctor_patient_co(osv.osv):
 		('3', 'Dias'),
 	]
 
-	#Niveles de estudio
-	nivel = [
-		('1', 'PREGRADO'),
-		('2', 'POSGRADO'),
-		('3', 'MAESTRÍAS'),
-		('4', 'ESPECIALIZACIÓN'),
-	]
-
-	#Lateralidad
-	lateralidad = [
-		('1', 'DIESTRO'),
-		('2', 'ZURDO'),
-		('3', 'AMBIDIESTRO'),
-	]
 
 	#Semestre actual
 	semestre = [
@@ -91,6 +77,22 @@ class doctor_patient_co(osv.osv):
 		(10, 'DIEZ'),
 		(11, 'ONCE'),
 		(12, 'DOCE'),
+	]
+
+	#Niveles de estudio
+	nivel_estudio = [
+		('1', 'PREGRADO'),
+		('2', 'POSGRADO'),
+		('3', 'MAESTRÍAS'),
+		('4', 'ESPECIALIZACIÓN'),
+	]
+
+
+	#Lateralidad
+	lateralidad = [
+		('1', 'DIESTRO'),
+		('2', 'ZURDO'),
+		('3', 'AMBIDIESTRO'),
 	]
 
 	def _get_edad(self, cr, uid, ids, field_name, arg, context=None):
@@ -178,13 +180,13 @@ class doctor_patient_co(osv.osv):
 		'prepagada_predeterminada': fields.boolean('Predeterminada'),
 		'particular_predeterminada': fields.boolean('Predeterminar Particular'),
 		'semestre_actual':fields.selection(semestre, 'Semestre Actual'),
-		'nivel_estudio':fields.selection(nivel, 'Nivel de Estudios'),
-		'programa_academico_id': fields.many2one('doctor.programa_academico', 'Programa Académico'),
 		'filter_ocupacion': fields.char('Filtro ocupación', size=5),
 		'neighborhood_id':fields.many2one('res.country.state.city.neighborhood', 'Barrio', required=False, domain="[('country_id','=',country_id),('state_id','=',state_id), ('city_id','=',city_id)]"),
-		'lateralidad_id':fields.selection(lateralidad, 'Lateralidad'),
 		'description_others': fields.char('Descripción', size=32),
 		'dependencia_empleado_id': fields.many2one('doctor.dependencia', 'Dependencia'),
+		'nivel_educativo':fields.selection(nivel_estudio, 'Nivel de Estudio'),
+		'programa_id':fields.many2one('doctor.programa_academico', 'Programa Academico', required=False, domain="[('nivel_estudio','=', str(nivel_educativo))]"),
+		'lateralidad_id':fields.selection(lateralidad, 'Lateralidad'),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -387,7 +389,7 @@ class doctor_programa_academico(osv.osv):
 	]
 
 	_name= 'doctor.programa_academico'
-	#_rec_name='name'
+	_rec_name='name'
 
 	_columns = {
 		'code':fields.char('Código', required=True),
