@@ -144,16 +144,7 @@
 										<legend class="texto_legend">Datos del Estudiante</legend>
 										<group col="2" colspan="2">
 											<field name="nivel_estudio"/>
-											<field name="programa_academico_id">
-												<form>
-													<group>
-													<field name="code"/>
-													<field name="name"/>
-													<field name="nivel_estudio"/>
-
-													</group>
-												</form>
-											</field>
+											<field name="programa_academico_id"/>
 											<field name="semestre_actual"/>
 											<field name="lateralidad_id"/>
 										</group>
@@ -162,15 +153,7 @@
 										<legend class="texto_legend">Datos del Docente</legend>
 										<group col="2" colspan="2">
 											<field name="nivel_estudio"/>
-											<field name="programa_academico_id" String="Programa">
-												<form>
-													<group>
-													<field name="code"/>
-													<field name="name"/>
-													<field name="nivel_estudio"/>
-													</group>
-												</form>
-											</field>
+											<field name="programa_academico_id" String="Programa"/>
 											<field name="lateralidad_id"/>
 										</group>
 									</fieldset>
@@ -178,15 +161,7 @@
 										<legend class="texto_legend">Datos del Egresado</legend>
 										<group col="2" colspan="2">
 											<field name="nivel_estudio"/>
-											<field name="programa_academico_id" String="Programa">
-												<form>
-													<group>
-													<field name="code"/>
-													<field name="name"/>
-													<field name="nivel_estudio"/>
-													</group>
-												</form>
-											</field>
+											<field name="programa_academico_id" String="Programa"/>
 											<field name="lateralidad_id"/>
 										</group>
 									</fieldset>
@@ -612,7 +587,18 @@
 				</record>
 
 
-
+				<!-- doctor disability Form View -->
+				<record model="ir.ui.view" id="view_doctor_attentions_disability_form_inherit">
+					<field name="name">Incapacidad</field>
+					<field name="model">doctor.attentions.disability</field>
+					<field eval="7" name="priority"/>
+					<field name="inherit_id" ref="doctor.view_doctor_attentions_disability_form"/>
+					<field name="arch" type="xml">
+							<field name="disability_ids" position="after">
+								<field name="date_end" on_change="onchange_disability(disability_ids, date_end)"/>
+							</field>
+					</field>
+				</record>
 
 
 				<!-- doctor disability Form View -->

@@ -1620,15 +1620,6 @@ class doctor_attentions_co(osv.osv):
 		_logger.info(res)
 		return res
 
- 
-	#Funcion para cargar los seguimientos paraclinicos que tenga el paciente
-	def _get_paraclinical_monitoring(self, cr, uid, ids, context=None):
-		if ids:
-			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient_id'])] )
-		if 	id_patient:
-			return self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [('patient_id', '=', id_patient[0])])
-		return self.pool.get('doctor.paraclinical_monitoring').search(cr, uid, [])
-
 
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean('NC', states={'closed': [('readonly', True)]}),
@@ -1684,7 +1675,6 @@ class doctor_attentions_co(osv.osv):
 		'inv' : True,
 		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
 		'complicacion_eventoadverso' : '01',
-		'filter_paraclinical_monitoring_ids':_get_paraclinical_monitoring,
 	}
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
