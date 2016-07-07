@@ -612,18 +612,7 @@
 				</record>
 
 
-				<!-- doctor disability Form View -->
-				<record model="ir.ui.view" id="view_doctor_attentions_disability_form_inherit">
-					<field name="name">Incapacidad</field>
-					<field name="model">doctor.attentions.disability</field>
-					<field eval="7" name="priority"/>
-					<field name="inherit_id" ref="doctor.view_doctor_attentions_disability_form"/>
-					<field name="arch" type="xml">
-							<field name="disability_ids" position="after">
-								<field name="date_end" on_change="onchange_disability(disability_ids, date_end)"/>
-							</field>
-					</field>
-				</record>
+
 
 
 				<!-- doctor disability Form View -->
