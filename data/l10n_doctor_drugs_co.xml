@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data noupdate="True">
+    <data noupdate="1">
         <record model='doctor.drugs' id='D-1'>
                 <field name='atc_id' ref='R01AD01'/>
                 <field name='drugs_concentration'>0,058 %/100 g</field>
