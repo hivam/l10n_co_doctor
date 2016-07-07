@@ -222,6 +222,12 @@ class doctor_patient_co(osv.osv):
 
 		return res
 
+
+	def create(self, cr, uid, vals, context=None):
+		_logger.info(vals)
+
+		return super(doctor_patient_co,self).create(cr, uid, vals, context=context)
+
 	def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
 		res={'value':{}}
 		
