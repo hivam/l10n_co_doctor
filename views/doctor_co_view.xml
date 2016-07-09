@@ -140,47 +140,19 @@
 													<field name="street"/>
 													<field name="zona" style="width: 45%%"/>
 											</group>
-									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'estu')]}">
-										<legend class="texto_legend">Datos del Estudiante</legend>
-										<group col="2" colspan="2">
-											<field name="nivel_estudio"/>
-											<field name="programa_academico_id"/>
-											<field name="semestre_actual"/>
-											<field name="lateralidad_id"/>
-										</group>
-									</fieldset>
-									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'doc')]}">
-										<legend class="texto_legend">Datos del Docente</legend>
-										<group col="2" colspan="2">
-											<field name="nivel_estudio"/>
-											<field name="programa_academico_id" String="Programa"/>
-											<field name="lateralidad_id"/>
-										</group>
-									</fieldset>
-									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'egre')]}">
-										<legend class="texto_legend">Datos del Egresado</legend>
-										<group col="2" colspan="2">
-											<field name="nivel_estudio"/>
-											<field name="programa_academico_id" String="Programa"/>
-											<field name="lateralidad_id"/>
-										</group>
-									</fieldset>
-									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'emp')]}">
-										<legend class="texto_legend">Datos del Empleado</legend>
-										<group col="2" colspan="2">
-											<field name="dependencia_empleado_id"/>
-											<field name="lateralidad_id"/>
-										</group>
-										<br/>
-									</fieldset>
-									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'otro')]}">
+
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'estu'), ('filter_ocupacion','!=', 'doc'),('filter_ocupacion','!=', 'egre'), ('filter_ocupacion','!=', 'emp'),('filter_ocupacion','!=', 'otro')]}">
 										<legend class="texto_legend">Datos Complementarios</legend>
-										<group col="2" colspan="2">
-											<field name="description_others"/>
+										<group col="2">
+											<field name="nivel_educativo" attrs="{'invisible': ['|',('filter_ocupacion','=', 'emp'), ('filter_ocupacion','=', 'otro')]}"/>
+											<field name="programa_id" attrs="{'invisible': ['|',('filter_ocupacion','=', 'emp'), ('filter_ocupacion','=', 'otro')]}"/>
+											<field name="semestre_actual" attrs="{'invisible': [('filter_ocupacion','!=', 'estu')]}"/>
+											<field name="description_others" attrs="{'invisible': [('filter_ocupacion','!=', 'otro')]}"/>
+											<field name="dependencia_empleado_id" attrs="{'invisible': [('filter_ocupacion','!=', 'emp')]}"/>
 											<field name="lateralidad_id"/>
 										</group>
-										<br/>
 									</fieldset>
+
 								</fieldset>
 								</xpath>
 
