@@ -1739,8 +1739,123 @@ class doctor_attentions_co(osv.osv):
 		vals['activar_notas_confidenciales'] = False
 		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
+
+
+	def resumen_historia(self, cr, uid, ids, context=None):
+
+		data_obj = self.pool.get('ir.model.data')
+		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_attentions_resumen_form')
+		view_id = data_obj.browse(cr, uid, result).res_id
+
+		_logger.info(context)
+
+		return {
+			'type': 'ir.actions.act_window',
+			'name': 'Resumen historia',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_id': False,
+			'res_model': 'doctor.attentions.resumen',
+			'context': context or None,
+			'view_id': [view_id] or False,
+			'nodestroy': False,
+			'target': 'new'
+		}
+
+		return True
+
+
 doctor_attentions_co()
 
+
+class doctor_attention_resumen(osv.osv):
+
+	_name = 'doctor.attentions.resumen'
+
+	_columns = {
+
+		'diganosticos_resumen': fields.text('Diganosticos', readonly=True),
+		'tipo_diagnostico': fields.text('Tipo diagnostico', readonly=True),
+		'tratamiento_resumen': fields.text('Tratamientos', readonly=True),
+		'analisis_resumen': fields.text('Analisis', readonly=True),
+		'review_systems_id': fields.one2many('doctor.review.systems', 'attentiont_id', 'Revision por Sistema', readonly=True),
+		'attentions_past_ids': fields.one2many('doctor.attentions.past', 'attentiont_id', 'Antecedentes',  readonly= True),
+		'pathological_past': fields.one2many('doctor.diseases.past', 'attentiont_id', 'Pathological past', readonly=True),
+		'drugs_past': fields.one2many('doctor.atc.past', 'attentiont_id', 'Drugs past', ondelete='restrict', readonly=True),
+		'drugs_ids': fields.one2many('doctor.prescription', 'attentiont_id', 'Drugs prescription', readonly = True),
+	}
+
+
+	def default_get(self, cr, uid, fields, context=None):
+		res = super(doctor_attention_resumen,self).default_get(cr, uid, fields, context=context)
+		modelo_buscar = self.pool.get('doctor.attentions')
+		paciente_id = context.get('patient_id')
+		resumen_analisis = ''
+		tratamiento_resumen = ''
+		diagnosticos_resumen = ''
+		tipo_diagnosticos_resumen=''
+		diagnosticos_ids = []
+		revision_por_sistema_ids = []
+		antecedentes_ids = []
+		antecedentes_patologicos_ids = []
+		antecedentes_farmacologicos_ids = []
+		medicamentos_ids = []
+		if paciente_id:
+			ids_ultimas_historias = modelo_buscar.search(cr, uid, [('patient_id', '=', paciente_id)], limit=3, context=context)
+
+			for datos in modelo_buscar.browse(cr, uid, ids_ultimas_historias, context=context):
+				
+				if datos.analysis:
+					resumen_analisis += datos.analysis + '\n'
+
+				if datos.conduct: 
+					tratamiento_resumen += datos.conduct + '\n'
+				
+				if datos.diseases_ids:
+					for i in range(0,len(datos.diseases_ids),1):
+						if datos.diseases_ids[i].diseases_id not in diagnosticos_ids:
+
+							if datos.diseases_ids[i].diseases_type == 'main':
+								tipo_diagnosticos_resumen += 'Principal' + '\n'
+							else:
+								tipo_diagnosticos_resumen += 'Relacionado' + '\n'
+
+							diagnosticos_resumen += datos.diseases_ids[i].diseases_id.name + '\n'
+							diagnosticos_ids.append(datos.diseases_ids[i].diseases_id)
+
+				if datos.review_systems_id:
+					for i in range(0,len(datos.review_systems_id),1):
+						revision_por_sistema_ids.append((0,0,{'system_category' : datos.review_systems_id[i].system_category.id,
+															'review_systems': datos.review_systems_id[i].review_systems}))
+
+
+				if datos.pathological_past:
+					for i in range(0,len(datos.pathological_past),1):
+						antecedentes_patologicos_ids.append((0,0,{'diseases_id' : datos.pathological_past[i].diseases_id.id}))
+
+				if datos.drugs_past:
+					for i in range(0,len(datos.drugs_past),1):
+						antecedentes_farmacologicos_ids.append((0,0,{'atc_id' : datos.drugs_past[i].atc_id.id}))
+
+				if datos.drugs_ids:
+					for i in range(0,len(datos.drugs_ids),1):
+						medicamentos_ids.append((0,0,{'drugs_id' : datos.drugs_ids[i].drugs_id.id}))
+					
+			res['analisis_resumen']	= resumen_analisis
+			res['tratamiento_resumen'] = tratamiento_resumen
+			res['diganosticos_resumen']	= diagnosticos_resumen
+			res['tipo_diagnostico'] = tipo_diagnosticos_resumen
+			res['review_systems_id'] = revision_por_sistema_ids
+			res['attentions_past_ids'] = antecedentes_ids
+			res['pathological_past'] = antecedentes_patologicos_ids
+			res['drugs_past'] = antecedentes_farmacologicos_ids
+			res['drugs_ids'] = medicamentos_ids
+
+		return res
+
+
+
+doctor_attention_resumen()
 
 #Seguimientos paraclinicos del paciente
 class doctor_paraclinical_monitoring(osv.osv):

@@ -594,6 +594,8 @@
 						<field name="inherit_id" ref="doctor.view_doctor_attentions_form"/>
 						<field name="arch" type="xml">
 								
+
+
 								<xpath expr="//form/group/group" position="after">
 								<group colspan='2' >
 										<field name="finalidad_consulta"/>
@@ -603,6 +605,13 @@
 								</group>
 								</xpath>
 
+
+								<xpath expr="/form[@string='Attentions']/header/button[@string='Finish attention']" position="after">
+									<button string="Resumen historia" name="resumen_historia" type="object" class="oe_highlight" context="{'patient_id' : patient_id}"/>
+								</xpath>
+								
+									
+								
 
 								<field name="review_systems_id" position="after">
 										<label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
@@ -918,6 +927,62 @@
 				 </record> 
 				 <!-- Fin de la secuencia -->
 
+
+				<record model="ir.ui.view" id="view_doctor_attentions_resumen_form">
+						<field name="name">Resumen historia clinica</field>
+						<field name="model">doctor.attentions.resumen</field>
+						<field name="arch" type="xml">
+								<form string="Resumen historia clinica" version="7.0">
+									<group>
+										<legend class="texto_legend">Resumen ultimas 3 atenciones</legend>
+										<separator/>
+										<legend class="texto_legend">Diagnosticos</legend>
+										<group colspan='2' col='4'>
+											<field name="diganosticos_resumen"/>
+											<field name="tipo_diagnostico"/>
+										</group>
+										<separator/>
+										<separator/>
+										<legend class="texto_legend">Medicamentos</legend>
+										<field name="drugs_ids" colspan="4" nolabel="1">
+			                                <tree string="Drugs prescription" editable="top">
+			                                    <field name="drugs_id"/>
+			                                </tree>
+                           			 	</field>
+                           			 	<separator/>
+                           			 	<legend class="texto_legend">Tratamiento y Analisis</legend>
+										<group colspan='2' col='4'>
+											<field name="tratamiento_resumen"/>
+											<field name="analisis_resumen"/>
+										</group>
+										<separator/>
+										<separator/>
+                        				<field name="review_systems_id" nolabel="1">
+                            				<tree string="Review systems" editable="top">
+                                				<field name="system_category"/>
+                                				<field name="review_systems"/>
+                            				</tree>
+			                            </field>
+                            			<field name="attentions_past_ids" nolabel="1">
+			                                <tree string="Antecedentes" editable="top">
+			                                    <field name="past_category"/>
+			                                    <field name="past"/>
+			                                </tree>
+                            			</field>
+                            			<field name="pathological_past" nolabel="1">
+			                                <tree string="Antecedentes Patológicos" editable="top">
+			                                    <field name="diseases_id"/>
+			                                </tree>
+                            			</field>
+                            			<field name="drugs_past" nolabel="1">
+			                                <tree string="Add Past" editable="top">
+			                                    <field name="atc_id"/>
+			                                </tree>
+                            			</field>
+									</group>
+								</form>
+						</field>
+				</record>
 
 
 				<!-- doctor speciality Form View -->
