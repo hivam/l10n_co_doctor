@@ -1673,7 +1673,7 @@ class doctor_attentions_co(osv.osv):
 		'filter_segumiento_id': fields.many2one('doctor.name_paraclinical_monitoring', 'Seguimiento Paraclínico'),
 		'filter_paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', 'Seguimiento Paraclínico'),
 		'is_complicacion_eventoadverso':fields.boolean('Complicación o Evento Adverso'),
-		'paraclinical_monitoring':fields.boolean('Consultar Seguimientos')
+		'paraclinical_monitoring':fields.boolean('Consultar Seguimientos'),
 	}
 
 
