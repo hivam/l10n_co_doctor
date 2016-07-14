@@ -676,10 +676,18 @@
 													<group col='1'>
 														<fieldset class="fieldset_margen">
 														<legend class="texto_legend">Seguimientos Paraclínicos</legend>
-															<group colspan="3" col="2">
-																<field name="paraclinical_monitoring"/>
+															<group colspan="6" col="4">
+																<field name="ver_reporte_paraclinico"/>
+																<field name="paraclinical_monitoring" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}"/>
 															</group>
-															<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
+														<group colspan="2" col='1'>
+															
+															<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+															
+															<field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+														</group>
+															<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}">
 																<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
 																	<group colspan='1' col='1'>
 																		<field name="seguimientos_id">
