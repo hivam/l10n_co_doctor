@@ -1674,11 +1674,7 @@ class doctor_attentions_co(osv.osv):
 		'filter_paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', u'Seguimiento Paraclínico'),
 		'is_complicacion_eventoadverso':fields.boolean('Complicación o Evento Adverso'),
 		'paraclinical_monitoring':fields.boolean('Consultar Seguimientos'),
-<<<<<<< HEAD
-=======
 		'ver_reporte_paraclinico':fields.boolean('Seguimientos Paraclinico'),
-
->>>>>>> pruebas
 	}
 
 
