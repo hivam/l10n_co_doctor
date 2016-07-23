@@ -8,10 +8,11 @@
       <field name="model">doctor.attentions</field>
       <field name="inherit_id" ref="doctor.view_doctor_attentions_form"/>
       <field name="arch" type="xml">
-        <xpath expr="//label[@string='Reason consultation']" position="before">
+        <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[1]/notebook[@colspan='4']/page[1]/group[1]/label[@for='reason_consultation']@string" position="before">
           <field name="motivo_consulta"/>
         </xpath>
-        <xpath expr="//field[@name='height']" position="replace">
+
+        <xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[2]/notebook[@colspan='4']/page[1]/group[@colspan='4']/fieldset[1]/group//field[@name='height']" position="replace">
           <field name="height" on_change="onchange_calcularImc(weight, height)"  nolabel="1"/>
         </xpath>
         <xpath expr="//field[@name='body_mass_index']" position="after">
