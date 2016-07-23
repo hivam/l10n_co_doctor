@@ -822,7 +822,101 @@
 										</page>
 								</xpath>
 
+
+								<!--añadiendo onchange a campo drugs_id de medicamentos-->
+						
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="attributes">
+										<attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
+								</xpath>
+							
+								<!--fin de añadiendo onchange a campo drugs_id de medicamentos-->
+
+								<!--quitando campos de medicamentos-->
 								
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
+										 <attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
+										 <attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[2]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
+										<attribute name="string">Prescripcion</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div/label[@for='total_quantity']" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[2]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[1]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]//group[2]" position="replace"/>
+								
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="after">
+										<field name="cantidad_total"/>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[1]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>							
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[2]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[3]" position="attributes">
+										<attribute name="invisible">1</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]//group[1]" position="after">
+										<field name="indicacion_tomar" nolabel="1"/>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[2]" position="replace"/>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" position="replace"/>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']//page[2]" position="attributes">
+										 <attribute name="string">Prescripcion</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']" position="attributes">
+										 <attribute name="string">Medicamentos</attribute>
+								</xpath>
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']//page[2]" position="inside">
+										<page string="Otra Prescripcion"> 
+												<separator string="Otra Prescripción" colspan="4"/>
+												<field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
+														<form string="Otra Prescripción">
+																<group colspan='3' col='2'>
+																		<field name="procedures_id" domain="[('is_medicamento_prescripcion', '=', True)]" context="{'medicamento':'medicamentos'}"/>
+																		 <field name="prescripcion"/>
+																		 <field name="recomendacion"/>
+																		 <field name="plantilla_id" on_change="onchange_plantillas(plantilla_id)" domain="[('tipo_plantilla', '=', '03')]"/>
+																</group>   
+														</form>
+												</field>
+										</page>
+								</xpath>
+	
+								<!--fin quitando campos de medicamentos-->
+
 						</field>
 				</record>  
 
