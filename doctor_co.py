@@ -1647,7 +1647,7 @@ class doctor_attentions_co(osv.osv):
 											   ],u'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
 		'inv': fields.function(_get_creador, type="boolean", store= False, 
 								readonly=True, method=True, string='inv',),	
-		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
+		'motivo_consulta' : fields.char("Motivo de Consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
 		'notas_confidenciales': fields.text('Notas Confidenciales', states={'closed': [('readonly', True)]}),
 
 		'otros_antecedentes': fields.text('Otros Antecedentes',states={'closed': [('readonly', True)]}),
