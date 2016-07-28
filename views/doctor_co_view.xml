@@ -495,7 +495,7 @@
 										</footer>
 										<field name="schedule_espacios_ids" colspan="4" readonly="1">
 											<field name="auto_refresh">5</field>
-												<tree string="Espacios" limit="100" create="false" colors="red:estado_cita_espacio=='Asignado';">
+												<tree string="Espacios" limit="100" create="false" colors="red:estado_cita_espacio=='Asignado'; green:estado_cita_espacio=='Sin asignar';">
 													<field name="patient_id"/>
 													<field name="fecha_inicio" widget="time"/>
 													<field name="fecha_fin" widget="time"/>
@@ -671,113 +671,25 @@
 											 <field name="complicacion_eventoadverso_observacion" nolabel="1" groups="doctor.group_doctor_physician" attrs="{'invisible': [('is_complicacion_eventoadverso', '=', False)]}"/>
 										</group>
 										<group colspan='3' col='1'>
-											<notebook>
-												<page string="Seguimientos Paraclínicos">
-													<group col='1'>
-														<fieldset class="fieldset_margen">
-														<legend class="texto_legend">Seguimientos Paraclínicos</legend>
-															<group colspan="6" col="4">
-																<field name="ver_reporte_paraclinico"/>
-																<field name="paraclinical_monitoring" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}"/>
-															</group>
-														<group colspan="2" col='1'>
-															
-															<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
-															
-															<field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
-
-														</group>
-															<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}">
-																<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
-																	<group colspan='1' col='1'>
-																		<field name="seguimientos_id">
-																			<form>
-																				<group colspan='4' col='2'>
-																				<field name="code" invisible="1"/>
-																				<field name="name"/>
-																				</group>
-																			</form>
-																		</field>
-																	</group> 
-																	<group colspan='4' col='2'>
-																		<field name="result"/>
-																		<field name="regitration_date"/>
-																	</group> 
-																	<group colspan='4' col='2'>
-																		<field name="patient_id" invisible="1"/>
-																		<field name="doctor_id" invisible="1"/>
-																	</group>			
-																</form>
-																<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
-																	<field name="seguimientos_id"/>
-																	<field name="result"/>
-																	<field name="regitration_date"/>
-																	<field name="patient_id" invisible="1"/>
-																	<field name="doctor_id" invisible="1"/>
-																</tree>
-															</field>
-														</fieldset>
-													</group>
-													<group colspan='2' col='2'>
-														<fieldset class="fieldset_margen" attrs="{'invisible': [('paraclinical_monitoring', '=', False)]}">
-															<legend class="texto_legend">Filtro de Seguimientos</legend>
-															<br/>
-															<group colspan="4" col="2">
-																<label for="filter_segumiento_id" string="Filtrar Por:" groups="doctor.group_doctor_physician"/>
-																<field name="filter_segumiento_id" style="width:45%%" on_change='onchange_paraclinical_monitoring(filter_segumiento_id, patient_id)' create="false" nolabel="1" context="{'patient_id' : patient_id, 'doctor_id': professional_id}"/>
-															</group>
-															<field name="filter_paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
-																<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
-																	<group colspan='1' col='1'>
-																		<field name="seguimientos_id">
-																			<form>
-																				<group colspan='4' col='2'>
-																				<field name="code" invisible="1"/>
-																				<field name="name"/>
-																				</group>
-																			</form>
-																		</field>
-																	</group> 
-																	<group colspan='4' col='2'>
-																		<field name="result"/>
-																		<field name="regitration_date"/>
-																	</group> 
-																	<group colspan='4' col='2'>
-																		<field name="patient_id" invisible="1"/>
-																		<field name="doctor_id" invisible="1"/>
-																	</group>			
-																</form>
-																<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]" create="false">
-																	<field name="seguimientos_id"/>
-																	<field name="result"/>
-																	<field name="regitration_date"/>
-																	<field name="patient_id" invisible="1"/>
-																	<field name="doctor_id" invisible="1"/>
-																</tree>
-															</field>
-														</fieldset>
-													</group>
-												</page>
-											</notebook>
 										</group >
 									
 								</xpath>
 
 								<field name="conduct" position="after">
 										<field name="inv" invisible="1"/> 
-										<label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
-										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+										<label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/>
+										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/>
 										<group col="2"> 
-												<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
+												<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
 										</group>
 										<group col="1" colspan="2">
-												<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/> 
+												<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/> 
 										</group>
 								</field>
 
 								<field name="analysis" position="after">
-										<label for="plantilla_analisis_id" string="Plantillas" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
-										<field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo"/>
+										<label for="plantilla_analisis_id" string="Plantillas" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/>
+										<field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/>
 								</field>
 								
 
@@ -825,7 +737,7 @@
 
 								<!--añadiendo onchange a campo drugs_id de medicamentos-->
 						
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="attributes">
 										<attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
 								</xpath>
 							
@@ -833,73 +745,73 @@
 
 								<!--quitando campos de medicamentos-->
 								
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
 										 <attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
 										 <attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[2]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[2]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
 										<attribute name="string">Prescripcion</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div/label[@for='total_quantity']" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div/label[@for='total_quantity']" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[2]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[2]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[1]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[1]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]//group[2]" position="replace"/>
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]//group[2]" position="replace"/>
 								
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="after">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="after">
 										<field name="cantidad_total"/>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[1]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[1]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>							
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[2]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[2]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[3]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[3]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]//group[1]" position="after">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]//group[1]" position="after">
 										<field name="indicacion_tomar" nolabel="1"/>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[2]" position="replace"/>
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[2]" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" position="replace"/>
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']//page[2]" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']//page[2]" position="attributes">
 										 <attribute name="string">Prescripcion</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']" position="attributes">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']" position="attributes">
 										 <attribute name="string">Medicamentos</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[@colspan='4']/notebook[@colspan='4']//page[2]" position="inside">
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']//page[2]" position="inside">
 										<page string="Otra Prescripcion"> 
 												<separator string="Otra Prescripción" colspan="4"/>
 												<field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
@@ -914,9 +826,99 @@
 												</field>
 										</page>
 								</xpath>
-	
+								
 								<!--fin quitando campos de medicamentos-->
 
+
+							<xpath expr="//group[@id='group_paraclinical']" position="after">
+								<notebook groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo">
+									<page string="Seguimientos Paraclínicos">
+										<group col='1'>
+											<fieldset class="fieldset_margen">
+												<group colspan="6" col="4">
+													<field name="ver_reporte_paraclinico"/>
+													<field name="paraclinical_monitoring" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}"/>
+												</group>
+												<group colspan="2" col='1'>
+													
+													<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+													
+													<field name="reportes_paraclinicos" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+												</group>
+												<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}">
+													<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+														<group colspan='1' col='1'>
+															<field name="seguimientos_id">
+																<form>
+																	<group colspan='4' col='2'>
+																	<field name="code" invisible="1"/>
+																	<field name="name"/>
+																	</group>
+																</form>
+															</field>
+														</group> 
+														<group colspan='4' col='2'>
+															<field name="result"/>
+															<field name="regitration_date"/>
+														</group> 
+														<group colspan='4' col='2'>
+															<field name="patient_id" invisible="1"/>
+															<field name="doctor_id" invisible="1"/>
+														</group>			
+													</form>
+													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+														<field name="seguimientos_id"/>
+														<field name="result"/>
+														<field name="regitration_date"/>
+														<field name="patient_id" invisible="1"/>
+														<field name="doctor_id" invisible="1"/>
+													</tree>
+												</field>
+											</fieldset>
+										</group>
+										<group colspan='2' col='2' groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo">
+											<fieldset class="fieldset_margen" attrs="{'invisible': [('paraclinical_monitoring', '=', False)]}">
+												<legend class="texto_legend">Filtro de Seguimientos</legend>
+												<br/>
+												<group colspan="4" col="2">
+													<label for="filter_segumiento_id" string="Filtrar Por:" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/>
+													<field name="filter_segumiento_id" style="width:45%%" on_change='onchange_paraclinical_monitoring(filter_segumiento_id, patient_id)' create="false" nolabel="1" context="{'patient_id' : patient_id, 'doctor_id': professional_id}"/>
+												</group>
+												<field name="filter_paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" domain="[('patient_id', '=', patient_id)]">
+													<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+														<group colspan='1' col='1'>
+															<field name="seguimientos_id">
+																<form>
+																	<group colspan='4' col='2'>
+																	<field name="code" invisible="1"/>
+																	<field name="name"/>
+																	</group>
+																</form>
+															</field>
+														</group> 
+														<group colspan='4' col='2'>
+															<field name="result"/>
+															<field name="regitration_date"/>
+														</group> 
+														<group colspan='4' col='2'>
+															<field name="patient_id" invisible="1"/>
+															<field name="doctor_id" invisible="1"/>
+														</group>			
+													</form>
+													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]" create="false">
+														<field name="seguimientos_id"/>
+														<field name="result"/>
+														<field name="regitration_date"/>
+														<field name="patient_id" invisible="1"/>
+														<field name="doctor_id" invisible="1"/>
+													</tree>
+												</field>
+											</fieldset>
+										</group>
+									</page>
+								</notebook>
+							</xpath>
 						</field>
 				</record>  
 
