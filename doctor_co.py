@@ -1248,11 +1248,11 @@ class doctor_appointment_co(osv.osv):
 
 		if id_sechedule_consultorio:
 			if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
-				if agenda_duracion.consultorio_id.multi_paciente:
-					max_pacientes = agenda_duracion.consultorio_id.numero_pacientes
-			else:
-				max_pacientes = 1
-
+				try:
+					max_pacientes = agenda_duracion.consultorio_id.multi_paciente
+				except:
+					max_pacientes = 1
+				
 		if ids_ingresos_diarios:
 			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
 			if fecha_hora_actual > time_begin:
