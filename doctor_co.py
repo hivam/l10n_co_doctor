@@ -779,12 +779,10 @@ class doctor_appointment_co(osv.osv):
 						#Si seleccionan repetir cita y no es multipaciente
 						if repetir_cita and not consultorio_multipaciente:
 							_logger.info('Es una cita repetida')
-							_logger.info('Entro aca')
 
 							#Son las fechas en las cuales se capturan el rango de las citas repetidas
 							fecha_inicio = datetime.strptime(vals['repetir_cita_fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 							fecha_fin = datetime.strptime(vals['repetir_cita_fecha_fin'], "%Y-%m-%d %H:%M:%S")
-
 
 
 							dia_semana = ['lunes', 'martes', 'miercoles','jueves', 'viernes','sabado','domingo',]
@@ -836,11 +834,6 @@ class doctor_appointment_co(osv.osv):
 
 							fecha_inicio_sin_hora = str(cita_inicio)[0:10]
 							fecha_inicio_sin_hora = datetime.strptime(fecha_inicio_sin_hora, "%Y-%m-%d")
-
-							_logger.info(cita_inicio)
-							_logger.info(cita_fin)
-							_logger.info(fecha_inicio_sin_hora)
-							_logger.info(schedule_id_appoitment)
 
 							#Hacemos la consulta para saber cuantas agendas repetidas hay
 							id_sechedule_cita= self.pool.get('doctor.schedule').search(cr, uid, [('professional_id', '=', professional_appointment_id), ('repetir_agenda', '=', True), ('id', '>=', schedule_id_appoitment), ('date_begin', '>=', str(fecha_inicio_sin_hora)),('date_end', '<=', str(cita_fin))], context=context)
