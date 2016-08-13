@@ -571,10 +571,12 @@ class doctor_appointment_co(osv.osv):
 		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
 			duration_appointment=duration_appointment_id.duration
 
-		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
-		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+		fecha_hora = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+		fecha_hora_act = datetime.strptime(fecha_hora, "%Y-%m-%d %H:%M:%S")
+		fecha_hora_actual = fecha_hora_act.replace(minute=00)
 
-		date_beging_appointment = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:00")
+		date_beging_appo = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:%S")
+		date_beging_appointment = date_beging_appo.replace(minute=00)
 		#Validamos si la hora actual es menor que la date_beging_appointment
 		#De tal manera que no se pueda asignar una cita
 		if fecha_hora_actual < date_beging_appointment:
@@ -1215,8 +1217,10 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
-		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		fecha_agenda_esp = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		fecha_agenda_espacio = fecha_agenda_esp.replace(minute=00)
+		time_beg = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		time_begin = time_beg.replace(minute=00)
 
 		if fecha_agenda_espacio >= time_begin:
 			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
@@ -1405,7 +1409,8 @@ class doctor_appointment_co(osv.osv):
 
 		if date_begin == fecha_inicio_agenda:
 			_logger.info('Es desde proxima cita')
-			fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
+			fecha_sin_min = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+			fecha_sin_minutos = fecha_sin_min.replace(minute=00)
 			#Capturamos la hora actual
 			hora_actual= str(date_today)[11:13]
 			#Capturamos el minuto actual
