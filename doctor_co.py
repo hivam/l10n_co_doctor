@@ -1215,8 +1215,10 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
-		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		fecha_agenda_esp = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		fecha_agenda_espacio = fecha_agenda_esp.replace(minute=00)
+		time_beg = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		time_begin = time_beg.replace(minute=00)
 
 		if fecha_agenda_espacio >= time_begin:
 			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
@@ -1405,7 +1407,8 @@ class doctor_appointment_co(osv.osv):
 
 		if date_begin == fecha_inicio_agenda:
 			_logger.info('Es desde proxima cita')
-			fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
+			fecha_sin_min = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+			fecha_sin_minutos = fecha_sin_min.replace(minute=00)
 			#Capturamos la hora actual
 			hora_actual= str(date_today)[11:13]
 			#Capturamos el minuto actual
