@@ -831,7 +831,7 @@
 								
 								<!--fin quitando campos de medicamentos-->
 
-
+							<!--
 							<xpath expr="//group[@id='group_paraclinical']" position="after">
 								<notebook groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo">
 									<page string="Seguimientos Paraclínicos">
@@ -921,6 +921,7 @@
 									</page>
 								</notebook>
 							</xpath>
+						-->
 						</field>
 				</record>  
 
