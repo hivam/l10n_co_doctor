@@ -735,15 +735,16 @@
 								</xpath>
 
 
-								<!--añadiendo onchange a campo drugs_id de medicamentos-->
+								<!--añadiendo onchange a campo drugs_id de medicamentos -->
 						
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="attributes">
 										<attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
 								</xpath>
+								
 							
 								<!--fin de añadiendo onchange a campo drugs_id de medicamentos-->
 
-								<!--quitando campos de medicamentos-->
+								<!--quitando campos de medicamentos -->
 								
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
 
@@ -827,8 +828,8 @@
 										</page>
 								</xpath>
 								
+								
 								<!--fin quitando campos de medicamentos-->
-
 
 							<xpath expr="//group[@id='group_paraclinical']" position="after">
 								<notebook groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo">
@@ -1093,7 +1094,6 @@
 						<field name="arch" type="xml">
 								<field name="code" position="attributes">
 										<attribute name="required">0</attribute>
-										<attribute name="invisible">1</attribute>
 								</field>
 						</field>
 				</record>

@@ -577,10 +577,12 @@ class doctor_appointment_co(osv.osv):
 		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
 			duration_appointment=duration_appointment_id.duration
 
-		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
-		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+		fecha_hora = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+		fecha_hora_act = datetime.strptime(fecha_hora, "%Y-%m-%d %H:%M:%S")
+		fecha_hora_actual = fecha_hora_act.replace(minute=00)
 
-		date_beging_appointment = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:00")
+		date_beging_appo = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:%S")
+		date_beging_appointment = date_beging_appo.replace(minute=00)
 		#Validamos si la hora actual es menor que la date_beging_appointment
 		#De tal manera que no se pueda asignar una cita
 		if fecha_hora_actual < date_beging_appointment:
@@ -790,6 +792,7 @@ class doctor_appointment_co(osv.osv):
 							fecha_inicio = datetime.strptime(vals['repetir_cita_fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 							fecha_fin = datetime.strptime(vals['repetir_cita_fecha_fin'], "%Y-%m-%d %H:%M:%S")
 
+
 							dia_semana = ['lunes', 'martes', 'miercoles','jueves', 'viernes','sabado','domingo',]
 
 							meses_anio = ['enero', 'febrero', 'marzo', 'abril','mayo', 'junio','julio', 'agosto',
@@ -834,13 +837,16 @@ class doctor_appointment_co(osv.osv):
 							#Estas variables se utilizan para poder calcular cuales agendas repetidas hay creadas en este rango de fechas
 							cita_inicio= datetime.strptime(vals['repetir_cita_fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 							cita_fin= datetime.strptime(vals['repetir_cita_fecha_fin'], "%Y-%m-%d %H:%M:%S")
+							cita_fin= cita_fin + timedelta(days=1)
 							cita_fin= cita_fin.strftime('%Y-%m-%d 23:59:59')
+
 							fecha_inicio_sin_hora = str(cita_inicio)[0:10]
 							fecha_inicio_sin_hora = datetime.strptime(fecha_inicio_sin_hora, "%Y-%m-%d")
 
 							#Hacemos la consulta para saber cuantas agendas repetidas hay
 							id_sechedule_cita= self.pool.get('doctor.schedule').search(cr, uid, [('professional_id', '=', professional_appointment_id), ('repetir_agenda', '=', True), ('id', '>=', schedule_id_appoitment), ('date_begin', '>=', str(fecha_inicio_sin_hora)),('date_end', '<=', str(cita_fin))], context=context)
-
+							_logger.info(id_sechedule_cita)
+							_logger.info(len(id_sechedule_cita))
 							#Calculamos la duracion de la cita
 							time_cita= self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)], context=context)
 							for duration in self.pool.get('doctor.appointment.type').browse(cr, uid , time_cita, context=context):
@@ -1447,10 +1453,6 @@ class doctor_appointment_co(osv.osv):
 			#Cantidad de espacios dependiendo el tipo de cita
 			cantidad_espacios=appointment_type/5
 			#Traemos todos los ids que esten apartir de la fecha actual
-			if str(fecha_modificada_hora_espacio) > fecha_fin_agenda:
-				_logger.info('No se puede asignar')
-				raise osv.except_osv(_('Error Próxima Cita!'),
-								 _('No se puede asignar citas a esta hora'))
 			id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id), ('fecha_inicio', '>=', str(fecha_modificada_hora_espacio)), ('fecha_fin', '<=', fecha_fin_agenda)], context=context)
 
 			#Recorremos todos los espacios que sean mayores a la fecha actual
@@ -2442,7 +2444,7 @@ class doctor_espacios(osv.osv):
 
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
 
-		search_schedule=self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '<', fecha_hora_actual), ('estado_cita_espacio'), '!=', 'Asignado'], context=context)
+		search_schedule=self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '<', fecha_hora_actual), ('estado_cita_espacio', '!=', 'Asignado')], context=context)
 
 		return super(doctor_espacios, self).unlink(cr, uid, search_schedule, context=context)
 
