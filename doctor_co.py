@@ -2438,7 +2438,7 @@ class doctor_espacios(osv.osv):
 
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
 
-		search_schedule=self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '<', fecha_hora_actual), ('estado_cita_espacio'), '!=', 'Asignado'], context=context)
+		search_schedule=self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '<', fecha_hora_actual), ('estado_cita_espacio', '!=', 'Asignado')], context=context)
 
 		return super(doctor_espacios, self).unlink(cr, uid, search_schedule, context=context)
 
