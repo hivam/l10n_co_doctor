@@ -185,7 +185,7 @@
 
 
 
-
+    <condPageBreak height="9cm"/>
     <section>
     [[o.certificados_ids  or removeParentNode('section') ]]
     <blockTable colWidths="534" style="Table6">

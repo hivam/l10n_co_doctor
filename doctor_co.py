@@ -577,10 +577,12 @@ class doctor_appointment_co(osv.osv):
 		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
 			duration_appointment=duration_appointment_id.duration
 
-		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
-		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+		fecha_hora = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+		fecha_hora_act = datetime.strptime(fecha_hora, "%Y-%m-%d %H:%M:%S")
+		fecha_hora_actual = fecha_hora_act.replace(minute=00)
 
-		date_beging_appointment = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:00")
+		date_beging_appo = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:%S")
+		date_beging_appointment = date_beging_appo.replace(minute=00)
 		#Validamos si la hora actual es menor que la date_beging_appointment
 		#De tal manera que no se pueda asignar una cita
 		if fecha_hora_actual < date_beging_appointment:
@@ -790,6 +792,7 @@ class doctor_appointment_co(osv.osv):
 							fecha_inicio = datetime.strptime(vals['repetir_cita_fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 							fecha_fin = datetime.strptime(vals['repetir_cita_fecha_fin'], "%Y-%m-%d %H:%M:%S")
 
+
 							dia_semana = ['lunes', 'martes', 'miercoles','jueves', 'viernes','sabado','domingo',]
 
 							meses_anio = ['enero', 'febrero', 'marzo', 'abril','mayo', 'junio','julio', 'agosto',
@@ -834,13 +837,16 @@ class doctor_appointment_co(osv.osv):
 							#Estas variables se utilizan para poder calcular cuales agendas repetidas hay creadas en este rango de fechas
 							cita_inicio= datetime.strptime(vals['repetir_cita_fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 							cita_fin= datetime.strptime(vals['repetir_cita_fecha_fin'], "%Y-%m-%d %H:%M:%S")
+							cita_fin= cita_fin + timedelta(days=1)
 							cita_fin= cita_fin.strftime('%Y-%m-%d 23:59:59')
+
 							fecha_inicio_sin_hora = str(cita_inicio)[0:10]
 							fecha_inicio_sin_hora = datetime.strptime(fecha_inicio_sin_hora, "%Y-%m-%d")
 
 							#Hacemos la consulta para saber cuantas agendas repetidas hay
 							id_sechedule_cita= self.pool.get('doctor.schedule').search(cr, uid, [('professional_id', '=', professional_appointment_id), ('repetir_agenda', '=', True), ('id', '>=', schedule_id_appoitment), ('date_begin', '>=', str(fecha_inicio_sin_hora)),('date_end', '<=', str(cita_fin))], context=context)
-
+							_logger.info(id_sechedule_cita)
+							_logger.info(len(id_sechedule_cita))
 							#Calculamos la duracion de la cita
 							time_cita= self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)], context=context)
 							for duration in self.pool.get('doctor.appointment.type').browse(cr, uid , time_cita, context=context):
@@ -1221,8 +1227,10 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
-		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		fecha_agenda_esp = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		fecha_agenda_espacio = fecha_agenda_esp.replace(minute=00)
+		time_beg = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		time_begin = time_beg.replace(minute=00)
 
 		if fecha_agenda_espacio >= time_begin:
 			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
@@ -1254,11 +1262,11 @@ class doctor_appointment_co(osv.osv):
 
 		if id_sechedule_consultorio:
 			if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
-				if agenda_duracion.consultorio_id.multi_paciente:
-					max_pacientes = agenda_duracion.consultorio_id.numero_pacientes
-			else:
-				max_pacientes = 1
-
+				try:
+					max_pacientes = agenda_duracion.consultorio_id.multi_paciente
+				except:
+					max_pacientes = 1
+				
 		if ids_ingresos_diarios:
 			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
 			if fecha_hora_actual > time_begin:
@@ -1411,7 +1419,8 @@ class doctor_appointment_co(osv.osv):
 
 		if date_begin == fecha_inicio_agenda:
 			_logger.info('Es desde proxima cita')
-			fecha_sin_minutos = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:00")
+			fecha_sin_min = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+			fecha_sin_minutos = fecha_sin_min.replace(minute=00)
 			#Capturamos la hora actual
 			hora_actual= str(date_today)[11:13]
 			#Capturamos el minuto actual
@@ -1444,10 +1453,6 @@ class doctor_appointment_co(osv.osv):
 			#Cantidad de espacios dependiendo el tipo de cita
 			cantidad_espacios=appointment_type/5
 			#Traemos todos los ids que esten apartir de la fecha actual
-			if str(fecha_modificada_hora_espacio) > fecha_fin_agenda:
-				_logger.info('No se puede asignar')
-				raise osv.except_osv(_('Error Próxima Cita!'),
-								 _('No se puede asignar citas a esta hora'))
 			id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id), ('fecha_inicio', '>=', str(fecha_modificada_hora_espacio)), ('fecha_fin', '<=', fecha_fin_agenda)], context=context)
 
 			#Recorremos todos los espacios que sean mayores a la fecha actual
@@ -1653,7 +1658,7 @@ class doctor_attentions_co(osv.osv):
 											   ],u'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
 		'inv': fields.function(_get_creador, type="boolean", store= False, 
 								readonly=True, method=True, string='inv',),	
-		'motivo_consulta' : fields.char("Motivo de la consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
+		'motivo_consulta' : fields.char("Motivo de Consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
 		'notas_confidenciales': fields.text('Notas Confidenciales', states={'closed': [('readonly', True)]}),
 
 		'otros_antecedentes': fields.text('Otros Antecedentes',states={'closed': [('readonly', True)]}),
@@ -1673,8 +1678,8 @@ class doctor_attentions_co(osv.osv):
 		'filter_segumiento_id': fields.many2one('doctor.name_paraclinical_monitoring', u'Seguimiento Paraclínico'),
 		'filter_paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', u'Seguimiento Paraclínico'),
 		'is_complicacion_eventoadverso':fields.boolean(u'Complicación o Evento Adverso'),
-		'paraclinical_monitoring':fields.boolean('Consultar Seguimientos'),
-		'ver_reporte_paraclinico':fields.boolean('Seguimientos Paraclinico'),
+		'paraclinical_monitoring':fields.boolean(u'Consultar Seguimientos'),
+		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
 	}
 
 
@@ -2438,7 +2443,7 @@ class doctor_espacios(osv.osv):
 
 		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
 
-		search_schedule=self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '<', fecha_hora_actual), ('estado_cita_espacio'), '!=', 'Asignado'], context=context)
+		search_schedule=self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '<', fecha_hora_actual), ('estado_cita_espacio', '!=', 'Asignado')], context=context)
 
 		return super(doctor_espacios, self).unlink(cr, uid, search_schedule, context=context)
 
