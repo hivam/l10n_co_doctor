@@ -1227,10 +1227,8 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		fecha_agenda_esp = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
-		fecha_agenda_espacio = fecha_agenda_esp.replace(minute=00)
-		time_beg = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
-		time_begin = time_beg.replace(minute=00)
+		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
 
 		if fecha_agenda_espacio >= time_begin:
 			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
@@ -1365,7 +1363,7 @@ class doctor_appointment_co(osv.osv):
 					})
 				else:
 					values.update({
-						'time_begin' :  str(fecha)
+						'time_begin' :  str(horario_cadena[0])
 					})
 
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
