@@ -2083,8 +2083,8 @@ class doctor_co_schedule_inherit(osv.osv):
 				fecha_begining= datetime.strptime(vals['date_begin'], "%Y-%m-%d %H:%M:%S")
 				fecha_fin_schedule= datetime.strptime(vals['date_end'], "%Y-%m-%d %H:%M:%S")
 			else:
-				fecha_begining = fecha_begining + timedelta(minutes=((-validar_hora)+5))
-				fecha_fin_schedule = fecha_fin_schedule + timedelta(minutes=((-validar_hora_fin)+5))
+				fecha_begining = fecha_begining + timedelta(minutes=((-validar_hora)+10))
+				fecha_fin_schedule = fecha_fin_schedule + timedelta(minutes=((-validar_hora_fin)+10))
 		
 
 		if vals['repetir_agenda']:
@@ -2093,8 +2093,8 @@ class doctor_co_schedule_inherit(osv.osv):
 					fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
 					fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
 				else:
-					fecha_inicio = fecha_inicio + timedelta(minutes=((-validar_hora_repetir_agenda)+5))
-					fecha_fin = fecha_fin + timedelta(minutes=((-validar_hora_repetir_agenda_fin)+5))
+					fecha_inicio = fecha_inicio + timedelta(minutes=((-validar_hora_repetir_agenda)+10))
+					fecha_fin = fecha_fin + timedelta(minutes=((-validar_hora_repetir_agenda_fin)+10))
 
 			if vals['dias_excepciones_id']:
 				for i in range(0,len(vals['dias_excepciones_id']),1):
