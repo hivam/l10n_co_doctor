@@ -25,6 +25,7 @@ access_doctor_doctor,access_doctor_doctor,model_doctor_doctor,doctor.group_docto
 access_assistant_espacios_assinstant,doctor.espacios,model_doctor_espacios,doctor.group_doctor_assistant,1,1,1,1
 access_assistant_monitoring_assinstant,doctor.paraclinical_monitoring,model_doctor_paraclinical_monitoring,doctor.group_doctor_assistant,1,1,1,1
 
+access_doctor_appointment_type_physician,doctor.appointment.type,model_doctor_appointment_type,doctor.group_doctor_physician,1,1,1,0
 access_doctor_doctor,access_doctor_doctor,model_doctor_doctor,doctor.group_doctor_physician,1,1,1,0
 access_doctor_espacios_physician,doctor.espacios,model_doctor_espacios,doctor.group_doctor_physician,1,1,1,1
 access_doctor_monitoring_physician,doctor.paraclinical_monitoring,model_doctor_paraclinical_monitoring,doctor.group_doctor_physician,1,1,1,1
