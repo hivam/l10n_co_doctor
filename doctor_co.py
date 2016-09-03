@@ -1221,10 +1221,8 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		fecha_agenda_esp = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
-		fecha_agenda_espacio = fecha_agenda_esp.replace(minute=00)
-		time_beg = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
-		time_begin = time_beg.replace(minute=00)
+		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
 
 		if fecha_agenda_espacio >= time_begin:
 			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
@@ -1242,7 +1240,8 @@ class doctor_appointment_co(osv.osv):
 		horarios_disponibles = int((agenda_duracion.schedule_duration * 60 ) / 1)
 		#Variable para calcular el inicio de la cita
 		fecha= self.calcular_fecha_proxima_cita(cr,uid, calcular_fecha_inicio_cita, fecha_hora_actual, appointment_type, schedule_id, context=context)
-
+		_logger.info('Esta es la fecha calculada')
+		_logger.info(fecha)
 		
 		for i in range(0,horarios_disponibles,1):
 			horarios.append(horarios[i] + timedelta(minutes=1)) 
@@ -1256,11 +1255,11 @@ class doctor_appointment_co(osv.osv):
 
 		if id_sechedule_consultorio:
 			if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
-				try:
-					max_pacientes = agenda_duracion.consultorio_id.multi_paciente
-				except:
-					max_pacientes = 1
-				
+				if agenda_duracion.consultorio_id.multi_paciente:
+					max_pacientes = agenda_duracion.consultorio_id.numero_pacientes
+			else:
+				max_pacientes = 1
+
 		if ids_ingresos_diarios:
 			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
 			if fecha_hora_actual > time_begin:
@@ -1316,13 +1315,18 @@ class doctor_appointment_co(osv.osv):
 							})
 						else:
 							if fecha_comparacion != fecha_inicio_comparacion_agenda:
+								_logger.info('uno')
 								values.update({
 									
-									'time_begin' : horario_cadena[0],
+									
+									'time_begin' : str(fecha),
 									'time_end' : horario_cadena[int(appointment_type/1)]
 								})
 							else:
+								_logger.info('dos')
+								_logger.info(fecha)
 								values.update({
+									
 									'time_begin' : str(fecha),
 									'time_end' : horario_cadena[int(appointment_type/1)]
 								})
@@ -1343,9 +1347,9 @@ class doctor_appointment_co(osv.osv):
 						'time_begin' :  str(fecha_hora_actual)
 					})
 				else:
+					_logger.info('tres')
 					values.update({
-						
-						'time_begin' :  str(fecha_hora_actual)
+						'time_begin' :  str(fecha)
 					})
 
 
@@ -1358,7 +1362,9 @@ class doctor_appointment_co(osv.osv):
 
 					})
 				else:
+					_logger.info('cuatro')
 					values.update({
+
 						'time_begin' :  str(fecha)
 					})
 
@@ -1397,7 +1403,7 @@ class doctor_appointment_co(osv.osv):
 
 	#Funcion para calcular la hora en que este disponible una cita dependiendo de la hora actual
 	def calcular_fecha_proxima_cita(self, cr, uid, date_begin, date_today, appointment_type, schedule_id, context=None):
-
+		_logger.info('Comienzo')
 		_logger.info(date_begin)
 		fecha_inicio=date_begin
 		estado_cita=None
@@ -1409,6 +1415,7 @@ class doctor_appointment_co(osv.osv):
 
 		if date_begin > fecha_inicio_agenda and date_begin <= fecha_fin_agenda:
 			_logger.info('Es desde espacios de la agenda')
+			_logger.info(date_begin)
 			return date_begin
 
 		if date_begin == fecha_inicio_agenda:
@@ -1467,7 +1474,8 @@ class doctor_appointment_co(osv.osv):
 					#Obtenemos la fecha inicio y fecha fin de dicho espacio de acuerdo al valor del iterador
 					fecha_inicio = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i-(cantidad_espacios-1)], context=context).fecha_inicio
 					fecha_fin = self.pool.get('doctor.espacios').browse(cr, uid, id_espacios[i], context=context).fecha_fin
-
+			_logger.info('La fecha inicio es:')
+			_logger.info(fecha_inicio)
 			return fecha_inicio
 
 		return date_begin
