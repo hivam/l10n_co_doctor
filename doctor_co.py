@@ -1432,11 +1432,13 @@ class doctor_appointment_co(osv.osv):
 			minuto_fecha_calculo=str(date_today)[15:16]
 			#Se compara el minuto actual y lo adelanta hasta ser igual a 5 
 			#De ser mayor a 5 se le suma uno
-			if int(minuto_fecha_calculo) <= 5:
+			if int(minuto_fecha_calculo) < 5:
 				#Si el minuto es menor que 5 le añadimos el 5 
+				_logger.info('es menor que 5')
 				minuto_actual=minuto_actual+ '5'
 			else:
 				#Si el minuto es mayor que le sumamos 1
+				_logger.info('es mayor o igual a 5')
 				sumar_minuto= sumar_minuto+1
 				minuto_actual= str(sumar_minuto)+ '0'
 
