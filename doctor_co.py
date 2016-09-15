@@ -690,93 +690,116 @@ class doctor_appointment_co(osv.osv):
 
 						#Se valida la cantidad de agendas a las cuales se le van asignar dicha cita
 						#De ser mayor se envia un mensaje de alerta
-						_logger.info('Duracion dias')
-						_logger.info(duracion_dias+1)
-						if duracion_dias+1 > len(id_sechedule_cita):
-							raise osv.except_osv(_('Lo sentimos!'),_('Para poder crear las citas repetitivas. Debes crear primero una agenda. \n Verifica la fecha final de la citas.'))
-						_logger.info(len(id_sechedule_cita))
+
+						#if duracion_dias+1 > len(id_sechedule_cita):
+						#	raise osv.except_osv(_('Lo sentimos!'),_('Para poder crear las citas repetitivas. Debes crear primero una agenda. \n Verifica la fecha final de la citas.'))
+						#_logger.info(len(id_sechedule_cita))
+
+						dias_traba=[]
+						j=0
+						for fecha_trabajar in self.pool.get('doctor.schedule').browse(cr, uid , id_sechedule_cita, context=context):
+							dias_a_trabajar=fecha_trabajar.date_begin
+							fecha_de_trabajo = str(dias_a_trabajar)[0:10]
+							fecha_de_trabajo = datetime.strptime(fecha_de_trabajo, "%Y-%m-%d")
+							dias_traba.append(fecha_de_trabajo)
 
 						#Se encierra en un while para asignaler un valor diferente al vals['schedule_id']
 						#En cada iteracion de acuerdo a la lista del id_schedule_cita
 						while i < len(id_sechedule_cita):
-							_logger.info('Entro')
-							_logger.info(id_sechedule_cita[i])
 
 							#Se ejecuta este for para la creacion de un registro diferente en cada iteracion
 							for dias in range(0, duracion_dias+1, 1):
-								_logger.info('-------------')
 								fecha_sin_h = fecha_sin_hora + timedelta(days=dias)
 								dias_inicia_trabaja = fecha_inicio + timedelta(days=dias)
-								dia=dias_inicia_trabaja.weekday()
-								mes = int(dias_inicia_trabaja.strftime('%m'))-1
-								_logger.info(dias_usuario[dia_semana[dia]])
-								_logger.info(meses_usuario[meses_anio[mes]])
-								#Se valida si estan los dias y los meses
-								if (dias_usuario[dia_semana[dia]]) and meses_usuario[meses_anio[mes]]:
-									#La data_appointment contiene todos los valores de la cita
-									#Cambian de acuerdo a su iteracion
-									_logger.info('Inicia trabaja')
-									_logger.info(dias_inicia_trabaja)
-									data_appointment['time_begin'] = dias_inicia_trabaja
-									data_appointment['time_end'] = dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)
-									data_appointment['type_id'] = vals['type_id']
+								fecha_validar_trabajo = str(dias_inicia_trabaja)[0:10]
+								fecha_validar_trabajo = datetime.strptime(fecha_validar_trabajo, "%Y-%m-%d")
 
-									data_appointment['repetir_cita_fecha_inicio'] = dias_inicia_trabaja
-									data_appointment['repetir_cita_fecha_fin'] = dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)
-									if 'consultorio_id' in vals:
-										data_appointment['consultorio_id'] = vals['consultorio_id']
+								if str(dias_traba[j]) == str(fecha_validar_trabajo):
+									j=j+1
+									dia=dias_inicia_trabaja.weekday()
+									mes = int(dias_inicia_trabaja.strftime('%m'))-1
 
-									data_appointment['professional_id'] = vals['professional_id']
-									data_appointment['repetir_cita'] = vals['repetir_cita']
-									data_appointment['tipo_usuario_id'] = vals['tipo_usuario_id']
-									data_appointment['patient_id'] = vals['patient_id']
-									data_appointment['tipo_usuario_id'] = vals['tipo_usuario_id']
-									data_appointment['insurer_id'] = vals['insurer_id']
-									data_appointment['plan_id'] = vals['plan_id']
-									data_appointment['contract_id'] = vals['contract_id']
-									data_appointment['realiza_procedimiento'] = vals['realiza_procedimiento']
-									data_appointment['nro_afilicion_poliza'] = vals['nro_afilicion_poliza']
-									data_appointment['ambito'] = vals['ambito']
-									data_appointment['finalidad'] = vals['finalidad']
-									data_appointment['aditional'] = vals['aditional']
-									data_appointment['repetir_cita'] = vals['repetir_cita']
-									data_appointment['schedule_id'] = id_sechedule_cita[i]
+									#Se valida si estan los dias y los meses
+									if (dias_usuario[dia_semana[dia]]) and meses_usuario[meses_anio[mes]]:
+										#La data_appointment contiene todos los valores de la cita
+										#Cambian de acuerdo a su iteracion
+										data_appointment['time_begin'] = dias_inicia_trabaja
+										data_appointment['time_end'] = dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)
+										data_appointment['type_id'] = vals['type_id']
+
+										data_appointment['repetir_cita_fecha_inicio'] = dias_inicia_trabaja
+										data_appointment['repetir_cita_fecha_fin'] = dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)
+										if 'consultorio_id' in vals:
+											data_appointment['consultorio_id'] = vals['consultorio_id']
+
+										data_appointment['professional_id'] = vals['professional_id']
+										data_appointment['repetir_cita'] = vals['repetir_cita']
+										data_appointment['tipo_usuario_id'] = vals['tipo_usuario_id']
+										data_appointment['patient_id'] = vals['patient_id']
+										data_appointment['tipo_usuario_id'] = vals['tipo_usuario_id']
+										data_appointment['insurer_id'] = vals['insurer_id']
+										data_appointment['plan_id'] = vals['plan_id']
+										data_appointment['contract_id'] = vals['contract_id']
+										data_appointment['realiza_procedimiento'] = vals['realiza_procedimiento']
+										data_appointment['nro_afilicion_poliza'] = vals['nro_afilicion_poliza']
+										data_appointment['ambito'] = vals['ambito']
+										data_appointment['finalidad'] = vals['finalidad']
+										data_appointment['aditional'] = vals['aditional']
+										data_appointment['repetir_cita'] = vals['repetir_cita']
+										data_appointment['schedule_id'] = id_sechedule_cita[i]
 
 
-									data_appointment['lunes'] = vals['lunes']
-									data_appointment['martes']= vals['martes']
-									data_appointment['miercoles']= vals['miercoles']
-									data_appointment['jueves'] = vals['jueves']
-									data_appointment['viernes']= vals['viernes']
-									data_appointment['sabado'] = vals['sabado']
-									data_appointment['domingo'] = vals['domingo']
-									data_appointment['enero'] = vals['enero']
-									data_appointment['febrero'] = vals['febrero']
-									data_appointment['marzo'] = vals['marzo']
-									data_appointment['abril'] = vals['abril']
-									data_appointment['mayo'] = vals['mayo']
-									data_appointment['junio'] = vals['junio']
-									data_appointment['julio'] = vals['julio']
-									data_appointment['agosto'] = vals['agosto']
-									data_appointment['septiembre'] = vals['septiembre']
-									data_appointment['octubre'] = vals['octubre']
-									data_appointment['noviembre'] = vals['noviembre']
-									data_appointment['diciembre'] = vals['diciembre']
-									_logger.info('*********')
-									_logger.info(id_sechedule_cita[i])
-									_logger.info(i)
+										data_appointment['lunes'] = vals['lunes']
+										data_appointment['martes']= vals['martes']
+										data_appointment['miercoles']= vals['miercoles']
+										data_appointment['jueves'] = vals['jueves']
+										data_appointment['viernes']= vals['viernes']
+										data_appointment['sabado'] = vals['sabado']
+										data_appointment['domingo'] = vals['domingo']
+										data_appointment['enero'] = vals['enero']
+										data_appointment['febrero'] = vals['febrero']
+										data_appointment['marzo'] = vals['marzo']
+										data_appointment['abril'] = vals['abril']
+										data_appointment['mayo'] = vals['mayo']
+										data_appointment['junio'] = vals['junio']
+										data_appointment['julio'] = vals['julio']
+										data_appointment['agosto'] = vals['agosto']
+										data_appointment['septiembre'] = vals['septiembre']
+										data_appointment['octubre'] = vals['octubre']
+										data_appointment['noviembre'] = vals['noviembre']
+										data_appointment['diciembre'] = vals['diciembre']
+								
+										_logger.info('Entro hasta la cita_id')
+										#Se ejecuta la creacion de las citas
+										cita_id = super(doctor_appointment_co,self).create(cr, uid, data_appointment, context=context)
+										#Buscamos los ids de los espacios que cumplan con estan condicion de la cita
+										id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', id_sechedule_cita[i]), ('fecha_inicio', '>=', str(dias_inicia_trabaja)), ('fecha_fin', '<=', str(dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)))], context=context)
 
-									res['estado_cita_espacio']= 'Asignado'
-									res['fecha_inicio']= dias_inicia_trabaja
-									res['fecha_fin']= dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)
-									res['patient_id']=patient_id_appointment
-									res['schedule_espacio_id']=id_sechedule_cita[i]
+										#Validamos si la consulta trae los ids
+										if id_sechedule_espacio:
+											#Asignamos un vacio al schedule_espacio_id, ya que no podemos eliminar el espacio todavia
+											res_editar['schedule_espacio_id']=''
 
-									#Creamos los espacios que son de dicha cita y le cambiamos el estado a Asignado
-									cita_id = super(doctor_appointment_co,self).create(cr, uid, data_appointment, context=context)
-									self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
-								#Variable iteradora
-								i=i+1
+										#Sobreescribimos el espacio que cumpla con la condicion anterior
+										self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
+
+										res['estado_cita_espacio']= 'Asignado'
+										res['fecha_inicio']= dias_inicia_trabaja
+										res['fecha_fin']= dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)
+										res['patient_id']=patient_id_appointment
+										res['schedule_espacio_id']=id_sechedule_cita[i]
+
+										#Creamos los espacios que son de dicha cita y le cambiamos el estado a Asignado
+										self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
+
+										#Buscamos los espacios que tengan el schedule_espacio_id '' (vacio)
+										id_sechedule_espacio_eliminado=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', '')], context=context)
+										#Eliminamos los espacios
+										self.pool.get('doctor.espacios').unlink(cr, uid, id_sechedule_espacio_eliminado, context)
+									#Variable iteradora
+									i=i+1
+								else:
+									dias_inicia_trabaja = dias_inicia_trabaja + timedelta(days=1)
 						
 					#Si seleccionan repetir cita y no es multipaciente
 					if repetir_cita and not consultorio_multipaciente:
