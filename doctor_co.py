@@ -2563,10 +2563,8 @@ class doctor_otra_prescripcion(osv.osv):
 		elif medicamento:
 			ids_procedimientos = self.parte_name_search(cr, uid, name, medicamento, args, operator, context=context, limit=100)
 		#procedimientos en salud para imagenes diagnosticas, laboratorios clinicos y modelo. -Capriatto 
-		elif clinical_laboratory or diagnostic_images or modelo:
+		elif clinical_laboratory or diagnostic_images or odontologia or modelo:
 			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
-		elif odontologia:
-			ids_procedimientos = self.search(cr, uid, [('procedure_code','>=','230100'),('procedure_code','<=','249100')], order='procedure_code asc',limit=limit, context=context)
 		else:
 			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
 			if ids:
