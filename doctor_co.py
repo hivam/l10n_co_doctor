@@ -2962,7 +2962,7 @@ class doctor_sales_order_co (osv.osv):
 	_name = "sale.order"
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
 	 }
