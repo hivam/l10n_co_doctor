@@ -1122,7 +1122,8 @@
 						<field name="inherit_id" ref="doctor.sales_order_form_view_inherit_doctor_sales_order"/>
 						<field name="arch" type="xml">
 
-								<field name="patient_id" position="after">
+								<field name="patient_id" position="replace">
+										<field name="patient_id" on_change="on_change_paciente(patient_id)"/>
 										<field name="ref"/>
 										<field name="tipo_usuario_id"/>
 										<field name="contrato_id"/>

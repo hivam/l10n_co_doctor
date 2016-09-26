@@ -2961,6 +2961,14 @@ class doctor_sales_order_co (osv.osv):
 	_inherit = "sale.order"
 	_name = "sale.order"
 
+	def on_change_paciente(self, cr, uid, ids, patient_id):
+		res = {'value':{}}
+		if patient_id:
+			partnerObj = self.pool.get('doctor.patient').read(cr, uid, patient_id,['ref'])
+			if partnerObj:
+				res['value']['ref'] = partnerObj.get('ref')
+		return res
+
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
