@@ -417,6 +417,10 @@
 										<field name="repetir_agenda"/>
 								</field>
 
+								<field name="repetir_agenda" position="after" >
+										<field name="tiempo_espacio" style="width:25%%"/>
+								</field>
+
 								<field name="date_begin" position="attributes">
 										<attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
 												'required': [('repetir_agenda', '!=', True)]}</attribute>

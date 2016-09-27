@@ -2025,6 +2025,7 @@ class doctor_co_schedule_inherit(osv.osv):
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
 		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios'),
+		'tiempo_espacio': fields.char('Timpo de Cada Espacio de la Cita (Minutos)', required=True)
 	}
 
 	_defaults = {
@@ -2106,6 +2107,7 @@ class doctor_co_schedule_inherit(osv.osv):
 		
 		fecha_excepciones = []
 		agenda_id = 0
+		tiempo_espacios= vals['tiempo_espacio']
 
 		test = {}
 		duracion_horas= vals['schedule_duration']
@@ -2232,13 +2234,13 @@ class doctor_co_schedule_inherit(osv.osv):
 
 					agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
 
-					self.generar_espacios(cr, uid, agenda_id, dias_inicia_trabaja,dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda']), vals['duracion_agenda'], test, context=None)
+					self.generar_espacios(cr, uid, agenda_id, dias_inicia_trabaja,dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda']), vals['duracion_agenda'], test, tiempo_espacios, context=None)
 
 		if not vals['repetir_agenda']:
 			vals['date_begin']=fecha_begining
 			vals['date_end']= fecha_fin_schedule
 			agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, vals, context)
-			self.generar_espacios(cr, uid, agenda_id, fecha_begining,fecha_fin_schedule, duracion_horas, test, context=None)
+			self.generar_espacios(cr, uid, agenda_id, fecha_begining,fecha_fin_schedule, duracion_horas, test, tiempo_espacios, context=None)
 
 		return agenda_id
 
@@ -2257,8 +2259,10 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		return super(doctor_co_schedule_inherit, self).unlink(cr, uid, ids, context=context)
 
-	def generar_espacios(self, cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, context=None):
+	def generar_espacios(self, cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, tiempo_espacios, context=None):
 		
+		_logger.info('Tiempo de los espacios')
+		_logger.info(tiempo_espacios)
 		test={}
 
 		fecha_inicio_espacio=str(fecha_inicio)[11:13]
@@ -2267,17 +2271,21 @@ class doctor_co_schedule_inherit(osv.osv):
 		duracion_agenda_espacio=int(fecha_fin_espacio)-int(fecha_inicio_espacio)
 
 		duracion_horas = duracion_horas * 60
+		_logger.info(duracion_horas)
 
-		for i in range(0, duracion_horas, 5):
-			fecha_espacio=fecha_inicio + timedelta(minutes=i)
-			fecha_espacio_fin=fecha_inicio + timedelta(minutes=i+5)
+		if duracion_horas%int(tiempo_espacios) == 0:
+			for i in range(0, duracion_horas, int(tiempo_espacios)):
+				fecha_espacio=fecha_inicio + timedelta(minutes=i)
+				fecha_espacio_fin=fecha_inicio + timedelta(minutes=i+ int(tiempo_espacios))
 
-			test['fecha_inicio'] = str(fecha_espacio)
-			test['fecha_fin'] = str(fecha_espacio_fin)
-			test['schedule_espacio_id']= agenda_id
-			test['estado_cita_espacio']= 'Sin asignar'
+				test['fecha_inicio'] = str(fecha_espacio)
+				test['fecha_fin'] = str(fecha_espacio_fin)
+				test['schedule_espacio_id']= agenda_id
+				test['estado_cita_espacio']= 'Sin asignar'
 
-			self.pool.get('doctor.espacios').create(cr, uid, test, context=context)
+				self.pool.get('doctor.espacios').create(cr, uid, test, context=context)
+		else:
+			raise osv.except_osv(_('Error al Crear los Espacios de la Agenda!'),_('Para poder crear la agenda debe de cambiar el tiempo de los espacios. \n Ya que el calculo de las citas sobre salen de la agenda'))
 
 	def onchange_seleccionar_todo(self, cr, uid, ids, marcar_todo, seleccion, context=None):
 		res={'value':{}}
