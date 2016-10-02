@@ -2,21 +2,21 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#	OpenERP, Open Source Management Solution
-#	Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#   OpenERP, Open Source Management Solution
+#   Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
-#	This program is free software: you can redistribute it and/or modify
-#	it under the terms of the GNU Affero General Public License as
-#	published by the Free Software Foundation, either version 3 of the
-#	License, or (at your option) any later version.
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU Affero General Public License as
+#   published by the Free Software Foundation, either version 3 of the
+#   License, or (at your option) any later version.
 #
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU Affero General Public License for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU Affero General Public License for more details.
 #
-#	You should have received a copy of the GNU Affero General Public License
-#	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   You should have received a copy of the GNU Affero General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 import logging
@@ -124,7 +124,7 @@ class doctor_patient_co(osv.osv):
 				nc += notas.notas_confidenciales + "\n"
 
 			res[datos.id] = nc
-		return res	
+		return res  
 	
 	_columns = {
 		'city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]"),
@@ -231,7 +231,7 @@ class doctor_patient_co(osv.osv):
 		if (completar_datos_acompaniante):
 
 			if id_parentesco:
-				name_parentesco= self.pool.get('doctor.patient.parentesco').browse(cr,uid, id_parentesco, context=context).name			 
+				name_parentesco= self.pool.get('doctor.patient.parentesco').browse(cr,uid, id_parentesco, context=context).name          
 
 				if name_parentesco== 'Padre':
 					_logger.info(name_parentesco)
@@ -269,7 +269,7 @@ class doctor_patient_co(osv.osv):
 			unidad_edad = self.pool.get('doctor.attentions').calcular_age_unit(fecha_nacimiento)
 			res['value']['edad_calculada'] = edad
 			res['value']['unidad_edad_calculada'] = unidad_edad
-		return res	
+		return res  
 
 	def onchange_existe(self, cr, uid, ids, ref, context=None):
 		res = {'value':{'lastname' : '', 'surnanme' : '', 'firstname' : '', 'middlename' : '', 'tdoc' : '', 'email' : '', 'phone' : '', 'mobile' : '', 'state_id' : '',
@@ -277,7 +277,7 @@ class doctor_patient_co(osv.osv):
 		if ref:
 			registros = self.pool.get('res.partner').search(cr, uid,[])
 			for record in self.pool.get('res.partner').browse(cr, uid, registros):
-				if ref == record.ref: #comparando si la identificacion digitada es igual a la de un paciente existente					res['value']['lastname'] = record.lastname.upper()
+				if ref == record.ref: #comparando si la identificacion digitada es igual a la de un paciente existente                  res['value']['lastname'] = record.lastname.upper()
 					if record.es_paciente == False:
 						res['value']['lastname'] = record.lastname.upper()
 						if record.surname:
@@ -348,7 +348,7 @@ class doctor_patient_co(osv.osv):
 					return False
 
 			return True
-# Función para validar que solo se seleccione una aseguradora como predeterminada	
+# Función para validar que solo se seleccione una aseguradora como predeterminada   
 	def _check_seleccion(self, cr, uid, ids, context=None):
 		for record in self.browse(cr, uid, ids):
 			if record.prepagada_predeterminada and record.eps_predeterminada:
@@ -463,7 +463,7 @@ class doctor_appointment_co(osv.osv):
 	]
 
 	_columns = {
-		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
+		'contract_id':  fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
 										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
@@ -561,6 +561,7 @@ class doctor_appointment_co(osv.osv):
 
 		id_type = self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)])
 
+
 		if consultorio_id_appointment:
 			consultorio_id= self.pool.get('doctor.room').browse(cr, uid, consultorio_id_appointment, context=context)
 			consultorio_multipaciente= consultorio_id.multi_paciente
@@ -570,6 +571,15 @@ class doctor_appointment_co(osv.osv):
 
 		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
 			duration_appointment=duration_appointment_id.duration
+
+		tiempo_espacios=0
+
+		for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+			tiempo_espacios= int(record.tiempo_espacio)
+		
+		if (tiempo_espacios * (duration_appointment/tiempo_espacios)) != duration_appointment:
+			raise osv.except_osv(_('Lo Sentimos!'),
+				_('Para poder crear la cita, el tiempo de la cita debe ser como minimo %s minutos. O el tiempo del espacio debe ser multiplo del tiempo de la cita (%s, %s, %s...). \n\n Para cambiar el tiempo de los espacios se debe dirigir a: \n -> Configuración Espacios \n -> Modificar el tiempo del espacio')% (tiempo_espacios, tiempo_espacios, (tiempo_espacios*2), (tiempo_espacios*3)) )
 
 		fecha_hora = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
 		fecha_hora_act = datetime.strptime(fecha_hora, "%Y-%m-%d %H:%M:%S")
@@ -692,7 +702,7 @@ class doctor_appointment_co(osv.osv):
 						#De ser mayor se envia un mensaje de alerta
 
 						#if duracion_dias+1 > len(id_sechedule_cita):
-						#	raise osv.except_osv(_('Lo sentimos!'),_('Para poder crear las citas repetitivas. Debes crear primero una agenda. \n Verifica la fecha final de la citas.'))
+						#   raise osv.except_osv(_('Lo sentimos!'),_('Para poder crear las citas repetitivas. Debes crear primero una agenda. \n Verifica la fecha final de la citas.'))
 						#_logger.info(len(id_sechedule_cita))
 
 						dias_traba=[]
@@ -1188,7 +1198,7 @@ class doctor_appointment_co(osv.osv):
 
 					else:
 						raise osv.except_osv(_('Aviso importante!!'),
-								 _('No tiene ningun plan seleccionado'))	
+								 _('No tiene ningun plan seleccionado'))    
 				else:
 					raise osv.except_osv(_('Aviso importante!!'),
 								 _('El procedimiento que esta enlazado con la cita no lo realiza el profesional encargado de esta agenda'))
@@ -1294,10 +1304,10 @@ class doctor_appointment_co(osv.osv):
 				max_pacientes = 1
 
 		if ids_ingresos_diarios:
-			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")		
+			time_begin = datetime.strptime(horario_cadena[0], "%Y-%m-%d %H:%M:%S")      
 			if fecha_hora_actual > time_begin:
 				if str(fecha_hora_actual) in horario_cadena:
-					index = horario_cadena.index(str(fecha_hora_actual))	
+					index = horario_cadena.index(str(fecha_hora_actual))    
 					for borrar in range(0,index,1):
 						horario_cadena.pop(horario_cadena.index(horario_cadena[0]))
 
@@ -1332,7 +1342,7 @@ class doctor_appointment_co(osv.osv):
 							inicio_cadena = inicios.strftime('%Y-%m-%d %H:%M:00')
 							minutos+=1
 							if inicio_cadena in horario_cadena:
-								horario_cadena.pop(horario_cadena.index(inicio_cadena))	
+								horario_cadena.pop(horario_cadena.index(inicio_cadena)) 
 				
 
 				if int(len(horario_cadena)) > 1:
@@ -1612,7 +1622,7 @@ class doctor_appointment_type_procedures(osv.osv):
 											  help='Additional description that will be added to the product description on orders.'),
 		'appointment_type_id': fields.many2one('doctor.appointment.type', 'Tipo Cita'),
 		'procedures_id': fields.many2one('product.product', 'Procedimientos en Salud', required=True, ondelete='restrict'),
-		'quantity': fields.integer('Cantidad', required=True),		
+		'quantity': fields.integer('Cantidad', required=True),      
 	}
 
 	def name_get(self, cr, uid, ids, context={}):
@@ -1694,7 +1704,7 @@ class doctor_attentions_co(osv.osv):
 												('10',u'No aplica'),
 											   ],u'Finalidad de la consulta', states={'closed':[('readonly',True)]}),
 		'inv': fields.function(_get_creador, type="boolean", store= False, 
-								readonly=True, method=True, string='inv',),	
+								readonly=True, method=True, string='inv',), 
 		'motivo_consulta' : fields.char("Motivo de Consulta", size=100, required=False, states={'closed': [('readonly', True)]}),
 		'notas_confidenciales': fields.text('Notas Confidenciales', states={'closed': [('readonly', True)]}),
 
@@ -1885,9 +1895,9 @@ class doctor_attention_resumen(osv.osv):
 					for i in range(0,len(datos.drugs_ids),1):
 						medicamentos_ids.append((0,0,{'drugs_id' : datos.drugs_ids[i].drugs_id.id}))
 					
-			res['analisis_resumen']	= resumen_analisis
+			res['analisis_resumen'] = resumen_analisis
 			res['tratamiento_resumen'] = tratamiento_resumen
-			res['diganosticos_resumen']	= diagnosticos_resumen
+			res['diganosticos_resumen'] = diagnosticos_resumen
 			res['tipo_diagnostico'] = tipo_diagnosticos_resumen
 			res['review_systems_id'] = revision_por_sistema_ids
 			res['attentions_past_ids'] = antecedentes_ids
@@ -2025,7 +2035,6 @@ class doctor_co_schedule_inherit(osv.osv):
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
 		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios'),
-		'tiempo_espacio': fields.char('Timpo de Cada Espacio de la Cita (Minutos)', required=True)
 	}
 
 	_defaults = {
@@ -2107,7 +2116,11 @@ class doctor_co_schedule_inherit(osv.osv):
 		
 		fecha_excepciones = []
 		agenda_id = 0
-		tiempo_espacios= vals['tiempo_espacio']
+		#self.pool.get('doctor.espacios').search
+		tiempo_espacios=0
+
+		for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+			tiempo_espacios= record.tiempo_espacio
 
 		test = {}
 		duracion_horas= vals['schedule_duration']
@@ -2261,8 +2274,6 @@ class doctor_co_schedule_inherit(osv.osv):
 
 	def generar_espacios(self, cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, tiempo_espacios, context=None):
 		
-		_logger.info('Tiempo de los espacios')
-		_logger.info(tiempo_espacios)
 		test={}
 
 		fecha_inicio_espacio=str(fecha_inicio)[11:13]
@@ -2371,7 +2382,7 @@ class doctor_co_schedule_inherit(osv.osv):
 						res['fecha_inicio'] = fecha_hora_actual
 
 			if 'fecha_inicio' in res:
-				if datetime.strptime(res['fecha_inicio'], "%Y-%m-%d %H:%M:%S") < fecha_inicio_agenda:	
+				if datetime.strptime(res['fecha_inicio'], "%Y-%m-%d %H:%M:%S") < fecha_inicio_agenda:   
 					res['fecha_inicio'] = str(fecha_inicio_agenda)
 
 		return res
@@ -2421,6 +2432,18 @@ class doctor_co_schedule_inherit(osv.osv):
 
 doctor_co_schedule_inherit()
 
+class doctor_time_space(osv.osv):
+
+	_name= 'doctor.time_space'
+
+	_columns = {
+		'tiempo_espacio': fields.char(u'Espacio entre Citas (Minutos)', required=True),
+	}
+
+
+
+
+doctor_time_space()
 
 class doctor_espacios(osv.osv):
 
@@ -2535,7 +2558,7 @@ class doctor_otra_prescripcion(osv.osv):
 					if procedimiento_doctor in procedimientos_planes:
 						procedimientos.append(procedimiento_doctor)
 
-				ids_procedimientos = procedimientos	
+				ids_procedimientos = procedimientos 
 		return ids_procedimientos
 
 	def parte_name_search(self, cr, uid, name, modeloLLama, args=None, operator='ilike', context=None, limit=100):
@@ -2551,7 +2574,7 @@ class doctor_otra_prescripcion(osv.osv):
 		else:
 			ids = self.search(cr, uid, args, limit=limit, context=context)
 
-		return ids 	
+		return ids  
 
 	def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
 		args = args or []
@@ -2618,7 +2641,7 @@ class doctor_professional(osv.osv):
 
 			for i in cr.fetchall():
 				if i[0] in profesional_grupo_id:
-					cr.execute("UPDATE res_groups_users_rel SET gid = %s WHERE gid = %s AND uid= %s " %(psicologo_grupo_id[0], profesional_grupo_id[0], user_id))	
+					cr.execute("UPDATE res_groups_users_rel SET gid = %s WHERE gid = %s AND uid= %s " %(psicologo_grupo_id[0], profesional_grupo_id[0], user_id))   
 
 		return crear
 
@@ -2857,11 +2880,11 @@ class doctor_prescription(osv.osv):
 
 				for medicamento in modelo_buscar.browse(cr,uid,[drugs_id],context=None):
 					
-					forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)	
+					forma_farmaceutica_id = modelo_crear.search(cr,uid,[('name','=',medicamento.pharmaceutical_form.name)],context=None)    
 					
 					via = medicamento.administration_route.id
 					concentracion = medicamento.drugs_concentration
-					indicaciones= medicamento.indication_drug	
+					indicaciones= medicamento.indication_drug   
 
 					if not forma_farmaceutica_id:
 						vals['code'] = ('%s' %medicamento.pharmaceutical_form.id)
@@ -2960,7 +2983,7 @@ class doctor_invoice_co (osv.osv):
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
-		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	}
 
 doctor_invoice_co()
@@ -2980,7 +3003,7 @@ class doctor_sales_order_co (osv.osv):
 	_columns = {
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
-		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False),	
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	 }
 
 	def _prepare_invoice(self, cr, uid, order, lines, context=None):
@@ -3128,7 +3151,7 @@ class doctor_configuracion(osv.osv):
 			else:
 				if not 'aseguradora_id' in vals:
 					if valor:
-						dato['valor'] = valor					
+						dato['valor'] = valor                   
 						buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('id', '=', id_modifico)], context=context)
 						for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
 							id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
@@ -3161,7 +3184,7 @@ class doctor_configuracion(osv.osv):
 					for k in modelo_asegur_plan.browse(cr, uid, id_asegur_plan, context=context):
 						modelo_asegur_plan.unlink(cr, uid, k.id, context=context)
 
-		if ejecu_write:				
+		if ejecu_write:             
 			confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)
 		
 		return True
@@ -3192,7 +3215,7 @@ class doctor_parametrizacion(osv.osv):
 	_columns = {
 		'doctor_configuracion_id': fields.many2one('doctor.configuracion', 'configuracion'),
 		'procedures_id': fields.many2one('product.product', 'Procedimiento en salud', required=True, ondelete='restrict', domain="[('is_health_procedure','=',True)]"),
-		'contract_id':	fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
+		'contract_id':  fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 		'valor': fields.integer('valor', required = True),
 	}

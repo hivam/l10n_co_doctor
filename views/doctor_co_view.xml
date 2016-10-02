@@ -417,10 +417,6 @@
 										<field name="repetir_agenda"/>
 								</field>
 
-								<field name="repetir_agenda" position="after" >
-										<field name="tiempo_espacio" style="width:25%%"/>
-								</field>
-
 								<field name="date_begin" position="attributes">
 										<attribute name="attrs">{'invisible': [('repetir_agenda', '=', True)],
 												'required': [('repetir_agenda', '!=', True)]}</attribute>
@@ -995,6 +991,57 @@
 								</form>
 						</field>
 				</record>
+
+
+
+
+
+				<!-- doctor tiempo_espacio Form View -->
+				<record model="ir.ui.view" id="view_doctor_tiempo_espacio_form">
+						<field name="name">Configuracion Espacios</field>
+						<field name="model">doctor.time_space</field>
+						<field name="arch" type="xml">
+								<form string="Configuracion Espacios" version="7.0" create="false">
+										<group colspan='3' col='2'>
+											<field name="tiempo_espacio"/>
+										</group>
+								</form>
+						</field>
+				</record>
+
+				<!-- doctor tiempo_espacio Tree View -->
+				<record model="ir.ui.view" id="view_doctor_tiempo_espacio_tree">
+						<field name="name">Configuracion Espacios</field>
+						<field name="model">doctor.time_space</field>
+						<field name="arch" type="xml">
+								<tree string="Configuracion Espacios" version="7.0" create="false">
+									<field name="tiempo_espacio"/>
+								</tree>
+						</field>
+				</record>
+
+
+
+
+				<!-- doctor tiempo_espacio Action -->
+				<record model="ir.actions.act_window" id="action_doctor_tiempo_espacio">
+						<field name="name">Configuracion Espacios</field>
+						<field name="res_model">doctor.time_space</field>
+						<field name="view_type">form</field>
+						<field name="view_mode">tree,form</field>
+				</record>
+
+				<menuitem id="menu_doctor_tiempo_espacio" name="Configuracion Espacios" parent="doctor.menu_doctor_config" action="action_doctor_tiempo_espacio" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration"/>
+
+
+
+
+
+
+				
+
+
+
 
 
 				<!-- doctor speciality Form View -->
