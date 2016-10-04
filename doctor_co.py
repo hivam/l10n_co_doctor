@@ -133,7 +133,7 @@ class doctor_patient_co(osv.osv):
 		'email' : fields.char('Email'),
 		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
 		'es_profesionalsalud': fields.boolean('Es profesional de la salud?', help="Marcar cuando el paciente a crear ya existe como profesional de la salud."),
-		'lugar_nacimiento_id' : fields.many2one('res.country.state.city', 'lugar nacimiento', required=False ),
+		#'lugar_nacimiento_id' : fields.many2one('res.country.state.city', 'lugar nacimiento', required=False ),
 		'movil' :fields.char(u'Móvil', size=12),
 		'nc_paciente': fields.function(_get_nc, type="text", store= False, 
 								readonly=True, method=True),
@@ -187,6 +187,10 @@ class doctor_patient_co(osv.osv):
 		'nivel_educativo':fields.selection(nivel_estudio, 'Nivel de Estudio'),
 		'programa_id':fields.many2one('doctor.programa_academico', 'Programa Academico', required=False, domain="[('nivel_estudio','=', str(nivel_educativo))]"),
 		'lateralidad_id':fields.selection(lateralidad, 'Lateralidad'),
+
+		#campos agregados para pais y estado de nacimiento
+		'nacimiento_city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]"),
+		'nacimiento_country_id':fields.many2one('res.country', u'País/Nación'),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -327,6 +331,7 @@ class doctor_patient_co(osv.osv):
 	_defaults = {
 		'zona' : 'U',
 		'eps_predeterminada': True,
+		'nacimiento_country_id': lambda self, cr, uid, context: self.pool.get('doctor.doctor')._model_default_get(cr, uid, 'res.country', [('name', '=', 'Colombia')]),
 	}
 
 # Función para evitar número de documento duplicado

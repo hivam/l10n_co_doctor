@@ -67,6 +67,14 @@
 														<field name='unidad_edad_calculada' nolabel='1' style="width:10%%"/>
 												</h4>
 										</div>
+									<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Lugar de Nacimiento</legend>
+										<group col="2" colspan="2">
+											<field name="nacimiento_country_id"/>
+											<field name="nacimiento_city_id"/>
+										</group>
+									</fieldset>
+
 								</xpath>
 
 								<field name="insurer" position="replace" >
@@ -219,10 +227,6 @@
 								</field>
 
 
-
-								<field name="birth_date" position="after">
-										<field name="lugar_nacimiento_id"/>
-								</field>
 
 								<xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@string='Attentions']" position="replace"/>
 
