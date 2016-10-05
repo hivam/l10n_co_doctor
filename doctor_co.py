@@ -258,10 +258,38 @@ class doctor_patient_co(osv.osv):
 
 	def onchange_seleccion(self, cr, uid, ids, poliza_medicina_prepagada, context=None):
 		res = {'value':{}}
-
 		if poliza_medicina_prepagada:
 			res['value']['prepagada_predeterminada'] = True
 			res['value']['eps_predeterminada'] = False
+			res['value']['particular_predeterminada'] = False
+
+		return res
+
+	def onchange_seleccion_particular(self, cr, uid, ids, particular_predeterminada, context=None):
+		res = {'value':{}}
+
+		if particular_predeterminada:
+			res['value']['prepagada_predeterminada'] = False
+			res['value']['eps_predeterminada'] = False
+
+		return res
+
+
+	def onchange_seleccion_eps(self, cr, uid, ids, eps_predeterminada, context=None):
+		res = {'value':{}}
+		
+		if eps_predeterminada:
+			res['value']['prepagada_predeterminada'] = False
+			res['value']['particular_predeterminada'] = False
+
+		return res
+
+	def onchange_seleccion_prepagada(self, cr, uid, ids, prepagada_predeterminada, context=None):
+		res = {'value':{}}
+		
+		if eps_predeterminada:
+			res['value']['eps_predeterminada'] = False
+			res['value']['particular_predeterminada'] = False
 
 		return res
 
@@ -353,6 +381,8 @@ class doctor_patient_co(osv.osv):
 					return False
 
 			return True
+
+			
 # Función para validar que solo se seleccione una aseguradora como predeterminada   
 	def _check_seleccion(self, cr, uid, ids, context=None):
 		for record in self.browse(cr, uid, ids):

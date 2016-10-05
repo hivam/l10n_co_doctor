@@ -90,11 +90,11 @@
 								</field>
 
 								<field name="nro_afiliacion" position="after" >
-										<field name="eps_predeterminada"/>
+										<field name="eps_predeterminada" on_change="onchange_seleccion_eps(eps_predeterminada)"/>
 								</field>
 
 								<field name="eps_predeterminada" position="after" >
-										<field name="particular_predeterminada"/>
+										<field name="particular_predeterminada" on_change="onchange_seleccion_particular(particular_predeterminada)"/>
 								</field>
 								<!--attrs="{'invisible': [('tipo_usuario','=', 5)]}-->
 								<xpath expr="/form[@string='Patient']/sheet/group[2]/fieldset[@class='fieldset_margen']/group[@col='2']" position="after">
@@ -102,7 +102,7 @@
 												<legend class="texto_legend">OTRAS</legend>
 												<group colspan="2" col="4">
 														<field name="poliza_medicina_prepagada" on_change="onchange_seleccion(poliza_medicina_prepagada)"/>
-														<field name="prepagada_predeterminada"  attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
+														<field name="prepagada_predeterminada"  attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}" on_change="onchange_seleccion_prepagada(prepagada_predeterminada)"/>
 												</group>
 												<group colspan="2" col="4">
 														<field name="insurer_prepagada_id" attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
