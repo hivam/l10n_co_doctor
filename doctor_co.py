@@ -228,6 +228,12 @@ class doctor_patient_co(osv.osv):
 
 		return res
 
+
+	def create(self, cr, uid, vals, context=None):
+		_logger.info(vals)
+
+		return super(doctor_patient_co,self).create(cr, uid, vals, context=context)
+
 	def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
 		res={'value':{}}
 		
@@ -1444,6 +1450,7 @@ class doctor_appointment_co(osv.osv):
 					values.update({
 
 						'time_begin' :  str(fecha)
+
 					})
 
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
@@ -1762,7 +1769,6 @@ class doctor_attentions_co(osv.osv):
 		'is_complicacion_eventoadverso':fields.boolean(u'Complicación o Evento Adverso'),
 		'paraclinical_monitoring':fields.boolean(u'Consultar Seguimientos'),
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
-
 	}
 
 
