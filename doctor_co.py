@@ -287,7 +287,7 @@ class doctor_patient_co(osv.osv):
 	def onchange_seleccion_prepagada(self, cr, uid, ids, prepagada_predeterminada, context=None):
 		res = {'value':{}}
 		
-		if eps_predeterminada:
+		if prepagada_predeterminada:
 			res['value']['eps_predeterminada'] = False
 			res['value']['particular_predeterminada'] = False
 
