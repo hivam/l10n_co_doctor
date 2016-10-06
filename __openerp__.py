@@ -76,7 +76,7 @@ Location change for "Doctor" module in Colombia
               
 
     ],
-    'installable': True,
+    'installable': False,
     'qweb': ['static/src/xml/custom_access_login.xml'],
 }
 
