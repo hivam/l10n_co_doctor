@@ -82,7 +82,7 @@
 								</field>
 
 								<field name="nro_afiliacion" position="after" >
-										<field name="eps_predeterminada"/>
+									<field name="eps_predeterminada"/>
 								</field>
 
 								<field name="eps_predeterminada" position="after" >
@@ -144,8 +144,8 @@
 									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'estu'), ('filter_ocupacion','!=', 'doc'),('filter_ocupacion','!=', 'egre'), ('filter_ocupacion','!=', 'emp'),('filter_ocupacion','!=', 'otro')]}">
 										<legend class="texto_legend">Datos Complementarios</legend>
 										<group col="2">
-											<field name="nivel_educativo" attrs="{'invisible': ['|',('filter_ocupacion','=', 'emp'), ('filter_ocupacion','=', 'otro')]}"/>
-											<field name="programa_id" attrs="{'invisible': ['|',('filter_ocupacion','=', 'emp'), ('filter_ocupacion','=', 'otro')]}"/>
+											<field name="nivel_educativo" attrs="{'invisible': [('filter_ocupacion','=', 'otro')]}"/>
+											<field name="programa_id" attrs="{'invisible': [('filter_ocupacion','=', 'otro')]}"/>
 											<field name="semestre_actual" attrs="{'invisible': [('filter_ocupacion','!=', 'estu')]}"/>
 											<field name="description_others" attrs="{'invisible': [('filter_ocupacion','!=', 'otro')]}"/>
 											<field name="dependencia_empleado_id" attrs="{'invisible': [('filter_ocupacion','!=', 'emp')]}"/>

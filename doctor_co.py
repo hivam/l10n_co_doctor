@@ -570,7 +570,7 @@ class doctor_appointment_co(osv.osv):
 			consultorio_multipaciente = None
 
 		for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
-			duration_appointment=duration_appointment_id.duration
+			duration_appointment=duration_appointment_id.duration  
 
 		tiempo_espacios=0
 
