@@ -79,6 +79,7 @@ class doctor_attentions_co_inherit(osv.osv):
 		'interpretacion_imc' : fields.char(u'Interpretación', size=80, help=u'Interpretación de indice de masa corporal.', states={'closed': [('readonly', True)]}),
 	}
 
-	
+
+
 
 doctor_attentions_co_inherit()

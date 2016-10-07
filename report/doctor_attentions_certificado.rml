@@ -2,7 +2,7 @@
 <document filename="certificado.pdf">
   <template pageSize="(595.0,842.0)" title="Test" author="Hector Ivan Valencia Muñoz - TIX S.A.S." allowSplitting="20">
     <pageTemplate id="first">
-      <frame id="first" x1="18.0" y1="29.0" width="534" height="784"/>
+      <frame id="first" x1="18.0" y1="14" width="534" height="784"/>
     </pageTemplate>
   </template>
   <stylesheet>

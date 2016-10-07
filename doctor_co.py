@@ -133,7 +133,7 @@ class doctor_patient_co(osv.osv):
 		'email' : fields.char('Email'),
 		'estadocivil_id': fields.many2one('doctor.patient.estadocivil' , 'Estado Civil' , required=False),
 		'es_profesionalsalud': fields.boolean('Es profesional de la salud?', help="Marcar cuando el paciente a crear ya existe como profesional de la salud."),
-		'lugar_nacimiento_id' : fields.many2one('res.country.state.city', 'lugar nacimiento', required=False ),
+		#'lugar_nacimiento_id' : fields.many2one('res.country.state.city', 'lugar nacimiento', required=False ),
 		'movil' :fields.char(u'Móvil', size=12),
 		'nc_paciente': fields.function(_get_nc, type="text", store= False, 
 								readonly=True, method=True),
@@ -187,6 +187,10 @@ class doctor_patient_co(osv.osv):
 		'nivel_educativo':fields.selection(nivel_estudio, 'Nivel de Estudio'),
 		'programa_id':fields.many2one('doctor.programa_academico', 'Programa Academico', required=False, domain="[('nivel_estudio','=', str(nivel_educativo))]"),
 		'lateralidad_id':fields.selection(lateralidad, 'Lateralidad'),
+
+		#campos agregados para pais y estado de nacimiento
+		'nacimiento_city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]"),
+		'nacimiento_country_id':fields.many2one('res.country', u'País/Nación'),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -224,6 +228,12 @@ class doctor_patient_co(osv.osv):
 
 		return res
 
+
+	def create(self, cr, uid, vals, context=None):
+		_logger.info(vals)
+
+		return super(doctor_patient_co,self).create(cr, uid, vals, context=context)
+
 	def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
 		res={'value':{}}
 		
@@ -254,10 +264,38 @@ class doctor_patient_co(osv.osv):
 
 	def onchange_seleccion(self, cr, uid, ids, poliza_medicina_prepagada, context=None):
 		res = {'value':{}}
-
 		if poliza_medicina_prepagada:
 			res['value']['prepagada_predeterminada'] = True
 			res['value']['eps_predeterminada'] = False
+			res['value']['particular_predeterminada'] = False
+
+		return res
+
+	def onchange_seleccion_particular(self, cr, uid, ids, particular_predeterminada, context=None):
+		res = {'value':{}}
+
+		if particular_predeterminada:
+			res['value']['prepagada_predeterminada'] = False
+			res['value']['eps_predeterminada'] = False
+
+		return res
+
+
+	def onchange_seleccion_eps(self, cr, uid, ids, eps_predeterminada, context=None):
+		res = {'value':{}}
+		
+		if eps_predeterminada:
+			res['value']['prepagada_predeterminada'] = False
+			res['value']['particular_predeterminada'] = False
+
+		return res
+
+	def onchange_seleccion_prepagada(self, cr, uid, ids, prepagada_predeterminada, context=None):
+		res = {'value':{}}
+		
+		if prepagada_predeterminada:
+			res['value']['eps_predeterminada'] = False
+			res['value']['particular_predeterminada'] = False
 
 		return res
 
@@ -327,6 +365,7 @@ class doctor_patient_co(osv.osv):
 	_defaults = {
 		'zona' : 'U',
 		'eps_predeterminada': True,
+		'nacimiento_country_id': lambda self, cr, uid, context: self.pool.get('doctor.doctor')._model_default_get(cr, uid, 'res.country', [('name', '=', 'Colombia')]),
 	}
 
 # Función para evitar número de documento duplicado
@@ -348,6 +387,8 @@ class doctor_patient_co(osv.osv):
 					return False
 
 			return True
+
+			
 # Función para validar que solo se seleccione una aseguradora como predeterminada   
 	def _check_seleccion(self, cr, uid, ids, context=None):
 		for record in self.browse(cr, uid, ids):
@@ -1409,6 +1450,7 @@ class doctor_appointment_co(osv.osv):
 					values.update({
 
 						'time_begin' :  str(fecha)
+
 					})
 
 				hora_fin = time_begin + timedelta(minutes=appointment_type)
@@ -1727,7 +1769,6 @@ class doctor_attentions_co(osv.osv):
 		'is_complicacion_eventoadverso':fields.boolean(u'Complicación o Evento Adverso'),
 		'paraclinical_monitoring':fields.boolean(u'Consultar Seguimientos'),
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
-
 	}
 
 
