@@ -2435,11 +2435,20 @@ doctor_co_schedule_inherit()
 class doctor_time_space(osv.osv):
 
 	_name= 'doctor.time_space'
+	rec_name='tiempo_espacio'
 
 	_columns = {
 		'tiempo_espacio': fields.char(u'Espacio entre Citas (Minutos)', required=True),
 	}
 
+
+	def name_get(self, cr, uid, ids, context={}):
+		if not len(ids):
+			return []
+		rec_name = 'tiempo_espacio'
+		res = [(r['id'], "Configuración Espacio Cita")
+			for r in self.read(cr, uid, ids, [rec_name], context)]
+		return res
 
 
 
