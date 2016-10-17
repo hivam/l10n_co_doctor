@@ -173,27 +173,27 @@
 
 								</xpath>
 
-								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside" attrs="{'invisible': [('seleccion_discapacidad','=', 'False')]}">
-									<fieldset class="fieldset_margen" >
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}">
 										<legend class="texto_legend">Discapacidades</legend>
 										<group col="2">
-											<field name="discapacidad_cognitiva"/>
-											<field name="discapacidad_fisica"/>
-											<field name="discapacidad_sensorial"/>
-											<field name="discapacidad_aprendizaje"/>
+											<field name="discapacidad_cognitiva" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}"/>
+											<field name="discapacidad_fisica" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}"/>
+											<field name="discapacidad_sensorial" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}"/>
+											<field name="discapacidad_aprendizaje" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}"/>
 										</group>
 									</fieldset>
 								</xpath>
 
 
-								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside" attrs="{'invisible': [('seleccion_poblacion','=', 'False')]}">
-									<fieldset class="fieldset_margen" >
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('seleccion_poblacion','=', False)]}">
 										<legend class="texto_legend">Población Espacial</legend>
 										<group col="2">
-											<field name="Poblacion_espacial"/>
-											<field name="desplazado"/>
-											<field name="desmovilizado"/>
-											<field name="victima_conflicto"/>
+											<field name="Poblacion_espacial" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
+											<field name="desplazado" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
+											<field name="desmovilizado" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
+											<field name="victima_conflicto" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
 										</group>
 									</fieldset>
 								</xpath>
