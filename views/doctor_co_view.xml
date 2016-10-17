@@ -160,10 +160,33 @@
 											<field name="lateralidad_id"/>
 										</group>
 									</fieldset>
-
 								</fieldset>
 								</xpath>
 
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Discapacidades</legend>
+										<group col="2">
+											<field name="discapacidad_cognitiva"/>
+											<field name="discapacidad_fisica"/>
+											<field name="discapacidad_sensorial"/>
+											<field name="discapacidad_aprendizaje"/>
+										</group>
+									</fieldset>
+								</xpath>
+
+
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Población Espacial</legend>
+										<group col="2">
+											<field name="Poblacion_espacial"/>
+											<field name="desplazado"/>
+											<field name="desmovilizado"/>
+											<field name="victima_conflicto"/>
+										</group>
+									</fieldset>
+								</xpath>
 
 								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
 									<fieldset class="fieldset_margen">
