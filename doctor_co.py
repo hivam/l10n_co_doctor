@@ -237,11 +237,13 @@ class doctor_patient_co(osv.osv):
 		'nacimiento_city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False ,),
 		'nacimiento_country_id':fields.many2one('res.country', u'País/Nación'),
 
+		'seleccion_discapacidad': fields.boolean('Discapacidad'),
 		'discapacidad_cognitiva':fields.selection(cognitivas, u'Cognitivas'),
 		'discapacidad_fisica':fields.selection(cognitivas, u'Físicas'),
 		'discapacidad_sensorial':fields.selection(sensorial, u'Sensorial'),
 		'discapacidad_aprendizaje':fields.selection(problemasAprendizaje, u'Problemas de Aprendizaje'),
 
+		'seleccion_poblacion': fields.boolean(u'Población Especial'),
 		'Poblacion_espacial':fields.selection(etnia, u'Etnia'),
 		'desplazado': fields.char(u'Desplazado'),
 		'desmovilizado': fields.char(u'Desmovilizado'),
