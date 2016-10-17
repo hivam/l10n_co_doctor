@@ -234,7 +234,7 @@ class doctor_patient_co(osv.osv):
 		'lateralidad_id':fields.selection(lateralidad, 'Lateralidad'),
 
 		#campos agregados para pais y estado de nacimiento
-		'nacimiento_city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]"),
+		'nacimiento_city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False ,),
 		'nacimiento_country_id':fields.many2one('res.country', u'País/Nación'),
 
 		'discapacidad_cognitiva':fields.selection(cognitivas, u'Cognitivas'),
