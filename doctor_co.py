@@ -87,12 +87,57 @@ class doctor_patient_co(osv.osv):
 		('4', 'ESPECIALIZACIÓN'),
 	]
 
-
 	#Lateralidad
 	lateralidad = [
 		('1', 'DIESTRO'),
 		('2', 'ZURDO'),
 		('3', 'AMBIDIESTRO'),
+	]
+
+	#Discapacidad
+	cognitivas = [
+	('1', 'Autismo'),
+	('2', 'Síndrome de Down'),
+	('3', 'Síndrome de Asperger'),
+	('4', 'Retraso Mental'),
+	('5', 'Otros'),
+	]
+
+	#Discapacidad
+	fisicas = [
+	('1', 'lesión medular'),
+	('2', 'Esclerosis Multiple'),
+	('3', 'Paralisis Cerebral'),
+	('4', 'Mal de Parkinson'),
+	('5', 'Espina Bifida'),
+	('6', 'Acondroplasia'),
+	('7', 'Albinismo'),
+	('8', 'Otros'),
+	]
+
+	#Discapacidad
+	sensorial = [
+	('1', 'Discapacidad Visual'),
+	('2', 'Discapacidad Auditiva'),
+	('3', 'Otras'),
+	]
+
+	#Discapacidad
+	problemasAprendizaje = [
+	('1', 'Dislexia'),
+	('2', 'Disgrafia'),
+	('3', 'Discalculia'),
+	('4', 'Otra'),
+	]
+
+	#Poblacion especial
+	etnia = [
+	('1', 'Indígena'),
+	('2', 'Rom'),
+	('3', 'Afrodescendientes'),
+	('4', 'Raizal'),
+	('5', 'Palenqueros'),
+	('6', 'Otros'),
 	]
 
 	def _get_edad(self, cr, uid, ids, field_name, arg, context=None):
@@ -191,6 +236,18 @@ class doctor_patient_co(osv.osv):
 		#campos agregados para pais y estado de nacimiento
 		'nacimiento_city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False ,),
 		'nacimiento_country_id':fields.many2one('res.country', u'País/Nación'),
+
+		'seleccion_discapacidad': fields.boolean('Discapacidad'),
+		'discapacidad_cognitiva':fields.selection(cognitivas, u'Cognitivas'),
+		'discapacidad_fisica':fields.selection(cognitivas, u'Físicas'),
+		'discapacidad_sensorial':fields.selection(sensorial, u'Sensorial'),
+		'discapacidad_aprendizaje':fields.selection(problemasAprendizaje, u'Problemas de Aprendizaje'),
+
+		'seleccion_poblacion': fields.boolean(u'Población Especial'),
+		'Poblacion_espacial':fields.selection(etnia, u'Etnia'),
+		'desplazado': fields.char(u'Desplazado'),
+		'desmovilizado': fields.char(u'Desmovilizado'),
+		'victima_conflicto': fields.char(u'Victima del Conflicto'),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
