@@ -239,7 +239,7 @@ class doctor_patient_co(osv.osv):
 
 		'seleccion_discapacidad': fields.boolean('Discapacidad'),
 		'discapacidad_cognitiva':fields.selection(cognitivas, u'Cognitivas'),
-		'discapacidad_fisica':fields.selection(cognitivas, u'Físicas'),
+		'discapacidad_fisica':fields.selection(fisicas, u'Físicas'),
 		'discapacidad_sensorial':fields.selection(sensorial, u'Sensorial'),
 		'discapacidad_aprendizaje':fields.selection(problemasAprendizaje, u'Problemas de Aprendizaje'),
 

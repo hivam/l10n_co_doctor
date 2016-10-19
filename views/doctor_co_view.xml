@@ -188,7 +188,7 @@
 
 								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
 									<fieldset class="fieldset_margen" attrs="{'invisible': [('seleccion_poblacion','=', False)]}">
-										<legend class="texto_legend">Población Espacial</legend>
+										<legend class="texto_legend">Población Especial</legend>
 										<group col="2">
 											<field name="Poblacion_espacial" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
 											<field name="desplazado" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
