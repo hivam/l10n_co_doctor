@@ -84,7 +84,7 @@ class doctor_attentions_certificado(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.doctor_attentions_certificado', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_attentions_certificado.rml',
-					  parser=doctor_attentions_certificado)
+					  parser=doctor_attentions_certificado,header="external")
 		
 		
 		
