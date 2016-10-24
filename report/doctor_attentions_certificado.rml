@@ -128,32 +128,25 @@
     </blockTable>
 
     <blockTable colWidths="204.0,330.0" style="Table6">
-      <tr>
-        <td>
-            <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
-          </td>
-          <td>
-            <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
-          </td>
-      </tr>
-      <tr>
-        <td>
-          <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
-        </td>
-        <td>
-          <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
-    </td>
-     </tr>
-     <tr>
-     <!--
-        <td>
-          <para style="P6">[[ '' ]]</para>
-        </td>
-        -->
-        <td>
-          <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
-    </td>
-     </tr>
+    <tr>
+      <td>
+        <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
+      </td>
+      <td>
+        <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
+      </td>
+      <td>
+        <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
+      </td>
+      <td>
+        <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
+      </td>
+    </tr>
     </blockTable>
 
 
