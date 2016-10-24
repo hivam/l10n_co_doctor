@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <document filename="certificado.pdf">
-  <template pageSize="(22.02 cm, 13.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
+  <template pageSize="(22.02 cm, 14.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
     <pageTemplate id="first">
       <frame id="second" x1="4cm" y1="20cm" width="20cm" height="19cm"/>
     </pageTemplate>
