@@ -2,7 +2,7 @@
 <document filename="certificado.pdf">
   <template pageSize="(22.02 cm, 14.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
     <pageTemplate id="first">
-      <frame id="second" x1="4cm" y1="3cm" width="20cm" height="19cm"/>
+      <frame id="first" x1="4cm" y1="3cm" width="20cm" height="14cm"/>
     </pageTemplate>
   </template>
   <stylesheet>
