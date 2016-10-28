@@ -29,6 +29,8 @@ import doctor_disability
 import doctor_attention
 import doctor_attentions_recomendaciones
 import doctor_attentions_certificado
+import doctor_attentions_certificado_half
 import doctor_attentions_otra_prescripcion
 import doctor_account_voucher
 import rips_radicacioncuentas
+import doctor_prescription_half
