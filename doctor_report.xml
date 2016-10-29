@@ -6,6 +6,10 @@
                 rml="l10n_co_doctor/report/doctor_prescription.rml" string="Prescription"
                 usage="default"/>
 
+         <report auto="False" id="doctor_prescription_half" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_prescription_half"
+                rml="l10n_co_doctor/report/doctor_prescription_half.rml" string="Prescription (Media Carta)"
+                usage="default"/>
+
         <report auto="False" id="doctor_attentions_medicamento_otro" model="doctor.attentions" name="doctor_attentions_otra_prescripcion"
                 rml="l10n_co_doctor/report/doctor_attentions_otra_prescripcion.rml" string="Otra Prescripcion"
                 usage="default"/>
@@ -48,6 +52,10 @@
 
         <report auto="False" id="doctor_attentions_certificado" model="doctor.attentions" name="doctor_attentions_certificado"
                 rml="l10n_co_doctor/report/doctor_attentions_certificado.rml" string="Informes y Certificados"
+                usage="default"/>
+
+        <report auto="False" id="doctor_attentions_certificado_half" model="doctor.attentions" name="doctor_attentions_certificado_half"
+                rml="l10n_co_doctor/report/doctor_attentions_certificado_half.rml" string="Informes y Certificados (Mitad Hoja)"
                 usage="default"/>
 
         <report auto="False" id="doctor_account_voucher" model="account.voucher" name="doctor_account_voucher"

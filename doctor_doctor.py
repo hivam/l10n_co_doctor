@@ -106,3 +106,34 @@ class doctor(osv.osv):
 		return time_begin_user
 
 
+	def _model_default_get(self, cr, uid, model=False, fields=False, context=None):
+
+		"""
+		Retornar id de registro segun modelo
+		@param model: Modelo donde se encuentra el registro
+		@param fields: Condicionadores para encontrar registro ej. [ ('name', '=', 'ARMENIA') ]
+		@return: id registro
+		"""
+
+		if not context:
+			context = {}
+
+		#_logger.info('Object  = %s' , model)
+		#_logger.info('field  = %s' , fields)
+
+		objectPool = self.pool.get(model)
+		#Proceder a buscar el dato si, el modelo Existe
+		if objectPool:
+			objectSearch = objectPool.search(cr, uid,fields)
+			objectBrowse = self.pool.get(model).browse(cr,uid,objectSearch)
+			if objectBrowse:
+				idObject = 0
+				for obj in objectBrowse:
+					idObject = obj.id
+				return idObject
+			else:
+				return None
+
+		else :
+			_logger.warning('No se encontro el modelo (%s) , no se retornara el ID' , model)
+			return None

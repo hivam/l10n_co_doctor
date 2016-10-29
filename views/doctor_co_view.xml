@@ -67,6 +67,14 @@
 														<field name='unidad_edad_calculada' nolabel='1' style="width:10%%"/>
 												</h4>
 										</div>
+									<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Lugar de Nacimiento</legend>
+										<group col="2" colspan="2">
+											<field name="nacimiento_country_id"/>
+											<field name="nacimiento_city_id"/>
+										</group>
+									</fieldset>
+
 								</xpath>
 
 								<field name="insurer" position="replace" >
@@ -82,11 +90,11 @@
 								</field>
 
 								<field name="nro_afiliacion" position="after" >
-										<field name="eps_predeterminada"/>
+										<field name="eps_predeterminada" on_change="onchange_seleccion_eps(eps_predeterminada)"/>
 								</field>
 
 								<field name="eps_predeterminada" position="after" >
-										<field name="particular_predeterminada"/>
+										<field name="particular_predeterminada" on_change="onchange_seleccion_particular(particular_predeterminada)"/>
 								</field>
 								<!--attrs="{'invisible': [('tipo_usuario','=', 5)]}-->
 								<xpath expr="/form[@string='Patient']/sheet/group[2]/fieldset[@class='fieldset_margen']/group[@col='2']" position="after">
@@ -94,7 +102,7 @@
 												<legend class="texto_legend">OTRAS</legend>
 												<group colspan="2" col="4">
 														<field name="poliza_medicina_prepagada" on_change="onchange_seleccion(poliza_medicina_prepagada)"/>
-														<field name="prepagada_predeterminada"  attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
+														<field name="prepagada_predeterminada"  attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}" on_change="onchange_seleccion_prepagada(prepagada_predeterminada)"/>
 												</group>
 												<group colspan="2" col="4">
 														<field name="insurer_prepagada_id" attrs="{'invisible': [('poliza_medicina_prepagada','=', False)]}"/>
@@ -144,8 +152,8 @@
 									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'estu'), ('filter_ocupacion','!=', 'doc'),('filter_ocupacion','!=', 'egre'), ('filter_ocupacion','!=', 'emp'),('filter_ocupacion','!=', 'otro')]}">
 										<legend class="texto_legend">Datos Complementarios</legend>
 										<group col="2">
-											<field name="nivel_educativo" attrs="{'invisible': ['|',('filter_ocupacion','=', 'emp'), ('filter_ocupacion','=', 'otro')]}"/>
-											<field name="programa_id" attrs="{'invisible': ['|',('filter_ocupacion','=', 'emp'), ('filter_ocupacion','=', 'otro')]}"/>
+											<field name="nivel_educativo" attrs="{'invisible': [('filter_ocupacion','=', 'otro')]}"/>
+											<field name="programa_id" attrs="{'invisible': [('filter_ocupacion','=', 'otro')]}"/>
 											<field name="semestre_actual" attrs="{'invisible': [('filter_ocupacion','!=', 'estu')]}"/>
 											<field name="description_others" attrs="{'invisible': [('filter_ocupacion','!=', 'otro')]}"/>
 											<field name="dependencia_empleado_id" attrs="{'invisible': [('filter_ocupacion','!=', 'emp')]}"/>
@@ -153,9 +161,42 @@
 										</group>
 									</fieldset>
 
+									<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Discapacidades y Población Especial</legend>
+										<group col="4">
+											<field name="seleccion_discapacidad"/>
+											<field name="seleccion_poblacion"/>
+										</group>
+									</fieldset>
 								</fieldset>
+
+
 								</xpath>
 
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}">
+										<legend class="texto_legend">Discapacidades</legend>
+										<group col="2">
+											<field name="discapacidad_cognitiva" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}"/>
+											<field name="discapacidad_fisica" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}"/>
+											<field name="discapacidad_sensorial" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}"/>
+											<field name="discapacidad_aprendizaje" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}"/>
+										</group>
+									</fieldset>
+								</xpath>
+
+
+								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('seleccion_poblacion','=', False)]}">
+										<legend class="texto_legend">Población Especial</legend>
+										<group col="2">
+											<field name="Poblacion_espacial" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
+											<field name="desplazado" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
+											<field name="desmovilizado" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
+											<field name="victima_conflicto" attrs="{'invisible': [('seleccion_poblacion','=', False)]}"/>
+										</group>
+									</fieldset>
+								</xpath>
 
 								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
 									<fieldset class="fieldset_margen">
@@ -219,10 +260,6 @@
 								</field>
 
 
-
-								<field name="birth_date" position="after">
-										<field name="lugar_nacimiento_id"/>
-								</field>
 
 								<xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@string='Attentions']" position="replace"/>
 
@@ -993,6 +1030,57 @@
 				</record>
 
 
+
+
+
+				<!-- doctor tiempo_espacio Form View -->
+				<record model="ir.ui.view" id="view_doctor_tiempo_espacio_form">
+						<field name="name">Configuración Espacios</field>
+						<field name="model">doctor.time_space</field>
+						<field name="arch" type="xml">
+								<form string="Configuración Espacios" version="7.0" create="false">
+										<group colspan='3' col='2'>
+											<field name="tiempo_espacio"/>
+										</group>
+								</form>
+						</field>
+				</record>
+
+				<!-- doctor tiempo_espacio Tree View -->
+				<record model="ir.ui.view" id="view_doctor_tiempo_espacio_tree">
+						<field name="name">Configuración Espacios</field>
+						<field name="model">doctor.time_space</field>
+						<field name="arch" type="xml">
+								<tree string="Configuración Espacios" version="7.0" create="false">
+									<field name="tiempo_espacio"/>
+								</tree>
+						</field>
+				</record>
+
+
+
+
+				<!-- doctor tiempo_espacio Action -->
+				<record model="ir.actions.act_window" id="action_doctor_tiempo_espacio">
+						<field name="name">Configuración Espacios</field>
+						<field name="res_model">doctor.time_space</field>
+						<field name="view_type">form</field>
+						<field name="view_mode">tree,form</field>
+				</record>
+
+				<menuitem id="menu_doctor_tiempo_espacio" name="Configuración Espacios" parent="doctor.menu_doctor_config" action="action_doctor_tiempo_espacio" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration"/>
+
+
+
+
+
+
+				
+
+
+
+
+
 				<!-- doctor speciality Form View -->
 				<record model="ir.ui.view" id="view_doctor_recomendaciones_form">
 						<field name="name">Plantillas</field>
@@ -1122,7 +1210,8 @@
 						<field name="inherit_id" ref="doctor.sales_order_form_view_inherit_doctor_sales_order"/>
 						<field name="arch" type="xml">
 
-								<field name="patient_id" position="after">
+								<field name="patient_id" position="replace">
+										<field name="patient_id" on_change="on_change_paciente(patient_id)"/>
 										<field name="ref"/>
 										<field name="tipo_usuario_id"/>
 										<field name="contrato_id"/>
