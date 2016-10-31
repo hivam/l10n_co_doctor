@@ -84,39 +84,39 @@ class doctor_attentions_co_inherit(osv.osv):
 
 	def write(self, cr, uid, ids, vals, context=None):
 
-		patient_id = ''
-		modulo_buscar = self.pool.get('doctor.attentions.past')
+		# patient_id = ''
+		# modulo_buscar = self.pool.get('doctor.attentions.past')
 
 	
-		for i in self.browse(cr, uid, ids, context=context):
+		# for i in self.browse(cr, uid, ids, context=context):
 			
-			patient_id = i.patient_id.id
+		# 	patient_id = i.patient_id.id
 
-		if 'attentions_past_ids' in vals:
+		# if 'attentions_past_ids' in vals:
 
-			for datos in vals['attentions_past_ids']:
+		# 	for datos in vals['attentions_past_ids']:
 
-				for datos_past in modulo_buscar.browse(cr, uid, [datos[1]], context=context):
+		# 		for datos_past in modulo_buscar.browse(cr, uid, [datos[1]], context=context):
 
-					past_id = modulo_buscar.search(cr, uid, [('past_category', '=', datos_past.past_category.id), ('patient_id', '=', patient_id)], limit=1 , context=context)
+		# 			past_id = modulo_buscar.search(cr, uid, [('past_category', '=', datos_past.past_category.id), ('patient_id', '=', patient_id)], limit=1 , context=context)
 
-					if past_id:
+		# 			if past_id:
 						
-						for i in modulo_buscar.browse(cr, uid, past_id, context=context):
+		# 				for i in modulo_buscar.browse(cr, uid, past_id, context=context):
 
-							if i.past != False:
+		# 					if i.past != False:
 
-								if datos[2]:
+		# 						if datos[2]:
 
-									u = {}
-									texto = i.past+ ', '+ datos[2]['past']  
+		# 							u = {}
+		# 							texto = i.past+ ', '+ datos[2]['past']  
 
-								u['past'] = texto
-								modulo_buscar.write(cr, uid, past_id, u, context=context)
-							else:
-								return super(doctor_attentions_co_inherit,self).write(cr, uid, ids, vals, context)				
+		# 						u['past'] = texto
+		# 						modulo_buscar.write(cr, uid, past_id, u, context=context)
+		# 					else:
+		# 						return super(doctor_attentions_co_inherit,self).write(cr, uid, ids, vals, context)				
 
-			del vals['attentions_past_ids']				
+		# 	del vals['attentions_past_ids']				
 							
 		return super(doctor_attentions_co_inherit,self).write(cr, uid, ids, vals, context)
 
