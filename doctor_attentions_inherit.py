@@ -79,6 +79,85 @@ class doctor_attentions_co_inherit(osv.osv):
 		'interpretacion_imc' : fields.char(u'Interpretación', size=80, help=u'Interpretación de indice de masa corporal.', states={'closed': [('readonly', True)]}),
 	}
 
+
+
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		patient_id = ''
+		modulo_buscar = self.pool.get('doctor.attentions.past')
+
 	
+		for i in self.browse(cr, uid, ids, context=context):
+			
+			patient_id = i.patient_id.id
+
+		if 'attentions_past_ids' in vals:
+
+			for datos in vals['attentions_past_ids']:
+
+				for datos_past in modulo_buscar.browse(cr, uid, [datos[1]], context=context):
+
+					past_id = modulo_buscar.search(cr, uid, [('past_category', '=', datos_past.past_category.id), ('patient_id', '=', patient_id)], limit=1 , context=context)
+
+					if past_id:
+						
+						for i in modulo_buscar.browse(cr, uid, past_id, context=context):
+
+							if i.past != False:
+
+								if datos[2]:
+
+									u = {}
+									texto = i.past+ ', '+ datos[2]['past']  
+
+								u['past'] = texto
+								modulo_buscar.write(cr, uid, past_id, u, context=context)
+							else:
+								return super(doctor_attentions_co_inherit,self).write(cr, uid, ids, vals, context)				
+
+			del vals['attentions_past_ids']				
+							
+		return super(doctor_attentions_co_inherit,self).write(cr, uid, ids, vals, context)
+
+
+	def create(self, cr, uid, vals, context=None):
+
+		modulo_buscar = self.pool.get('doctor.attentions.past')
+		patient_id = None
+		
+
+		if 'default_patient_id' in context:
+			patient_id = context.get('default_patient_id')
+
+
+		if 'attentions_past_ids' in vals:
+
+			for datos in vals['attentions_past_ids']:
+
+				for datos_past in modulo_buscar.browse(cr, uid, [datos[1]], context=context):
+
+					past_id = modulo_buscar.search(cr, uid, [('past_category', '=', datos[2]['past_category']), ('patient_id', '=', patient_id)], limit=1 , context=context)
+
+					if past_id:
+						
+						for i in modulo_buscar.browse(cr, uid, past_id, context=context):
+
+							if i.past != False:
+
+								if datos[2]:
+
+									u = {}
+									texto = i.past+ ', '+ datos[2]['past']  
+
+								u['past'] = texto
+								modulo_buscar.write(cr, uid, past_id, u, context=context)
+							else:
+								return super(doctor_attentions_co_inherit,self).create(cr, uid, vals, context)				
+
+			del vals['attentions_past_ids']				
+
+		return super(doctor_attentions_co_inherit,self).create(cr, uid, vals, context)
+
 
 doctor_attentions_co_inherit()

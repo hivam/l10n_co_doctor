@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <document filename="certificado.pdf">
-  <template pageSize="(595.0,842.0)" title="Test" author="Hector Ivan Valencia Muñoz - TIX S.A.S." allowSplitting="20">
+  <template pageSize="(22.02 cm, 14.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
     <pageTemplate id="first">
-      <frame id="first" x1="18.0" y1="29.0" width="534" height="784"/>
+      <frame id="first" x1="4cm" y1="3cm" width="20cm" height="14cm"/>
     </pageTemplate>
   </template>
   <stylesheet>
@@ -94,6 +94,7 @@
     <images/>
   </stylesheet>
   <story>
+  <nextFrame/>
   <para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
     <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
     <section>
