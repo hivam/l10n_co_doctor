@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data noupdate="0">
+    <data noupdate="1">
         <record model='product.product' id='010100'>
                 <field name='procedure_description'>PUNCIÓN CISTERNAL SOD §</field>
                 <field name='is_health_procedure'>1</field>
