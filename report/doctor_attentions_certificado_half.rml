@@ -144,7 +144,6 @@
           <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
     </td>
      </tr>
-     </tr>
     </blockTable>
 
 
