@@ -442,6 +442,10 @@
 										<field name="ref"/>
 								</field>
 
+								<field name="ref" position="after" >
+										<field name="phone"/>
+								</field>
+
 								<field name="insurer_id" position="after" >
 										<field name="tipo_usuario_id"/>
 								</field>
