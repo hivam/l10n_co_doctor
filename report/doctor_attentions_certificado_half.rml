@@ -91,6 +91,8 @@
     <paraStyle name="terp_default_Bold_8" rightIndent="0.0" leftIndent="0.0" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="terp_default_Bold_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="terp_default_Bold_Right_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="tamano_letra" fontName="Helvetica-Bold" fontSize="12.0" leading="12" spaceBefore="8.0" spaceAfter="2.0" alignment="CENTER"/>
+    <paraStyle name="tamano_letra_report" fontName="Helvetica" fontSize="9.0" leading="12" spaceBefore="8.0" spaceAfter="2.0" alignment="LEFT"/>
     <images/>
   </stylesheet>
   <story>
@@ -102,7 +104,7 @@
       <para style="P4">[[ repeatIn(o.certificados_ids, 'line') ]]</para>
       <tr>
         <td>
-          
+          <para style="Heading"><b>[[(line.name)]]</b></para>
         </td>
       </tr>
       </blockTable>
@@ -122,7 +124,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P3"><b>[[(line.name)]]</b></para>
+          <para style="tamano_letra">DATOS PACIENTE</para>
         </td>
      </tr>
     </blockTable>
@@ -130,20 +132,27 @@
     <blockTable colWidths="204.0,330.0" style="Table6">
       <tr>
         <td>
-            <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
+            <para style="tamano_letra_report">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
           </td>
           <td>
-            <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
+            <para style="tamano_letra_report">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
           </td>
       </tr>
       <tr>
         <td>
-          <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
+          <para style="tamano_letra_report">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
         </td>
         <td>
-          <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
+          <para style="tamano_letra_report">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
     </td>
      </tr>
+     <tr>
+        <td>
+          <para style="P6">[[ '' ]]</para>
+        </td>
+        <td>
+          <para style="tamano_letra_report">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
+    </td>
      </tr>
     </blockTable>
 
@@ -186,7 +195,7 @@
         <para style="P5">[[ repeatIn(o.certificados_ids, 'line') ]]</para>
         <tr>
           <td>
-            <para style="P6">[[(line.asunto)]] [[(line.cuerpo)]]</para >
+            <para style="tamano_letra_report">[[(line.asunto)]] [[(line.cuerpo)]]</para >
           </td>
         </tr>
       </blockTable>
@@ -195,7 +204,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">DATOS DEL MÉDICO</para>
+          <para style="tamano_letra">DATOS DEL MÉDICO</para>
         </td>
      </tr>
     </blockTable>
@@ -203,18 +212,18 @@
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
     <td>
-          <para style="P6">Nombre: [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
+          <para style="tamano_letra_report">Nombre: [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
         </td>
         <td>
-          <para style="P6">Registro N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
+          <para style="tamano_letra_report">Registro N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
     </td>
       </tr>
       <tr>
     <td>
-          <para style="P6"><b>Firma: [[ ''  ]] </b></para>
+          <para style="tamano_letra_report"><b>Firma: [[ ''  ]] </b></para>
         </td>
         <td>
-          <para style="P6"><b>Sello: [[ ''  ]] </b></para>
+          <para style="tamano_letra_report"><b>Sello: [[ ''  ]] </b></para>
     </td>
       </tr>
     </blockTable>
