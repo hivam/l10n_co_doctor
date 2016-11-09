@@ -566,6 +566,7 @@ class doctor_appointment_co(osv.osv):
 										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string=u'Nº de identificación', required=True, readonly= True),
+		'phone' :  fields.related ('patient_id', 'telefono', type="char", relation="doctor.patient", string=u'Teléfono', required=False, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
@@ -3088,7 +3089,7 @@ class doctor_invoice_co (osv.osv):
 	_name = "account.invoice"
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de iden", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	}
@@ -3108,7 +3109,7 @@ class doctor_sales_order_co (osv.osv):
 		return res
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= False),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificac", required=True, readonly= False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	 }
