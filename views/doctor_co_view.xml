@@ -450,6 +450,12 @@
 										<field name="notas_paciente_cita"/>
 								</field>
 
+								<field name="aditional" position="after" >
+										<button string="Agregar Nota" name="asignar_nota" type="object" icon="gtk-jump-to"/>
+								</field>
+
+								
+
 								<field name="insurer_id" position="after" >
 										<field name="tipo_usuario_id"/>
 								</field>
