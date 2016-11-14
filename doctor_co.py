@@ -600,7 +600,8 @@ class doctor_appointment_co(osv.osv):
 		'noviembre' : fields.boolean('Noviembre'),
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
-		
+		'appointmet_note_ids':fields.one2many('doctor.patient_note', 'appointmet_note_id', 'Notas Paciente'),
+		'notas_paciente_cita':fields.char('Notas', size=32),
 	}
 
 	_defaults = {
@@ -1141,6 +1142,37 @@ class doctor_appointment_co(osv.osv):
 			cita_id= super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
 
 		return cita_id
+
+
+	def asignar_nota(self, cr, uid, ids, context=None):
+		_logger.info('entro there')
+		_logger.info(ids)
+		schedule_id=''
+		patient=''
+		for id_nota in self.browse(cr,uid,ids):
+			schedule_id = id_nota.schedule_id.id
+			patient= id_nota.patient_id.id
+
+
+		_logger.info(schedule_id)
+		_logger.info(patient)
+
+
+		context['default_schedule_id'] = schedule_id
+		context['default_patient_id']= patient
+
+		return {
+			'type': 'ir.actions.act_window',
+			'name': 'Agregar Notas',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_id': False,
+			'res_model': 'doctor.patient_note',
+			'context': context or None,
+			'view_id': False,
+			'nodestroy': False,
+			'target': 'new'
+		}
 
 
 	def write(self, cr, uid, ids, vals, context=None):
@@ -2134,6 +2166,7 @@ class doctor_co_schedule_inherit(osv.osv):
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
 		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios'),
+		'schedule_note_ids':fields.one2many('doctor.patient_note', 'schedule_note_id', 'Notas Paciente'),
 	}
 
 	_defaults = {
@@ -2628,6 +2661,58 @@ class doctor_espacios(osv.osv):
 
 
 doctor_espacios()
+
+
+
+
+class doctor_patient_note(osv.osv):
+
+	_name= 'doctor.patient_note'
+
+	_columns = {
+		'appointmet_note_id': fields.many2one('doctor.appointment', 'Nota'),
+		'schedule_note_id': fields.many2one('doctor.schedule', 'Nota'),
+		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
+		'patient_note':fields.char('Nota'),
+	}
+
+	def name_get(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		res = []
+		patient_note=''
+		_logger.info('name get safsgdhdfgd')
+		_logger.info(ids)
+		for record in self.browse(cr, uid, ids, context=context):
+			patient_note = record.patient_note
+
+
+		return res
+
+	def button_confirm_note(self, cr, uid, ids,datos, context=None):
+		_logger.info('Entro a las notas')
+		_logger.info(datos)
+
+		schedule_id=datos.get('default_schedule_id')
+		appointment_id= datos.get('active_id')
+		_logger.info(schedule_id)
+		_logger.info(appointment_id)
+		patient=''
+		for id_nota in self.browse(cr,uid,ids):
+			#schedule_id = id_nota.schedule_note_id.id
+			patient= id_nota.patient_id.id
+			notas=id_nota.patient_note
+
+
+		
+		_logger.info(patient)
+		_logger.info(notas)
+
+		self.pool.get('doctor.appointment').write(cr, uid, appointment_id,{'notas_paciente_cita': notas} , context=context)
+		return self.write(cr, uid, ids,{'patient_note': notas, 'schedule_note_id':schedule_id, 'appointmet_note_id': appointment_id} , context=context)
+
+
+doctor_patient_note()
 
 class doctor_otra_prescripcion(osv.osv):
 
