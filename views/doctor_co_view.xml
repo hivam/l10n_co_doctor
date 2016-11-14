@@ -441,6 +441,11 @@
 								<field name="patient_id" position="after" >
 										<field name="ref"/>
 								</field>
+								<field name="ref" position="after" >
+										<field name="notas_paciente_cita"/>
+								</field>
+
+								
 
 								<field name="insurer_id" position="after" >
 										<field name="tipo_usuario_id"/>
@@ -1057,6 +1062,35 @@
 						</field>
 				</record>
 
+
+
+				<!-- doctor tiempo_espacio Form View -->
+				<record model="ir.ui.view" id="view_doctor_patient_note_form">
+						<field name="name">Notas Paciente</field>
+						<field name="model">doctor.patient_note</field>
+						<field name="arch" type="xml">
+							<form string="Notas Paciente" version="7.0">
+								<header>
+                    				<button string="Confirmar" name="button_confirm_note" type="object" class="oe_highlight"/>
+               				 	</header>		
+               				 	<group>								
+									<field name="patient_id" editable='false'/>
+									<field name="patient_note"/>
+								</group>										
+							</form>
+						</field>
+				</record>
+
+				<record model="ir.ui.view" id="view_doctor_patient_note_tree">
+						<field name="name">Notas Paciente</field>
+						<field name="model">doctor.patient_note</field>
+						<field name="arch" type="xml">
+								<tree string="Notas Paciente"  create="true">
+									<field name="patient_id" editable='false'/>
+									<field name="patient_note"/>
+								</tree>
+						</field>
+				</record>
 
 
 
