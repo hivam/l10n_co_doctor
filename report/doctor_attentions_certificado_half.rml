@@ -142,17 +142,6 @@
             <para style="tamano_letra_report">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
           </td>
       </tr>
-<<<<<<< HEAD
-      <tr>
-        <td>
-          <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
-        </td>
-        <td>
-          <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
-    </td>
-     </tr>
-=======
->>>>>>> reportesBrayhan
     </blockTable>
 
 
