@@ -2690,25 +2690,19 @@ class doctor_patient_note(osv.osv):
 		return res
 
 	def button_confirm_note(self, cr, uid, ids,datos, context=None):
-		_logger.info('Entro a las notas')
-		_logger.info(datos)
 
 		schedule_id=datos.get('default_schedule_id')
 		appointment_id= datos.get('active_id')
-		_logger.info(schedule_id)
-		_logger.info(appointment_id)
 		patient=''
 		for id_nota in self.browse(cr,uid,ids):
 			#schedule_id = id_nota.schedule_note_id.id
 			patient= id_nota.patient_id.id
 			notas=id_nota.patient_note
 
+		cargar_nota=self.pool.get('doctor.appointment').browse(cr,uid, appointment_id).notas_paciente_cita
+		nota_actual= cargar_nota + ". " + notas
 
-		
-		_logger.info(patient)
-		_logger.info(notas)
-
-		self.pool.get('doctor.appointment').write(cr, uid, appointment_id,{'notas_paciente_cita': notas} , context=context)
+		self.pool.get('doctor.appointment').write(cr, uid, appointment_id,{'notas_paciente_cita': nota_actual} , context=context)
 		return self.write(cr, uid, ids,{'patient_note': notas, 'schedule_note_id':schedule_id, 'appointmet_note_id': appointment_id} , context=context)
 
 
