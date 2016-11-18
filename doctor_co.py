@@ -2676,19 +2676,6 @@ class doctor_patient_note(osv.osv):
 		'patient_note':fields.char('Nota'),
 	}
 
-	def name_get(self, cr, uid, ids, context=None):
-		if context is None:
-			context = {}
-		res = []
-		patient_note=''
-		_logger.info('name get safsgdhdfgd')
-		_logger.info(ids)
-		for record in self.browse(cr, uid, ids, context=context):
-			patient_note = record.patient_note
-
-
-		return res
-
 	def button_confirm_note(self, cr, uid, ids,datos, context=None):
 
 		schedule_id=datos.get('default_schedule_id')
@@ -2700,10 +2687,13 @@ class doctor_patient_note(osv.osv):
 			notas=id_nota.patient_note
 
 		cargar_nota=self.pool.get('doctor.appointment').browse(cr,uid, appointment_id).notas_paciente_cita
-		nota_actual= cargar_nota + ". " + notas
+		if cargar_nota == False:
+			nota_actual=notas
+		else:
+			nota_actual= cargar_nota + ". " + notas
 
 		self.pool.get('doctor.appointment').write(cr, uid, appointment_id,{'notas_paciente_cita': nota_actual} , context=context)
-		return self.write(cr, uid, ids,{'patient_note': notas, 'schedule_note_id':schedule_id, 'appointmet_note_id': appointment_id} , context=context)
+		return self.write(cr, uid, ids,{'patient_note': nota_actual, 'schedule_note_id':schedule_id, 'appointmet_note_id': appointment_id} , context=context)
 
 
 doctor_patient_note()
