@@ -601,7 +601,7 @@ class doctor_appointment_co(osv.osv):
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
 		'appointmet_note_ids':fields.one2many('doctor.patient_note', 'appointmet_note_id', 'Notas Paciente'),
-		'notas_paciente_cita':fields.char('Notas', size=32),
+		'notas_paciente_cita':fields.char('Notas'),
 	}
 
 	_defaults = {
