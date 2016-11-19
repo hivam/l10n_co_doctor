@@ -601,7 +601,7 @@ class doctor_appointment_co(osv.osv):
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
 		'appointmet_note_ids':fields.one2many('doctor.patient_note', 'appointmet_note_id', 'Notas Paciente'),
-		'notas_paciente_cita':fields.char('Notas'),
+		'notas_paciente_cita':fields.text('Notas'),
 	}
 
 	_defaults = {
@@ -1145,21 +1145,23 @@ class doctor_appointment_co(osv.osv):
 
 
 	def asignar_nota(self, cr, uid, ids, context=None):
-		_logger.info('entro there')
-		_logger.info(ids)
+
 		schedule_id=''
 		patient=''
 		for id_nota in self.browse(cr,uid,ids):
 			schedule_id = id_nota.schedule_id.id
 			patient= id_nota.patient_id.id
+			notas_paciente=id_nota.notas_paciente_cita
 
 
 		_logger.info(schedule_id)
 		_logger.info(patient)
 
 
+
 		context['default_schedule_id'] = schedule_id
 		context['default_patient_id']= patient
+		context['default_notas_paciente_cita']= notas_paciente
 
 		return {
 			'type': 'ir.actions.act_window',
@@ -2673,7 +2675,12 @@ class doctor_patient_note(osv.osv):
 		'appointmet_note_id': fields.many2one('doctor.appointment', 'Nota'),
 		'schedule_note_id': fields.many2one('doctor.schedule', 'Nota'),
 		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
-		'patient_note':fields.char('Nota'),
+		'patient_note':fields.text('Nota'),
+	}
+
+
+	_defaults = {
+		'patient_note' : lambda self, cr, uid, context: context.get('default_notas_paciente_cita', False),
 	}
 
 	def button_confirm_note(self, cr, uid, ids,datos, context=None):
@@ -2682,18 +2689,14 @@ class doctor_patient_note(osv.osv):
 		appointment_id= datos.get('active_id')
 		patient=''
 		for id_nota in self.browse(cr,uid,ids):
-			#schedule_id = id_nota.schedule_note_id.id
 			patient= id_nota.patient_id.id
 			notas=id_nota.patient_note
 
-		cargar_nota=self.pool.get('doctor.appointment').browse(cr,uid, appointment_id).notas_paciente_cita
-		if cargar_nota == False:
-			nota_actual=notas
-		else:
-			nota_actual= cargar_nota + ". " + notas
+			nota_actual= notas + ". "
 
 		self.pool.get('doctor.appointment').write(cr, uid, appointment_id,{'notas_paciente_cita': nota_actual} , context=context)
 		return self.write(cr, uid, ids,{'patient_note': nota_actual, 'schedule_note_id':schedule_id, 'appointmet_note_id': appointment_id} , context=context)
+		
 
 
 doctor_patient_note()
