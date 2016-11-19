@@ -566,6 +566,7 @@ class doctor_appointment_co(osv.osv):
 										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string=u'Nº de identificación', required=True, readonly= True),
+		'phone' :  fields.related ('patient_id', 'telefono', type="char", relation="doctor.patient", string=u'Teléfono', required=False, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
@@ -599,7 +600,8 @@ class doctor_appointment_co(osv.osv):
 		'noviembre' : fields.boolean('Noviembre'),
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
-		
+		'appointmet_note_ids':fields.one2many('doctor.patient_note', 'appointmet_note_id', 'Notas Paciente'),
+		'notas_paciente_cita':fields.text('Notas'),
 	}
 
 	_defaults = {
@@ -1140,6 +1142,39 @@ class doctor_appointment_co(osv.osv):
 			cita_id= super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
 
 		return cita_id
+
+
+	def asignar_nota(self, cr, uid, ids, context=None):
+
+		schedule_id=''
+		patient=''
+		for id_nota in self.browse(cr,uid,ids):
+			schedule_id = id_nota.schedule_id.id
+			patient= id_nota.patient_id.id
+			notas_paciente=id_nota.notas_paciente_cita
+
+
+		_logger.info(schedule_id)
+		_logger.info(patient)
+
+
+
+		context['default_schedule_id'] = schedule_id
+		context['default_patient_id']= patient
+		context['default_notas_paciente_cita']= notas_paciente
+
+		return {
+			'type': 'ir.actions.act_window',
+			'name': 'Agregar Notas',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_id': False,
+			'res_model': 'doctor.patient_note',
+			'context': context or None,
+			'view_id': False,
+			'nodestroy': False,
+			'target': 'new'
+		}
 
 
 	def write(self, cr, uid, ids, vals, context=None):
@@ -2133,6 +2168,7 @@ class doctor_co_schedule_inherit(osv.osv):
 		'diciembre' : fields.boolean('Diciembre'),
 		'todos_los_meses': fields.boolean('Marcar Todo'),
 		'schedule_espacios_ids':fields.one2many('doctor.espacios', 'schedule_espacio_id', 'Espacios'),
+		'schedule_note_ids':fields.one2many('doctor.patient_note', 'schedule_note_id', 'Notas Paciente'),
 	}
 
 	_defaults = {
@@ -2628,6 +2664,43 @@ class doctor_espacios(osv.osv):
 
 doctor_espacios()
 
+
+
+
+class doctor_patient_note(osv.osv):
+
+	_name= 'doctor.patient_note'
+
+	_columns = {
+		'appointmet_note_id': fields.many2one('doctor.appointment', 'Nota'),
+		'schedule_note_id': fields.many2one('doctor.schedule', 'Nota'),
+		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
+		'patient_note':fields.text('Nota'),
+	}
+
+
+	_defaults = {
+		'patient_note' : lambda self, cr, uid, context: context.get('default_notas_paciente_cita', False),
+	}
+
+	def button_confirm_note(self, cr, uid, ids,datos, context=None):
+
+		schedule_id=datos.get('default_schedule_id')
+		appointment_id= datos.get('active_id')
+		patient=''
+		for id_nota in self.browse(cr,uid,ids):
+			patient= id_nota.patient_id.id
+			notas=id_nota.patient_note
+
+			nota_actual= notas + ". "
+
+		self.pool.get('doctor.appointment').write(cr, uid, appointment_id,{'notas_paciente_cita': nota_actual} , context=context)
+		return self.write(cr, uid, ids,{'patient_note': nota_actual, 'schedule_note_id':schedule_id, 'appointmet_note_id': appointment_id} , context=context)
+		
+
+
+doctor_patient_note()
+
 class doctor_otra_prescripcion(osv.osv):
 
 	_name= 'product.product'
@@ -3088,7 +3161,7 @@ class doctor_invoice_co (osv.osv):
 	_name = "account.invoice"
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= True),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de iden", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	}
@@ -3108,7 +3181,7 @@ class doctor_sales_order_co (osv.osv):
 		return res
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificación", required=True, readonly= False),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificac", required=True, readonly= False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	 }
