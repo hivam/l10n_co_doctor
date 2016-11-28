@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <document filename="test_half.pdf">
-  <template pageSize="(22.02 cm, 14.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
+  <template pageSize="(22.02 cm, 11.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
     <pageTemplate id="first">
       <frame id="first" x1="18.0" y1="29.0" width="534" height="784"/>
     </pageTemplate>
@@ -187,16 +187,20 @@
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
     <td>
-          <para style="P6">Name: [[ (o.professional_id.professional.name or (removeParentNode('para'))) ]]</para>
-          <para ><b> [[ ''  ]] </b></para>
-          <para style="P6"><b>Firma: [[ ''  ]] </b></para>
+          <para style="tamano_letra_report">Nombre: [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
         </td>
         <td>
-          <para style="P6">Register N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
-          <para style="P6"><b>Sello: [[ ''  ]] </b></para>
+          <para style="tamano_letra_report">Registro N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
     </td>
       </tr>
-
+      <tr>
+    <td>
+          <para style="tamano_letra_report"><b>Firma: [[ ''  ]] </b></para>
+        </td>
+        <td>
+          <para style="tamano_letra_report"><b>Sello: [[ ''  ]] </b></para>
+    </td>
+      </tr>
     </blockTable>
 <!--
     <para style="P7">
