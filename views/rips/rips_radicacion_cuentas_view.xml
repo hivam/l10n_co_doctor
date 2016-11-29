@@ -31,7 +31,7 @@
           <div>  
             <h2>
               <label for="cliente_id" string="Cliente" class="left-margin10"/>
-              <field name="cliente_id" style="width: 80%%" domain="[('tipousuario_id','=',tipo_usuario_id)]" on_change="onchange_contrato(cliente_id)"/>
+              <field name="cliente_id" style="width: 80%%" domain="[]" on_change="onchange_contrato(cliente_id)"/>
             </h2>
           </div>
           <div>
@@ -70,9 +70,14 @@
             </group>
           </group>
           <notebook>
-            <page string="Facturas"  attrs="">
+            <page string="Facturas"  attrs="{'invisible': [('rips_directos','=',True)]}">
               <group>
                 <field name="invoices_ids" nolabel="1" create="false"/>
+              </group>
+            </page>
+            <page string="Atenciones"  attrs="{'invisible': [('rips_directos','=',False)]}">
+              <group>
+               
               </group>
             </page>
 

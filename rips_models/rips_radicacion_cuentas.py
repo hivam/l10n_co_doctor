@@ -133,6 +133,7 @@ class radicacion_cuentas(osv.osv):
 		'cea' : fields.char('C.E.A', help=u'Código de entidad administradora'),
 		'valor_consulta' : fields.char('Valor Consulta'),
 		'tipo_archivo' : fields.selection([('txt','Txt'),('excel','Excel')], u'Formato Exportación', required=False),
+		#'referencia' : fields.reference('Source Document', required=True, selection=_get_document_types),
 	}
 
 	_defaults = {
@@ -141,6 +142,10 @@ class radicacion_cuentas(osv.osv):
 		'rips_tipo_archivo' : [3,10,1,6],
 		'rips_directos': False,
 	}
+
+	# def _get_document_types(self, cr, uid, context=None):
+	# 	cr.execute('select m.model, s.name from subscription_document s, ir_model m WHERE s.model = m.id order by s.name')
+	# 	return cr.fetchall()
 
 
 	def _date_to_dateuser(self,cr, uid,date,context=None):
@@ -184,7 +189,20 @@ class radicacion_cuentas(osv.osv):
 			# 														('tipo_usuario_id', '=', tipo_usuario_id ),
 			# 														('radicada', '=', False)])
 		else:
-			_logger.info("seras cabrón ---")	
+			_logger.info("Entrando ---------------")
+			#medico general
+			atenciones_general = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
+			
+			if atenciones_general:
+				for i in self.pool.get('doctor.attentions').browse(cr,uid,atenciones_general):
+					#consultando origen de atencion
+					origen = self.pool.get('doctor.appointment').search(cr, uid, [('number','=',i.origin)])
+					for j in self.pool.get('doctor.appointment').browse(cr,uid,origen):
+						if j:
+							_logger.info(j.insurer_id)
+					
+			else:
+				_logger.info("No hay atenciones")
 			return True
 
 		return {'value': {'invoices_ids': invoices}}
