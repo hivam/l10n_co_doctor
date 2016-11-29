@@ -97,7 +97,7 @@
   </stylesheet>
   <story>
   <nextFrame/>
-	<para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
+  <para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
     <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
 
     <blockTable colWidths="350.0,184.0 " style="Table1">
@@ -122,7 +122,7 @@
 
     <blockTable colWidths="204.0,330.0" style="Table6">
       <tr>
-		<td>
+    <td>
           <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
           <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
         </td>
@@ -130,13 +130,13 @@
           <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
           <para style="P6">EPS: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
           <para style="P6">Nº Afiliación: [[ (o.patient_id.nro_afiliacion or (removeParentNode('para'))) ]]</para>
-		</td>
+    </td>
       </tr>
     </blockTable>
 
-	<blockTable colWidths="384.0,150.0" style="Table6">
+  <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-		 <td>
+     <td>
             <para style="tamano_letra">MEDICAMENTO</para>
           </td>
           <td>
@@ -150,7 +150,7 @@
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-		 <td>
+     <td>
             <para style="P6">[[ (line.drugs_id.atc_id.code) ]] [[ (line.drugs_id.atc_id.name) ]] [[ (line.drugs_id.drugs_concentration) ]] [[ (line.drugs_id.pharmaceutical_form.name) ]]</para>
           </td>
           <td>
@@ -158,7 +158,7 @@
           </td>
         </tr>
         <tr>
-		 <td>
+     <td>
             <para style="P6">[[(line.indicacion_tomar)]] cada [[ (line.frequency) ]] [[ select_type_unit(line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ select_type_period(line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
           </td>
           <td>
@@ -166,11 +166,11 @@
           </td>
         </tr>
         <tr>
-		 <td>
+     <td>
             <para style="P6">[[ (line.indications or (removeParentNode('para'))) ]]</para>
           </td>
           <td>
-            <para style="P6">[[ '' 	]] </para>
+            <para style="P6">[[ ''  ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -186,7 +186,7 @@
 
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
-		<td>
+    <td>
           <para style="P6">Name: [[ (o.professional_id.professional.name or (removeParentNode('para'))) ]]</para>
           <para ><b> [[ ''  ]] </b></para>
           <para style="P6"><b>Firma: [[ ''  ]] </b></para>
@@ -194,7 +194,7 @@
         <td>
           <para style="P6">Register N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
           <para style="P6"><b>Sello: [[ ''  ]] </b></para>
-		</td>
+    </td>
       </tr>
 
     </blockTable>
