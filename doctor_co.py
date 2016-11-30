@@ -97,8 +97,8 @@ class doctor_patient_co(osv.osv):
 	#Discapacidad
 	cognitivas = [
 	('1', 'Autismo'),
-	('2', 'Síndrome de Down'),
-	('3', 'Síndrome de Asperger'),
+	('2', u'Síndrome de Down'),
+	('3', u'Síndrome de Asperger'),
 	('4', 'Retraso Mental'),
 	('5', 'Otros'),
 	]
