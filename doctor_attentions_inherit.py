@@ -131,7 +131,6 @@ class doctor_attentions_co_inherit(osv.osv):
 			patient_id = context.get('default_patient_id')
 
 
-
 		if 'attentions_past_ids' in vals:
 
 			for datos in vals['attentions_past_ids']:
@@ -159,6 +158,5 @@ class doctor_attentions_co_inherit(osv.osv):
 			del vals['attentions_past_ids']				
 
 		return super(doctor_attentions_co_inherit,self).create(cr, uid, vals, context)
-
 
 doctor_attentions_co_inherit()
