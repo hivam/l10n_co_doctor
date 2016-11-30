@@ -83,8 +83,8 @@ class doctor_patient_co(osv.osv):
 	nivel_estudio = [
 		('1', 'PREGRADO'),
 		('2', 'POSGRADO'),
-		('3', 'MAESTRÍAS'),
-		('4', 'ESPECIALIZACIÓN'),
+		('3', u'MAESTRÍAS'),
+		('4', u'ESPECIALIZACIÓN'),
 	]
 
 	#Lateralidad
@@ -105,7 +105,7 @@ class doctor_patient_co(osv.osv):
 
 	#Discapacidad
 	fisicas = [
-	('1', 'lesión medular'),
+	('1', u'lesión medular'),
 	('2', 'Esclerosis Multiple'),
 	('3', 'Paralisis Cerebral'),
 	('4', 'Mal de Parkinson'),
@@ -132,7 +132,7 @@ class doctor_patient_co(osv.osv):
 
 	#Poblacion especial
 	etnia = [
-	('1', 'Indígena'),
+	('1', u'Indígena'),
 	('2', 'Rom'),
 	('3', 'Afrodescendientes'),
 	('4', 'Raizal'),
