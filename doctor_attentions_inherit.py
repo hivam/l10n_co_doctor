@@ -159,5 +159,4 @@ class doctor_attentions_co_inherit(osv.osv):
 
 		return super(doctor_attentions_co_inherit,self).create(cr, uid, vals, context)
 
-
 doctor_attentions_co_inherit()

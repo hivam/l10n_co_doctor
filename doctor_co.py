@@ -83,8 +83,8 @@ class doctor_patient_co(osv.osv):
 	nivel_estudio = [
 		('1', 'PREGRADO'),
 		('2', 'POSGRADO'),
-		('3', 'MAESTRÍAS'),
-		('4', 'ESPECIALIZACIÓN'),
+		('3', u'MAESTRÍAS'),
+		('4', u'ESPECIALIZACIÓN'),
 	]
 
 	#Lateralidad
@@ -97,15 +97,15 @@ class doctor_patient_co(osv.osv):
 	#Discapacidad
 	cognitivas = [
 	('1', 'Autismo'),
-	('2', 'Síndrome de Down'),
-	('3', 'Síndrome de Asperger'),
+	('2', u'Síndrome de Down'),
+	('3', u'Síndrome de Asperger'),
 	('4', 'Retraso Mental'),
 	('5', 'Otros'),
 	]
 
 	#Discapacidad
 	fisicas = [
-	('1', 'lesión medular'),
+	('1', u'lesión medular'),
 	('2', 'Esclerosis Multiple'),
 	('3', 'Paralisis Cerebral'),
 	('4', 'Mal de Parkinson'),
@@ -132,7 +132,7 @@ class doctor_patient_co(osv.osv):
 
 	#Poblacion especial
 	etnia = [
-	('1', 'Indígena'),
+	('1', u'Indígena'),
 	('2', 'Rom'),
 	('3', 'Afrodescendientes'),
 	('4', 'Raizal'),
@@ -563,7 +563,7 @@ class doctor_appointment_co(osv.osv):
 	_columns = {
 		'contract_id':  fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
-										states={'invoiced': [('readonly', True)]}, domain="[('tipo_usuario_id','=',tipousuario_id)]"),
+										states={'invoiced': [('readonly', True)]},),
 		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string=u'Nº de identificación', required=True, readonly= True),
 		'phone' :  fields.related ('patient_id', 'telefono', type="char", relation="doctor.patient", string=u'Teléfono', required=False, readonly= True),
