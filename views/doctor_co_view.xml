@@ -997,6 +997,9 @@
 								<form string="Resumen historia clinica" version="7.0">
 									<group>
 										<legend class="texto_legend">Resumen ultimas 3 atenciones</legend>
+										<group colspan='2' col='4'>
+											<field name="notas_confidenciales"/>
+										</group>
 										<separator/>
 										<legend class="texto_legend">Diagnosticos</legend>
 										<group colspan='2' col='4'>
@@ -1041,6 +1044,15 @@
 			                                    <field name="atc_id"/>
 			                                </tree>
                             			</field>
+                            			<field name="examen_fisico_id" nolabel="1">
+			                                <tree string="Examen fisico" editable="top">
+			                                    <field name="exam_category"/>
+			                                    <field name="exam"/>
+			                                </tree>
+                            			</field>
+                            			<group colspan='2' col='4'>
+											<field name="motivo_consulta"/>
+										</group>
 									</group>
 								</form>
 						</field>
