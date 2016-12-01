@@ -690,6 +690,14 @@
 										<field name="otros_antecedentes_farmacologicos"/>
 								</field>
 
+								<field name='actual_disease' position="after">
+									<group col="2"> 
+										<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
+									</group>
+									<group col="1" colspan="2">
+										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/> 
+									</group>
+								</field>
 								
 								<field name="attentions_exam_ids" position="after">
 										<label for="otros_hallazgos_examen_fisico" string="Otros hallazgos y signos clínicos en el examen físico"/>
@@ -730,12 +738,6 @@
 										<field name="inv" invisible="1"/> 
 										<label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
 										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
-										<group col="2"> 
-												<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
-										</group>
-										<group col="1" colspan="2">
-												<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/> 
-										</group>
 								</field>
 
 								<field name="analysis" position="after">
@@ -985,6 +987,7 @@
 					 <field name="number_increment">1</field>
 				 </record> 
 				 <!-- Fin de la secuencia -->
+
 
 
 				<record model="ir.ui.view" id="view_doctor_attentions_resumen_form">
