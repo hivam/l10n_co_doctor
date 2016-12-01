@@ -1,14 +1,9 @@
 <?xml version="1.0"?>
 <document filename="certificado_half.pdf">
   <template pageSize="(22.02 cm, 12.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
-<<<<<<< HEAD
-    <pageTemplate id="second">
-      <frame id="second" x1="4cm" y1="3cm" width="20cm" height="14cm"/>
-=======
     <pageTemplate id="first">
       <frame id="first" x1="4cm" y1="3cm" width="20cm" height="14cm"/>
-      <frame id="first" x1="1.3cm" y1="-8cm" height="21.7cm" width="19.0cm"/>
->>>>>>> pruebas
+      <frame id="first" x1="1.3cm" y1="-8cm" height="21.7cm" width="19.0cm"/>>>>>>>> pruebas
     </pageTemplate>
   </template>
   <stylesheet>

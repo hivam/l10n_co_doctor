@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 <document filename="test_half.pdf">
-<<<<<<< HEAD
-  <template pageSize="(22.02 cm, 11.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
-=======
   <template pageSize="(22.02 cm, 12.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
->>>>>>> pruebas
     <pageTemplate id="first">
       <frame id="first" x1="4cm" y1="3cm" width="20cm" height="14cm"/>
       <frame id="first" x1="1.3cm" y1="-9.5cm" height="21.7cm" width="19.0cm"/>
