@@ -1970,6 +1970,9 @@ class doctor_attention_resumen(osv.osv):
 		'pathological_past': fields.one2many('doctor.diseases.past', 'attentiont_id', 'Pathological past', readonly=True),
 		'drugs_past': fields.one2many('doctor.atc.past', 'attentiont_id', 'Drugs past', ondelete='restrict', readonly=True),
 		'drugs_ids': fields.one2many('doctor.prescription', 'attentiont_id', 'Drugs prescription', readonly = True),
+		'notas_confidenciales': fields.text('Notas Confidenciales', readonly=True),
+		'examen_fisico_id': fields.one2many('doctor.attentions.exam', 'attentiont_id', 'Examen Fisico', readonly=True),
+		'motivo_consulta': fields.text('Motivo consulta', readonly=True),
 	}
 
 
@@ -1980,13 +1983,16 @@ class doctor_attention_resumen(osv.osv):
 		resumen_analisis = ''
 		tratamiento_resumen = ''
 		diagnosticos_resumen = ''
-		tipo_diagnosticos_resumen=''
+		tipo_diagnosticos_resumen =''
+		notas_confidenciales =''
+		motivo_consulta = ''
 		diagnosticos_ids = []
 		revision_por_sistema_ids = []
 		antecedentes_ids = []
 		antecedentes_patologicos_ids = []
 		antecedentes_farmacologicos_ids = []
 		medicamentos_ids = []
+		examen_fisico = []
 		if paciente_id:
 			ids_ultimas_historias = modelo_buscar.search(cr, uid, [('patient_id', '=', paciente_id)], limit=3, context=context)
 
@@ -1997,6 +2003,14 @@ class doctor_attention_resumen(osv.osv):
 
 				if datos.conduct: 
 					tratamiento_resumen += datos.conduct + '\n'
+
+				if datos.motivo_consulta: 
+					_logger.info(datos.motivo_consulta)
+					motivo_consulta += datos.motivo_consulta + '\n'
+
+				if uid == datos.professional_id.user_id.id:
+					if datos.notas_confidenciales:
+						notas_confidenciales += datos.notas_confidenciales
 				
 				if datos.diseases_ids:
 					for i in range(0,len(datos.diseases_ids),1):
@@ -2027,9 +2041,16 @@ class doctor_attention_resumen(osv.osv):
 				if datos.drugs_ids:
 					for i in range(0,len(datos.drugs_ids),1):
 						medicamentos_ids.append((0,0,{'drugs_id' : datos.drugs_ids[i].drugs_id.id}))
+
+
+				if datos.attentions_exam_ids:
+					for i in range(0,len(datos.attentions_exam_ids),1):
+						examen_fisico.append((0,0,{'exam_category' : datos.attentions_exam_ids[i].exam_category.id,
+													'exam': datos.attentions_exam_ids[i].exam}))
 					
 			res['analisis_resumen'] = resumen_analisis
 			res['tratamiento_resumen'] = tratamiento_resumen
+			res['notas_confidenciales'] = notas_confidenciales
 			res['diganosticos_resumen'] = diagnosticos_resumen
 			res['tipo_diagnostico'] = tipo_diagnosticos_resumen
 			res['review_systems_id'] = revision_por_sistema_ids
@@ -2037,6 +2058,8 @@ class doctor_attention_resumen(osv.osv):
 			res['pathological_past'] = antecedentes_patologicos_ids
 			res['drugs_past'] = antecedentes_farmacologicos_ids
 			res['drugs_ids'] = medicamentos_ids
+			res['examen_fisico_id'] = examen_fisico
+			res['motivo_consulta'] = motivo_consulta
 
 		return res
 
