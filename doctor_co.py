@@ -2202,7 +2202,7 @@ class doctor_attention_resumen(osv.osv):
 						
 						if datos.review_systems_id:
 							for i in range(0,len(datos.review_systems_id),1):
-								revision_por_sistema_ids.append(datos.review_systems_id[i].atc_id.id)
+								revision_por_sistema_ids.append(datos.review_systems_id[i].system_category.id)
 						
 					if len(revision_por_sistema_ids) <= 0:
 						node.set('invisible', repr(True))
