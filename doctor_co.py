@@ -2005,7 +2005,6 @@ class doctor_attention_resumen(osv.osv):
 					tratamiento_resumen += datos.conduct + '\n'
 
 				if datos.motivo_consulta: 
-					_logger.info(datos.motivo_consulta)
 					motivo_consulta += datos.motivo_consulta + '\n'
 
 				if uid == datos.professional_id.user_id.id:
@@ -2073,20 +2072,110 @@ class doctor_attention_resumen(osv.osv):
 		res = super(doctor_attention_resumen, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
 		doc = etree.XML(res['arch'])
 		patient_id = context.get('patient_id')
+		antecedentes_farmacologicos_ids = []
+		revision_por_sistema_ids = []
+		antecedentes_patologicos_ids = []
+		medicamentos_ids = []
+		antecedentes_ids = []
+		examen_fisico = []
+		motivo_consulta = []
+		datos_notas_confidenciales = []
 		resumen_analisis = []
 		tratamiento_resumen = []
-		motivo_consulta = []
-		revision_por_sistema_ids = []
-		antecedentes_ids = []
-		antecedentes_patologicos_ids = []
-		antecedentes_farmacologicos_ids = []
-		medicamentos_ids = []
-		examen_fisico = []
-		datos_notas_confidenciales = []
+		diagnosticos_resumen= []
 
+		record = None
 		if patient_id:
 			modelo_buscar = self.pool.get('doctor.attentions')
 			record = modelo_buscar.search(cr, uid, [('patient_id', '=', patient_id)], limit=3, context=context)
+
+		for node in doc.xpath("//field[@name='notas_confidenciales']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.notas_confidenciales:
+							datos_notas_confidenciales.append(datos.notas_confidenciales)
+						
+					if len(datos_notas_confidenciales) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['notas_confidenciales'])
+
+		for node in doc.xpath("//field[@name='motivo_consulta']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.motivo_consulta:
+							motivo_consulta.append(datos.notas_confidenciales)
+						
+					if len(motivo_consulta) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['motivo_consulta'])
+
+
+
+		for node in doc.xpath("//field[@name='tratamiento_resumen']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.conduct:
+							tratamiento_resumen.append(datos.conduct)
+						
+					if len(tratamiento_resumen) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['tratamiento_resumen'])
+
+
+		for node in doc.xpath("//field[@name='analisis_resumen']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.analysis:
+							resumen_analisis.append(datos.conduct)
+						
+					if len(resumen_analisis) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['analisis_resumen'])
+
+		if (len(resumen_analisis) <= 0 and len(tratamiento_resumen) <= 0):
+			
+			for node in doc.xpath("//legend[@id='tratamiento']"):
+				node.set('invisible', repr(True))
+				setup_modifiers(node)
+
+
+		for node in doc.xpath("//field[@name='diganosticos_resumen']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						if datos.diseases_ids:
+							diagnosticos_resumen.append(datos.diseases_ids[i].diseases_id.name)
+							
+						
+					if len(diagnosticos_resumen) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['diganosticos_resumen'])
+
+						for node in doc.xpath("//legend[@id='diagnostico']"):
+							node.set('invisible', repr(True))
+							setup_modifiers(node)
+
+		for node in doc.xpath("//field[@name='tipo_diagnostico']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						if datos.diseases_ids:
+							diagnosticos_resumen.append(datos.diseases_ids[i].diseases_id.name)
+						
+					if len(diagnosticos_resumen) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['tipo_diagnostico'])
+
+
+
 
 		for node in doc.xpath("//field[@name='drugs_past']"):
 				
@@ -2101,6 +2190,9 @@ class doctor_attention_resumen(osv.osv):
 						node.set('invisible', repr(True))
 						setup_modifiers(node, res['fields']['drugs_past'])
 
+						for node in doc.xpath("//legend[@id='medicamentos']"):
+							node.set('invisible', repr(True))
+							setup_modifiers(node)
 
 		for node in doc.xpath("//field[@name='review_systems_id']"):
 				
