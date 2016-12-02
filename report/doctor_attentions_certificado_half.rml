@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <document filename="certificado_half.pdf">
-  <template pageSize="(22.02 cm, 14.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
+  <template pageSize="(22.02 cm, 12.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
     <pageTemplate id="first">
       <frame id="first" x1="4cm" y1="3cm" width="20cm" height="14cm"/>
+      <frame id="first" x1="1.3cm" y1="-8cm" height="21.7cm" width="19.0cm"/>
     </pageTemplate>
   </template>
   <stylesheet>
@@ -11,7 +12,7 @@
       <blockValign value="TOP"/>
     </blockTableStyle>
     <blockTableStyle id="Table1">
-      <blockAlignment value="RIGHT"/>
+      <blockAlignment value="LEFT"/>
       <blockValign value="TOP"/>
     </blockTableStyle>
     <blockTableStyle id="Table2">
@@ -109,15 +110,19 @@
         </td>
       </tr>
       </blockTable>
-
     </section>
-    <blockTable colWidths="350.0,184.0 " style="Table1">
+
+    <blockTable colWidths="175.0,175.0,184.0 " style="Table1">
       <tr>
         <td>
-          <para style="P17">Fecha: [[ formatLang(o.date_attention,date=True) ]]</para>
+          <para alignment="LEFT" >Fecha: [[ formatLang(o.date_attention,date=True) ]]</para>
+
         </td>
         <td>
-          <para style="P12">Atención N°: [[ (o.number) ]]</para>
+          <para fontName="Helvetica-bold" fontSize="12.0" alignment="CENTER" spaceBefore="3.0" spaceAfter="2.0">[[ company.partner_id.name ]]</para>
+        </td>
+        <td>
+          <para alignment="RIGHT">Atención N°: [[ (o.number) ]]</para>
         </td>
      </tr>
     </blockTable>
