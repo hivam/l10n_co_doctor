@@ -2152,7 +2152,8 @@ class doctor_attention_resumen(osv.osv):
 				if record:
 					for datos in modelo_buscar.browse(cr, uid, record, context=context):
 						if datos.diseases_ids:
-							diagnosticos_resumen.append(datos.diseases_ids[i].diseases_id.name)
+							for i in range(0,len(datos.diseases_ids),1):
+								diagnosticos_resumen.append(datos.diseases_ids[i].diseases_id.name)
 							
 						
 					if len(diagnosticos_resumen) <= 0:
