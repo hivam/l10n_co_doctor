@@ -105,7 +105,7 @@ class doctor_attention(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_attention.rml',
-					  parser=doctor_attention,  header="internal")
+					  parser=doctor_attention)
 		
 		
 		
