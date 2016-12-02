@@ -2029,6 +2029,10 @@ class doctor_attention_resumen(osv.osv):
 						revision_por_sistema_ids.append((0,0,{'system_category' : datos.review_systems_id[i].system_category.id,
 															'review_systems': datos.review_systems_id[i].review_systems}))
 
+				if datos.attentions_past_ids:
+					for i in range(0,len(datos.attentions_past_ids),1):
+						antecedentes_ids.append((0,0,{'past_category' : datos.attentions_past_ids[i].past_category.id,
+															'past': datos.attentions_past_ids[i].past}))
 
 				if datos.pathological_past:
 					for i in range(0,len(datos.pathological_past),1):
@@ -2063,6 +2067,116 @@ class doctor_attention_resumen(osv.osv):
 
 		return res
 
+
+	def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+		
+		res = super(doctor_attention_resumen, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
+		doc = etree.XML(res['arch'])
+		patient_id = context.get('patient_id')
+		resumen_analisis = []
+		tratamiento_resumen = []
+		motivo_consulta = []
+		revision_por_sistema_ids = []
+		antecedentes_ids = []
+		antecedentes_patologicos_ids = []
+		antecedentes_farmacologicos_ids = []
+		medicamentos_ids = []
+		examen_fisico = []
+		datos_notas_confidenciales = []
+
+		if patient_id:
+			modelo_buscar = self.pool.get('doctor.attentions')
+			record = modelo_buscar.search(cr, uid, [('patient_id', '=', patient_id)], limit=3, context=context)
+
+		for node in doc.xpath("//field[@name='drugs_past']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.drugs_past:
+							for i in range(0,len(datos.drugs_past),1):
+								antecedentes_farmacologicos_ids.append(datos.drugs_past[i].atc_id.id)
+						
+					if len(antecedentes_farmacologicos_ids) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['drugs_past'])
+
+
+		for node in doc.xpath("//field[@name='review_systems_id']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.review_systems_id:
+							for i in range(0,len(datos.review_systems_id),1):
+								revision_por_sistema_ids.append(datos.review_systems_id[i].atc_id.id)
+						
+					if len(revision_por_sistema_ids) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['review_systems_id'])
+
+
+		for node in doc.xpath("//field[@name='pathological_past']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.pathological_past:
+							for i in range(0,len(datos.pathological_past),1):
+								antecedentes_patologicos_ids.append(datos.pathological_past[i].diseases_id.id)
+						
+					if len(antecedentes_patologicos_ids) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['pathological_past'])
+
+
+		for node in doc.xpath("//field[@name='drugs_ids']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.drugs_ids:
+							for i in range(0,len(datos.drugs_past),1):
+								medicamentos_ids.append(datos.drugs_ids[i].drugs_id.id)
+						
+					if len(medicamentos_ids) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['drugs_ids'])
+
+		for node in doc.xpath("//field[@name='attentions_past_ids']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.attentions_past_ids:
+							for i in range(0,len(datos.attentions_past_ids),1):
+								if datos.attentions_past_ids[i].past:
+									antecedentes_ids.append(datos.attentions_past_ids[i].past_category.id)
+						
+					if len(antecedentes_ids) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['attentions_past_ids'])
+
+
+		for node in doc.xpath("//field[@name='examen_fisico_id']"):
+				
+				if record:
+					for datos in modelo_buscar.browse(cr, uid, record, context=context):
+						
+						if datos.attentions_exam_ids:
+							for i in range(0,len(datos.attentions_exam_ids),1):
+								examen_fisico.append(datos.attentions_exam_ids[i].exam_category.id)
+						
+					if len(examen_fisico) <= 0:
+						node.set('invisible', repr(True))
+						setup_modifiers(node, res['fields']['examen_fisico_id'])
+
+
+
+
+		res['arch'] = etree.tostring(doc)
+		
+		return res
 
 
 doctor_attention_resumen()
