@@ -30,6 +30,8 @@ class doctor_diagnostic_images(report_sxw.rml_parse):
 			'time': time,
 			'select_type': self.select_type,
 			'select_age': self.select_age,
+			'select_diseases': self.select_diseases,
+			'select_diseases_type': self.select_diseases_type,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -46,6 +48,22 @@ class doctor_diagnostic_images(report_sxw.rml_parse):
 		age_unit = dict(attentions.fields_get(self.cr, self.uid, 'age_unit',context=context).get('age_unit').get('selection')).get(
 			str(age))
 		return age_unit
+
+	def select_diseases(self, status):
+		if status== 'presumptive':
+			return "Impresión Diagnóstica"
+		if status== 'confirm':
+			return "Confirmado"
+		if status== 'recurrent':
+			return "Recurrente"
+		return ""
+
+	def select_diseases_type(self, diseases_type):
+		if diseases_type== 'main':
+			return "Principal"
+		if diseases_type== 'related':
+			return "Relacionado"
+		return ""
 
 report_sxw.report_sxw('report.doctor_diagnostic_images', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_diagnostic_images.rml',

@@ -504,7 +504,7 @@
   <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P2">DISEASES</para>
+          <para style="P2">DIAGNÓSTICOS</para>
         </td>
      </tr>
     </blockTable>
@@ -515,10 +515,10 @@
       <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
      <td>
-            <para style="terp_header">[[ (line.diseases_id.code) ]] [[ (line.diseases_id.name) ]]</para>
+            <para style="terp_header">[[ (line.diseases_id.name) ]]</para>
           </td>
      <td>
-            <para style="P6">[[ (line.status) ]] [[ (line.diseases_type) ]] </para>
+            <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
           </td>
         </tr>
       </blockTable>
