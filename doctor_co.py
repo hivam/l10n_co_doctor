@@ -700,6 +700,7 @@ class doctor_appointment_co(osv.osv):
 					#Validamos si la agenda es multiconsultorio no mas
 					if consultorio_multipaciente and repetir_cita==False:
 						_logger.info('Entro al multipaciente solito')
+						
 						fecha_hora_UTC = datetime.strptime(appointment_date_begin, "%Y-%m-%d %H:%M:%S")
 						fecha_utc_prueba= self.pool.get('doctor.doctor').fecha_utc(cr,uid,appointment_date_begin)
 						_logger.info('********************')
