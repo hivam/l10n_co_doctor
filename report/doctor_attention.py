@@ -38,6 +38,9 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_etiqueta_uno': self.select_etiqueta_uno,
 			'select_diseases': self.select_diseases,
 			'select_diseases_type': self.select_diseases_type,
+			'select_frequency_unit_n': self.select_frequency_unit_n,
+			'select_duration_period_n': self.select_duration_period_n,
+			'select_action_id': self.select_action_id,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -100,8 +103,7 @@ class doctor_attention(report_sxw.rml_parse):
 			elif 'Physician' in nombre:
 				return True
 
-
-
+	#funcion para cambiar las palabras de ingles a español
 	def select_diseases(self, status):
 		if status== 'presumptive':
 			return "Impresión Diagnóstica"
@@ -111,7 +113,7 @@ class doctor_attention(report_sxw.rml_parse):
 			return "Recurrente"
 		return ""
 
-
+	#funcion para cambiar las palabras de ingles a español
 	def select_diseases_type(self, diseases_type):
 		if diseases_type== 'main':
 			return "Principal"
@@ -119,6 +121,47 @@ class doctor_attention(report_sxw.rml_parse):
 			return "Relacionado"
 		return ""
 
+	#funcion para cambiar las palabras de ingles a español
+	def select_frequency_unit_n(self, frequency_unit_n):
+		if frequency_unit_n== 'hours':
+			return "Horas"
+		if frequency_unit_n== 'minutes':
+			return "Minutos"
+		if frequency_unit_n== 'days':
+			return "Días"
+		if frequency_unit_n== 'weeks':
+			return "Semanas"
+		if frequency_unit_n== 'wr':
+			return "Cuando pueda"
+		if frequency_unit_n== 'total':
+			return "Total"
+		return ""
+
+	#funcion para cambiar las palabras de ingles a español
+	def select_duration_period_n(self, duration_period_n):
+		if duration_period_n== 'hours':
+			return "Horas"
+		if duration_period_n== 'minutes':
+			return "Minutos"
+		if duration_period_n== 'days':
+			return "Días"
+		if duration_period_n== 'months':
+			return "Meses"
+		if duration_period_n== 'indefinite':
+			return "Indefinido"
+		return ""
+
+	#funcion para cambiar las palabras de ingles a español
+	def select_action_id(self, action_id):
+		if action_id== 'take':
+			return "Tomar"
+		if action_id== 'inject':
+			return "Inyectar"
+		if action_id== 'apply':
+			return "Aplicar"
+		if action_id== 'inhale':
+			return "Inhalar"
+		return ""
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_attention.rml',
