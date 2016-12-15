@@ -731,7 +731,7 @@ class doctor_appointment_co(osv.osv):
 						
 					#Si seleccionan repetir cita y no es multipaciente
 					if repetir_cita and not consultorio_multipaciente:
-						_logger.info('Es una cita repetida')
+						_logger.info('Es una cita repetida normal')
 						cita_id= self.consultorio_repetir_cita(cr, uid, vals, professional_appointment_id, schedule_id_appoitment, type_id_appointment, res_editar, res, patient_id_appointment, dia_semana, meses_usuario, dias_usuario, meses_anio, data_appointment)
 							
 					#Si no es una cita repetitiva ni multipaciente. Una cita normal
@@ -780,7 +780,7 @@ class doctor_appointment_co(osv.osv):
 					
 		if not repetir_cita:
 			cita_id= super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
-
+			
 		return cita_id
 
 	def multiconsultorio_repetir_cita(self, cr, uid, vals, professional_appointment_id, schedule_id_appoitment, type_id_appointment, res_editar, res, patient_id_appointment, dia_semana, meses_usuario, dias_usuario, meses_anio, data_appointment, context=None):
@@ -903,16 +903,6 @@ class doctor_appointment_co(osv.osv):
 
 						#Se ejecuta la creacion de las citas
 						cita_id = super(doctor_appointment_co,self).create(cr, uid, data_appointment, context=context)
-						#Buscamos los ids de los espacios que cumplan con estan condicion de la cita
-						id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', id_sechedule_cita[i]), ('fecha_inicio', '>=', str(dias_inicia_trabaja)), ('fecha_fin', '<=', str(dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)))], context=context)
-
-						#Validamos si la consulta trae los ids
-						if id_sechedule_espacio:
-							#Asignamos un vacio al schedule_espacio_id, ya que no podemos eliminar el espacio todavia
-							res_editar['schedule_espacio_id']=''
-
-						#Sobreescribimos el espacio que cumpla con la condicion anterior
-						self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
 
 						res['estado_cita_espacio']= 'Asignado'
 						res['fecha_inicio']= dias_inicia_trabaja
@@ -938,12 +928,9 @@ class doctor_appointment_co(osv.osv):
 		#Se calcula duracion en dias
 		if not ':' in str(fecha_fin - fecha_inicio)[0:3].strip():
 			if not str(fecha_fin - fecha_inicio)[0:3].strip().isdigit():
-
 				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:1].strip())
-
 			else:
 				duracion_dias = int(str(fecha_fin - fecha_inicio)[0:3].strip())
-
 		else:
 			raise osv.except_osv(_('Lo Sentimos!'),_('Las fechas no coinciden para ser una cita repetida ya que son iguales'))
 		
@@ -1080,7 +1067,6 @@ class doctor_appointment_co(osv.osv):
 					i=i+1
 				else:
 					dias_inicia_trabaja = dias_inicia_trabaja + timedelta(days=1)
-
 		return cita_id
 
 	def asignar_nota(self, cr, uid, ids, context=None):
