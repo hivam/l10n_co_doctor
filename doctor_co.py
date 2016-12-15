@@ -1977,7 +1977,6 @@ class doctor_attentions_co(osv.osv):
 		('15','Otra'),
 	]
 
-
 	def obtener_paciente(self, context):
 
 		id_paciente = None
@@ -2720,6 +2719,7 @@ class doctor_attentions_co(osv.osv):
 				u['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
 		
 		return super(doctor_attentions_co,self).write(cr, uid, ids, u, context)
+
 
 	def resumen_historia(self, cr, uid, ids, context=None):
 
