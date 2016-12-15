@@ -996,26 +996,26 @@
 						<field name="arch" type="xml">
 								<form string="Resumen historia clinica" version="7.0">
 									<group>
-										<legend class="texto_legend">Resumen ultimas 3 atenciones</legend>
+										<legend class="texto_legend" id="titulo">Resumen ultimas 3 atenciones</legend>
 										<group colspan='2' col='4'>
 											<field name="notas_confidenciales"/>
 										</group>
 										<separator/>
-										<legend class="texto_legend">Diagnosticos</legend>
+										<legend class="texto_legend" id="diagnostico">Diagnosticos</legend>
 										<group colspan='2' col='4'>
 											<field name="diganosticos_resumen"/>
 											<field name="tipo_diagnostico"/>
 										</group>
 										<separator/>
 										<separator/>
-										<legend class="texto_legend">Medicamentos</legend>
+										<legend class="texto_legend" id="medicamentos">Medicamentos</legend>
 										<field name="drugs_ids" colspan="4" nolabel="1">
 			                                <tree string="Drugs prescription" editable="top">
 			                                    <field name="drugs_id"/>
 			                                </tree>
                            			 	</field>
                            			 	<separator/>
-                           			 	<legend class="texto_legend">Tratamiento y Analisis</legend>
+                           			 	<legend class="texto_legend" id="tratamiento">Tratamiento y Analisis</legend>
 										<group colspan='2' col='4'>
 											<field name="tratamiento_resumen"/>
 											<field name="analisis_resumen"/>
