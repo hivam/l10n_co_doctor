@@ -2078,6 +2078,7 @@ class doctor_attentions_co(osv.osv):
 		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
+
 	}
 
 
@@ -2245,6 +2246,14 @@ class doctor_attentions_co(osv.osv):
 				vals['couta_moderadora'] = cuota_moderadora
 
 		_logger.info(vals)
+
+		esSicologia = self.esSicologia(cr, uid, vals, context=None )
+		if esSicologia:
+			vals['tipo_historia'] = 'hc_psicologia'
+		else:
+			vals['tipo_historia'] = 'hc_general'
+		vals['activar_notas_confidenciales'] = False
+
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
@@ -2257,6 +2266,7 @@ class doctor_attentions_co(osv.osv):
 				u['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
 		
 		return super(doctor_attentions_co,self).write(cr, uid, ids, u, context)
+
 
 	def resumen_historia(self, cr, uid, ids, context=None):
 
