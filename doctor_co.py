@@ -1951,10 +1951,13 @@ doctor_appointment_type_procedures()
 
 class doctor_attentions_co(osv.osv):
 	_name = "doctor.attentions"
-	
+	_inherit = 'doctor.attentions'
 	_rec_name = 'patient_id'
 
-	_inherit = 'doctor.attentions'
+	'''
+	TODO:
+	hacer la historia de psicología en otro módulo.
+	'''
 
 	causa_externa = [
 		('01','Accidente de trabajo'),
@@ -1985,7 +1988,6 @@ class doctor_attentions_co(osv.osv):
 			id_paciente = context.get('patient_id')
 
 		return id_paciente	
-
 
 	def _get_creador(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
@@ -2617,6 +2619,14 @@ class doctor_attentions_co(osv.osv):
 		_logger.info(res)
 		return res
 
+	# Este método permite saber si la atención actual es psicología o general
+	def esSicologia(self, cr, uid, vals, context=None):
+		id_profesionalQueAtiende = self.pool.get('doctor.professional').browse(cr, uid, vals['professional_id'], context).speciality_id.code
+		if id_profesionalQueAtiende == '781': #psicologia
+			return True
+		return False
+
+		
 	def write(self, cr, uid, ids, vals, context=None):
 		#Eliminando espacios vacios de antecedentes
 		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
@@ -2628,6 +2638,13 @@ class doctor_attentions_co(osv.osv):
 	def create(self, cr, uid, vals, context=None):
 		#Eliminando espacios vacios de antecedentes
 		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+		
+		# esSicologia = self.esSicologia(cr, uid, vals, context=None )
+		# if esSicologia:
+		# 	vals['tipo_historia'] = 'hc_psicologia'
+		# else:
+		# 	vals['tipo_historia'] = 'hc_general'
+		
 		vals['activar_notas_confidenciales'] = False
 		if 'origin' in vals:
 			
