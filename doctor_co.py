@@ -1988,6 +1988,7 @@ class doctor_attentions_co(osv.osv):
 
 		return id_paciente	
 
+
 	def _get_creador(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
@@ -2626,7 +2627,6 @@ class doctor_attentions_co(osv.osv):
 			return True
 		return False
 
-
 		
 	def write(self, cr, uid, ids, vals, context=None):
 		#Eliminando espacios vacios de antecedentes
@@ -2645,7 +2645,11 @@ class doctor_attentions_co(osv.osv):
 		# 	vals['tipo_historia'] = 'hc_psicologia'
 		# else:
 		# 	vals['tipo_historia'] = 'hc_general'
+<<<<<<< 6f1495b526e16613fe4a42894566a2759aae16d0
 		
+=======
+
+>>>>>>> cambios menores
 		vals['activar_notas_confidenciales'] = False
 		if 'origin' in vals:
 			
@@ -2717,7 +2721,6 @@ class doctor_attentions_co(osv.osv):
 				u['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
 		
 		return super(doctor_attentions_co,self).write(cr, uid, ids, u, context)
-
 
 	def resumen_historia(self, cr, uid, ids, context=None):
 
