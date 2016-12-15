@@ -1724,10 +1724,13 @@ doctor_appointment_type_procedures()
 
 class doctor_attentions_co(osv.osv):
 	_name = "doctor.attentions"
-	
+	_inherit = 'doctor.attentions'
 	_rec_name = 'patient_id'
 
-	_inherit = 'doctor.attentions'
+	'''
+	TODO:
+	hacer la historia de psicología en otro módulo.
+	'''
 
 	causa_externa = [
 		('01','Accidente de trabajo'),
@@ -1746,7 +1749,6 @@ class doctor_attentions_co(osv.osv):
 		('14','Enfermedad profesional'),
 		('15','Otra'),
 	]
-
 
 	def _get_creador(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
@@ -1823,6 +1825,7 @@ class doctor_attentions_co(osv.osv):
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
 		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
 								readonly=True, method=True, string='inv boton edad',), 
+		'tipo_historia' : fields.text(u'Tipo de historia', help='permite diferenciar el tipo de historia que se está guardando. Ejemplo: psicologia, gral, riesgo biológico ...'),
 	}
 
 
@@ -1884,13 +1887,27 @@ class doctor_attentions_co(osv.osv):
 		_logger.info(res)
 		return res
 
+	# Este método permite saber si la atención actual es psicología o general
+	def esSicologia(self, cr, uid, vals, context=None):
+		id_profesionalQueAtiende = self.pool.get('doctor.professional').browse(cr, uid, vals['professional_id'], context).speciality_id.code
+		if id_profesionalQueAtiende == '781': #psicologia
+			return True
+		return False
+
+		
 	def write(self, cr, uid, ids, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
+		esSicologia = self.esSicologia(cr, uid, vals, context=None )
+		if esSicologia:
+			vals['tipo_historia'] = 'hc_psicologia'
+		else:
+			vals['tipo_historia'] = 'hc_general'
 		vals['activar_notas_confidenciales'] = False
+<<<<<<< 06997d3ffa676c323bbbd77841a5cef8e10c6292
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
@@ -1903,6 +1920,9 @@ class doctor_attentions_co(osv.osv):
 				u['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
 		
 		return super(doctor_attentions_co,self).write(cr, uid, ids, u, context)
+=======
+		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
+>>>>>>> cambios menores
 
 	def resumen_historia(self, cr, uid, ids, context=None):
 
