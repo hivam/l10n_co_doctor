@@ -662,7 +662,6 @@ class doctor_appointment_co(osv.osv):
 
 		id_type = self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)])
 
-
 		if consultorio_id_appointment:
 			consultorio_id= self.pool.get('doctor.room').browse(cr, uid, consultorio_id_appointment, context=context)
 			consultorio_multipaciente= consultorio_id.multi_paciente
@@ -909,7 +908,6 @@ class doctor_appointment_co(osv.osv):
 						res['fecha_fin']= dias_inicia_trabaja + timedelta(minutes=duracion_cita_repetida)
 						res['patient_id']=patient_id_appointment
 						res['schedule_espacio_id']=id_sechedule_cita[i]
-
 						#Creamos los espacios que son de dicha cita y le cambiamos el estado a Asignado
 						self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
 					#Variable iteradora
