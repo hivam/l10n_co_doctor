@@ -690,6 +690,14 @@
 										<field name="otros_antecedentes_farmacologicos"/>
 								</field>
 
+								<field name='actual_disease' position="after">
+									<group col="2"> 
+										<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
+									</group>
+									<group col="1" colspan="2">
+										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/> 
+									</group>
+								</field>
 								
 								<field name="attentions_exam_ids" position="after">
 										<label for="otros_hallazgos_examen_fisico" string="Otros hallazgos y signos clínicos en el examen físico"/>
@@ -730,12 +738,6 @@
 										<field name="inv" invisible="1"/> 
 										<label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
 										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
-										<group col="2"> 
-												<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
-										</group>
-										<group col="1" colspan="2">
-												<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/> 
-										</group>
 								</field>
 
 								<field name="analysis" position="after">
@@ -987,29 +989,33 @@
 				 <!-- Fin de la secuencia -->
 
 
+
 				<record model="ir.ui.view" id="view_doctor_attentions_resumen_form">
 						<field name="name">Resumen historia clinica</field>
 						<field name="model">doctor.attentions.resumen</field>
 						<field name="arch" type="xml">
 								<form string="Resumen historia clinica" version="7.0">
 									<group>
-										<legend class="texto_legend">Resumen ultimas 3 atenciones</legend>
+										<legend class="texto_legend" id="titulo">Resumen ultimas 3 atenciones</legend>
+										<group colspan='2' col='4'>
+											<field name="notas_confidenciales"/>
+										</group>
 										<separator/>
-										<legend class="texto_legend">Diagnosticos</legend>
+										<legend class="texto_legend" id="diagnostico">Diagnosticos</legend>
 										<group colspan='2' col='4'>
 											<field name="diganosticos_resumen"/>
 											<field name="tipo_diagnostico"/>
 										</group>
 										<separator/>
 										<separator/>
-										<legend class="texto_legend">Medicamentos</legend>
+										<legend class="texto_legend" id="medicamentos">Medicamentos</legend>
 										<field name="drugs_ids" colspan="4" nolabel="1">
 			                                <tree string="Drugs prescription" editable="top">
 			                                    <field name="drugs_id"/>
 			                                </tree>
                            			 	</field>
                            			 	<separator/>
-                           			 	<legend class="texto_legend">Tratamiento y Analisis</legend>
+                           			 	<legend class="texto_legend" id="tratamiento">Tratamiento y Analisis</legend>
 										<group colspan='2' col='4'>
 											<field name="tratamiento_resumen"/>
 											<field name="analisis_resumen"/>
@@ -1038,6 +1044,15 @@
 			                                    <field name="atc_id"/>
 			                                </tree>
                             			</field>
+                            			<field name="examen_fisico_id" nolabel="1">
+			                                <tree string="Examen fisico" editable="top">
+			                                    <field name="exam_category"/>
+			                                    <field name="exam"/>
+			                                </tree>
+                            			</field>
+                            			<group colspan='2' col='4'>
+											<field name="motivo_consulta"/>
+										</group>
 									</group>
 								</form>
 						</field>

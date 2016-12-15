@@ -36,6 +36,8 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_type_interconsultation': self.select_type_interconsultation,
 			'select_age': self.select_age,
 			'select_etiqueta_uno': self.select_etiqueta_uno,
+			'select_diseases': self.select_diseases,
+			'select_diseases_type': self.select_diseases_type,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -100,7 +102,22 @@ class doctor_attention(report_sxw.rml_parse):
 
 
 
+	def select_diseases(self, status):
+		if status== 'presumptive':
+			return "Impresión Diagnóstica"
+		if status== 'confirm':
+			return "Confirmado"
+		if status== 'recurrent':
+			return "Recurrente"
+		return ""
 
+
+	def select_diseases_type(self, diseases_type):
+		if diseases_type== 'main':
+			return "Principal"
+		if diseases_type== 'related':
+			return "Relacionado"
+		return ""
 
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
