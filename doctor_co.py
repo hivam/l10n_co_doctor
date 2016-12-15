@@ -899,7 +899,6 @@ class doctor_appointment_co(osv.osv):
 						data_appointment['octubre'] = vals['octubre']
 						data_appointment['noviembre'] = vals['noviembre']
 						data_appointment['diciembre'] = vals['diciembre']
-
 						#Se ejecuta la creacion de las citas
 						cita_id = super(doctor_appointment_co,self).create(cr, uid, data_appointment, context=context)
 
