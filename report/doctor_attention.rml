@@ -549,7 +549,7 @@
         </tr>
         <tr>
      <td>
-            <para style="terp_default_8">[[ select_action_id(line.action_id) ]] [[ (line.quantity) ]] [[ (line.measuring_unit_q.name) ]] cada [[ (line.frequency) ]] [[ select_frequency_unit_n(line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ select_duration_period_n(line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
+            <para style="terp_default_8">[[ (line.quantity) ]] [[ (line.measuring_unit_q.name) ]] cada [[ (line.frequency) ]] [[ select_frequency_unit_n(line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ select_duration_period_n(line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
           </td>
           <td>
             <para style="terp_default_8">[[ line.cantidad_total  ]] </para>
