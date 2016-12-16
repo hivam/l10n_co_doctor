@@ -75,18 +75,21 @@ class radicacion_cuentas(osv.osv):
 	_rec_name = 'secuencia'
 
 	def _remove_accents(self, cr, uid, ids, string):
+		"""
+		esta funcion sirve para remover los acentos de una cadena de texto
+		"""
 		return unicodedata.normalize('NFKD', unicode(string)).encode('ASCII', 'ignore')
 
 	def _contar_facturas(self, cr, uid, ids, context=None):
 		"""
-		ésta función cuenta las facturas filtradas en radicación de cuentas 
+		esta funcion cuenta las facturas filtradas en radicacion de cuentas 
 		"""
 		for po in self.browse(cr, uid, ids, context = context):
 			return len(po.invoices_ids)
 
 	def _valor_total(self, cr, uid, ids, context=None):
 		"""
-		ésta función cuenta las facturas filtradas en radicación de cuentas 
+		esta funcion cuenta las facturas filtradas en radicacion de cuentas 
 		"""
 		for datos in self.browse(cr,uid,ids, context):
 			suma = 0
@@ -95,6 +98,9 @@ class radicacion_cuentas(osv.osv):
 		return suma
 
 	def _saldo(self, cr, uid, ids, context=None):
+		"""
+		esta funcion retorna la suma de los saldos de las facturas 
+		"""
 		for datos in self.browse(cr,uid,ids, context):
 			saldo = 0
 			for d in datos.invoices_ids:
@@ -116,21 +122,36 @@ class radicacion_cuentas(osv.osv):
 		#Rips
 		'rips_ids': fields.one2many('rips.generados', 'radicacioncuentas_id', string='RIPS', required=True, ondelete='restrict'),
 		'rips_tipo_archivo' : fields.one2many('rips.tipo.archivo','radicacioncuentas_id','Tipo Archivo', required=False),
+		
 		'saldo' : fields.float('Saldo', readonly=True),
 		'secuencia' : fields.char(u'Cuenta N°', size=200 ),
 		'state': fields.selection([('draft','Borrador'),('confirmed','Confirmado'),('validated', 'Validado')], 'Status', readonly=True, required=False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
 		'valor_total' : fields.float('Valor Total', readonly=True),
+		#Para RIPS directos
+		'rips_directos' : fields.boolean('Rips Directos', help=u'Esta opción permite generar Rips sin haber facturado atenciones.'),
+		'cea' : fields.char('C.E.A', help=u'Código de entidad administradora'),
+		'valor_consulta' : fields.char('Valor Consulta'),
+		'tipo_archivo' : fields.selection([('txt','Txt'),('excel','Excel')], u'Formato Exportación', required=False),
+		#'referencia' : fields.reference('Source Document', required=True, selection=_get_document_types),
 	}
 
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
 		'state' : 'draft',
 		'rips_tipo_archivo' : [3,10,1,6],
+		'rips_directos': False,
 	}
+
+	# def _get_document_types(self, cr, uid, context=None):
+	# 	cr.execute('select m.model, s.name from subscription_document s, ir_model m WHERE s.model = m.id order by s.name')
+	# 	return cr.fetchall()
 
 
 	def _date_to_dateuser(self,cr, uid,date,context=None):
+		"""
+		Esta funcion retorna la hora y fecha del usuario 
+		"""
 		dateuser = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
 
 		user = self.pool.get('res.users').browse(cr, uid, uid)
@@ -140,22 +161,57 @@ class radicacion_cuentas(osv.osv):
 		dateuser = datetime.strftime(dateuser, "%Y-%m-%d")
 		return dateuser
 
-	def get_invoices(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, context=None):
-		id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
-		id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
-		invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
-																('contrato_id','=', contrato_id or False),
-																('state', '=', 'open'),
-																('date_invoice', '>=', rangofacturas_desde),
-																('date_invoice', '<=', rangofacturas_hasta),
-																('residual', '<>', 0.0),
-																('tipo_usuario_id', '=', tipo_usuario_id ),
-																('radicada', '=', False)])
+	def get_invoices(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos, context=None):
+		"""
+		Esta funcion retorna las facturas que estan en el rango de fechas seleccionado y que cumplen con los criterios determinados
+		"""
+		if not rips_directos:
+			id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
+			id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
+			invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
+																	('contrato_id','=', contrato_id or False),
+																	('state', '=', 'open'),
+																	('date_invoice', '>=', rangofacturas_desde),
+																	('date_invoice', '<=', rangofacturas_hasta),
+																	('residual', '<>', 0.0),
+																	('tipo_usuario_id', '=', tipo_usuario_id ),
+																	('radicada', '=', False)])
+			
+			#Forma antigua de hacer Rips 26/10/2016
+			# id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
+			# id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
+			# invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
+			# 														('contrato_id','=', contrato_id or False),
+			# 														('state', '=', 'open'),
+			# 														('date_invoice', '>=', rangofacturas_desde),
+			# 														('date_invoice', '<=', rangofacturas_hasta),
+			# 														('residual', '<>', 0.0),
+			# 														('tipo_usuario_id', '=', tipo_usuario_id ),
+			# 														('radicada', '=', False)])
+		else:
+			_logger.info("Entrando ---------------")
+			#medico general
+			atenciones_general = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
+			
+			if atenciones_general:
+				for i in self.pool.get('doctor.attentions').browse(cr,uid,atenciones_general):
+					#consultando origen de atencion
+					origen = self.pool.get('doctor.appointment').search(cr, uid, [('number','=',i.origin)])
+					for j in self.pool.get('doctor.appointment').browse(cr,uid,origen):
+						if j:
+							_logger.info(j.insurer_id)
+					
+			else:
+				_logger.info("No hay atenciones")
+			return True
+
 		return {'value': {'invoices_ids': invoices}}
 
 
 	def getParentid(self, cr, uid, context=None):
-		#searching the parent_id // RIPS's directory
+		"""
+		Esta funcion sirve para buscar la carpeta donde se alojaran los Rips. Es importante confirmar que la carpeta ya existe antes de generar Rips, de lo contrario hay que
+		"""
 		try:
 			parent_id = self.pool.get('document.directory').search(cr, uid, [('name', '=', 'Rips')])
 		except Exception as e:
@@ -163,7 +219,8 @@ class radicacion_cuentas(osv.osv):
 					_('No hay un lugar donde almacenar el archivo RIPS.\n1. Habilite la opcion gestion de documentos en el menu Configuracion > Conocimiento\n2. Ir a Conocimiento (menu superior)> Documentos> Directorios y crear un directorio con el nombre "Rips"'))
 
 		if not parent_id:
-			parent_id = self.pool.get('document.directory').create(cr, uid, {'name' : 'Rips', 'parent_id' : 1, 'type': 'directory'})
+			asistenteadministrativo_id = self.pool.get("res.groups").get_object_reference(cr, uid, "doctor", "group_doctor_asistente_admin")[0]
+			parent_id = self.pool.get('document.directory').create(cr, uid, {'name' : 'Rips', 'parent_id' : 1, 'type': 'directory', 'group_ids': asistenteadministrativo_id})
 		return parent_id
 
 	def getSecuencia(self, cr, uid, context=None):
@@ -601,7 +658,7 @@ class radicacion_cuentas(osv.osv):
 					else:
 						archivo.write(',')
 					pacientes.append(factura.patient_id.id)
-					#salto de línea
+					#salto de linea
 					archivo.write('\n')
 			output = base64.encodestring(archivo.getvalue())
 			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
@@ -640,7 +697,7 @@ class radicacion_cuentas(osv.osv):
 					archivo.write( cod_prestadorservicio + ',')
 				else:
 					raise osv.except_osv(_('Error!'),
-							_('El campo codigo prestador de servicio de la compañia está vacío.'))
+							_(u'El campo codigo prestador de servicio de la compañia está vacío.'))
 
 				#Razon social o apellidos y nombre del prestador de servicios
 				nombre_prestadorservicio = company_id.partner_id.name
@@ -654,7 +711,7 @@ class radicacion_cuentas(osv.osv):
 					nro_identificacion = company_id.partner_id.ref
 				else:
 					raise osv.except_osv(_('Error!'),
-							_('El campo N° de Identificacion del tercero que corresponde a la compañia está vacío.'))
+							_(u'El campo N° de Identificacion del tercero que corresponde a la compañia está vacío.'))
 
 				archivo.write( nro_identificacion + ',')
 				#Número de la factura
@@ -742,7 +799,7 @@ class radicacion_cuentas(osv.osv):
 		vals.update({'secuencia': self.getSecuencia(cr,uid), 'state': 'draft'})
 		if not vals['invoices_ids']:
 			raise osv.except_osv(_('Atención!'),
-							_('No se puede guardar esta radicación. No hay facturas agregadas.'))
+							_('No se puede guardar esta radicación. No hay facturas o Atenciones para radicar.'))
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
 
 	def confirmar(self, cr, uid, ids, context=None):
@@ -760,12 +817,24 @@ class radicacion_cuentas(osv.osv):
 	def onchange_contrato(self, cr, uid, ids, cliente,context=None):
 		res = {'value':{}}
 		modelo= self.pool.get('doctor.contract.insurer')
+		insurer_modelo= self.pool.get('doctor.insurer')
+		try:
+			code = insurer_modelo.browse(cr, uid, cliente).code
+		except:
+			_logger.info("No hay un codigo para la aseguradora")
+		
 		buscar = modelo.search(cr, uid, [('insurer_id', '=', cliente)] )
+		if code:
+			res['value']['cea'] =  code
 		if len(buscar) == 1:
 			res['value']['contrato_id'] =  buscar[0]
 		return res
-
 	
-
-
+	def onchange_tipousuario(self, cr, uid, ids, tipo_usuario_id, context=None):
+		res = {'value':{}}
+		modelo= self.pool.get('doctor.insurer')
+		buscar = modelo.search(cr, uid, [('tipousuario_id', '=', tipo_usuario_id)] )
+		if len(buscar) == 1:
+			res['value']['cliente_id'] =  buscar[0]	
+		return res				
 radicacion_cuentas()

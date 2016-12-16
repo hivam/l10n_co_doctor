@@ -673,6 +673,11 @@
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
     </data>
-
-
+    <data noupdate="0">
+    <record id="doctor_insurer_00098" model="doctor.insurer">
+            <field name="insurer" search="[('name','=','SECRETARIA DE SALUD')]"/>
+            <field name="code">SDS001</field>
+            <field name="tipousuario_id" search="[('name','=','Particular')]"/>
+    </record>
+    </data>
 </openerp>
