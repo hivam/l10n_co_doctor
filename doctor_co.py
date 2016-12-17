@@ -2629,6 +2629,7 @@ class doctor_attentions_co(osv.osv):
 			return True
 		return False
 
+
 		
 	def write(self, cr, uid, ids, vals, context=None):
 		#Eliminando espacios vacios de antecedentes
