@@ -1888,14 +1888,6 @@ class doctor_attentions_co(osv.osv):
 
 		_logger.info(res)
 		return res
-
-	# Este método permite saber si la atención actual es psicología o general
-	def esSicologia(self, cr, uid, vals, context=None):
-		id_profesionalQueAtiende = self.pool.get('doctor.professional').browse(cr, uid, vals['professional_id'], context).speciality_id.code
-		if id_profesionalQueAtiende == '781': #psicologia
-			return True
-		return False
-
 		
 	def write(self, cr, uid, ids, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
@@ -1903,11 +1895,7 @@ class doctor_attentions_co(osv.osv):
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
-		esSicologia = self.esSicologia(cr, uid, vals, context=None )
-		if esSicologia:
-			vals['tipo_historia'] = 'hc_psicologia'
-		else:
-			vals['tipo_historia'] = 'hc_general'
+		vals['tipo_historia'] = 'hc_general'
 		vals['activar_notas_confidenciales'] = False
 		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
