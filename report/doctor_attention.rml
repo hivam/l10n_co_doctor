@@ -76,6 +76,7 @@
     <paraStyle name="P14" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="P15" fontName="Helvetica-Bold" fontSize="10.0" leading="13" alignment="CENTER"/>
     <paraStyle name="P16" fontName="Helvetica-Bold" fontSize="12.0" leading="13" alignment="CENTER"/>
+    <paraStyle name="P17" alignment="LEFT" fontName="Helvetica-Bold" fontSize="10.0" leading="13"/>
     <paraStyle name="Standard" fontName="Helvetica"/>
     <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0" alignment="RIGHT"/>
     <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
@@ -106,7 +107,7 @@
     <blockTable colWidths="175.0,175.0,184.0 " style="Table1">
       <tr>
         <td>
-          <para style="P11">Date: [[ formatLang(o.date_attention,date=True) ]]</para>
+          <para style="17" fontName="Helvetica-Bold">Date: [[ formatLang(o.date_attention,date=True) ]]</para>
         </td>
         <td>
           <para style="P11">Atención N°: [[ (o.number) ]]</para>
@@ -539,26 +540,27 @@
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
      <td>
-            <para style="terp_default_8">[[ (line.drugs_id.atc_id.code) ]] [[ (line.drugs_id.atc_id.name) ]] [[ (line.drugs_id.drugs_concentration) ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]]</para>
+            <para style="terp_default_8">[[ (line.drugs_id.atc_id.name) ]] [[ (line.drugs_id.drugs_concentration) ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]]</para>
           </td>
           <td>
             <para style="terp_default_8">[[ (line.total_quantity) ]] [[ (line.measuring_unit_qt.name) ]] </para>
+            <para style="P2">[[ 'Cantidad' ]] </para>
           </td>
         </tr>
         <tr>
      <td>
-            <para style="terp_default_8">[[ (line.action_id) ]] [[ (line.quantity) ]] [[ (line.measuring_unit_q.name) ]] cada [[ (line.frequency) ]] [[ (line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ (line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
+            <para style="terp_default_8">[[ (line.quantity) ]] [[ (line.measuring_unit_q.name) ]] cada [[ (line.frequency) ]] [[ select_frequency_unit_n(line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ select_duration_period_n(line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
+          </td>
+          <td>
+            <para style="terp_default_8">[[ line.cantidad_total  ]] </para>
+          </td>
+        </tr>
+        <tr>
+     <td>
+            <para style="terp_default_8">[[ (line.indications or (removeParentNode('para'))) ]] </para>
           </td>
           <td>
             <para style="terp_default_8">[[ '' ]] </para>
-          </td>
-        </tr>
-        <tr>
-     <td>
-            <para style="terp_default_8">[[ (line.indications or (removeParentNode('para'))) ]]</para>
-          </td>
-          <td>
-            <para style="terp_default_8">[[ ''  ]] </para>
           </td>
         </tr>
       </blockTable>

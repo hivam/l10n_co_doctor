@@ -120,10 +120,12 @@ class doctor_professional_co(osv.osv):
 		id_grupo = self.pool.get('res.groups').browse(cr, uid, company_id).id
 
 		#se crea el tercero
-		partner=self.pool.get('res.partner').create(cr, uid, {'ref': vals['ref'], 'tdoc': vals['tdoc'], 'middlename' : vals['middlename'] or '', 'surname' : vals['surname'] or '',  'lastname': vals['lastname'], 'es_profesional_salud' : True , 'es_paciente' : False , 'firtsname': vals['firtsname'], 'image': vals['photo'], 'city_id': vals['city_id'], 'state_id': vals['state_id'], 'street': vals['street'], 'phone': vals['work_phone'], 'mobile': vals['work_mobile'], 'email': vals['work_email'], 'name': vals['name']}, context)
+		partner_id=self.pool.get('res.partner').create(cr, uid, {'ref': vals['ref'], 'tdoc': vals['tdoc'], 'middlename' : vals['middlename'] or '', 'surname' : vals['surname'] or '',  'lastname': vals['lastname'], 'es_profesional_salud' : True , 'es_paciente' : False , 'firtsname': vals['firtsname'], 'image': vals['photo'], 'city_id': vals['city_id'], 'state_id': vals['state_id'], 'street': vals['street'], 'phone': vals['work_phone'], 'mobile': vals['work_mobile'], 'email': vals['work_email'], 'name': vals['name']}, context)
 		#se crea el usuario del sistema
-		usuario_sistema= self.pool.get('res.users').create(cr, uid, {'partner_id': partner, 'login': login, 'password': 'admin', 'company_id': company_id, 'groups_id' : [(6, 0, group_id)]} , context )
+		usuario_sistema= self.pool.get('res.users').create(cr, uid, {'partner_id': partner_id, 'login': login, 'password': 'admin', 'company_id': company_id, 'groups_id' : [(6, 0, group_id)]} , context )
 		vals.update({'user_id': usuario_sistema})
+		#se crea paciente
+		paciente = self.pool.get('doctor.patient').create(cr, uid, {'ref' : vals[u'ref'], 'tdoc': vals[u'tdoc'], 'middlename' : vals[u'middlename'] or '', 'surname' : vals[u'surname'] or '',  'lastname': vals[u'lastname'], 'firstname': vals[u'firtsname'], 'city_id': vals[u'city_id'], 'state_id': vals[u'state_id'], 'street': vals[u'street'], 'zona' : vals[u'zona'], 'photo' : vals[u'photo'], 'telefono': vals[u'work_phone'], 'movil' : vals[u'work_mobile'], 'es_profesionalsalud' : 1, 'sex' : 'm', 'birth_date' : '1970-01-01', 'patient' : partner_id})
 		return super(doctor_professional_co, self).create(cr, uid, vals, context=context)
 
 

@@ -123,39 +123,39 @@ class doctor_attentions_co_inherit(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 
-		modulo_buscar = self.pool.get('doctor.attentions.past')
-		patient_id = None
+		# modulo_buscar = self.pool.get('doctor.attentions.past')
+		# patient_id = None
 		
 
-		if 'default_patient_id' in context:
-			patient_id = context.get('default_patient_id')
+		# if 'default_patient_id' in context:
+		# 	patient_id = context.get('default_patient_id')
 
 
-		if 'attentions_past_ids' in vals:
+		# if 'attentions_past_ids' in vals:
 
-			for datos in vals['attentions_past_ids']:
+		# 	for datos in vals['attentions_past_ids']:
 
-				for datos_past in modulo_buscar.browse(cr, uid, [datos[1]], context=context):
+		# 		for datos_past in modulo_buscar.browse(cr, uid, [datos[1]], context=context):
 
-					past_id = modulo_buscar.search(cr, uid, [('past_category', '=', datos[2]['past_category']), ('patient_id', '=', patient_id)], limit=1 , context=context)
+		# 			past_id = modulo_buscar.search(cr, uid, [('past_category', '=', datos[2]['past_category']), ('patient_id', '=', patient_id)], limit=1 , context=context)
 
-					if past_id:
+		# 			if past_id:
 						
-						for i in modulo_buscar.browse(cr, uid, past_id, context=context):
+		# 				for i in modulo_buscar.browse(cr, uid, past_id, context=context):
 
-							if i.past != False:
+		# 					if i.past != False:
 
-								if datos[2]:
+		# 						if datos[2]:
 
-									u = {}
-									texto = i.past+ ', '+ datos[2]['past']  
+		# 							u = {}
+		# 							texto = i.past+ ', '+ datos[2]['past']  
 
-								u['past'] = texto
-								modulo_buscar.write(cr, uid, past_id, u, context=context)
-							else:
-								return super(doctor_attentions_co_inherit,self).create(cr, uid, vals, context)				
+		# 						u['past'] = texto
+		# 						modulo_buscar.write(cr, uid, past_id, u, context=context)
+		# 					else:
+		# 						return super(doctor_attentions_co_inherit,self).create(cr, uid, vals, context)				
 
-			del vals['attentions_past_ids']				
+		# 	del vals['attentions_past_ids']				
 
 		return super(doctor_attentions_co_inherit,self).create(cr, uid, vals, context)
 
