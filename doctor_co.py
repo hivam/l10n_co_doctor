@@ -1895,7 +1895,6 @@ class doctor_attentions_co(osv.osv):
 	def create(self, cr, uid, vals, context=None):
 		vals['tipo_historia'] = 'hc_general'
 		vals['activar_notas_confidenciales'] = False
-<<<<<<< 06997d3ffa676c323bbbd77841a5cef8e10c6292
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
@@ -1908,9 +1907,7 @@ class doctor_attentions_co(osv.osv):
 				u['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
 		
 		return super(doctor_attentions_co,self).write(cr, uid, ids, u, context)
-=======
-		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
->>>>>>> cambios menores
+
 
 	def resumen_historia(self, cr, uid, ids, context=None):
 
