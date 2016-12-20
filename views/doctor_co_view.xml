@@ -585,14 +585,21 @@
 						<field name="diseases_ids"/>
 						<field name="date_attention"/>
 						
+						<filter domain="[('date_attention','&gt;=',((context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones del dia de ayer." name="Atenciones Ayer" string="Atenciones Ayer"/>
+
+						<filter domain="[('date_attention','&lt;=',time.strftime('%%Y-%%m-%%d 23:59:59')),('date_attention','&gt;=',time.strftime('%%Y-%%m-%%d 00:00:00'))]" help="Atenciones del dia de hoy." name="Atenciones Hoy" string="Atenciones Hoy" />
+						
 						<separator/>
-						<filter name="patient_id" string="Nombre" domain="[('patient_id','=',patient_id)]" help="Nombre" />
 
-						<filter name="professional_id" string="Doctor" domain="[('professional_id','=',professional_id)]" help="Doctor" />
+						<filter domain="[('date_attention','&gt;=',(context_today()-relativedelta(months=1)).strftime('%%Y-%%m-01')),('date_attention','&lt;',time.strftime('%%Y-%%m-01'))]" help="Atenciones del mes anterior." name="Atenciones mes pasado" string="Atenciones Mes pasado"/>
 
-						<filter name="speciality" string="Especialidad" domain="[('speciality','=',speciality)]" help="Especialidad" />
+						<filter domain="[('date_attention','&lt;=',(context_today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('date_attention','&gt;=',(context_today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones programadas para este mes." name="Atenciones mes actual" string="Atenciones Este Mes"/>
 
-						<filter name="diseases_ids" string="Diagnostico" domain="[('diseases_idsdiseases_ids','=',diseases_ids)]" help="Diagnostico" />
+						<separator/>
+
+						<filter domain="[('state','=','open')]" help="" name="Atenciones Abiertas" string="Atenciones Abiertas"/>
+
+						<filter domain="[('state','=','closed')]" help="" name="Atenciones Cerradas" string="Atenciones Cerradas"/>
 
 						<group expand="0" string= "Agrupar Por...">
 								<filter string="Professional" domain="[]" context="{'group_by' : 'professional_id'}" />
