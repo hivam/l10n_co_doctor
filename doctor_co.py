@@ -2118,6 +2118,7 @@ class doctor_attentions_co(osv.osv):
 
 		return res
 
+
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
 
@@ -2179,7 +2180,6 @@ class doctor_attentions_co(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
-<<<<<<< fd28fab4740a8da99fd7ea9ef4a978d1c0e05b23
 		if 'origin' in vals:
 			
 			numero_autorizacion = 0
@@ -2246,9 +2246,6 @@ class doctor_attentions_co(osv.osv):
 		# 	vals['tipo_historia'] = 'hc_general'
 		# vals['tipo_historia'] = 'hc_general'
 		vals['activar_notas_confidenciales'] = False
-
-=======
->>>>>>> filtros atenciones mejorados -Capriatto
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
