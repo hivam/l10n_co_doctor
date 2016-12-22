@@ -2566,12 +2566,15 @@ class doctor_attentions_co(osv.osv):
 
 		return res
 
+<<<<<<< 226cd271826b68662d074cb0c9fd82ad1b4d5349
 	def onchange_edad(self, cr, uid, ids, birth_date, context=None):
 		res={'value':{}}
 		if birth_date:
 			res['value']['paciente_edad_atencion']= self.calcular_edad(birth_date)
 			res['value']['paciente_unidad_edad']=self.calcular_age_unit(birth_date)
 		return res
+=======
+>>>>>>> bug fixing filtros con error / agregando filtros paciente -Capriatto
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
