@@ -1797,6 +1797,8 @@ class doctor_attentions_co(osv.osv):
 		'complicacion_eventoadverso' : '01',
 	}
 
+
+
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
 

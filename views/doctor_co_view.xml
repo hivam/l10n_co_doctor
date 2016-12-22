@@ -12,9 +12,10 @@
 						<field name="ref"/>
 						<field name="insurer"/>
 						<separator/>
-						<filter name="patient" string="Nombre" domain="[('patient','=',patient)]" help="Nombre" />
-						<filter name="ref" string="Identificacion" domain="[('ref','=',ref)]" help="Identificacion" />
-						<filter name="insurer" string="Aseguradora" domain="[('insurer','=',insurer)]" help="Aseguradora" />
+						<filter name="m_sex" string="Pacientes Hombres" domain="[('sex','=','m')]" help="Lista de pacientes hombres registrados en el sistema" />
+
+						<filter name="f_sex" string="Pacientes Mujeres" domain="[('sex','=','f')]" help="Lista de pacientes mujeres registradas en el sistema" />
+						
 				</search>
 				</field>
 				</record>
