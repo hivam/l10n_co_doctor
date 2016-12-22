@@ -2089,7 +2089,6 @@ class doctor_attentions_co(osv.osv):
 		'complicacion_eventoadverso' : '01',
 	}
 
-
 	def default_get(self, cr, uid, fields, context=None):
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 
@@ -2117,6 +2116,7 @@ class doctor_attentions_co(osv.osv):
 			res['adjuntos_paciente_ids'] = registro
 
 		return res
+
 
 
 
