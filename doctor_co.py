@@ -3041,7 +3041,11 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('07', u'Análisis'),
 		('08', 'Conducta'),
 		('09', 'Auxiliar de enfermermeria'),
-
+		('10', 'Hallazgos positivos examen fisico'),
+		('11', u'Descripción física'),
+		('12', 'Comportamiento en consulta'),
+		('13', u'Estrategias de evaluación'),
+		('14', u'Plan de intervención'),
 	]
 
 	_columns = {
