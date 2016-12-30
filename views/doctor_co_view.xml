@@ -673,7 +673,6 @@
 					</field>
 				</record>
 
-
 				<!--Attentions Action view-->
 				<!--  <record model="ir.actions.act_window" id="action_doctor_attentions">
 	        		<field name="name">Attentions</field>
@@ -684,7 +683,7 @@
 			        <field name="search_view_id" ref="attentions_filters_l10n"/>
             		<field name="context">{'search_default_tipohistoria_filter':1}</field>
     			</record>
- -->
+ 				-->
 
 				<!-- Attentions Form View -->
 				<record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
