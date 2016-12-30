@@ -575,7 +575,7 @@
 				</record>
 			
 				<!-- Modificando la busqueda en atencion anadiendo cambios -->
-				<record id="attentions_filter" model="ir.ui.view">
+				<record id="attentions_filters_l10n" model="ir.ui.view">
 				<field name="name">Attentions</field>
 				<field name="model">doctor.attentions</field>
 				<field name="arch" type="xml">
@@ -585,6 +585,9 @@
 						<field name="speciality"/>
 						<field name="diseases_ids"/>
 						<field name="date_attention"/>
+
+						<filter domain="[('tipo_historia','=','hc_riesgobiologico')]" name="tipohistoria_filter" string="At. Riesgo Biológico"/>
+						<separator/>
 						
 						<filter domain="[('date_attention','&gt;=',((context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones del dia de ayer." name="Atenciones Ayer" string="Atenciones Ayer"/>
 
@@ -598,9 +601,9 @@
 
 						<separator/>
 
-						<filter domain="[('state','=','open')]" help="" name="Atenciones Abiertas" string="Atenciones Abiertas"/>
+						<filter domain="[('status','=','open')]" help="" name="Atenciones Abiertas" string="Atenciones Abiertas"/>
 
-						<filter domain="[('state','=','closed')]" help="" name="Atenciones Cerradas" string="Atenciones Cerradas"/>
+						<filter domain="[('status','=','closed')]" help="" name="Atenciones Cerradas" string="Atenciones Cerradas"/>
 
 						<group expand="0" string= "Agrupar Por...">
 								<filter string="Professional" domain="[]" context="{'group_by' : 'professional_id'}" />
@@ -645,6 +648,17 @@
 					</field>
 				</record>
 
+				<!--Attentions Action view-->
+				<!--  <record model="ir.actions.act_window" id="action_doctor_attentions">
+	        		<field name="name">Attentions</field>
+			        <field name="res_model">doctor.attentions</field>
+			        <field name="inherit_id" ref="doctor.action_doctor_attentions"/>
+			        <field name="view_type">form</field>
+			        <field name="view_mode">tree,form</field>
+			        <field name="search_view_id" ref="attentions_filters_l10n"/>
+            		<field name="context">{'search_default_tipohistoria_filter':1}</field>
+    			</record>
+ -->
 				<!-- Attentions Form View -->
 				<record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
 						<field name="name">Attentions</field>
@@ -862,7 +876,7 @@
 
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" position="replace"/>
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" posgition="replace"/>
 
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']//page[2]" position="attributes">
 										 <attribute name="string">Prescripcion</attribute>
@@ -981,7 +995,7 @@
 								</notebook>
 							</xpath>
 						</field>
-				</record>  
+				</record>
 
 				<!-- Secuencia para la creacion de los nombres de los seguimientos paraclinicos -->
 				<record id="seq_type_name_paraclinical" model="ir.sequence.type">
