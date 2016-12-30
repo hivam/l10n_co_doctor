@@ -55,7 +55,7 @@
                 usage="default"/>
 
         <report auto="False" id="doctor_attentions_certificado_half" model="doctor.attentions" name="doctor_attentions_certificado_half"
-                rml="l10n_co_doctor/report/doctor_attentions_certificado_half.rml" string="Informes y Certificados (Mitad Hoja)"
+                rml="l10n_co_doctor/report/doctor_attentions_certificado_half.rml" string="Informes y Certificados (Media Carta)"
                 usage="default"/>
 
         <report auto="False" id="doctor_account_voucher" model="account.voucher" name="doctor_account_voucher"

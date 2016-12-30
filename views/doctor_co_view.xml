@@ -912,7 +912,7 @@
 															</field>
 														</group> 
 														<group colspan='4' col='2'>
-															<field name="result"/>
+															<field name="result_paraclinical"/>
 															<field name="regitration_date"/>
 														</group> 
 														<group colspan='4' col='2'>
@@ -922,7 +922,7 @@
 													</form>
 													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
 														<field name="seguimientos_id"/>
-														<field name="result"/>
+														<field name="result_paraclinical"/>
 														<field name="regitration_date"/>
 														<field name="patient_id" invisible="1"/>
 														<field name="doctor_id" invisible="1"/>
@@ -951,7 +951,7 @@
 															</field>
 														</group> 
 														<group colspan='4' col='2'>
-															<field name="result"/>
+															<field name="result_paraclinical"/>
 															<field name="regitration_date"/>
 														</group> 
 														<group colspan='4' col='2'>
@@ -961,7 +961,7 @@
 													</form>
 													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]" create="false">
 														<field name="seguimientos_id"/>
-														<field name="result"/>
+														<field name="result_paraclinical"/>
 														<field name="regitration_date"/>
 														<field name="patient_id" invisible="1"/>
 														<field name="doctor_id" invisible="1"/>

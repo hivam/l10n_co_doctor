@@ -134,6 +134,7 @@
       <tr>
         <td>
           <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
+          <para style="P6">Programa Académico: [[ (o.patient_id.programa_id.name or (removeParentNode('para'))) ]]</para>
         </td>
         <td>
           <para style="P6">Age: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
@@ -149,28 +150,42 @@
      </tr>
     </blockTable>
 <condPageBreak height="9cm"/>
-	<blockTable colWidths="267.0,267.0" style="Table6">
-        <tr>
-		 <td>
-            <para style="P5">START DATE</para>
-          </td>
-          <td>
-            <para style="P5">DURATION IN DAYS</para>
-          </td>
-        </tr>
+
+
+    <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
+      <tr>
+        <td>
+          <para style="P5">START DATE</para>
+
+        </td>
+        <td>
+          <para style="P5">FECHA DE FINALIZACIÓN</para>
+        </td>
+        <td>
+          <para style="P5">DURATION IN DAYS</para>
+        </td>
+     </tr>
     </blockTable>
+
+
+
+
 
     <section>
       <para style="P4">[[ repeatIn(o.disability_ids, 'line') ]]</para>
 
-    <blockTable colWidths="267.0,267.0" style="Table6">
+     <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
         <tr>
-		 <td>
+		      <td>
             <para style="P12">[[ formatLang(line.disability_ids,date=True) ]]</para>
+          </td>
+          <td>
+            <para style="P12">[[ formatLang(line.date_end,date=True) ]]</para>
           </td>
           <td>
             <para style="P7">[[ (line.duration) ]] </para>
           </td>
+
         </tr>
       </blockTable>
     </section>
