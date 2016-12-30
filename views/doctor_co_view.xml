@@ -624,10 +624,6 @@
 
 						<filter domain="[('date_attention','&lt;=',time.strftime('%%Y-%%m-%%d 23:59:59')),('date_attention','&gt;=',time.strftime('%%Y-%%m-%%d 00:00:00'))]" help="Atenciones del dia de hoy." name="Atenciones Hoy" string="Atenciones Hoy" />
 						
-						<filter domain="[('date_attention','&gt;=',((context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones del dia de ayer." name="Atenciones Ayer" string="Atenciones Ayer"/>
-
-						<filter domain="[('date_attention','&lt;=',time.strftime('%%Y-%%m-%%d 23:59:59')),('date_attention','&gt;=',time.strftime('%%Y-%%m-%%d 00:00:00'))]" help="Atenciones del dia de hoy." name="Atenciones Hoy" string="Atenciones Hoy" />
-						
 						<separator/>
 
 						<filter domain="[('date_attention','&gt;=',(context_today()-relativedelta(months=1)).strftime('%%Y-%%m-01')),('date_attention','&lt;',time.strftime('%%Y-%%m-01'))]" help="Atenciones del mes anterior." name="Atenciones mes pasado" string="Atenciones Mes pasado"/>
@@ -636,10 +632,10 @@
 
 						<separator/>
 
-						<filter domain="[('state','=','open')]" help="" name="Atenciones Abiertas" string="Atenciones Abiertas"/>
+						<filter domain="[('status','=','open')]" help="" name="Atenciones Abiertas" string="Atenciones Abiertas"/>
 
-						<filter domain="[('state','=','closed')]" help="" name="Atenciones Cerradas" string="Atenciones Cerradas"/>
-						
+						<filter domain="[('status','=','closed')]" help="" name="Atenciones Cerradas" string="Atenciones Cerradas"/>
+
 						<group expand="0" string= "Agrupar Por...">
 								<filter string="Professional" domain="[]" context="{'group_by' : 'professional_id'}" />
 								<separator/>
@@ -691,6 +687,7 @@
 			        <field name="view_mode">tree,form</field>
 			        <field name="search_view_id" ref="attentions_filters_l10n"/>
             		<field name="context">{'search_default_tipohistoria_filter':1}</field>
+<<<<<<< 6f92130ed7bf9ea8489799a4124e0d676aa5b0fb
     			</record>-->
 
 				<!-- Attentions Form View -->
