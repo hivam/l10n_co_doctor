@@ -41,6 +41,7 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_frequency_unit_n': self.select_frequency_unit_n,
 			'select_duration_period_n': self.select_duration_period_n,
 			'select_action_id': self.select_action_id,
+			'select_prescription_drugs': self.select_prescription_drugs,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -128,7 +129,7 @@ class doctor_attention(report_sxw.rml_parse):
 		if frequency_unit_n== 'minutes':
 			return "Minutos"
 		if frequency_unit_n== 'days':
-			return "Días"
+			return "Dias"
 		if frequency_unit_n== 'weeks':
 			return "Semanas"
 		if frequency_unit_n== 'wr':
@@ -144,7 +145,7 @@ class doctor_attention(report_sxw.rml_parse):
 		if duration_period_n== 'minutes':
 			return "Minutos"
 		if duration_period_n== 'days':
-			return "Días"
+			return "Dias"
 		if duration_period_n== 'months':
 			return "Meses"
 		if duration_period_n== 'indefinite':
@@ -162,6 +163,18 @@ class doctor_attention(report_sxw.rml_parse):
 		if action_id== 'inhale':
 			return "Inhalar"
 		return ""
+
+
+	#funcion para retornar cuando se llene o no las cantidades de dias que se deberia tomar el paciente si no retorna solo la prescripcion
+	def select_prescription_drugs(self, indicacion_tomar, quantity, measuring_unit_q, frequency, frequency_unit_n, duration, duration_period_n, administration_route_id):
+		indicaciones=''
+		if ((int(frequency) ==0) or (int(duration) ==0)):
+			_logger.info('esta vacio')
+			indicaciones=indicacion_tomar
+		else:
+			indicaciones=indicacion_tomar + ' ' + str(measuring_unit_q) + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
+		
+		return indicaciones
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_attention.rml',

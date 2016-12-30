@@ -139,43 +139,49 @@
       </tr>
     </blockTable>
 
-  <blockTable colWidths="384.0,150.0" style="Table6">
-        <tr>
-     <td>
-            <para style="tamano_letra">MEDICAMENTO</para>
-          </td>
-          <td>
-            <para style="tamano_letra">CANTIDAD</para>
-          </td>
-        </tr>
+  <blockTable colWidths="350.0,184.0" style="Table6">
+      <tr>
+        <td>
+          <para style="tamano_letra">PRESCRIPCIÓN DE MEDICAMENTOS</para>
+        </td>
+        <td>
+          <para style="tamano_letra">CANTIDAD Y FORMULA FARMACÉUTICA</para>
+        </td>
+     </tr>
     </blockTable>
 
     <section>
+
+    [[ o.drugs_ids or removeParentNode('section') ]]
+
       <para style="P4">[[ repeatIn(o.drugs_ids, 'line') ]]</para>
 
-    <blockTable colWidths="384.0,150.0" style="Table6">
+    <blockTable colWidths="350.0,184.0" style="Table6">
         <tr>
      <td>
-            <para style="P6">[[ (line.drugs_id.atc_id.code) ]] [[ (line.drugs_id.atc_id.name) ]] [[ (line.drugs_id.drugs_concentration) ]] [[ (line.drugs_id.pharmaceutical_form.name) ]]</para>
+            <para style="terp_default_8">[[ (line.drugs_id.atc_id.name) ]] </para>
           </td>
           <td>
-            <para style="P7">[[ (line.cantidad_total) ]] </para>
+            <para style="P6">[[ (line.total_quantity) ]] [[ (line.measuring_unit_qt.name) ]] </para>
+            <para style="P6">[[ line.cantidad_total  ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]] [[ (line.drugs_id.drugs_concentration) ]]</para>
+   
           </td>
         </tr>
         <tr>
      <td>
-            <para style="P6">[[(line.indicacion_tomar)]] cada [[ (line.frequency) ]] [[ select_type_unit(line.frequency_unit_n) ]] durante [[ (line.duration) ]] [[ select_type_period(line.duration_period_n) ]] vía [[ (line.administration_route_id.name) ]]</para>
+
+            <para style="P6">[[ select_prescription_drugs(line.indicacion_tomar, line.quantity, line.measuring_unit_q.name, line.frequency, line.frequency_unit_n, line.duration, line.duration_period_n, line.administration_route_id.name) ]]</para>
           </td>
           <td>
-            <para style="P6">[[ '' ]] </para>
+            <para style="terp_default_8">[[  ]] </para>
           </td>
         </tr>
         <tr>
      <td>
-            <para style="P6">[[ (line.indications or (removeParentNode('para'))) ]]</para>
+            <para style="terp_default_8">[[ (line.indications or (removeParentNode('para'))) ]] </para>
           </td>
           <td>
-            <para style="P6">[[ ''  ]] </para>
+            <para style="terp_default_8">[[ '' ]] </para>
           </td>
         </tr>
       </blockTable>

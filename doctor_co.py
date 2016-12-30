@@ -2208,6 +2208,7 @@ class doctor_paraclinical_monitoring(osv.osv):
 		'attentiont_id': fields.many2one('doctor.attentions', u'Seguimiento Paraclínico'),
 		'seguimientos_id': fields.many2one('doctor.name_paraclinical_monitoring', u'Seguimiento Paraclínico', domain="[('name','!=','CARGAR TODOS')]"),
 		'result':fields.integer('Resultado'),
+		'result_paraclinical':fields.char('Resultado'),
 		'regitration_date':fields.datetime('Fecha Seguimiento'),
 		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
 		'doctor_id':fields.many2one('doctor.professional', 'Profesional En La Salud'),
@@ -3614,7 +3615,7 @@ class doctor_attentions_disability(osv.osv):
 		'date_end': fields.date('Hasta', required=True, ondelete='restrict'),
 	}
 
-	#Funcion para calcular los dias de incapacidad
+	#Funcion para calcular los dias de incapacidad del paciente
 	def onchange_disability(self, cr, uid, ids, date_begin, date_end, context=None):
 		res={'value':{}}
 
@@ -3629,7 +3630,7 @@ class doctor_attentions_disability(osv.osv):
 				raise osv.except_osv(_('Aviso Importante!'),_('Para calcular los dias de incapacidad. \n Es necesario que la fecha final sea mayor a la inicial. \n Asegurese de seleccionar bien las fechas.'))
 			_logger.info('Si')
 			diferencia_dias= fecha_fin - fecha_inicio
-			res['value']['duration']=diferencia_dias.days
+			res['value']['duration']=diferencia_dias.days+1
 
 		return res
 
