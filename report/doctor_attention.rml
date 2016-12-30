@@ -549,12 +549,8 @@
           </td>
           <td>
             <para style="terp_default_8">[[ (line.total_quantity) ]] [[ (line.measuring_unit_qt.name) ]] </para>
-<<<<<<< HEAD
-            <para style="P2">[[ 'Cantidad' ]] </para>
-=======
             <para style="terp_default_8">[[ line.cantidad_total  ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]] [[ (line.drugs_id.drugs_concentration) ]]</para>
    
->>>>>>> reportesBrayhan
           </td>
         </tr>
         <tr>
@@ -576,6 +572,7 @@
         </tr>
       </blockTable>
     </section>
+
 
     <section>
   <blockTable colWidths="534.0" style="Table6">
