@@ -76,6 +76,7 @@
     <paraStyle name="P14" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="P15" fontName="Helvetica-Bold" fontSize="10.0" leading="13" alignment="CENTER"/>
     <paraStyle name="P16" fontName="Helvetica-Bold" fontSize="12.0" leading="13" alignment="CENTER"/>
+    <paraStyle name="P17" fontName="Helvetica-Bold" fontSize="12" leading="14" alignment="CENTER"/>
     <paraStyle name="Standard" fontName="Helvetica"/>
     <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0" alignment="RIGHT"/>
     <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
@@ -155,21 +156,17 @@
     <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
       <tr>
         <td>
-          <para style="P5">START DATE</para>
+          <para style="P17">START DATE</para>
 
         </td>
         <td>
-          <para style="P5">FECHA DE FINALIZACIÓN</para>
+          <para style="P17">FECHA DE FINALIZACIÓN</para>
         </td>
         <td>
-          <para style="P5">DURATION IN DAYS</para>
+          <para style="P17">DURATION IN DAYS</para>
         </td>
      </tr>
     </blockTable>
-
-
-
-
 
     <section>
       <para style="P4">[[ repeatIn(o.disability_ids, 'line') ]]</para>
@@ -192,7 +189,7 @@
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">DISEASES</para>
+          <para style="P17">DISEASES</para>
         </td>
      </tr>
     </blockTable>
@@ -215,7 +212,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">PHYSICIAN DATA</para>
+          <para style="P17">PHYSICIAN DATA</para>
         </td>
      </tr>
     </blockTable>
