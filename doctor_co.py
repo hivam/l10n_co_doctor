@@ -2860,7 +2860,7 @@ class doctor_otra_prescripcion(osv.osv):
 	_inherit = 'product.product'
 
 	_columns = {
-		'is_medicamento_prescripcion': fields.boolean('¿Es un medicamento / otro elemento?')
+		'is_medicamento_prescripcion': fields.boolean(u'¿Es un medicamento / otro elemento?')
 	}
 
 
