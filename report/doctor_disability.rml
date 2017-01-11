@@ -76,6 +76,7 @@
     <paraStyle name="P14" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="P15" fontName="Helvetica-Bold" fontSize="10.0" leading="13" alignment="CENTER"/>
     <paraStyle name="P16" fontName="Helvetica-Bold" fontSize="12.0" leading="13" alignment="CENTER"/>
+    <paraStyle name="P17" fontName="Helvetica-Bold" fontSize="12" leading="14" alignment="CENTER"/>
     <paraStyle name="Standard" fontName="Helvetica"/>
     <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0" alignment="RIGHT"/>
     <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
@@ -134,6 +135,7 @@
       <tr>
         <td>
           <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
+          <para style="P6">Programa Académico: [[ (o.patient_id.programa_id.name or (removeParentNode('para'))) ]]</para>
         </td>
         <td>
           <para style="P6">Age: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
@@ -149,35 +151,45 @@
      </tr>
     </blockTable>
 <condPageBreak height="9cm"/>
-	<blockTable colWidths="267.0,267.0" style="Table6">
-        <tr>
-		 <td>
-            <para style="P5">START DATE</para>
-          </td>
-          <td>
-            <para style="P5">DURATION IN DAYS</para>
-          </td>
-        </tr>
+
+
+    <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
+      <tr>
+        <td>
+          <para style="P17">START DATE</para>
+
+        </td>
+        <td>
+          <para style="P17">FECHA DE FINALIZACIÓN</para>
+        </td>
+        <td>
+          <para style="P17">DURATION IN DAYS</para>
+        </td>
+     </tr>
     </blockTable>
 
     <section>
       <para style="P4">[[ repeatIn(o.disability_ids, 'line') ]]</para>
 
-    <blockTable colWidths="267.0,267.0" style="Table6">
+     <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
         <tr>
-		 <td>
+		      <td>
             <para style="P12">[[ formatLang(line.disability_ids,date=True) ]]</para>
+          </td>
+          <td>
+            <para style="P12">[[ formatLang(line.date_end,date=True) ]]</para>
           </td>
           <td>
             <para style="P7">[[ (line.duration) ]] </para>
           </td>
+
         </tr>
       </blockTable>
     </section>
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">DISEASES</para>
+          <para style="P17">DISEASES</para>
         </td>
      </tr>
     </blockTable>
@@ -200,7 +212,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">PHYSICIAN DATA</para>
+          <para style="P17">PHYSICIAN DATA</para>
         </td>
      </tr>
     </blockTable>
