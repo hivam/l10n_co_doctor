@@ -84,7 +84,7 @@ class doctor(osv.osv):
 			finalidad_consulta = '04'
 		if cr.dbname == 'Tomatis':
 			finalidad_consulta = '10'
-		if cr.dbname == 'DrCaceres'
+		if cr.dbname == 'DrCaceres':
 			finalidad_consulta = '08'
 			
 		return finalidad_consulta
