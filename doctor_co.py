@@ -1820,18 +1820,16 @@ class doctor_attentions_co(osv.osv):
 		notas=''
 		res={'value':{}}
 		ids_notas= self.search(cr, uid, [('professional_id', '=', professional_id), ('patient_id', '=', patient_id)])
-		_logger.info(ids_notas)	
+
 		if activar_notas_confidenciales:
 			for id_nota in self.browse(cr,uid,ids_notas):
 				_logger.info(id_nota.notas_confidenciales)
 				notas_confidenciales.append(id_nota.notas_confidenciales)
 
-
 		for i in range(len(notas_confidenciales)):
-			notas+= notas_confidenciales[i] + ". " 
-		_logger.info('entro aca')
-		_logger.info(notas)
-		res['value']['notas_confidenciales'] = notas  
+			notas+= notas_confidenciales[i] + ". \n" 
+
+		res['value']['notas_confidenciales'] = notas + datetime.now().strftime('%Y-%m-%d') 
 
 		return res
 
