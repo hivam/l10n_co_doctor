@@ -692,10 +692,10 @@
 
 								<field name='actual_disease' position="after">
 									<group col="2"> 
-										<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
+										<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"  on_change='onchange_cargar_notas_confidenciales(activar_notas_confidenciales, professional_id, patient_id)'/>
 									</group>
 									<group col="1" colspan="2">
-										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/> 
+										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" /> 
 									</group>
 								</field>
 								
