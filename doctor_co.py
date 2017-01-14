@@ -2897,12 +2897,23 @@ class doctor_otra_prescripcion(osv.osv):
 
 	def parte_name_search(self, cr, uid, name, modeloLLama, args=None, operator='ilike', context=None, limit=100):
 		ids = []
-		ids_procedimientos = []
-		
+		nombre_con_split = []
+		concatena = []
 		if name:
-			ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+			
+			if name.split(" "):
+				nombre_con_split = name.split(" ")
+
+			if nombre_con_split:
+				for i in range(0, len(nombre_con_split), 1):
+					ids = self.search(cr, uid, [('name', operator, (nombre_con_split[i]))] + args, limit=limit, context=context)
+					ids += ids
+			else:
+				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+			
 			if not ids:
 				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
+				
 		elif modeloLLama:
 			ids = self.search(cr, uid, [('is_medicamento_prescripcion', '=', True)], limit=limit, context=context)
 		else:
@@ -2923,6 +2934,8 @@ class doctor_otra_prescripcion(osv.osv):
 		diagnostic_images = context.get('diagnostic_images')
 		odontologia = context.get('odontologia')
 
+
+
 		if plan_id and professional_id:
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
 		elif medicamento:
@@ -2938,7 +2951,6 @@ class doctor_otra_prescripcion(osv.osv):
 				if ids:
 					for i in insttucion_procedimiento.browse(cr, uid, ids, context=context):
 						ids_procedimientos.append(i.procedures_id.id)
-					
 			else:
 				ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		
