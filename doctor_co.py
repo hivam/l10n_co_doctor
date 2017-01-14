@@ -1815,6 +1815,24 @@ class doctor_attentions_co(osv.osv):
 
 		return {'value': {'filter_paraclinical_monitoring_ids': seguimientos_ids}}
 
+	def onchange_cargar_notas_confidenciales(self, cr, uid, ids, activar_notas_confidenciales, professional_id, patient_id, context=None):
+		notas_confidenciales=[]
+		notas=''
+		res={'value':{}}
+		ids_notas= self.search(cr, uid, [('professional_id', '=', professional_id), ('patient_id', '=', patient_id)])
+
+		if activar_notas_confidenciales:
+			for id_nota in self.browse(cr,uid,ids_notas):
+				_logger.info(id_nota.notas_confidenciales)
+				notas_confidenciales.append(id_nota.notas_confidenciales)
+
+		for i in range(len(notas_confidenciales)):
+			notas+= notas_confidenciales[i] + ". \n" 
+
+		res['value']['notas_confidenciales'] = notas + datetime.now().strftime('%Y-%m-%d') 
+
+		return res
+
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
 		res={'value':{}}
 		_logger.info(plantilla_id)
