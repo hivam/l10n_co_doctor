@@ -2925,15 +2925,16 @@ class doctor_otra_prescripcion(osv.osv):
 			if nombre_con_split:
 				for i in range(0, len(nombre_con_split), 1):
 					ids = self.search(cr, uid, [('name', operator, (nombre_con_split[i]))] + args, limit=limit, context=context)
-					ids += ids
+					concatena += ids
 
-				_logger.info(len(ids))
+				_logger.info(len(concatena))
 			else:
 				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
 			
 			if not ids:
 				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
-
+			else:
+				return concatena
 		elif modeloLLama:
 			ids = self.search(cr, uid, [('is_medicamento_prescripcion', '=', True)], limit=limit, context=context)
 		else:
