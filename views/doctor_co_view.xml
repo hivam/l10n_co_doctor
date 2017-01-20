@@ -692,10 +692,10 @@
 
 								<field name='actual_disease' position="after">
 									<group col="2"> 
-										<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"/>
+										<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"  on_change='onchange_cargar_notas_confidenciales(activar_notas_confidenciales, professional_id, patient_id)'/>
 									</group>
 									<group col="1" colspan="2">
-										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"/> 
+										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" /> 
 									</group>
 								</field>
 								
@@ -912,7 +912,7 @@
 															</field>
 														</group> 
 														<group colspan='4' col='2'>
-															<field name="result"/>
+															<field name="result_paraclinical"/>
 															<field name="regitration_date"/>
 														</group> 
 														<group colspan='4' col='2'>
@@ -922,7 +922,7 @@
 													</form>
 													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
 														<field name="seguimientos_id"/>
-														<field name="result"/>
+														<field name="result_paraclinical"/>
 														<field name="regitration_date"/>
 														<field name="patient_id" invisible="1"/>
 														<field name="doctor_id" invisible="1"/>
@@ -951,7 +951,7 @@
 															</field>
 														</group> 
 														<group colspan='4' col='2'>
-															<field name="result"/>
+															<field name="result_paraclinical"/>
 															<field name="regitration_date"/>
 														</group> 
 														<group colspan='4' col='2'>
@@ -961,7 +961,7 @@
 													</form>
 													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]" create="false">
 														<field name="seguimientos_id"/>
-														<field name="result"/>
+														<field name="result_paraclinical"/>
 														<field name="regitration_date"/>
 														<field name="patient_id" invisible="1"/>
 														<field name="doctor_id" invisible="1"/>

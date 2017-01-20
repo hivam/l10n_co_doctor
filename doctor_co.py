@@ -1815,6 +1815,24 @@ class doctor_attentions_co(osv.osv):
 
 		return {'value': {'filter_paraclinical_monitoring_ids': seguimientos_ids}}
 
+	def onchange_cargar_notas_confidenciales(self, cr, uid, ids, activar_notas_confidenciales, professional_id, patient_id, context=None):
+		notas_confidenciales=[]
+		notas=''
+		res={'value':{}}
+		ids_notas= self.search(cr, uid, [('professional_id', '=', professional_id), ('patient_id', '=', patient_id)])
+
+		if activar_notas_confidenciales:
+			for id_nota in self.browse(cr,uid,ids_notas):
+				_logger.info(id_nota.notas_confidenciales)
+				notas_confidenciales.append(id_nota.notas_confidenciales)
+
+		for i in range(len(notas_confidenciales)):
+			notas+= notas_confidenciales[i] + ". \n" 
+
+		res['value']['notas_confidenciales'] = notas + datetime.now().strftime('%Y-%m-%d') 
+
+		return res
+
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
 		res={'value':{}}
 		_logger.info(plantilla_id)
@@ -2208,6 +2226,7 @@ class doctor_paraclinical_monitoring(osv.osv):
 		'attentiont_id': fields.many2one('doctor.attentions', u'Seguimiento Paraclínico'),
 		'seguimientos_id': fields.many2one('doctor.name_paraclinical_monitoring', u'Seguimiento Paraclínico', domain="[('name','!=','CARGAR TODOS')]"),
 		'result':fields.integer('Resultado'),
+		'result_paraclinical':fields.char('Resultado'),
 		'regitration_date':fields.datetime('Fecha Seguimiento'),
 		'patient_id':fields.many2one('doctor.patient', 'Paciente'),
 		'doctor_id':fields.many2one('doctor.professional', 'Profesional En La Salud'),
@@ -2896,10 +2915,21 @@ class doctor_otra_prescripcion(osv.osv):
 
 	def parte_name_search(self, cr, uid, name, modeloLLama, args=None, operator='ilike', context=None, limit=100):
 		ids = []
-		ids_procedimientos = []
-		
+		nombre_con_split = []
+		concatena = []
 		if name:
-			ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+			
+			if name.split(" "):
+				nombre_con_split = name.split(" ")
+
+			if nombre_con_split:
+				for i in range(0, len(nombre_con_split), 1):
+					ids = self.search(cr, uid, [('name', operator, (nombre_con_split[i]))] + args, limit=limit, context=context)
+					ids += ids
+
+			else:
+				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+			
 			if not ids:
 				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
 		elif modeloLLama:
@@ -2922,6 +2952,8 @@ class doctor_otra_prescripcion(osv.osv):
 		diagnostic_images = context.get('diagnostic_images')
 		odontologia = context.get('odontologia')
 
+
+
 		if plan_id and professional_id:
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
 		elif medicamento:
@@ -2937,7 +2969,6 @@ class doctor_otra_prescripcion(osv.osv):
 				if ids:
 					for i in insttucion_procedimiento.browse(cr, uid, ids, context=context):
 						ids_procedimientos.append(i.procedures_id.id)
-					
 			else:
 				ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		
@@ -3041,7 +3072,11 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('07', u'Análisis'),
 		('08', 'Conducta'),
 		('09', 'Auxiliar de enfermermeria'),
-
+		('10', 'Hallazgos positivos examen fisico'),
+		('11', u'Descripción física'),
+		('12', 'Comportamiento en consulta'),
+		('13', u'Estrategias de evaluación'),
+		('14', u'Plan de intervención'),
 	]
 
 	_columns = {
@@ -3610,7 +3645,7 @@ class doctor_attentions_disability(osv.osv):
 		'date_end': fields.date('Hasta', required=True, ondelete='restrict'),
 	}
 
-	#Funcion para calcular los dias de incapacidad
+	#Funcion para calcular los dias de incapacidad del paciente
 	def onchange_disability(self, cr, uid, ids, date_begin, date_end, context=None):
 		res={'value':{}}
 
@@ -3625,7 +3660,7 @@ class doctor_attentions_disability(osv.osv):
 				raise osv.except_osv(_('Aviso Importante!'),_('Para calcular los dias de incapacidad. \n Es necesario que la fecha final sea mayor a la inicial. \n Asegurese de seleccionar bien las fechas.'))
 			_logger.info('Si')
 			diferencia_dias= fecha_fin - fecha_inicio
-			res['value']['duration']=diferencia_dias.days
+			res['value']['duration']=diferencia_dias.days+1
 
 		return res
 

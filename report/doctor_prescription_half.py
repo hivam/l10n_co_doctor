@@ -34,6 +34,9 @@ class doctor_precription(report_sxw.rml_parse):
 			'select_type_action': self.select_type_action,
 			'select_type_unit': self.select_type_unit,
 			'select_type_period': self.select_type_period,
+			'select_frequency_unit_n': self.select_frequency_unit_n,
+			'select_duration_period_n': self.select_duration_period_n,
+			'select_prescription_drugs': self.select_prescription_drugs,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -68,7 +71,48 @@ class doctor_precription(report_sxw.rml_parse):
 
 		_logger.info(tipo)
 		return tipo
+	#funcion para cambiar las palabras de ingles a español
+	def select_frequency_unit_n(self, frequency_unit_n):
+		if frequency_unit_n== 'hours':
+			return "Horas"
+		if frequency_unit_n== 'minutes':
+			return "Minutos"
+		if frequency_unit_n== 'days':
+			return "Dias"
+		if frequency_unit_n== 'weeks':
+			return "Semanas"
+		if frequency_unit_n== 'wr':
+			return "Cuando pueda"
+		if frequency_unit_n== 'total':
+			return "Total"
+		return ""
 
+	#funcion para cambiar las palabras de ingles a español
+	def select_duration_period_n(self, duration_period_n):
+		if duration_period_n== 'hours':
+			return "Horas"
+		if duration_period_n== 'minutes':
+			return "Minutos"
+		if duration_period_n== 'days':
+			return "Dias"
+		if duration_period_n== 'months':
+			return "Meses"
+		if duration_period_n== 'indefinite':
+			return "Indefinido"
+		return ""
+
+	#funcion para retornar cuando se llene o no las cantidades de dias que se deberia tomar el paciente si no retorna solo la prescripcion
+	def select_prescription_drugs(self, indicacion_tomar, quantity, measuring_unit_q, frequency, frequency_unit_n, duration, duration_period_n, administration_route_id):
+		indicaciones=''
+		if ((int(frequency) ==0) or (int(duration) ==0)):
+			_logger.info('esta vacio')
+			indicaciones=indicacion_tomar
+		else:
+			indicaciones=indicacion_tomar + ' ' + str(measuring_unit_q) + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
+		
+		return indicaciones
+
+		
 report_sxw.report_sxw('report.doctor_prescription_half', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_prescription_half.rml',
 					  parser=doctor_precription,header=False)
