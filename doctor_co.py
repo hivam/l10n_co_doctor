@@ -1990,7 +1990,7 @@ class doctor_attention_resumen(osv.osv):
 				if datos.attentions_exam_ids:
 					for i in range(0,len(datos.attentions_exam_ids),1):
 
-						if len(datos.attentions_exam_ids[i].exam) > 0:
+						if datos.attentions_exam_ids[i].exam:
 
 							examen_fisico.append((0,0,{'exam_category' : datos.attentions_exam_ids[i].exam_category.id,
 														'exam': datos.attentions_exam_ids[i].exam}))
