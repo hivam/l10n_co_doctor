@@ -2927,7 +2927,6 @@ class doctor_otra_prescripcion(osv.osv):
 					ids = self.search(cr, uid, [('name', operator, (nombre_con_split[i]))] + args, limit=limit, context=context)
 					ids += ids
 
-				_logger.info(len(concatena))
 			else:
 				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
 			
