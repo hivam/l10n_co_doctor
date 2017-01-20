@@ -2112,7 +2112,7 @@ class doctor_attention_resumen(osv.osv):
 					for datos in modelo_buscar.browse(cr, uid, record, context=context):
 						if datos.diseases_ids:
 							for i in range(0,len(datos.diseases_ids),1):
-								diagnosticos_resumen_tipo.append(datos.diseases_ids[i].diseases_id.diseases_type)
+								diagnosticos_resumen_tipo.append(datos.diseases_ids[i].diseases_type)
 						
 					if len(diagnosticos_resumen_tipo) <= 0:
 						node.set('invisible', repr(True))
