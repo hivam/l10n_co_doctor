@@ -1990,8 +1990,11 @@ class doctor_attention_resumen(osv.osv):
 
 				if datos.attentions_exam_ids:
 					for i in range(0,len(datos.attentions_exam_ids),1):
-						examen_fisico.append((0,0,{'exam_category' : datos.attentions_exam_ids[i].exam_category.id,
-													'exam': datos.attentions_exam_ids[i].exam}))
+
+						if len(datos.attentions_exam_ids[i].exam) > 0:
+
+							examen_fisico.append((0,0,{'exam_category' : datos.attentions_exam_ids[i].exam_category.id,
+														'exam': datos.attentions_exam_ids[i].exam}))
 					
 			res['analisis_resumen'] = resumen_analisis
 			res['tratamiento_resumen'] = tratamiento_resumen
@@ -2025,6 +2028,7 @@ class doctor_attention_resumen(osv.osv):
 		resumen_analisis = []
 		tratamiento_resumen = []
 		diagnosticos_resumen= []
+		diagnosticos_resumen_tipo= []
 
 		record = None
 		if patient_id:
@@ -2111,9 +2115,10 @@ class doctor_attention_resumen(osv.osv):
 				if record:
 					for datos in modelo_buscar.browse(cr, uid, record, context=context):
 						if datos.diseases_ids:
-							diagnosticos_resumen.append(datos.diseases_ids[i].diseases_id.name)
+							for i in range(0,len(datos.diseases_ids),1):
+								diagnosticos_resumen_tipo.append(datos.diseases_ids[i].diseases_type)
 						
-					if len(diagnosticos_resumen) <= 0:
+					if len(diagnosticos_resumen_tipo) <= 0:
 						node.set('invisible', repr(True))
 						setup_modifiers(node, res['fields']['tipo_diagnostico'])
 
