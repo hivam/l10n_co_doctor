@@ -71,7 +71,15 @@
 										<legend class="texto_legend">Lugar de Nacimiento</legend>
 										<group col="2" colspan="2">
 											<field name="nacimiento_country_id"/>
-											<field name="nacimiento_city_id"/>
+											<field name="nacimiento_city_id" attrs="{'invisible': [('nacimiento_country_id','!=', 50)]}"/>
+											<field name="localidad_otros_paises_id" attrs="{'invisible': [('nacimiento_country_id','=', 50)]}"  context="{'nacimiento_country_id' : nacimiento_country_id,}">
+												<form>
+													<group col="2">
+														<field name="country_id" context="{'nacimiento_country_id' : nacimiento_country_id,}"/>
+														<field name="name"/>
+													</group>
+												</form>
+											</field>
 										</group>
 									</fieldset>
 
@@ -1084,6 +1092,17 @@
 									<field name="tiempo_espacio"/>
 								</tree>
 						</field>
+				</record>
+
+				<record id="seq_type_1" model="ir.sequence.type"> 
+				  <field name="name">REG Type</field> 
+				  <field name="code">reg_code</field> 
+				</record> 
+				<record id="seq_1" model="ir.sequence"> 
+				    <field name="name">reg</field> 
+				    <field name="code">reg_code</field> 
+				    <field name="prefix"></field> 
+				    <field name="padding">3</field> 
 				</record>
 
 

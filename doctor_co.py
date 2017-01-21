@@ -251,6 +251,7 @@ class doctor_patient_co(osv.osv):
 		'desplazado': fields.char(u'Desplazado'),
 		'desmovilizado': fields.char(u'Desmovilizado'),
 		'victima_conflicto': fields.char(u'Victima del Conflicto'),
+		'localidad_otros_paises_id':fields.many2one('doctor.localidad.country', u'Localidad/Ciudad', domain="[('country_id','=',nacimiento_country_id)]"),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -2308,6 +2309,47 @@ class doctor_neighborhood(osv.Model):
 	_sql_constraints = [('codigo_constraint', 'unique(codigo)', 'El Barrio ya existe en la base de datos. \n Por favor ingrese otro código')]
 
 doctor_neighborhood()
+
+
+#Localidades
+class doctor_localidad_country(osv.Model):
+
+	_name = 'doctor.localidad.country'
+
+	_rec_name= 'name'
+
+	_columns = {
+	'code' : fields.char(u'Código', required = True ),
+	'name' : fields.char('Nombre', required = True),
+	'country_id':fields.many2one('res.country', u'País/Nación', required=True),
+	}
+
+	_defaults = {
+		'country_id' : lambda self, cr, uid, context: context.get('nacimiento_country_id', False),
+		'code': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'reg_code'),
+	}
+
+	#Función para evitar el nombre de la localidad repetida
+	def _check_unique_name(self, cr, uid, ids, context=None):
+		for record in self.browse(cr, uid, ids):
+			ref_ids = self.search(cr, uid, [('name', '=', record.name), ('id', '<>', record.id)])
+			if ref_ids:
+				return False
+		return True
+
+	def create(self, cr, uid, vals, context=None):
+		vals.update({'name': vals['name'].capitalize()})
+		return super(doctor_localidad_country, self).create(cr, uid, vals, context)
+
+	def write(self, cr, uid, ids, vals, context=None):
+		nombre_localidad = vals['name']
+		vals['name']=nombre_localidad.capitalize()
+		return super(doctor_localidad_country,self).write(cr, uid, ids, vals, context)
+
+
+	_constraints = [(_check_unique_name, u'¡Error! La Localidad ya existe en la base de datos. \n Por favor ingrese otro nombre', ['name']),]
+
+doctor_localidad_country()
 
 class doctor_co_schedule_inherit(osv.osv):
 
