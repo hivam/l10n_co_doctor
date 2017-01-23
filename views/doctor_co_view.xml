@@ -643,6 +643,7 @@
 				</field>
 				</record>
 
+
 				<!-- doctor disability Form View -->
 				<record model="ir.ui.view" id="view_doctor_attentions_disability_form_inherit">
 					<field name="name">Incapacidad</field>
