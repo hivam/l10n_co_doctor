@@ -612,9 +612,6 @@
 						<field name="speciality"/>
 						<field name="diseases_ids"/>
 						<field name="date_attention"/>
-
-						<filter domain="[('tipo_historia','=','hc_riesgobiologico')]" name="tipohistoria_filter" string="At. Riesgo Biológico"/>
-						<separator/>
 						
 						<filter domain="[('date_attention','&gt;=',((context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones del dia de ayer." name="Atenciones Ayer" string="Atenciones Ayer"/>
 
