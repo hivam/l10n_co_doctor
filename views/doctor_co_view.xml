@@ -673,7 +673,7 @@
 						</field>
 					</field>
 				</record>
-				
+								
 				<!--Attentions Action view-->
 				<!--  <record model="ir.actions.act_window" id="action_doctor_attentions">
 	        		<field name="name">Attentions</field>
