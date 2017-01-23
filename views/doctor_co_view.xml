@@ -601,6 +601,7 @@
 						<field name="function" eval="'habilitar_espacios'"/>
 						<field name="args" eval="'()'"/>
 				</record>
+<<<<<<< bf80a458000c1540cc604c356fdbbb6842b11ba6
 
 				<!-- Modificando la busqueda en atencion anadiendo cambios -->
 				<record id="attentions_filters_l10n" model="ir.ui.view">
@@ -642,6 +643,9 @@
 				</field>
 				</record>
 
+=======
+			
+>>>>>>> eliminando intento con filtro -Capriatto
 
 				<!-- doctor disability Form View -->
 				<record model="ir.ui.view" id="view_doctor_attentions_disability_form_inherit">
@@ -681,7 +685,6 @@
             		<field name="context">{'search_default_tipohistoria_filter':1}</field>
     			</record>
  				-->
-
 
 				<!-- Attentions Form View -->
 				<record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
