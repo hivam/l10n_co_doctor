@@ -427,6 +427,11 @@
 												</tree>
 										</field>
 								</xpath>
+
+								<field name="procedures_id" position="before">
+									<label string="Historia Asociada" for="modulos_id"/>
+									<field name="modulos_id"/>
+								</field>
 						</field>
 					</record>
 
