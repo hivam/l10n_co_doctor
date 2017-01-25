@@ -620,10 +620,10 @@ class doctor_appointment_co(osv.osv):
 		for node in doc.xpath("//filter[@name='citas_profesional']"):
 			
 			doctor_id = self.pool.get('doctor.professional').search(cr,uid,[('user_id','=',uid)],context=context)
-			dominio=[('professional_id','=',doctor_id[0]),]
-			node.set('domain', repr(dominio))
-			res['arch'] = etree.tostring(doc)
-		_logger.info(res)		
+			if doctor_id:
+				dominio=[('professional_id','=',doctor_id[0]),]
+				node.set('domain', repr(dominio))
+				res['arch'] = etree.tostring(doc)
 		return res
 
 
