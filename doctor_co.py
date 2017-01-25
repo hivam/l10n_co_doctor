@@ -2078,7 +2078,6 @@ class doctor_attentions_co(osv.osv):
 		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
-
 	}
 
 

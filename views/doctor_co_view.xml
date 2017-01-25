@@ -680,16 +680,9 @@
 			        <field name="view_mode">tree,form</field>
 			        <field name="search_view_id" ref="attentions_filters_l10n"/>
             		<field name="context">{'search_default_tipohistoria_filter':1}</field>
-<<<<<<< 8ec5b7f0631f613cdf29409c9679a5fa97a3047f
     			</record>
  				-->
-
-=======
-<<<<<<< 6f92130ed7bf9ea8489799a4124e0d676aa5b0fb
-    			</record>-->
->>>>>>> agregando filtro, probando filtro en l10n_co_doctor
-
-
+ 				
 				<!-- Attentions Form View -->
 				<record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
 						<field name="name">Attentions</field>
