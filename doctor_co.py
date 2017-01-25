@@ -1829,12 +1829,17 @@ class doctor_attentions_co(osv.osv):
 				notas_confidenciales.append(id_nota.notas_confidenciales)
 
 		for i in range(len(notas_confidenciales)):
-			notas+= notas_confidenciales[i] + ". \n" 
+			notas+= notas_confidenciales[i] + ".<< \n>>" 
+
+		_logger.info(len(notas_confidenciales))
+		for counter in range(len(notas_confidenciales),1,-1):
+			_logger.info(notas_confidenciales[counter] + ". \n" )
 			
 		fecha_actual= self.pool.get('doctor.doctor').fecha_UTC(datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S"), context)
 		_logger.info('La fecha es esta:')
 		_logger.info(datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S"))
-		res['value']['notas_confidenciales'] = notas + datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
+		res['value']['notas_confidenciales'] = notas + datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+
 
 		return res
 
