@@ -1667,7 +1667,7 @@ class doctor_appointment_type(osv.osv):
 	_columns = {
 		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud',
 										 ondelete='restrict'),
-		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|', ('author','=','TIX SAS'), ('author','=','Proyecto Evoluzion'), ]"),
+		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|', ('author','=','TIX SAS'), '|',('author','=','Proyecto Evoluzion'), ('author','=','PROYECTO EVOLUZION') ]"),
 	}
 
 doctor_appointment_type()
