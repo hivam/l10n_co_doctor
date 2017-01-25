@@ -613,6 +613,20 @@ class doctor_appointment_co(osv.osv):
 		"finalidad": 1,
 	}
 
+	def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+		
+		res = super(doctor_appointment_co, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
+		doc = etree.XML(res['arch'])
+		for node in doc.xpath("//filter[@name='citas_profesional']"):
+			
+			doctor_id = self.pool.get('doctor.professional').search(cr,uid,[('user_id','=',uid)],context=context)
+			dominio=[('professional_id','=',doctor_id[0]),]
+			node.set('domain', repr(dominio))
+			res['arch'] = etree.tostring(doc)
+		_logger.info(res)		
+		return res
+
+
 	#Funcion para seleccionar y no seleccionar los dias de la semana y meses. Haciendo uso de la funcion que se encuentra en doctor.schedule
 	def onchange_seleccion(self, cr, uid, ids, marcar_todo, seleccion, context=None):
 		res= self.pool.get('doctor.schedule').onchange_seleccionar_todo(cr, uid, ids, marcar_todo, seleccion, context=context)
