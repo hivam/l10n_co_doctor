@@ -1825,13 +1825,12 @@ class doctor_attentions_co(osv.osv):
 
 		if activar_notas_confidenciales:
 			for id_nota in self.browse(cr,uid,ids_notas):
-				_logger.info(id_nota.notas_confidenciales)
 				notas_confidenciales.append(id_nota.notas_confidenciales)
 
 		for i in range(len(notas_confidenciales)):
 			notas+= notas_confidenciales[i] + ". \n" 
-
-		res['value']['notas_confidenciales'] = notas + datetime.now().strftime('%Y-%m-%d') 
+			
+		res['value']['notas_confidenciales'] = notas + datetime.strftime(datetime.now(), "%Y-%m-%d")
 
 		return res
 
@@ -3397,7 +3396,7 @@ class doctor_invoice_co (osv.osv):
 	_name = "account.invoice"
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de iden", required=True, readonly= True),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificacion", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	}
@@ -3417,7 +3416,7 @@ class doctor_sales_order_co (osv.osv):
 		return res
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificac", required=True, readonly= False),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificacion", required=True, readonly= False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	 }
