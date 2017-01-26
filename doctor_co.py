@@ -620,6 +620,7 @@ class doctor_appointment_co(osv.osv):
 		for node in doc.xpath("//filter[@name='citas_profesional']"):
 			
 			doctor_id = self.pool.get('doctor.professional').search(cr,uid,[('user_id','=',uid)],context=context)
+			_logger.info(doctor_id)
 			if doctor_id:
 				dominio=[('professional_id','=',doctor_id[0]),]
 				node.set('domain', repr(dominio))
@@ -1842,7 +1843,8 @@ class doctor_attentions_co(osv.osv):
 				notas_confidenciales.append(id_nota.notas_confidenciales)
 
 		for i in range(len(notas_confidenciales)):
-			notas+= notas_confidenciales[i] + ". \n" 
+			if notas_confidenciales[i]:
+				notas += notas_confidenciales[i] + ". \n" 
 			
 		res['value']['notas_confidenciales'] = notas + datetime.strftime(datetime.now(), "%Y-%m-%d")
 
