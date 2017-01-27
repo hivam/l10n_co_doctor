@@ -251,6 +251,7 @@ class doctor_patient_co(osv.osv):
 		'desplazado': fields.char(u'Desplazado'),
 		'desmovilizado': fields.char(u'Desmovilizado'),
 		'victima_conflicto': fields.char(u'Victima del Conflicto'),
+		'localidad_otros_paises_id':fields.many2one('doctor.localidad.country', u'Localidad/Ciudad', domain="[('country_id','=',nacimiento_country_id)]"),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -611,6 +612,21 @@ class doctor_appointment_co(osv.osv):
 		"ambito": 1,
 		"finalidad": 1,
 	}
+
+	def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+		
+		res = super(doctor_appointment_co, self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
+		doc = etree.XML(res['arch'])
+		for node in doc.xpath("//filter[@name='citas_profesional']"):
+			
+			doctor_id = self.pool.get('doctor.professional').search(cr,uid,[('user_id','=',uid)],context=context)
+			_logger.info(doctor_id)
+			if doctor_id:
+				dominio=[('professional_id','=',doctor_id[0]),]
+				node.set('domain', repr(dominio))
+				res['arch'] = etree.tostring(doc)
+		return res
+
 
 	#Funcion para seleccionar y no seleccionar los dias de la semana y meses. Haciendo uso de la funcion que se encuentra en doctor.schedule
 	def onchange_seleccion(self, cr, uid, ids, marcar_todo, seleccion, context=None):
@@ -1666,6 +1682,7 @@ class doctor_appointment_type(osv.osv):
 	_columns = {
 		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud',
 										 ondelete='restrict'),
+		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|', ('author','=','TIX SAS'), '|',('author','=','Proyecto Evoluzion'), ('author','=','PROYECTO EVOLUZION') ]"),
 	}
 
 doctor_appointment_type()
@@ -1814,6 +1831,24 @@ class doctor_attentions_co(osv.osv):
 				_logger.info(seguimientos_ids)
 
 		return {'value': {'filter_paraclinical_monitoring_ids': seguimientos_ids}}
+
+	def onchange_cargar_notas_confidenciales(self, cr, uid, ids, activar_notas_confidenciales, professional_id, patient_id, context=None):
+		notas_confidenciales=[]
+		notas=''
+		res={'value':{}}
+		ids_notas= self.search(cr, uid, [('professional_id', '=', professional_id), ('patient_id', '=', patient_id)])
+
+		if activar_notas_confidenciales:
+			for id_nota in self.browse(cr,uid,ids_notas):
+				notas_confidenciales.append(id_nota.notas_confidenciales)
+
+		for i in range(len(notas_confidenciales)):
+			if notas_confidenciales[i]:
+				notas += notas_confidenciales[i] + ". \n" 
+			
+		res['value']['notas_confidenciales'] = notas + datetime.strftime(datetime.now(), "%Y-%m-%d")
+
+		return res
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
 		res={'value':{}}
@@ -1971,8 +2006,11 @@ class doctor_attention_resumen(osv.osv):
 
 				if datos.attentions_exam_ids:
 					for i in range(0,len(datos.attentions_exam_ids),1):
-						examen_fisico.append((0,0,{'exam_category' : datos.attentions_exam_ids[i].exam_category.id,
-													'exam': datos.attentions_exam_ids[i].exam}))
+
+						if datos.attentions_exam_ids[i].exam:
+
+							examen_fisico.append((0,0,{'exam_category' : datos.attentions_exam_ids[i].exam_category.id,
+														'exam': datos.attentions_exam_ids[i].exam}))
 					
 			res['analisis_resumen'] = resumen_analisis
 			res['tratamiento_resumen'] = tratamiento_resumen
@@ -2006,6 +2044,7 @@ class doctor_attention_resumen(osv.osv):
 		resumen_analisis = []
 		tratamiento_resumen = []
 		diagnosticos_resumen= []
+		diagnosticos_resumen_tipo= []
 
 		record = None
 		if patient_id:
@@ -2092,9 +2131,10 @@ class doctor_attention_resumen(osv.osv):
 				if record:
 					for datos in modelo_buscar.browse(cr, uid, record, context=context):
 						if datos.diseases_ids:
-							diagnosticos_resumen.append(datos.diseases_ids[i].diseases_id.name)
+							for i in range(0,len(datos.diseases_ids),1):
+								diagnosticos_resumen_tipo.append(datos.diseases_ids[i].diseases_type)
 						
-					if len(diagnosticos_resumen) <= 0:
+					if len(diagnosticos_resumen_tipo) <= 0:
 						node.set('invisible', repr(True))
 						setup_modifiers(node, res['fields']['tipo_diagnostico'])
 
@@ -2285,6 +2325,47 @@ class doctor_neighborhood(osv.Model):
 	_sql_constraints = [('codigo_constraint', 'unique(codigo)', 'El Barrio ya existe en la base de datos. \n Por favor ingrese otro código')]
 
 doctor_neighborhood()
+
+
+#Localidades
+class doctor_localidad_country(osv.Model):
+
+	_name = 'doctor.localidad.country'
+
+	_rec_name= 'name'
+
+	_columns = {
+	'code' : fields.char(u'Código', required = True ),
+	'name' : fields.char('Nombre', required = True),
+	'country_id':fields.many2one('res.country', u'País/Nación', required=True),
+	}
+
+	_defaults = {
+		'country_id' : lambda self, cr, uid, context: context.get('nacimiento_country_id', False),
+		'code': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'reg_code'),
+	}
+
+	#Función para evitar el nombre de la localidad repetida
+	def _check_unique_name(self, cr, uid, ids, context=None):
+		for record in self.browse(cr, uid, ids):
+			ref_ids = self.search(cr, uid, [('name', '=', record.name), ('id', '<>', record.id)])
+			if ref_ids:
+				return False
+		return True
+
+	def create(self, cr, uid, vals, context=None):
+		vals.update({'name': vals['name'].capitalize()})
+		return super(doctor_localidad_country, self).create(cr, uid, vals, context)
+
+	def write(self, cr, uid, ids, vals, context=None):
+		nombre_localidad = vals['name']
+		vals['name']=nombre_localidad.capitalize()
+		return super(doctor_localidad_country,self).write(cr, uid, ids, vals, context)
+
+
+	_constraints = [(_check_unique_name, u'¡Error! La Localidad ya existe en la base de datos. \n Por favor ingrese otro nombre', ['name']),]
+
+doctor_localidad_country()
 
 class doctor_co_schedule_inherit(osv.osv):
 
@@ -2897,10 +2978,21 @@ class doctor_otra_prescripcion(osv.osv):
 
 	def parte_name_search(self, cr, uid, name, modeloLLama, args=None, operator='ilike', context=None, limit=100):
 		ids = []
-		ids_procedimientos = []
-		
+		nombre_con_split = []
+		concatena = []
 		if name:
-			ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+			
+			if name.split(" "):
+				nombre_con_split = name.split(" ")
+
+			if nombre_con_split:
+				for i in range(0, len(nombre_con_split), 1):
+					ids = self.search(cr, uid, [('name', operator, (nombre_con_split[i]))] + args, limit=limit, context=context)
+					ids += ids
+
+			else:
+				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+			
 			if not ids:
 				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
 		elif modeloLLama:
@@ -2923,6 +3015,8 @@ class doctor_otra_prescripcion(osv.osv):
 		diagnostic_images = context.get('diagnostic_images')
 		odontologia = context.get('odontologia')
 
+
+
 		if plan_id and professional_id:
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
 		elif medicamento:
@@ -2938,7 +3032,6 @@ class doctor_otra_prescripcion(osv.osv):
 				if ids:
 					for i in insttucion_procedimiento.browse(cr, uid, ids, context=context):
 						ids_procedimientos.append(i.procedures_id.id)
-					
 			else:
 				ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		
@@ -3319,7 +3412,7 @@ class doctor_invoice_co (osv.osv):
 	_name = "account.invoice"
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de iden", required=True, readonly= True),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificacion", required=True, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	}
@@ -3339,7 +3432,7 @@ class doctor_sales_order_co (osv.osv):
 		return res
 
 	_columns = {
-		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificac", required=True, readonly= False),
+		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string="Nº de identificacion", required=True, readonly= False),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	 }
