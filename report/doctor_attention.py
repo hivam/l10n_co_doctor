@@ -42,7 +42,7 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_duration_period_n': self.select_duration_period_n,
 			'select_action_id': self.select_action_id,
 			'select_prescription_drugs': self.select_prescription_drugs,
-			'historia_control_instalado': self.historia_control_instalado,
+			'historia_control_instalada': self.historia_control_instalada,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -177,13 +177,11 @@ class doctor_attention(report_sxw.rml_parse):
 		
 		return indicaciones
 
-	def historia_control_instalado(self):
+	def historia_control_instalada(self):
 		context = {}
 		bandera = False
 		if self.pool.get('doctor.doctor').modulo_instalado(self.cr, self.uid, 'doctor_control', context=context):
 			bandera = True
-
-		_logger.info(bandera)
 		return bandera
 
 
