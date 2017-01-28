@@ -774,30 +774,6 @@
     </section>
 
 
-    <section>
-    [[historia_control_instalado() or o.control_ids or removeParentNode('section') ]]
-    <blockTable colWidths="534.0" style="Table6">
-      <tr>
-        <td>
-          <para style="P2">Controles</para>
-        </td>
-     </tr>
-    </blockTable>
-    <blockTable colWidths="80.0, 200.0, 254.0" style="Table6">
-        <para style="P4">[[ repeatIn(o.control_ids, 'line') ]]</para>
-        <tr>
-          <td>
-            <para style="terp_default_8">[[ (line.date_attention) ]]</para>
-          </td>
-          <td>
-            <para style="terp_default_8">[[ (line.asunto) ]] </para>
-          </td>
-          <td>
-            <para style="terp_default_8">[[ (line.evolucion) ]] </para>
-          </td>
-        </tr>
-      </blockTable>
-    </section>
 
 
    <section>
