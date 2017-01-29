@@ -172,7 +172,7 @@ class doctor_attention(report_sxw.rml_parse):
 			_logger.info('esta vacio')
 			indicaciones=indicacion_tomar
 		else:
-			indicaciones=indicacion_tomar + ' ' + str(measuring_unit_q) + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
+			indicaciones= str(measuring_unit_q) + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
 		
 		return indicaciones
 

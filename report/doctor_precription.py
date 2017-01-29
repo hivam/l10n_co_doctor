@@ -106,19 +106,12 @@ class doctor_precription(report_sxw.rml_parse):
 	def select_prescription_drugs(self, indicacion_tomar, quantity, measuring_unit_q, frequency, frequency_unit_n, duration, duration_period_n, administration_route_id):
 		indicaciones=''
 		if ((int(frequency) ==0) or (int(duration) ==0)):
-			_logger.info('esta vacio')
 			indicaciones=indicacion_tomar
 		else:
-			indicaciones=indicacion_tomar + ' ' + str(measuring_unit_q) + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
+			indicaciones= str(measuring_unit_q) + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
 		
 		return indicaciones
-
-
 
 report_sxw.report_sxw('report.doctor_precription', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_prescription.rml',
 					  parser=doctor_precription)
-		
-		
-		
-		
