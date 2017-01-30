@@ -42,6 +42,7 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_duration_period_n': self.select_duration_period_n,
 			'select_action_id': self.select_action_id,
 			'select_prescription_drugs': self.select_prescription_drugs,
+			'historia_control_instalada': self.historia_control_instalada,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -168,13 +169,30 @@ class doctor_attention(report_sxw.rml_parse):
 	#funcion para retornar cuando se llene o no las cantidades de dias que se deberia tomar el paciente si no retorna solo la prescripcion
 	def select_prescription_drugs(self, indicacion_tomar, quantity, measuring_unit_q, frequency, frequency_unit_n, duration, duration_period_n, administration_route_id):
 		indicaciones=''
+		measuring=str(measuring_unit_q)
+		if indicacion_tomar == False:
+			indicacion_tomar='Tomar'
+
+		if measuring == 'None':
+			measuring=' '
+
 		if ((int(frequency) ==0) or (int(duration) ==0)):
 			_logger.info('esta vacio')
 			indicaciones=indicacion_tomar
 		else:
-			indicaciones= str(measuring_unit_q) + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
+			indicaciones=indicacion_tomar + ' ' + measuring + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
 		
 		return indicaciones
+
+	def historia_control_instalada(self):
+		context = {}
+		bandera = False
+		if self.pool.get('doctor.doctor').modulo_instalado(self.cr, self.uid, 'doctor_control', context=context):
+			bandera = True
+		return bandera
+
+
+
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_attention.rml',
