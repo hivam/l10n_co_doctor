@@ -1795,6 +1795,7 @@ class doctor_attentions_co(osv.osv):
 		'plantilla_examen_fisico_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_analisis_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_conducta_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'plantilla_paraclinicos_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', u'Seguimiento Paraclínico'),
 		'filter_segumiento_id': fields.many2one('doctor.name_paraclinical_monitoring', u'Seguimiento Paraclínico'),
 		'filter_paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', u'Seguimiento Paraclínico'),
@@ -3140,6 +3141,8 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('12', 'Comportamiento en consulta'),
 		('13', u'Estrategias de evaluación'),
 		('14', u'Plan de intervención'),
+		('15', u'Revisión por Sistemas'),
+		('16', u'Paraclínicos'),
 	]
 
 	_columns = {

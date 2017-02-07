@@ -680,8 +680,8 @@
 								<field name="review_systems_id" position="after">
 										<label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
 										<field name="otro_sintomas_revision_sistema"/>
-										<label for="plantilla_sintomas_cuestionario_id" string="Plantillas" groups="doctor.group_doctor_psicologo"/>
-										<field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' groups="doctor.group_doctor_psicologo" domain="[('tipo_plantilla', '=', '04')]"/>
+										<label for="plantilla_sintomas_cuestionario_id" string="Plantillas"/>
+										<field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' domain="[('tipo_plantilla', '=', '04')]"/>
 
 								</field>
 
@@ -910,6 +910,10 @@
 													<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
 													
 													<field name="reportes_paraclinicos" nolabel="1" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+													<label for="plantilla_paraclinicos_id" string="Plantillas" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+													<field name="plantilla_paraclinicos_id" on_change='onchange_plantillas(plantilla_paraclinicos_id, "reportes_paraclinicos")' nolabel="1" domain="[('tipo_plantilla', '=', '16')]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
 
 												</group>
 												<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" domain="[('patient_id', '=', patient_id)]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}">
