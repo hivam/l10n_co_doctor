@@ -1754,6 +1754,18 @@ class doctor_attentions_co(osv.osv):
 		_logger.info(res)
 		return res
 
+	def _get_edad(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		current_date = datetime.today()
+		current_date = datetime.strftime(current_date, '%Y-%m-%d')
+		for datos in self.browse(cr, uid, ids):
+			_logger.info(datos.patient_id.birth_date < current_date)
+			if ((datos.age_attention == 0) and (datos.patient_id.birth_date < current_date)):
+				res[datos.id] = True
+			else:
+				res[datos.id] = False
+		return res
+
 
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean(u'NC', states={'closed': [('readonly', True)]}),
@@ -1802,6 +1814,8 @@ class doctor_attentions_co(osv.osv):
 		'is_complicacion_eventoadverso':fields.boolean(u'Complicación o Evento Adverso'),
 		'paraclinical_monitoring':fields.boolean(u'Consultar Seguimientos'),
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
+		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
+								readonly=True, method=True, string='inv boton edad',), 
 	}
 
 
@@ -1885,7 +1899,15 @@ class doctor_attentions_co(osv.osv):
 		vals['activar_notas_confidenciales'] = False
 		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
-
+	def actualizar_edad(self, cr, uid, ids, context=None):
+		u={}
+		for datos in self.browse(cr, uid, ids, context=context):
+			fecha_nacimiento = datos.patient_id.birth_date
+			if fecha_nacimiento :
+				u['age_attention'] = self.calcular_edad(fecha_nacimiento)
+				u['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
+		
+		return super(doctor_attentions_co,self).write(cr, uid, ids, u, context)
 
 	def resumen_historia(self, cr, uid, ids, context=None):
 

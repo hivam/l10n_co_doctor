@@ -672,6 +672,8 @@
 
 								<xpath expr="/form[@string='Attentions']/header/button[@string='Finish attention']" position="after">
 									<button string="Resumen historia" name="resumen_historia" type="object" class="oe_highlight" context="{'patient_id' : patient_id}"/>
+
+									<button string="Actualizar edad" name="actualizar_edad" type="object" class="oe_highlight" attrs="{'invisible':[ ('inv_boton_edad','=',False)]}"/>
 								</xpath>
 								
 									
@@ -749,6 +751,7 @@
 
 								<field name="conduct" position="after">
 										<field name="inv" invisible="1"/> 
+										<field name="inv_boton_edad" invisible="1"/> 
 										<label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
 										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
 								</field>
