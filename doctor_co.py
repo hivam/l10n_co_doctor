@@ -572,6 +572,7 @@ class doctor_appointment_co(osv.osv):
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string=u'Nº de identificación', required=True, readonly= True),
 		'phone' :  fields.related ('patient_id', 'telefono', type="char", relation="doctor.patient", string=u'Teléfono', required=False, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
+		'tipo_usuario_ocultar' : fields.char('tipo usuario ocultar', required=False, readonly=False, store=False),
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
@@ -1162,8 +1163,10 @@ class doctor_appointment_co(osv.osv):
 			return values
 		patient = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context)
 		insurer_patient = patient.insurer.id
+		nombre_tipo_usuario = patient.tipo_usuario.name
 		tipo_usuario_patient = patient.tipo_usuario.id
 		tipo_usuario = self.pool.get('doctor.tipousuario.regimen').search(cr, uid, [('name', '=', 'Particular')], context=context)
+
 
 		if patient.eps_predeterminada:
 			values.update({
@@ -1205,7 +1208,9 @@ class doctor_appointment_co(osv.osv):
 			'ref' : ref_patient,
 		})
 
-
+		values.update({
+			'tipo_usuario_ocultar': nombre_tipo_usuario,
+		})
 		return {'value' : values}
 
 

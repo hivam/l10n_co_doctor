@@ -310,8 +310,9 @@
 										<field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id,ref)"/>
 										<field name="ref" />
 										<field name="tipo_usuario_id"/>
+										<field name="tipo_usuario_ocultar" invisible="1"/>
 									</group>    
-										<group colspan='4' col='6' attrs="{'invisible': [('tipo_usuario_id', '=', 4)]}">
+										<group colspan='4' col='6' attrs="{'invisible': [('tipo_usuario_ocultar', '=', 'Particular')]}">
 												<field name="insurer_id" domain="[]"/>
 												<field name="plan_id" domain="[('insurer_id','=', insurer_id)]"  />
 												<field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
