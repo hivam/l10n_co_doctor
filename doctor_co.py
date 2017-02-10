@@ -1166,7 +1166,7 @@ class doctor_appointment_co(osv.osv):
 		nombre_tipo_usuario = patient.tipo_usuario.name
 		tipo_usuario_patient = patient.tipo_usuario.id
 		tipo_usuario = self.pool.get('doctor.tipousuario.regimen').search(cr, uid, [('name', '=', 'Particular')], context=context)
-		_logger.info(tipo_usuario)
+
 
 		if patient.eps_predeterminada:
 			values.update({
@@ -1178,6 +1178,7 @@ class doctor_appointment_co(osv.osv):
 			})
 
 		elif patient.particular_predeterminada:
+			nombre_tipo_usuario = 'Particular'
 			values.update({
 				'tipo_usuario_id' : tipo_usuario[0],
 			})
@@ -1186,7 +1187,7 @@ class doctor_appointment_co(osv.osv):
 			contrato_id = self.pool.get('doctor.contract.insurer').search(cr, uid, [('insurer_id','=',patient.insurer_prepagada_id.id)], context=context)
 			
 			values.update({
-				'tipo_usuario_id' : 5,
+				'tipo_usuario_id' : tipo_usuario_patient,
 				'insurer_id': patient.insurer_prepagada_id.id,
 				'plan_id': patient.plan_prepagada_id.id,
 				'nro_afilicion_poliza' : patient.numero_poliza_afiliacion,
@@ -1208,7 +1209,6 @@ class doctor_appointment_co(osv.osv):
 			'ref' : ref_patient,
 		})
 
-		_logger.info(patient)
 		_logger.info(nombre_tipo_usuario)
 		values.update({
 			'tipo_usuario_ocultar': nombre_tipo_usuario,
