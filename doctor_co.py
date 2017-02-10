@@ -1893,9 +1893,6 @@ class doctor_attentions_co(osv.osv):
 		
 		ids_review_system = self.pool.get('doctor.review.systems').search(cr, uid, [('attentiont_id', '=', ids), ('review_systems', '=', False)], context=context)
 		self.pool.get('doctor.review.systems').unlink(cr, uid, ids_review_system, context)
-	
-		ids_review_system = self.pool.get('doctor.review.systems').search(cr, uid, [('attentiont_id', '=', ids), ('review_systems', '=', False)], context=context)
-		self.pool.get('doctor.review.systems').unlink(cr, uid, ids_review_system, context)
 		
 		ids_examen_fisico = self.pool.get('doctor.attentions.exam').search(cr, uid, [('attentiont_id', '=', ids), ('exam', '=', False)], context=context)
 		self.pool.get('doctor.attentions.exam').unlink(cr, uid, ids_examen_fisico, context)
@@ -1904,7 +1901,10 @@ class doctor_attentions_co(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
-		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
+		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
+		ids_examen_fisico = self.pool.get('doctor.attentions.exam').search(cr, uid, [('attentiont_id', '=', atencion_id), ('exam', '=', False)], context=context)
+		self.pool.get('doctor.attentions.exam').unlink(cr, uid, ids_examen_fisico, context)
+		return atencion_id
 
 	def actualizar_edad(self, cr, uid, ids, context=None):
 		u={}
