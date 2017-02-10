@@ -1166,7 +1166,7 @@ class doctor_appointment_co(osv.osv):
 		nombre_tipo_usuario = patient.tipo_usuario.name
 		tipo_usuario_patient = patient.tipo_usuario.id
 		tipo_usuario = self.pool.get('doctor.tipousuario.regimen').search(cr, uid, [('name', '=', 'Particular')], context=context)
-
+		_logger.info(tipo_usuario)
 
 		if patient.eps_predeterminada:
 			values.update({
@@ -1208,6 +1208,7 @@ class doctor_appointment_co(osv.osv):
 			'ref' : ref_patient,
 		})
 
+		_logger.info(patient)
 		_logger.info(nombre_tipo_usuario)
 		values.update({
 			'tipo_usuario_ocultar': nombre_tipo_usuario,
