@@ -1208,6 +1208,7 @@ class doctor_appointment_co(osv.osv):
 			'ref' : ref_patient,
 		})
 
+		_logger.info(nombre_tipo_usuario)
 		values.update({
 			'tipo_usuario_ocultar': nombre_tipo_usuario,
 		})
