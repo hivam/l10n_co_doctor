@@ -104,19 +104,21 @@ class doctor_precription(report_sxw.rml_parse):
 	#funcion para retornar cuando se llene o no las cantidades de dias que se deberia tomar el paciente si no retorna solo la prescripcion
 	def select_prescription_drugs(self, indicacion_tomar, quantity, measuring_unit_q, frequency, frequency_unit_n, duration, duration_period_n, administration_route_id):
 		indicaciones=''
+		measuring=str(measuring_unit_q)
+		if indicacion_tomar == False:
+			indicacion_tomar='Tomar'
+
+		if measuring == 'None':
+			measuring=' '
+
 		if ((int(frequency) ==0) or (int(duration) ==0)):
 			_logger.info('esta vacio')
 			indicaciones=indicacion_tomar
 		else:
-			indicaciones=indicacion_tomar + ' ' + str(measuring_unit_q) + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
+			indicaciones=indicacion_tomar + ' ' + measuring + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
 		
 		return indicaciones
 
-		
 report_sxw.report_sxw('report.doctor_prescription_half', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_prescription_half.rml',
 					  parser=doctor_precription,header=False)
-		
-		
-		
-		

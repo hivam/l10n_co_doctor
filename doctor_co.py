@@ -572,6 +572,7 @@ class doctor_appointment_co(osv.osv):
 		'ref' :  fields.related ('patient_id', 'ref', type="char", relation="doctor.patient", string=u'Nº de identificación', required=True, readonly= True),
 		'phone' :  fields.related ('patient_id', 'telefono', type="char", relation="doctor.patient", string=u'Teléfono', required=False, readonly= True),
 		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False, states={'invoiced':[('readonly',True)]}),
+		'tipo_usuario_ocultar' : fields.char('tipo usuario ocultar', required=False, readonly=False, store=False),
 		'realiza_procedimiento': fields.boolean(u'Se realizará procedimiento? '),
 		'ambito': fields.selection(ambito, u'Ámbito'),
 		'finalidad': fields.selection(finalidad, 'Finalidad'),
@@ -1162,8 +1163,10 @@ class doctor_appointment_co(osv.osv):
 			return values
 		patient = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context)
 		insurer_patient = patient.insurer.id
+		nombre_tipo_usuario = patient.tipo_usuario.name
 		tipo_usuario_patient = patient.tipo_usuario.id
 		tipo_usuario = self.pool.get('doctor.tipousuario.regimen').search(cr, uid, [('name', '=', 'Particular')], context=context)
+
 
 		if patient.eps_predeterminada:
 			values.update({
@@ -1175,6 +1178,7 @@ class doctor_appointment_co(osv.osv):
 			})
 
 		elif patient.particular_predeterminada:
+			nombre_tipo_usuario = 'Particular'
 			values.update({
 				'tipo_usuario_id' : tipo_usuario[0],
 			})
@@ -1183,7 +1187,7 @@ class doctor_appointment_co(osv.osv):
 			contrato_id = self.pool.get('doctor.contract.insurer').search(cr, uid, [('insurer_id','=',patient.insurer_prepagada_id.id)], context=context)
 			
 			values.update({
-				'tipo_usuario_id' : 5,
+				'tipo_usuario_id' : tipo_usuario_patient,
 				'insurer_id': patient.insurer_prepagada_id.id,
 				'plan_id': patient.plan_prepagada_id.id,
 				'nro_afilicion_poliza' : patient.numero_poliza_afiliacion,
@@ -1205,7 +1209,10 @@ class doctor_appointment_co(osv.osv):
 			'ref' : ref_patient,
 		})
 
-
+		_logger.info(nombre_tipo_usuario)
+		values.update({
+			'tipo_usuario_ocultar': nombre_tipo_usuario,
+		})
 		return {'value' : values}
 
 
@@ -1754,6 +1761,18 @@ class doctor_attentions_co(osv.osv):
 		_logger.info(res)
 		return res
 
+	def _get_edad(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		current_date = datetime.today()
+		current_date = datetime.strftime(current_date, '%Y-%m-%d')
+		for datos in self.browse(cr, uid, ids):
+			_logger.info(datos.patient_id.birth_date < current_date)
+			if ((datos.age_attention == 0) and (datos.patient_id.birth_date < current_date)):
+				res[datos.id] = True
+			else:
+				res[datos.id] = False
+		return res
+
 
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean(u'NC', states={'closed': [('readonly', True)]}),
@@ -1795,12 +1814,15 @@ class doctor_attentions_co(osv.osv):
 		'plantilla_examen_fisico_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_analisis_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'plantilla_conducta_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
+		'plantilla_paraclinicos_id': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 		'paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', u'Seguimiento Paraclínico'),
 		'filter_segumiento_id': fields.many2one('doctor.name_paraclinical_monitoring', u'Seguimiento Paraclínico'),
 		'filter_paraclinical_monitoring_ids':fields.one2many('doctor.paraclinical_monitoring', 'attentiont_id', u'Seguimiento Paraclínico'),
 		'is_complicacion_eventoadverso':fields.boolean(u'Complicación o Evento Adverso'),
 		'paraclinical_monitoring':fields.boolean(u'Consultar Seguimientos'),
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
+		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
+								readonly=True, method=True, string='inv boton edad',), 
 	}
 
 
@@ -1865,26 +1887,22 @@ class doctor_attentions_co(osv.osv):
 	def write(self, cr, uid, ids, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
-		
-		ids_attention_past = self.pool.get('doctor.attentions.past').search(cr, uid, [('attentiont_id', '=', ids), ('past', '=', False)], context=context)
-		self.pool.get('doctor.attentions.past').unlink(cr, uid, ids_attention_past, context)
-		
-		ids_review_system = self.pool.get('doctor.review.systems').search(cr, uid, [('attentiont_id', '=', ids), ('review_systems', '=', False)], context=context)
-		self.pool.get('doctor.review.systems').unlink(cr, uid, ids_review_system, context)
-	
-		ids_review_system = self.pool.get('doctor.review.systems').search(cr, uid, [('attentiont_id', '=', ids), ('review_systems', '=', False)], context=context)
-		self.pool.get('doctor.review.systems').unlink(cr, uid, ids_review_system, context)
-		
-		ids_examen_fisico = self.pool.get('doctor.attentions.exam').search(cr, uid, [('attentiont_id', '=', ids), ('exam', '=', False)], context=context)
-		self.pool.get('doctor.attentions.exam').unlink(cr, uid, ids_examen_fisico, context)
-
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
-		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
+		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
+		return atencion_id
 
-
+	def actualizar_edad(self, cr, uid, ids, context=None):
+		u={}
+		for datos in self.browse(cr, uid, ids, context=context):
+			fecha_nacimiento = datos.patient_id.birth_date
+			if fecha_nacimiento :
+				u['age_attention'] = self.calcular_edad(fecha_nacimiento)
+				u['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
+		
+		return super(doctor_attentions_co,self).write(cr, uid, ids, u, context)
 
 	def resumen_historia(self, cr, uid, ids, context=None):
 
@@ -3140,6 +3158,8 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('12', 'Comportamiento en consulta'),
 		('13', u'Estrategias de evaluación'),
 		('14', u'Plan de intervención'),
+		('15', u'Revisión por Sistemas'),
+		('16', u'Paraclínicos'),
 	]
 
 	_columns = {
