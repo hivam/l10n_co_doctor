@@ -71,7 +71,15 @@
 										<legend class="texto_legend">Lugar de Nacimiento</legend>
 										<group col="2" colspan="2">
 											<field name="nacimiento_country_id"/>
-											<field name="nacimiento_city_id"/>
+											<field name="nacimiento_city_id" attrs="{'invisible': [('nacimiento_country_id','!=', 50)]}"/>
+											<field name="localidad_otros_paises_id" attrs="{'invisible': [('nacimiento_country_id','=', 50)]}"  context="{'nacimiento_country_id' : nacimiento_country_id,}">
+												<form>
+													<group col="2">
+														<field name="country_id" context="{'nacimiento_country_id' : nacimiento_country_id,}"/>
+														<field name="name"/>
+													</group>
+												</form>
+											</field>
 										</group>
 									</fieldset>
 
@@ -302,8 +310,9 @@
 										<field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id,ref)"/>
 										<field name="ref" />
 										<field name="tipo_usuario_id"/>
+										<field name="tipo_usuario_ocultar" invisible="1"/>
 									</group>    
-										<group colspan='4' col='6' attrs="{'invisible': [('tipo_usuario_id', '=', 4)]}">
+										<group colspan='4' col='6' attrs="{'invisible': [('tipo_usuario_ocultar', '=', 'Particular')]}">
 												<field name="insurer_id" domain="[]"/>
 												<field name="plan_id" domain="[('insurer_id','=', insurer_id)]"  />
 												<field name="contract_id" domain="[('insurer_id','=', insurer_id)]" class="oe_inline" style="width:5%%" on_change="onchange_checkPlan(plan_id, contract_id)"/>
@@ -419,6 +428,11 @@
 												</tree>
 										</field>
 								</xpath>
+
+								<field name="procedures_id" position="before">
+									<label string="Historia Asociada" for="modulos_id"/>
+									<field name="modulos_id"/>
+								</field>
 						</field>
 					</record>
 
@@ -659,6 +673,8 @@
 
 								<xpath expr="/form[@string='Attentions']/header/button[@string='Finish attention']" position="after">
 									<button string="Resumen historia" name="resumen_historia" type="object" class="oe_highlight" context="{'patient_id' : patient_id}"/>
+
+									<button string="Actualizar edad" name="actualizar_edad" type="object" class="oe_highlight" attrs="{'invisible':[ ('inv_boton_edad','=',False)]}"/>
 								</xpath>
 								
 									
@@ -667,8 +683,8 @@
 								<field name="review_systems_id" position="after">
 										<label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
 										<field name="otro_sintomas_revision_sistema"/>
-										<label for="plantilla_sintomas_cuestionario_id" string="Plantillas" groups="doctor.group_doctor_psicologo"/>
-										<field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' groups="doctor.group_doctor_psicologo" domain="[('tipo_plantilla', '=', '04')]"/>
+										<label for="plantilla_sintomas_cuestionario_id" string="Plantillas"/>
+										<field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' domain="[('tipo_plantilla', '=', '04')]"/>
 
 								</field>
 
@@ -736,6 +752,7 @@
 
 								<field name="conduct" position="after">
 										<field name="inv" invisible="1"/> 
+										<field name="inv_boton_edad" invisible="1"/> 
 										<label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
 										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
 								</field>
@@ -897,6 +914,10 @@
 													<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
 													
 													<field name="reportes_paraclinicos" nolabel="1" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+													<label for="plantilla_paraclinicos_id" string="Plantillas" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+													<field name="plantilla_paraclinicos_id" on_change='onchange_plantillas(plantilla_paraclinicos_id, "reportes_paraclinicos")' nolabel="1" domain="[('tipo_plantilla', '=', '16')]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
 
 												</group>
 												<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" domain="[('patient_id', '=', patient_id)]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}">
@@ -1084,6 +1105,17 @@
 									<field name="tiempo_espacio"/>
 								</tree>
 						</field>
+				</record>
+
+				<record id="seq_type_1" model="ir.sequence.type"> 
+				  <field name="name">REG Type</field> 
+				  <field name="code">reg_code</field> 
+				</record> 
+				<record id="seq_1" model="ir.sequence"> 
+				    <field name="name">reg</field> 
+				    <field name="code">reg_code</field> 
+				    <field name="prefix"></field> 
+				    <field name="padding">3</field> 
 				</record>
 
 
