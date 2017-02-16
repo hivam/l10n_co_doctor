@@ -2817,6 +2817,99 @@ class doctor_co_schedule_inherit(osv.osv):
 				'target': 'new'
 			}
 
+
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+
+		self.validar_citas_agenda(cr, uid, ids, vals)
+	
+
+
+		return super(doctor_co_schedule_inherit,self).write(cr, uid, ids, vals, context)
+
+
+
+	#def primer_caso(self, cr, uid, agenda_id, fecha_inicio, fecha_fin, duracion_horas, test, tiempo_espacios, context=None):
+	
+	#Verificar antes de actualizar o modificar la agenda que no hayan citas que queden por fuera de la modificacion de la nueva hora establecida	
+	def validar_citas_agenda(self, cr, uid, ids, vals, context=None):
+
+		fecha_inicio_nueva=None
+		fecha_fin_nueva=None
+		fecha_inicio_antigua=None
+		fecha_fin_antigua=None
+		_logger.info(vals)
+		duracion_hora_antigua=0
+		duracion_horas_nueva=vals['schedule_duration']
+		test = {}
+		tiempo_espacios=0
+		agenda_id=0
+
+		for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+			tiempo_espacios= record.tiempo_espacio
+
+
+		_logger.info('Empieza la modificacion...')
+		for data in self.pool.get('doctor.schedule').browse(cr, uid, ids, context=context):
+			fecha_inicio_antigua=data.date_begin
+			fecha_fin_antigua=data.date_end
+			agenda_id=data.id
+			duracion_hora_antigua=data.schedule_duration
+
+
+		#id_espacio= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '>=', str(date_begin_cita)),('fecha_fin', '<=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id)])
+		
+		if 'date_begin' in vals:
+			fecha_inicio_nueva= vals['date_begin']
+
+		if 'date_end' in vals:
+			fecha_fin_nueva= vals['date_end']
+
+
+
+		#caso 1: Añadir tiempo a la agenda,solamente al final o cuando la agenda esta vacia
+		if fecha_inicio_nueva==None and fecha_fin_nueva > fecha_inicio_antigua and duracion_horas_nueva > duracion_hora_antigua:
+			_logger.info('vamos a modificar al final. Entro caso 1')
+			duracion_horas=duracion_horas_nueva - duracion_hora_antigua
+
+			date_begin_schedule= datetime.strptime(fecha_fin_antigua, "%Y-%m-%d %H:%M:%S")
+			date_fin_schedule= datetime.strptime(fecha_fin_nueva, "%Y-%m-%d %H:%M:%S")
+
+			self.generar_espacios(cr, uid, agenda_id, date_begin_schedule, date_fin_schedule, duracion_horas, test, tiempo_espacios, context=None)
+
+		else:
+			_logger.info('Es otro caso')
+
+
+
+
+
+
+
+
+		return True
+
+
+
+				
+#			self.pool.get('doctor.espacios').create(cr, uid, test, context=context)
+#		else:
+#			raise osv.except_osv(_('Error al Crear los Espacios de la Agenda!'),_('Para poder crear la agenda debe de cambiar el tiempo de los espacios. \n Ya que el calculo de las citas sobre salen de la agenda'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 doctor_co_schedule_inherit()
 
 class doctor_time_space(osv.osv):
