@@ -2817,14 +2817,11 @@ class doctor_co_schedule_inherit(osv.osv):
 				'target': 'new'
 			}
 
-
-
 	def write(self, cr, uid, ids, vals, context=None):
 		#Funcion que nos permitira modificar los espacios de la agenda, cada vez que sea editada
 		self.validar_agenda_editada(cr, uid, ids, vals)
 		return super(doctor_co_schedule_inherit,self).write(cr, uid, ids, vals, context)
 
-	
 	#Funcion que permite validar los espacios asignados en la agenda
 	def verificar_citas_agenda(self, cr, uid, date_begin_schedule, date_fin_schedule, context=None):
 		#Buscamos los ids en doctor espacios, para verificar si hay o no una cita desde la fecha anterior de la agenda y la fecha nueva
@@ -2845,10 +2842,8 @@ class doctor_co_schedule_inherit(osv.osv):
 		fecha_fin_nueva= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
 		return self.generar_espacios(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios, context=None)
 
-	
 	#Funcion que permite calcular la cantidad de horas nuevas en la agenda
 	def calcular_hora_agenda_editada(self, cr, uid, date_begin_schedule, date_fin_schedule, context=None):
-
 		fecha_inicio= datetime.strptime(date_begin_schedule, "%Y-%m-%d %H:%M:%S")
 		fecha_fin= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
 
@@ -2856,7 +2851,6 @@ class doctor_co_schedule_inherit(osv.osv):
 		hora_fin= fecha_fin.hour
 
 		return hora_fin - hora_inicio
-
 
 	#Verificar antes de actualizar o modificar la agenda que no hayan citas que queden por fuera de la modificacion de la nueva hora establecida	
 	def validar_agenda_editada(self, cr, uid, ids, vals, context=None):
