@@ -86,7 +86,7 @@ class doctor(osv.osv):
 			finalidad_consulta = '10'
 		if cr.dbname == 'DrCaceres':
 			finalidad_consulta = '08'
-			
+
 		return finalidad_consulta
 
 	def causa_externa(self, cr, uid, context=None):
