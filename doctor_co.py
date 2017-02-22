@@ -565,7 +565,7 @@ class doctor_appointment_co(osv.osv):
 	]
 
 	_columns = {
-		'create_date': fields.datetime('Fecha Creación'),
+		'create_date': fields.datetime(u'Fecha Creación'),
 		'contract_id':  fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
 										states={'invoiced': [('readonly', True)]},),
