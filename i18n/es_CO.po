@@ -147,7 +147,7 @@ msgstr ""
 #. module: l10n_co_doctor
 #: view:doctor.patient:0
 #: field:doctor.patient,direccion:0
-msgid "Dirección"
+msgid "Direccion"
 msgstr ""
 
 #. module: l10n_co_doctor
