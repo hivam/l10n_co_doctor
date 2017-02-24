@@ -3306,6 +3306,7 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('14', u'Plan de intervención'),
 		('15', u'Revisión por Sistemas'),
 		('16', u'Paraclínicos'),
+		('17', u'Odontologia'),
 	]
 
 	_columns = {
