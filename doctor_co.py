@@ -1343,8 +1343,10 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
-		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		fecha_agenda_esp = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		fecha_agenda_espacio = fecha_agenda_esp.replace(second=00)
+		time_beg = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		time_begin = time_beg.replace(second=00)
 
 		if fecha_agenda_espacio >= time_begin:
 			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
