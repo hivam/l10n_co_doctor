@@ -2819,6 +2819,150 @@ class doctor_co_schedule_inherit(osv.osv):
 				'target': 'new'
 			}
 
+	def write(self, cr, uid, ids, vals, context=None):
+		#Funcion que nos permitira modificar los espacios de la agenda, cada vez que sea editada
+		self.validar_agenda_editada(cr, uid, ids, vals)
+		return super(doctor_co_schedule_inherit,self).write(cr, uid, ids, vals, context)
+
+	#Funcion que permite validar los espacios asignados en la agenda
+	def verificar_citas_agenda(self, cr, uid, date_begin_schedule, date_fin_schedule, context=None):
+		#Buscamos los ids en doctor espacios, para verificar si hay o no una cita desde la fecha anterior de la agenda y la fecha nueva
+		id_espacio= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '>=', date_begin_schedule), ('fecha_fin', '<=', date_fin_schedule)], context=context)
+
+		for info in self.pool.get('doctor.espacios').browse(cr, uid, id_espacio, context=context):
+			if info.estado_cita_espacio == 'Asignado':
+				fecha_incio_espacio= info.fecha_inicio
+				fecha_fin_espacio= info.fecha_fin
+				nombre= info.patient_id.firstname + ' ' + info.patient_id.lastname
+				raise osv.except_osv(_('Error al editar los Espacios de la Agenda!'),_('Para poder modificar la agenda, es necesario que no hayan citas asignadas. Se ha encontrado una cita en esta agenda. \n Paciente: %s ' )% (nombre))
+		#Eliminamos los espacios de la agenda, ya que no se encontro ninguna cita
+		return self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+
+	#Funcion que permite llenar los espacios de la agenda dependiendo de la fecha inicial y final
+	def llenar_espacios_agenda_editada(self, cr, uid, agenda_id, date_begin_schedule, date_fin_schedule, duracion_horas, test, tiempo_espacios, context=None):
+		fecha_fin_antigua= datetime.strptime(date_begin_schedule, "%Y-%m-%d %H:%M:%S")
+		fecha_fin_nueva= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
+		return self.generar_espacios(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios, context=None)
+
+	#Funcion que permite calcular la cantidad de horas nuevas en la agenda
+	def calcular_hora_agenda_editada(self, cr, uid, date_begin_schedule, date_fin_schedule, context=None):
+		fecha_inicio= datetime.strptime(date_begin_schedule, "%Y-%m-%d %H:%M:%S")
+		fecha_fin= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
+
+		hora_inicio= fecha_inicio.hour
+		hora_fin= fecha_fin.hour
+
+		return hora_fin - hora_inicio
+
+	#Verificar antes de actualizar o modificar la agenda que no hayan citas que queden por fuera de la modificacion de la nueva hora establecida	
+	def validar_agenda_editada(self, cr, uid, ids, vals, context=None):
+
+		fecha_inicio_nueva=None
+		fecha_fin_nueva=None
+		fecha_inicio_antigua=None
+		fecha_fin_antigua=None
+		duracion_hora_antigua=0
+		test = {}
+		tiempo_espacios=0
+		agenda_id=0
+		fecha_incio_espacio= None
+		fecha_fin_espacio= None
+		duracion_horas_nueva=None
+		duracion_horas=0
+
+		#Nos permite obtner el tiempo de los espacios de la agenda, es decir, si son de 10, 20, 30 minutos
+		for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+			tiempo_espacios= record.tiempo_espacio
+
+		#Nos permite obtener los datos de la agenda actual
+		for data in self.pool.get('doctor.schedule').browse(cr, uid, ids, context=context):
+			fecha_inicio_antigua=data.date_begin
+			fecha_fin_antigua=data.date_end
+			agenda_id=data.id
+			duracion_hora_antigua=data.schedule_duration
+
+		#Obtenemos si esta la fecha inicio de la agenda en el vals
+		if 'date_begin' in vals:
+			fecha_inicio_nueva= vals['date_begin']
+
+		#Obtenemos si esta la fecha fin de la agenda en el vals
+		if 'date_end' in vals:
+			fecha_fin_nueva= vals['date_end']
+		
+
+		if not 'schedule_duration' in vals:
+			duracion_horas_nueva=duracion_hora_antigua
+		else:
+			duracion_horas_nueva=vals['schedule_duration']
+			#Permite calcular cuantas horas adicionales vamos agregar
+			duracion_horas=duracion_horas_nueva - duracion_hora_antigua
+
+		_logger.info('Empieza la modificacion de la agenda...')
+		#caso 1: Añadir tiempo a la agenda,solamente al final o cuando la agenda esta vacia
+		if fecha_inicio_nueva==None and fecha_fin_nueva > fecha_inicio_antigua and duracion_horas_nueva > duracion_hora_antigua:
+			_logger.info('Entro caso 1')
+			self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios)
+
+		#Caso 2: Añade espacios al principio de la agenda, cuando esta vacia o llena la agenda
+		if fecha_inicio_nueva and fecha_inicio_nueva < fecha_inicio_antigua and fecha_fin_antigua == fecha_fin_nueva:
+			_logger.info('Entro caso 2')
+			self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_horas, test, tiempo_espacios)
+
+		#Caso 3: Restar tiempo desde el inicio de la agenda para correr la hora, es decir, la agenda esta de 2 a 4, entrando a este caso 
+		#quedaria de 3 a 4
+		if fecha_inicio_nueva and fecha_inicio_nueva > fecha_inicio_antigua and fecha_fin_antigua == fecha_fin_nueva:
+			_logger.info('Entro caso 3')
+			self.verificar_citas_agenda(cr, uid, fecha_inicio_antigua, fecha_inicio_nueva)
+
+		#Caso 4: Restar tiempo desde el final de la agenda para correr la hora, es decir, la agenda esta de 2 a 4, entrando a este caso 
+		#quedaria de 2 a 3
+		if fecha_inicio_nueva==None and fecha_fin_nueva < fecha_fin_antigua:
+			_logger.info('Entro caso 4')
+			self.verificar_citas_agenda(cr, uid, fecha_fin_nueva, fecha_fin_antigua)
+
+		#Caso 5: Aumenta el tiempo de la agenda al inicio y al final
+		if fecha_inicio_nueva < fecha_inicio_antigua and fecha_fin_nueva > fecha_fin_antigua:
+			_logger.info('Entro caso 5')
+
+			duracion_inicial= self.calcular_hora_agenda_editada(cr, uid, fecha_inicio_nueva, fecha_inicio_antigua)
+			duracion_fin= self.calcular_hora_agenda_editada(cr, uid, fecha_fin_antigua, fecha_fin_nueva)
+
+			#Llena los espacios al principio de la agenda
+			self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_inicial, test, tiempo_espacios)
+			#Lena los espacios al final de la agenda
+			self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_fin, test, tiempo_espacios)
+
+		#Caso 6: Resta el tiempo de la agenda al inicio y al final
+		if fecha_inicio_nueva > fecha_inicio_antigua and fecha_fin_nueva < fecha_fin_antigua:		
+			_logger.info('Entro caso 6')
+			#Verifica al principio de la agenda
+			self.verificar_citas_agenda(cr, uid, fecha_inicio_antigua, fecha_inicio_nueva)
+			#Verifica al final de la cita
+			self.verificar_citas_agenda(cr, uid, fecha_fin_nueva, fecha_fin_antigua)
+
+		#Caso 7: Aumenta el tiempo inicial de la agenda y resta el tiempo al final
+		if fecha_inicio_nueva < fecha_inicio_antigua and fecha_fin_nueva < fecha_fin_antigua:
+			_logger.info('Entro caso 7')
+
+			#Verifica al final de la cita
+			self.verificar_citas_agenda(cr, uid, fecha_fin_nueva, fecha_fin_antigua)
+
+			duracion_inicial= self.calcular_hora_agenda_editada(cr, uid, fecha_inicio_nueva, fecha_inicio_antigua)
+			#Llena los espacios al principio de la agenda
+			self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_inicial, test, tiempo_espacios)
+
+		#Caso 8: Resta el tiempo inicial de la agenda y aumenta el tiempo al final
+		if fecha_inicio_nueva > fecha_inicio_antigua and fecha_fin_nueva > fecha_fin_antigua:
+			_logger.info('Entro caso 8')
+			#Verifica al principio de la agenda
+			self.verificar_citas_agenda(cr, uid, fecha_inicio_antigua, fecha_inicio_nueva)
+
+			duracion_fin= self.calcular_hora_agenda_editada(cr, uid, fecha_fin_antigua, fecha_fin_nueva)
+			#Lena los espacios al final de la agenda
+			self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_fin, test, tiempo_espacios)
+
+		return True
+
 doctor_co_schedule_inherit()
 
 class doctor_time_space(osv.osv):
