@@ -2000,13 +2000,15 @@ class doctor_attention_resumen(osv.osv):
 							diagnosticos_ids.append(datos.diseases_ids[i].diseases_id)
 
 				if datos.review_systems_id:
-					for i in range(0,len(datos.review_systems_id),1):
-						revision_por_sistema_ids.append((0,0,{'system_category' : datos.review_systems_id[i].system_category.id,
-															'review_systems': datos.review_systems_id[i].review_systems}))
+					if  datos.review_systems_id[i].review_systems:
+						for i in range(0,len(datos.review_systems_id),1):
+							revision_por_sistema_ids.append((0,0,{'system_category' : datos.review_systems_id[i].system_category.id,
+																'review_systems': datos.review_systems_id[i].review_systems}))
 
 				if datos.attentions_past_ids:
 					for i in range(0,len(datos.attentions_past_ids),1):
-						antecedentes_ids.append((0,0,{'past_category' : datos.attentions_past_ids[i].past_category.id,
+						if datos.attentions_past_ids[i].past:
+							antecedentes_ids.append((0,0,{'past_category' : datos.attentions_past_ids[i].past_category.id,
 															'past': datos.attentions_past_ids[i].past}))
 
 				if datos.pathological_past:
@@ -2997,20 +2999,20 @@ class doctor_otra_prescripcion(osv.osv):
 	def parte_name_search(self, cr, uid, name, modeloLLama, args=None, operator='ilike', context=None, limit=100):
 		ids = []
 		nombre_con_split = []
-		concatena = []
 		if name:
 			
-			if name.split(" "):
+			if name.isdigit():
+
+				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
+
+			elif name.split(" "):
 				nombre_con_split = name.split(" ")
 
-			if nombre_con_split:
-				for i in range(0, len(nombre_con_split), 1):
-					ids = self.search(cr, uid, [('name', operator, (nombre_con_split[i]))] + args, limit=limit, context=context)
-					ids += ids
+				if nombre_con_split:
+					for i in range(0, len(nombre_con_split), 1):
+						ids = self.search(cr, uid, [('name', operator, (nombre_con_split[i]))] + args, limit=limit, context=context)
+						ids += ids
 
-			else:
-				ids = self.search(cr, uid, ['|',('name', operator, (name)), ('procedure_code', operator, (name))] + args, limit=limit, context=context)
-			
 			if not ids:
 				ids = self.search(cr, uid, [('name', operator, (name))] + args, limit=limit, context=context)
 		elif modeloLLama:
