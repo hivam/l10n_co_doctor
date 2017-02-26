@@ -604,7 +604,6 @@
 						<field name="function" eval="'habilitar_espacios'"/>
 						<field name="args" eval="'()'"/>
 				</record>
-<<<<<<< HEAD
 
 				<!-- Modificando la busqueda en atencion anadiendo cambios -->
 				<record id="attentions_filters_l10n" model="ir.ui.view">
@@ -648,9 +647,6 @@
 				</search>
 				</field>
 				</record>
-=======
-			
->>>>>>> 47cdaec42f134c8f43e01cdeaaed9cb58f44d61c
 
 				<!-- doctor disability Form View -->
 				<record model="ir.ui.view" id="view_doctor_attentions_disability_form_inherit">
