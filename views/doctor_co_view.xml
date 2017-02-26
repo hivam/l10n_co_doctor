@@ -612,6 +612,10 @@
 						<field name="speciality"/>
 						<field name="diseases_ids"/>
 						<field name="date_attention"/>
+
+						<filter domain="[('tipo_historia','=','hc_riesgobiologico')]" name="tipohistoria_filter" string="At. Riesgo Biológico"/>
+						<separator/>
+						
 						
 						<filter domain="[('date_attention','&gt;=',((context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones del dia de ayer." name="Atenciones Ayer" string="Atenciones Ayer"/>
 
@@ -625,18 +629,13 @@
 
 						<separator/>
 
-						<filter domain="[('status','=','open')]" help="" name="Atenciones Abiertas" string="Atenciones Abiertas"/>
+						<filter domain="[('state','=','open')]" help="" name="Atenciones Abiertas" string="Atenciones Abiertas"/>
 
-						<filter domain="[('status','=','closed')]" help="" name="Atenciones Cerradas" string="Atenciones Cerradas"/>
-
+						<filter domain="[('state','=','closed')]" help="" name="Atenciones Cerradas" string="Atenciones Cerradas"/>
+						
 						<group expand="0" string= "Agrupar Por...">
 								<filter string="Professional" domain="[]" context="{'group_by' : 'professional_id'}" />
 								<separator/>
-
-								<filter string="Atenciones Hoy"
-										name="atenciones_hoy"
-										domain="[('date_attention','&gt;=', (context_today()).strftime('%%m-%%d-%%Y 00:00:00')),('date_attention','&lt;=',(context_today()).strftime('%%m-%%d-%%Y 23:59:59'))]"
-										help="Dia Actual"/>
 								<filter string="Atenciones Meses" domain="[]" context="{'group_by' : 'date_attention'}" />
 						</group>
 
