@@ -1823,13 +1823,9 @@ class doctor_attentions_co(osv.osv):
 		'is_complicacion_eventoadverso':fields.boolean(u'Complicación o Evento Adverso'),
 		'paraclinical_monitoring':fields.boolean(u'Consultar Seguimientos'),
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
-<<<<<<< 673ce04b34f0f9d5fa9a4dbe9444facc8c251041
 		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
 								readonly=True, method=True, string='inv boton edad',), 
 		'tipo_historia' : fields.text(u'Tipo de historia', help='permite diferenciar el tipo de historia que se está guardando. Ejemplo: psicologia, gral, riesgo biológico ...'),
-=======
-		
->>>>>>> limpiando código -C
 	}
 
 
@@ -1899,7 +1895,7 @@ class doctor_attentions_co(osv.osv):
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
-		vals['attention_type'] = 'hc_general'
+		vals['tipo_historia'] = 'hc_general'
 		vals['activar_notas_confidenciales'] = False
 		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
