@@ -2899,7 +2899,7 @@ class doctor_co_schedule_inherit(osv.osv):
 
 		_logger.info('Empieza la modificacion de la agenda...')
 		#caso 1: Añadir tiempo a la agenda,solamente al final o cuando la agenda esta vacia
-		if fecha_inicio_nueva==None and fecha_fin_nueva > fecha_inicio_antigua and duracion_horas_nueva > duracion_hora_antigua:
+		if fecha_inicio_nueva==None and fecha_fin_nueva > fecha_inicio_antigua:
 			_logger.info('Entro caso 1')
 			self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios)
 
@@ -2921,7 +2921,7 @@ class doctor_co_schedule_inherit(osv.osv):
 			self.verificar_citas_agenda(cr, uid, fecha_fin_nueva, fecha_fin_antigua)
 
 		#Caso 5: Aumenta el tiempo de la agenda al inicio y al final
-		if fecha_inicio_nueva < fecha_inicio_antigua and fecha_fin_nueva > fecha_fin_antigua:
+		if 'date_begin' in vals and fecha_inicio_nueva < fecha_inicio_antigua and fecha_fin_nueva > fecha_fin_antigua:
 			_logger.info('Entro caso 5')
 
 			duracion_inicial= self.calcular_hora_agenda_editada(cr, uid, fecha_inicio_nueva, fecha_inicio_antigua)
