@@ -1118,7 +1118,7 @@ class doctor_appointment_co(osv.osv):
 
 
 	def write(self, cr, uid, ids, vals, context=None):
-		
+		_logger.info('entro a la cita por fin')
 		if 'state' in vals:
 			state_appointment= vals['state']
 			date_begin=None
@@ -2840,19 +2840,22 @@ class doctor_co_schedule_inherit(osv.osv):
 
 	#Funcion que permite llenar los espacios de la agenda dependiendo de la fecha inicial y final
 	def llenar_espacios_agenda_editada(self, cr, uid, agenda_id, date_begin_schedule, date_fin_schedule, duracion_horas, test, tiempo_espacios, context=None):
-		fecha_fin_antigua= datetime.strptime(date_begin_schedule, "%Y-%m-%d %H:%M:%S")
-		fecha_fin_nueva= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
-		return self.generar_espacios(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios, context=None)
-
+		if date_begin_schedule and date_fin_schedule:
+			fecha_fin_antigua= datetime.strptime(date_begin_schedule, "%Y-%m-%d %H:%M:%S")
+			fecha_fin_nueva= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
+			return self.generar_espacios(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios, context=None)
+		return False
 	#Funcion que permite calcular la cantidad de horas nuevas en la agenda
 	def calcular_hora_agenda_editada(self, cr, uid, date_begin_schedule, date_fin_schedule, context=None):
-		fecha_inicio= datetime.strptime(date_begin_schedule, "%Y-%m-%d %H:%M:%S")
-		fecha_fin= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
+		if date_begin_schedule and date_fin_schedule:
+			fecha_inicio= datetime.strptime(date_begin_schedule, "%Y-%m-%d %H:%M:%S")
+			fecha_fin= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
 
-		hora_inicio= fecha_inicio.hour
-		hora_fin= fecha_fin.hour
+			hora_inicio= fecha_inicio.hour
+			hora_fin= fecha_fin.hour
 
-		return hora_fin - hora_inicio
+			return hora_fin - hora_inicio
+		return False
 
 	#Verificar antes de actualizar o modificar la agenda que no hayan citas que queden por fuera de la modificacion de la nueva hora establecida	
 	def validar_agenda_editada(self, cr, uid, ids, vals, context=None):
