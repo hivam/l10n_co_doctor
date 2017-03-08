@@ -607,11 +607,13 @@ class doctor_appointment_co(osv.osv):
 		'todos_los_meses': fields.boolean('Marcar Todo'),
 		'appointmet_note_ids':fields.one2many('doctor.patient_note', 'appointmet_note_id', 'Notas Paciente'),
 		'notas_paciente_cita':fields.text('Notas'),
+		'cita_eliminada':fields.boolean('cita Eliminada'),
 	}
 
 	_defaults = {
 		"ambito": 1,
 		"finalidad": 1,
+		'cita_eliminada': False,
 	}
 
 	def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
@@ -1679,6 +1681,17 @@ class doctor_appointment_co(osv.osv):
 		self.pool.get('doctor.appointment').write(cr, uid, [doctor_appointment.id], appointment_order, context=context)
 
 		return order_id
+
+	#Funcion para eliminar la cita
+	def button_delete_appointment(self, cr, uid, ids, context=None):
+		res={}
+		res['cita_eliminada']= True
+		
+		#self.unlink(cr, uid, ids, context)
+
+		self.write(cr, uid, ids, res, context)
+		cr.execute("SELECT * FROM doctor_schedule")
+		return cr.fetchall()
 
 doctor_appointment_co()
 
