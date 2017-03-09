@@ -1684,14 +1684,61 @@ class doctor_appointment_co(osv.osv):
 
 	#Funcion para eliminar la cita
 	def button_delete_appointment(self, cr, uid, ids, context=None):
+
+
+		test = {}
+		tiempo_espacios=0
+		agenda_id= None
+		fecha_incio_espacio= None
+		fecha_fin_espacio= None
+		duracion_horas=0
+		tiempo_espacios=0
+		fecha_inicio= None
 		res={}
 		res['cita_eliminada']= True
-		
+
 		#self.unlink(cr, uid, ids, context)
 
+		
+
+		#Nos permite obtner el tiempo de los espacios de la agenda, es decir, si son de 10, 20, 30 minutos
+		for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+			tiempo_espacios= record.tiempo_espacio
+
+		for data in self.browse(cr,uid, ids , context):
+			agenda_id= data.schedule_id.id
+			fecha_inicio_espacio= data.time_begin
+			fecha_fin_espacio= data.time_end
+
+
+		fecha_inicio_espacio= datetime.strptime(str(fecha_inicio_espacio), "%Y-%m-%d %H:%M:%S")
+		fecha_fin_espacio= datetime.strptime(str(fecha_fin_espacio), "%Y-%m-%d %H:%M:%S")
+
+		duracion_horas= (fecha_fin_espacio - fecha_inicio_espacio).seconds
+		duracion_horas = (duracion_horas/60)
+		_logger.info(duracion_horas)
+
+
+		if duracion_horas%int(tiempo_espacios) == 0:
+			for i in range(0, duracion_horas, int(tiempo_espacios)):
+				fecha_espacio=fecha_inicio_espacio + timedelta(minutes=i)
+				fecha_espacio_fin=fecha_inicio_espacio + timedelta(minutes=i+ int(tiempo_espacios))
+
+				test['fecha_inicio'] = str(fecha_espacio)
+				test['fecha_fin'] = str(fecha_espacio_fin)
+				test['schedule_espacio_id']= agenda_id
+				test['estado_cita_espacio']= 'Sin asignar'
+
+				self.pool.get('doctor.espacios').create(cr, uid, test, context=context)
+		_logger.info('Estas son las fechas')
+		_logger.info(str(fecha_inicio_espacio))
+		_logger.info(str(fecha_fin_espacio))
+		id_espacio= self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', agenda_id),('fecha_inicio', '=', str(fecha_inicio_espacio)),('fecha_fin', '=', str(fecha_fin_espacio)),('estado_cita_espacio', '=', 'Asignado')])
+		_logger.info(id_espacio)
 		self.write(cr, uid, ids, res, context)
-		cr.execute("SELECT * FROM doctor_schedule")
-		return cr.fetchall()
+		return self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+		
+
 
 doctor_appointment_co()
 
@@ -1704,6 +1751,7 @@ class doctor_appointment_type(osv.osv):
 										 ondelete='restrict'),
 		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|', ('author','=','TIX SAS'), '|',('author','=','Proyecto Evoluzion'), ('author','=','PROYECTO EVOLUZION') ]"),
 	}
+
 
 doctor_appointment_type()
 
