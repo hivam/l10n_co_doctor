@@ -2006,6 +2006,7 @@ class doctor_attentions_co(osv.osv):
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
 		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
 								readonly=True, method=True, string='inv boton edad',), 
+		'adjuntos_paciente_ids': fields.one2many('ir.attachment', 'res_id', 'Adjuntos', states={'closed': [('readonly', True)]})
 	}
 
 
@@ -2016,6 +2017,39 @@ class doctor_attentions_co(osv.osv):
 		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
 		'complicacion_eventoadverso' : '01',
 	}
+
+
+	def default_get(self, cr, uid, fields, context=None):
+		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
+
+		patient_id = None
+		registro = []
+		if 'default_patient_id' in context:
+			patient_id = context.get('default_patient_id')
+		else:
+			if 'patient_id' in context:
+				patient_id = context.get('patient_id')
+
+
+		_logger.info(patient_id)
+
+		if patient_id:
+
+			modelo_buscar = self.pool.get('ir.attachment')
+
+			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', patient_id)], context=context)
+
+			if adjuntos_id:
+				
+				for datos in modelo_buscar.browse(cr, uid, adjuntos_id, context=context):
+					registro.append((0,0,{'datas' : datos.datas})) 
+
+		if registro:		
+			res['adjuntos_paciente_ids'] = registro
+
+		return res
+
+
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
