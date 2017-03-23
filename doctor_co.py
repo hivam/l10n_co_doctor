@@ -2044,7 +2044,7 @@ class doctor_attentions_co(osv.osv):
 			if adjuntos_id:
 				
 				for datos in modelo_buscar.browse(cr, uid, adjuntos_id, context=context):
-					registro.append((0,0,{'datas' : datos.datas})) 
+					registro.append((0,0,{'name' : datos.name, 'datas' : datos.datas})) 
 
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro

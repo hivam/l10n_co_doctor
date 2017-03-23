@@ -678,6 +678,7 @@
 									<page string="Adjuntos">
 										<field name="adjuntos_paciente_ids" nolabel="1" >
 				                            <tree string="Adjuntos" >
+				                                <field name="name"/>
 				                                <field name="datas"/>
 				                            </tree>
 				                        </field>
