@@ -1884,7 +1884,7 @@ class doctor_attentions_co(osv.osv):
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
 		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
 								readonly=True, method=True, string='inv boton edad',), 
-		'adjuntos_paciente_ids': fields.one2many('ir.attachment', 'res_id', 'Adjuntos', states={'closed': [('readonly', True)]})
+		'adjuntos_paciente_ids': fields.one2many('ir.attachment', 'res_id', 'Adjuntos', readonly=True, states={'closed': [('readonly', True)]})
 	}
 
 
