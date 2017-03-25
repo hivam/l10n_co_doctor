@@ -1118,26 +1118,153 @@ class doctor_appointment_co(osv.osv):
 			'target': 'new'
 		}
 
+	#Funcion para crear los espacios disponibles en la agenda
+	def actualizar_agenda_espacios(self, cr, uid, ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res, context=None):
+		
+		tiempo_espacios=0
+		#Nos permite obtner el tiempo de los espacios de la agenda, es decir, si son de 10, 20, 30 minutos
+		for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+			tiempo_espacios= record.tiempo_espacio
+
+		#Creamos el espacio, ya que queda disponible ese espacio para otra cita
+		duracion_horas= (date_fin_cita - date_begin_cita).seconds
+		duracion_horas = (duracion_horas/60)
+
+		if duracion_horas%int(tiempo_espacios) == 0:
+			for i in range(0, duracion_horas, int(tiempo_espacios)):
+				fecha_espacio=date_begin_cita + timedelta(minutes=i)
+				fecha_espacio_fin=date_begin_cita + timedelta(minutes=i+ int(tiempo_espacios))
+
+				res['fecha_inicio'] = str(fecha_espacio)
+				res['fecha_fin'] = str(fecha_espacio_fin)
+				res['schedule_espacio_id']= schedule_id_appointment
+				res['estado_cita_espacio']= 'Sin asignar'
+
+				self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
+		return True
+
+	#Funcion para crear el espacio de la cita
+	def crear_espacios(self, cr, uid, ids, vals, fecha_inicio, fecha_fin, agenda_id, patient_id, context=None):
+		
+		res_schedule={}
+		patient=None
+		fecha_ini=None
+		fecha_final=None
+		schedule_id=None
+
+		if 'patient_id' in vals:
+			patient= vals['patient_id']
+		else:
+			patient= patient_id
+
+		if 'time_begin' in vals:
+			fecha_ini= vals['time_begin']
+		else:
+			fecha_ini= fecha_inicio
+
+		if 'time_end' in vals:
+			fecha_final= vals['time_end']
+		else:
+			fecha_final= fecha_fin
+
+		if 'schedule_id' in vals:
+			schedule_id= vals['schedule_id']
+		else:
+			schedule_id= agenda_id
+		
+		res_schedule['fecha_inicio'] = fecha_ini
+		res_schedule['fecha_fin'] = fecha_final
+		res_schedule['schedule_espacio_id']= schedule_id
+		res_schedule['patient_id']= patient
+		res_schedule['estado_cita_espacio']= 'Asignado'
+
+		return self.pool.get('doctor.espacios').create(cr, uid, res_schedule, context=context)
 
 	def write(self, cr, uid, ids, vals, context=None):
-		_logger.info('entro a la cita por fin')
+
+		state_appointment=None
 		if 'state' in vals:
 			state_appointment= vals['state']
-			date_begin=None
-			date_end=None
-			res={}
+		date_begin=None
+		date_end=None
+		res={}
+		
+		if not isinstance(ids, list):
+			ids = [ids]
+		for i in self.browse(cr, uid, ids):
+			date_begin=i.time_begin
+			date_end=i.time_end
+			schedule_id_appointment= i.schedule_id.id
+			type_id=i.type_id.duration
+			patient_id= i.patient_id.id
+
+		#Fecha inicio y fin de la cita
+		date_begin_cita= datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+		date_fin_cita= datetime.strptime(date_end, "%Y-%m-%d %H:%M:%S")
+
+		#caso 1:
+		#Si cambio la cita para otro dia (agenda)
+		if 'schedule_id' in vals and 'patient_id' not in vals and 'time_begin' in vals and 'time_end' in vals:
+			id_agenda= vals['schedule_id']
+			_logger.info('Editando cita: Entro caso 1')
+
+			#Eliminamos el espacio de la agenda actual
+			self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
+
+			#Creamos los espacios en la agenda actual, ya que la cita que habia fue eliminada
+			self.actualizar_agenda_espacios(cr, uid, ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
+
+			#Creamos el espacio en la nueva agenda que vamos a crear la cita
+			self.crear_espacios(cr,uid, ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, patient_id)
+
+			#Eliminamos el espacio de la agenda de la nueva cita
+			self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, vals['time_begin'], vals['time_end'], vals['schedule_id'], 'Sin asignar')
+
+		#caso 2:
+		#Si cambio de paciente de la cita
+		if 'patient_id' in vals and 'schedule_id' not in vals and 'time_begin' not in vals and 'time_end' not in vals:
+			_logger.info('Editando cita: Entro caso 2')
+
+			ids_espacio_actualizar= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id_appointment)])
+			res['patient_id']=vals['patient_id']
+			self.pool.get('doctor.espacios').write(cr, uid, ids_espacio_actualizar, res, context)		
+
+		#caso 3:
+		#Si cambio la hora de la cita
+		if 'time_begin' in vals and 'time_end' in vals and 'schedule_id' not in vals and 'patient_id' not in vals:
+			_logger.info('Editando cita: Entro caso 3')
+			#Eliminamos el espacio de la agenda actual
+			self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
+
+			#Creamos los espacios en la agenda actual, ya que la cita que habia fue eliminada
+			self.actualizar_agenda_espacios(cr, uid, ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
+
+			#Creamos el espacio en la nueva agenda que vamos a crear la cita
+			self.crear_espacios(cr,uid, ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, patient_id)
+
+		#caso 4:
+		#Si cambio la cita para otro dia (agenda) y el paciente
+		if 'time_begin' in vals and 'time_end' in vals and 'patient_id' in vals and 'schedule_id' in vals:
+			_logger.info('Editando cita: Entro caso 4')
+			#Eliminamos el espacio de la agenda actual
+			self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
+
+			#Creamos los espacios en la agenda actual, ya que la cita que habia fue eliminada
+			self.actualizar_agenda_espacios(cr, uid, ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
+
+			#Creamos el espacio en la nueva agenda que vamos a crear la cita
+			self.crear_espacios(cr,uid, ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, None)
+
+			#Eliminamos el espacio de la agenda de la nueva cita
+			self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, vals['time_begin'], vals['time_end'], vals['schedule_id'], 'Sin asignar')
+
+
+		if 'state' in vals:
 
 			if state_appointment=='cancel':
 				_logger.info('Cancelado')
 
-				for i in self.browse(cr, uid, ids, context=context):
-					date_begin=i.time_begin
-					date_end=i.time_end
-					schedule_id_appointment= i.schedule_id.id
-					type_id=i.type_id.duration
 
-				date_begin_cita= datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
-				date_fin_cita= datetime.strptime(date_end, "%Y-%m-%d %H:%M:%S")
 				_logger.info('fecha begin cita')
 				_logger.info(date_begin_cita)
 				minuto_inicio=str(date_begin)[14:16]
@@ -1687,7 +1814,6 @@ class doctor_appointment_co(osv.osv):
 	#Funcion para eliminar la cita
 	def button_delete_appointment(self, cr, uid, ids, context=None):
 
-
 		test = {}
 		tiempo_espacios=0
 		agenda_id= None
@@ -1700,8 +1826,6 @@ class doctor_appointment_co(osv.osv):
 		res['cita_eliminada']= True
 
 		#self.unlink(cr, uid, ids, context)
-
-		
 
 		#Nos permite obtner el tiempo de los espacios de la agenda, es decir, si son de 10, 20, 30 minutos
 		for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
@@ -1922,7 +2046,7 @@ class doctor_attentions_co(osv.osv):
 			if adjuntos_id:
 				
 				for datos in modelo_buscar.browse(cr, uid, adjuntos_id, context=context):
-					registro.append((0,0,{'datas' : datos.datas})) 
+					registro.append((0,0,{'name' : datos.name, 'datas' : datos.datas})) 
 
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
@@ -3158,7 +3282,12 @@ class doctor_espacios(osv.osv):
 
 		return super(doctor_espacios, self).unlink(cr, uid, search_schedule, context=context)
 
-
+	#Funcion para remover los espacios de la agenda
+	def eliminar_espacios_agenda(self, cr, uid, fecha_inicio, fecha_fin, agenda_id, estado_espacio, context=None):
+		ids_espacio_eliminar= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '>=', fecha_inicio),('fecha_fin', '<=', fecha_fin),('schedule_espacio_id', '=', agenda_id), ('estado_cita_espacio', '=', estado_espacio)])
+		
+		#Eliminamos el espacio
+		self.pool.get('doctor.espacios').unlink(cr, uid, ids_espacio_eliminar, context)
 
 
 doctor_espacios()

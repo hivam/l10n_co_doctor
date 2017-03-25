@@ -674,16 +674,15 @@
 								
 									
 								
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[1]/notebook[@colspan='4']//page[3]" position="after">
-									
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']" position="inside">	
 									<page string="Adjuntos">
 										<field name="adjuntos_paciente_ids" nolabel="1" >
 				                            <tree string="Adjuntos" >
+				                                <field name="name"/>
 				                                <field name="datas"/>
 				                            </tree>
 				                        </field>
 									</page>
-									
 								</xpath>
 
 								<field name="review_systems_id" position="after">
