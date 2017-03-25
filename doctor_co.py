@@ -3693,9 +3693,12 @@ class doctor_sales_order_co (osv.osv):
 	def on_change_paciente(self, cr, uid, ids, patient_id):
 		res = {'value':{}}
 		if patient_id:
-			partnerObj = self.pool.get('doctor.patient').read(cr, uid, patient_id,['ref'])
+			partnerObj = self.pool.get('doctor.patient').read(cr, uid, patient_id,['ref','tipo_usuario'])
 			if partnerObj:
 				res['value']['ref'] = partnerObj.get('ref')
+				res['value']['tipo_usuario_id'] = partnerObj.get('tipo_usuario')
+		_logger.info("reessssssss")
+		_logger.info(res)
 		return res
 
 	_columns = {
