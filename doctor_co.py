@@ -1472,8 +1472,10 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
-		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		fecha_agenda_esp = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		fecha_agenda_espacio = fecha_agenda_esp.replace(second=00)
+		time_beg = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		time_begin = time_beg.replace(second=00)
 
 		if fecha_agenda_espacio >= time_begin:
 			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
@@ -3820,9 +3822,12 @@ class doctor_sales_order_co (osv.osv):
 	def on_change_paciente(self, cr, uid, ids, patient_id):
 		res = {'value':{}}
 		if patient_id:
-			partnerObj = self.pool.get('doctor.patient').read(cr, uid, patient_id,['ref'])
+			partnerObj = self.pool.get('doctor.patient').read(cr, uid, patient_id,['ref','tipo_usuario'])
 			if partnerObj:
 				res['value']['ref'] = partnerObj.get('ref')
+				res['value']['tipo_usuario_id'] = partnerObj.get('tipo_usuario')
+		_logger.info("reessssssss")
+		_logger.info(res)
 		return res
 
 	_columns = {
