@@ -84,10 +84,13 @@ class doctor_patient_co(osv.osv):
 
 	#Niveles de estudio
 	nivel_estudio = [
-		('1', 'PREGRADO'),
-		('2', 'POSGRADO'),
-		('3', u'MAESTRÍAS'),
-		('4', u'ESPECIALIZACIÓN'),
+		('1', 'JARDIN'),
+		('2', 'PRIMARIA'),
+		('3', 'SECUNDARIA'),
+		('4', 'PREGRADO'),
+		('5', 'POSGRADO'),
+		('6', u'MAESTRÍAS'),
+		('7', u'ESPECIALIZACIÓN'),
 	]
 
 	#Lateralidad
