@@ -3372,6 +3372,7 @@ class doctor_otra_prescripcion(osv.osv):
 	def parte_name_search(self, cr, uid, name, modeloLLama, args=None, operator='ilike', context=None, limit=100):
 		ids = []
 		nombre_con_split = []
+
 		if name:
 			
 			if name.isdigit():
@@ -3391,6 +3392,7 @@ class doctor_otra_prescripcion(osv.osv):
 		elif modeloLLama:
 			ids = self.search(cr, uid, [('is_medicamento_prescripcion', '=', True)], limit=limit, context=context)
 		else:
+			_logger.info("entra")
 			ids = self.search(cr, uid, args, limit=limit, context=context)
 
 		return ids  
@@ -3408,7 +3410,7 @@ class doctor_otra_prescripcion(osv.osv):
 		diagnostic_images = context.get('diagnostic_images')
 		odontologia = context.get('odontologia')
 
-
+		_logger.info(context)
 
 		if plan_id and professional_id:
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
@@ -3416,6 +3418,8 @@ class doctor_otra_prescripcion(osv.osv):
 			ids_procedimientos = self.parte_name_search(cr, uid, name, medicamento, args, operator, context=context, limit=100)
 		#procedimientos en salud para imagenes diagnosticas, laboratorios clinicos y modelo. -Capriatto 
 		elif clinical_laboratory or diagnostic_images or odontologia or modelo:
+			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
+		elif 'pricelist' in context:
 			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		else:
 			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
