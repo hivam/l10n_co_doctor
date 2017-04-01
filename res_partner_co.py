@@ -24,7 +24,8 @@ import re
 import codecs
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-
+import logging
+_logger = logging.getLogger(__name__)
 
 class CountryStateCity(osv.osv):
     '''
@@ -123,11 +124,10 @@ class res_partner_co(osv.osv):
             newname = "%s %s %s %s" % (lastname , surname or '' , firtsname , middlename or '')
             if not (lastname or surname or firtsname or middlename):
                 return True
-            elif not is_company and name != newname:
-                return False
             elif is_company and (lastname or surname or firtsname or middlename):
                 return self.write(cr, uid, ids, {'lastname': '', 'surname': '', 'firtsname': '', 'middlename':  ''}, context=context)
         return True
+            
 
     # Función para validar que la identificación sea sólo numerica
     # Function to validate the numerical identification is only
@@ -135,7 +135,7 @@ class res_partner_co(osv.osv):
         for record in self.browse(cr, uid, ids, context=context):
             ref = record.ref
             tdoc = record.tdoc
-            if ref != False and tdoc != '21':
+            if ref != False and tdoc != '21' and tdoc != '41':
                 if re.match("^[0-9]+$", ref) == None:
                     return False
         return True
@@ -197,7 +197,7 @@ class res_partner_co(osv.osv):
 # Error Messages
 
     _constraints = [
-        (_check_name, '¡Error! - El nombre no ha sido actualizado, escriba nuevamente el primer apellido', ['name']),
+        (_check_name, '¡Error! - No se pueden actualizar el nombre del paciente', ['name']),
         (_check_ident, '¡Error! Número de identificación debe tener entre 2 y 12 dígitos', ['ref']),
         (_check_unique_ident, '¡Error! Número de identificación ya existe en el sistema', ['ref']),
         (_check_dv, '¡Error! El digito de verificación es incorrecto',['dv']),

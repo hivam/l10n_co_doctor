@@ -483,7 +483,7 @@
 								</field>
 
 								<field name="aditional" position="after" >
-										<button string="Agregar Nota" name="asignar_nota" type="object" icon="gtk-jump-to"/>
+										<button string="Agregar Nota" name="asignar_nota" type="object" icon="gtk-index"/>
 								</field>
 
 								
@@ -571,11 +571,6 @@
 									<field invisible="1" name="id"/>
 									<page string="Espacios Agenda" attrs="{'invisible': [('id', '=', False)]}">
 										<legend class="texto_legend">Espacios de la Agenda</legend>
-										<footer>
-											<div align="right">
-												<button string="Actualizar" name="refresh_espacios" type="object" groups="doctor.group_doctor_assistant" class="oe_highlight"/>
-											</div>
-										</footer>
 										<field name="schedule_espacios_ids" colspan="4" readonly="1">
 											<field name="auto_refresh">5</field>
 												<tree string="Espacios" limit="100" create="false" colors="red:estado_cita_espacio=='Asignado'; green:estado_cita_espacio=='Sin asignar';">
@@ -716,6 +711,16 @@
 								
 									
 								
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']" position="inside">	
+									<page string="Adjuntos">
+										<field name="adjuntos_paciente_ids" nolabel="1" >
+				                            <tree string="Adjuntos" >
+				                                <field name="name"/>
+				                                <field name="datas"/>
+				                            </tree>
+				                        </field>
+									</page>
+								</xpath>
 
 								<field name="review_systems_id" position="after">
 										<label for="otro_sintomas_revision_sistema" string="Otros Síntomas"/>
