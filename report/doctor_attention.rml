@@ -374,35 +374,35 @@
         </tr>
         <tr>
      <td>
-            <para style="P3">Weight (kg): [[ (o.weight) ]]</para>
+            <para style="P3">Weight: [[ (o.weight) ]] kg</para>
          </td>
          <td>
-            <para style="P3">Heart rate: [[ (o.heart_rate) ]]</para>
+            <para style="P3">Frecuencia Cardiaca: [[ (o.heart_rate) ]] L/min</para>
          </td>
          <td>
-            <para style="P3">Systolic: [[ (o.systolic) ]]</para>
+            <para style="P3">Systolic: [[ (o.systolic) ]] mmHg</para>
          </td>
          <td>
-            <para style="P3">Temperature: [[ (o.temperature) ]]</para>
+            <para style="P3">Temperature: [[ (o.temperature) ]] °C</para>
          </td>
         </tr>
         <tr>
      <td>
-            <para style="P3">Height (cm): [[ (o.height) ]]</para>
+            <para style="P3">Height: [[ (o.height) ]] cm</para>
          </td>
          <td>
-            <para style="P3">Respiratory: [[ (o.respiratory_rate) ]]</para>
+            <para style="P3">Respiratory: [[ (o.respiratory_rate) ]] R/min</para>
          </td>
          <td>
-            <para style="P3">Diastolic: [[ (o.diastolic) ]]</para>
+            <para style="P3">Diastolic: [[ (o.diastolic) ]] mmHg</para>
          </td>
          <td>
             <para style="P2">SpO2</para>
          </td>
         </tr>
         <tr>
-     <td>
-            <para style="P3">Body mass: [[ (o.body_mass_index) ]]</para>
+      <td>
+            <para style="P3">Body mass: [[ (o.body_mass_index) ]] kg/m²</para>
          </td>
          <td>
             <para style="P3">[[ '' ]]</para>
@@ -411,9 +411,32 @@
             <para style="P3">[[ '' ]]</para>
          </td>
          <td>
-            <para style="P3">Pulsioximetry: [[ (o.pulsioximetry) ]]</para>
+            <para style="P3">Pulsioximetry: [[ (o.pulsioximetry) ]] %</para>
          </td>
         </tr>
+
+        <tr>
+      <td>
+            <para style="P3">Superficie Corporal: [[ (o.superficie_corporal) ]] m²</para>
+         </td>
+         <td>
+            <para style="P3">[[ '' ]]</para>
+         </td>
+         <td>
+            <para style="P3">[[ '' ]]</para>
+         </td>
+         <td>
+            <para style="P3">[[ '' ]]</para>
+         </td>
+        </tr>
+
+
+
+
+
+
+
+
       </blockTable>
 
     <section>
