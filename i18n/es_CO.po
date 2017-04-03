@@ -606,7 +606,7 @@ msgstr ""
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
 msgid "PHYSICIAN DATA"
-msgstr "DATOS DEL MÉDICO"
+msgstr "DATOS DEL PROFESIONAL"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
@@ -911,8 +911,8 @@ msgstr "OTROS PROCEDIMIENTOS"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
-msgid "Weight (kg):"
-msgstr "Peso (kg):"
+msgid "Weight:"
+msgstr "Peso:"
 
 #. module: l10n_co_doctor
 #: field:account.invoice,ref:0
@@ -941,8 +941,13 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
-msgid "Height (cm):"
-msgstr "Talla (cm):"
+msgid "Height:"
+msgstr "Talla:"
+
+#. module: l10n_co_doctor
+#: report:doctor_attention:0
+msgid "Body surface"
+msgstr "Superficie Corporal"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
