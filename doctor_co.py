@@ -1472,8 +1472,10 @@ class doctor_appointment_co(osv.osv):
 		if diff > 0:
 			diff = 60 - diff
 
-		fecha_agenda_espacio = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
-		time_begin = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:00")
+		fecha_agenda_esp = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		fecha_agenda_espacio = fecha_agenda_esp.replace(second=00)
+		time_beg = datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+		time_begin = time_beg.replace(second=00)
 
 		if fecha_agenda_espacio >= time_begin:
 			date_begin_cita=datetime.strptime(str(time_begin), "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
@@ -3397,6 +3399,7 @@ class doctor_otra_prescripcion(osv.osv):
 	def parte_name_search(self, cr, uid, name, modeloLLama, args=None, operator='ilike', context=None, limit=100):
 		ids = []
 		nombre_con_split = []
+
 		if name:
 			
 			if name.isdigit():
@@ -3416,6 +3419,7 @@ class doctor_otra_prescripcion(osv.osv):
 		elif modeloLLama:
 			ids = self.search(cr, uid, [('is_medicamento_prescripcion', '=', True)], limit=limit, context=context)
 		else:
+			_logger.info("entra")
 			ids = self.search(cr, uid, args, limit=limit, context=context)
 
 		return ids  
@@ -3433,7 +3437,7 @@ class doctor_otra_prescripcion(osv.osv):
 		diagnostic_images = context.get('diagnostic_images')
 		odontologia = context.get('odontologia')
 
-
+		_logger.info(context)
 
 		if plan_id and professional_id:
 			ids_procedimientos = self.procedimientos_doctor(cr, uid, plan_id, professional_id, context=context)
@@ -3441,6 +3445,8 @@ class doctor_otra_prescripcion(osv.osv):
 			ids_procedimientos = self.parte_name_search(cr, uid, name, medicamento, args, operator, context=context, limit=100)
 		#procedimientos en salud para imagenes diagnosticas, laboratorios clinicos y modelo. -Capriatto 
 		elif clinical_laboratory or diagnostic_images or odontologia or modelo:
+			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
+		elif 'pricelist' in context:
 			ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 		else:
 			ids = insttucion_procedimiento.search(cr, uid, [], limit=limit, context=context)
@@ -3847,9 +3853,12 @@ class doctor_sales_order_co (osv.osv):
 	def on_change_paciente(self, cr, uid, ids, patient_id):
 		res = {'value':{}}
 		if patient_id:
-			partnerObj = self.pool.get('doctor.patient').read(cr, uid, patient_id,['ref'])
+			partnerObj = self.pool.get('doctor.patient').read(cr, uid, patient_id,['ref','tipo_usuario'])
 			if partnerObj:
 				res['value']['ref'] = partnerObj.get('ref')
+				res['value']['tipo_usuario_id'] = partnerObj.get('tipo_usuario')
+		_logger.info("reessssssss")
+		_logger.info(res)
 		return res
 
 	_columns = {
