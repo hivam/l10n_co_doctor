@@ -25,6 +25,7 @@ import re
 import codecs
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
+import math
 
 
 class doctor_attentions_co_inherit(osv.osv):
@@ -38,15 +39,26 @@ class doctor_attentions_co_inherit(osv.osv):
 	def onchange_calcularImc(self, cr, uid, ids, peso, talla, context=None):
 		res = {'value':{}}
 		imc = 0
+		superficie_corporal=0
 
 		if not peso or not talla:
 			imc = 0.00 
 		try:
 			imc = (peso / (( talla / 100.0  ) ** 2 ))	
+			superficie_corporal= self.calcular_superficie_corporal(cr, uid, ids, peso, talla)
 		except:
 			_logger.info("error en la función onchange_calcularImc [doctor_attentions_co_inherit.py]")	
 		res['value']['body_mass_index'] = imc
+		res['value']['superficie_corporal'] = superficie_corporal
 		return res
+
+	def calcular_superficie_corporal(self, cr, uid, ids, peso, altura, context=None):
+		resultado=0
+		if peso and altura:
+			resultado= math.sqrt((peso*altura)/3600)
+		_logger.info('entro')
+		_logger.info(resultado)
+		return resultado
 
 
 	def onchange_interpretacionimc(self, cr, uid, ids, masa_corporal, context=None):
@@ -72,6 +84,8 @@ class doctor_attentions_co_inherit(osv.osv):
 			elif masa_corporal >= 40:
 				interpretacion = u'Obesidad Mórbida'
 		res['value']['interpretacion_imc'] =  interpretacion
+		superficie_corporal= self.pool.get('doctor.attentions').calcular_superficie_corporal(cr, uid, ids, 55, 165)
+		_logger.info(superficie_corporal)
 		return res
 	
 

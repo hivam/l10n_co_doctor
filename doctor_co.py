@@ -1862,6 +1862,33 @@ class doctor_appointment_co(osv.osv):
 		self.write(cr, uid, ids, res, context)
 		return self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
 		
+	#Funcion para seleccionar y no seleccionar los dias de la semana y meses. Haciendo uso de la funcion que se encuentra en doctor.schedule
+	def onchange_calcular_hora_inicio_con_agenda(self, cr, uid, ids, agenda_id, time_begin, context=None):
+		#res={'value':{}}
+
+		if agenda_id:
+
+			fecha_agenda= self.pool.get('doctor.schedule').browse(cr, uid, agenda_id, context).date_begin
+			_logger.info('la fecha de la agenda')
+			_logger.info(fecha_agenda)
+
+			dia_agenda= str(fecha_agenda)[8:11]
+			mes_agenda= str(fecha_agenda)[5:7]
+
+			dia_cita= str(time_begin)[8:11]
+			mes_cita= str(time_begin)[5:7]
+
+			fecha_inicio= datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+			diferencia_dias=int(dia_agenda) - int(dia_cita)
+			diferencia_mes= int(mes_agenda) - int(mes_cita) 
+			fecha_inicio_cita=fecha_inicio + timedelta(days=diferencia_dias)
+			fecha_inicio_cita = fecha_inicio_cita.strftime("%Y-%m-%d %H:%M:%S")
+
+
+			#res['value']['time_begin']= fecha_inicio_cita
+
+
+		return fecha_inicio_cita
 
 
 doctor_appointment_co()
@@ -2008,7 +2035,8 @@ class doctor_attentions_co(osv.osv):
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
 		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
 								readonly=True, method=True, string='inv boton edad',), 
-		'adjuntos_paciente_ids': fields.one2many('ir.attachment', 'res_id', 'Adjuntos', states={'closed': [('readonly', True)]})
+		'adjuntos_paciente_ids': fields.one2many('ir.attachment', 'res_id', 'Adjuntos', states={'closed': [('readonly', True)]}),
+		'superficie_corporal': fields.float('Superficie Corporal')
 	}
 
 
@@ -2145,7 +2173,6 @@ class doctor_attentions_co(osv.osv):
 		}
 
 		return True
-
 
 doctor_attentions_co()
 
