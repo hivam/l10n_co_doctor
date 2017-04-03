@@ -252,6 +252,7 @@ class doctor_patient_co(osv.osv):
 		'desmovilizado': fields.char(u'Desmovilizado'),
 		'victima_conflicto': fields.char(u'Victima del Conflicto'),
 		'localidad_otros_paises_id':fields.many2one('doctor.localidad.country', u'Localidad/Ciudad', domain="[('country_id','=',nacimiento_country_id)]"),
+
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -1756,7 +1757,8 @@ class doctor_appointment_co(osv.osv):
 			_('Por favor ingrese la aseguradora a la que se le enviará la factura por los servicios prestados al paciente.'))
 
 		if doctor_appointment.tipo_usuario_id.name == 'Particular':
-			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.patient_id.ref)])[0]
+			_logger.info(doctor_appointment.ref)
+			tercero = self.pool.get('res.partner').search(cr, uid, [('ref','=', doctor_appointment.ref)])[0]
 			for record in self.pool.get('res.partner').browse(cr, uid, [tercero]):
 				user = record.user_id.id
 		else:
@@ -2038,7 +2040,16 @@ class doctor_attentions_co(osv.osv):
 		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
 								readonly=True, method=True, string='inv boton edad',), 
 		'adjuntos_paciente_ids': fields.one2many('ir.attachment', 'res_id', 'Adjuntos', states={'closed': [('readonly', True)]}),
-		'superficie_corporal': fields.float('Superficie Corporal')
+		'superficie_corporal': fields.float('Superficie Corporal'),
+
+		#campos necesarios para crear rips, especialmente el AC.
+		'numero_factura':fields.char('Numero de factura', size=30),
+		'codigo_prestador':fields.char('Codigo de prestador', size=12),
+		'numero_autorizacion':fields.char('Numero de autorizacion', size=30),
+		'numero_procedimiento':fields.char('Numero procedimiento', size=30),
+		'valor_consulta':fields.float('valor consulta'),
+		'couta_moderadora':fields.float('cuota moderadora'),
+		'valor_pagar':fields.float('valor a pagar'),
 	}
 
 
@@ -2135,11 +2146,67 @@ class doctor_attentions_co(osv.osv):
 
 	def write(self, cr, uid, ids, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
+
+		_logger.info(vals)
+
+
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
 		vals['activar_notas_confidenciales'] = False
+		if 'origin' in vals:
+			
+			numero_autorizacion = 0
+			numero_procedimiento = 0
+			numero_factura = 0
+			valor_total = None
+			cuota_moderadora = None
+			res_user_id = self.pool.get('res.users').search(cr, uid, [('id', '=', uid)], context=context)
+			for compania in self.pool.get('res.users').browse(cr, uid, res_user_id, context=context):
+				codigo_prestador = compania.company_id.cod_prestadorservicio
+			procedimiento_id = 0	
+			cita_id = self.pool.get('doctor.appointment').search(cr, uid, [('number', '=', vals['origin'])], context=context)
+			if cita_id:
+				procedimiento_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', cita_id)], context=context)
+			orden_id = self.pool.get('sale.order').search(cr, uid,[('origin', '=', vals['origin'])], context=context)
+
+			orden_name = self.pool.get('sale.order').browse(cr, uid, orden_id,context=context)[0].name
+
+			factura_id = self.pool.get('account.invoice').search(cr, uid, [('origin', '=', orden_name)], context=context)
+
+			if procedimiento_id:
+				for procedimiento in self.pool.get('doctor.appointment.procedures').browse(cr, uid, procedimiento_id, context=context):
+					numero_autorizacion = procedimiento.nro_autorizacion
+					numero_procedimiento = self.pool.get('product.product').browse(cr, uid, procedimiento.procedures_id.id, context=context).procedure_code
+			
+			if factura_id:
+
+				for factura in self.pool.get('account.invoice').browse(cr, uid, factura_id, context=context):
+
+					numero_factura = factura.number
+					valor_total = factura.amount_total
+					cuota_moderadora = factura.amount_patient
+
+			if numero_autorizacion:
+				vals['numero_autorizacion'] = numero_autorizacion
+
+			if numero_procedimiento:
+				vals['numero_procedimiento'] = numero_procedimiento
+
+			if numero_factura:
+				vals['numero_factura'] = numero_factura
+
+			if valor_total:
+				vals['valor_pagar'] = valor_total
+
+			if codigo_prestador:
+				vals['codigo_prestador'] = codigo_prestador
+
+			if cuota_moderadora:
+				vals['couta_moderadora'] = cuota_moderadora
+
+		_logger.info(vals)
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
