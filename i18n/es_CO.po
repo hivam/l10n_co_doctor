@@ -472,8 +472,24 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_clinical_laboratory:0
+#: report:doctor_diagnostic_images:0
+#: report:doctor_disability:0
+#: report:doctor_other_procedures:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
+#: report:doctor_surgical:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
 #: report:doctor_referral_half:0
+#: report:doctor_therapeutic:0
 msgid "SPECIALITY"
 msgstr "ESPECIALIDAD"
 
