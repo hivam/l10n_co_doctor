@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<document filename="Otra_recomendacion.pdf">
-  <template pageSize="(595.0,842.0)" title="Test" author="Hector Ivan Valencia Muñoz - TIX S.A.S." allowSplitting="20">
+<document filename="test_half.pdf">
+  <template pageSize="(22.02 cm, 12.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
     <pageTemplate id="first">
       <frame id="first" x1="18.0" y1="29.0" width="534" height="784"/>
+      <frame id="first" x1="1.3cm" y1="-9.5cm" height="21.7cm" width="19.0cm"/>
     </pageTemplate>
   </template>
   <stylesheet>
@@ -91,25 +92,30 @@
     <paraStyle name="terp_default_Bold_8" rightIndent="0.0" leftIndent="0.0" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="terp_default_Bold_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="terp_default_Bold_Right_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="tamano_letra" fontName="Helvetica-Bold" fontSize="12.0" leading="12" spaceBefore="8.0" spaceAfter="2.0" alignment="CENTER"/>
     <images/>
   </stylesheet>
   <story>
+    <nextFrame/>
 	<para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
     <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
 
-    <para style="Heading"><b>Otra Prescripcion</b></para>
 <!--
     <para style="P2">
       <font color="white"> </font>
     </para>
 -->
-    <blockTable colWidths="350.0,184.0 " style="Table1">
+    <blockTable colWidths="175.0,175.0,184.0 " style="Table1">
       <tr>
         <td>
-          <para style="P12">Fecha: [[ formatLang(o.date_attention,date=True) ]]</para>
+          <para alignment="LEFT" >Fecha: [[ formatLang(o.date_attention,date=True) ]]</para>
+
         </td>
         <td>
-          <para style="P12">Atención N°: [[ (o.number) ]]</para>
+          <para fontName="Helvetica-bold" fontSize="12.0" alignment="CENTER" spaceBefore="3.0" spaceAfter="2.0">[[ company.partner_id.name ]]</para>
+        </td>
+        <td>
+          <para alignment="RIGHT">Atención N°: [[ (o.number) ]]</para>
         </td>
      </tr>
     </blockTable>
@@ -117,26 +123,26 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">DATOS PACIENTE</para>
+          <para style="tamano_letra">PATIENT DATA</para>
         </td>
      </tr>
     </blockTable>
 
     <blockTable colWidths="204.0,330.0" style="Table6">
       <tr>
-		    <td>
-            <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
-          </td>
-          <td>
-            <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
-		      </td>
+		<td>
+          <para style="P6">Document: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
+        </td>
+        <td>
+          <para style="P6">Name: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
+		</td>
       </tr>
       <tr>
         <td>
           <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
         </td>
         <td>
-          <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Age: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
 		</td>
      </tr>
      <tr>
@@ -149,32 +155,50 @@
      </tr>
     </blockTable>
 
-	<blockTable colWidths="384.0, 150.0" style="Table6">
-    <tr>
-		  <td>
-        <para style="P5">Medicamento / Otro elemento</para>
-      </td>
-      <td>
-          <para style="P5">Prescripcion</para>
-      </td>
-    </tr>
-  </blockTable>
-    <section>
-    [[o.otros_medicamentos_ids  or removeParentNode('section') ]]
-    <para style="P4">[[ repeatIn(o.otros_medicamentos_ids, 'line') ]]</para>
-    <blockTable colWidths="384.0, 150.0" style="Table6">
+	<blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-          <td>
-            <para style="P6">[[(line.procedures_id.name)]]</para>
+		 <td>
+            <para style="tamano_letra">CLINICAL LABORATORY</para>
           </td>
-		      <td>
-            <para style="P6">[[(line.prescripcion)]]</para>
+          <td>
+            <para style="tamano_letra">QUANTITY</para>
           </td>
         </tr>
-        <tr>
-          <td>
+    </blockTable>
 
-             <para style="P6">Recomendaciones: [[(line.recomendacion) or removeParentNode('para')]]</para>
+    <section>
+      <para style="P4">[[ repeatIn(o.clinical_laboratory_ids, 'line') ]]</para>
+
+    <blockTable colWidths="384.0,150.0" style="Table6">
+        <tr>
+		 <td>
+            <para style="P6"> [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
+          </td>
+          <td>
+            <para style="P7">[[ (line.quantity) ]] </para>
+          </td>
+        </tr>
+      </blockTable>
+    </section>
+
+	<blockTable colWidths="534.0" style="Table6">
+      <tr>
+        <td>
+          <para style="tamano_letra">DISEASES</para>
+        </td>
+     </tr>
+    </blockTable>
+
+    <section>
+      <para style="P4">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
+
+      <blockTable colWidths="384.0,150.0" style="Table6">
+        <tr>
+     <td>
+            <para style="terp_header">[[ (line.diseases_id.name) ]]</para>
+          </td>
+     <td>
+            <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -183,7 +207,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">PHYSICIAN DATA</para>
+          <para style="tamano_letra">PHYSICIAN DATA</para>
         </td>
      </tr>
     </blockTable>
@@ -191,20 +215,25 @@
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
 		<td>
-          <para style="P6">Nombre: [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Name: [[ (o.professional_id.professional.name or (removeParentNode('para'))) ]]</para>
         </td>
         <td>
-          <para style="P6">Registro N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Register N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
 		</td>
       </tr>
       <tr>
 		<td>
-          <para style="P6"><b>Firma: [[ '' 	]] </b></para>
+          <para style="P6"><b>Signature: [[ '' 	]] </b></para>
         </td>
         <td>
-          <para style="P6"><b>Sello: [[ '' 	]] </b></para>
+          <para style="P6"><b>Stamp: [[ '' 	]] </b></para>
 		</td>
       </tr>
     </blockTable>
+<!--
+    <para style="P7">
+      <font color="white"> </font>
+    </para>
+-->
   </story>
 </document>

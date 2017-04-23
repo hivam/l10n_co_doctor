@@ -14,12 +14,24 @@
                 rml="l10n_co_doctor/report/doctor_attentions_otra_prescripcion.rml" string="Otra Prescripcion"
                 usage="default"/>
 
+        <report auto="False" id="doctor_attentions_medicamento_otro_half" model="doctor.attentions" name="doctor_attentions_otra_prescripcion_half"
+                rml="l10n_co_doctor/report/doctor_attentions_otra_prescripcion_half.rml" string="Otra Prescripcion (Media Carta)"
+                usage="default"/>
+
         <report auto="False" id="doctor_clinical_laboratory" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_clinical_laboratory"
                 rml="l10n_co_doctor/report/doctor_clinical_laboratory.rml" string="Clinical Laboratory"
                 usage="default"/>
 
+        <report auto="False" id="doctor_clinical_laboratory_half" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_clinical_laboratory_half"
+                rml="l10n_co_doctor/report/doctor_clinical_laboratory_half.rml" string="Laboratorio Clínico (Media Carta)"
+                usage="default"/>
+
         <report auto="False" id="doctor_diagnostic_images" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_diagnostic_images"
                 rml="l10n_co_doctor/report/doctor_diagnostic_images.rml" string="Diagnostic Images"
+                usage="default"/>
+
+        <report auto="False" id="doctor_diagnostic_images_half" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_diagnostic_images_half"
+                rml="l10n_co_doctor/report/doctor_diagnostic_images_half.rml" string="Imágenes Diagnosticas (Media Carta)"
                 usage="default"/>
 
         <report auto="False" id="doctor_surgical" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_surgical"
@@ -38,8 +50,16 @@
                 rml="l10n_co_doctor/report/doctor_referral.rml" string="Referral"
                 usage="default"/>
 
+        <report auto="False" id="doctor_referral_half" model="doctor.attentions" name="doctor_referral_half"
+                rml="l10n_co_doctor/report/doctor_referral_half.rml" string="Remisión o Interconsulta (Media Carta)"
+                usage="default"/>
+
         <report auto="False" id="doctor_disability" model="doctor.attentions" name="doctor_disability"
                 rml="l10n_co_doctor/report/doctor_disability.rml" string="Disability"
+                usage="default"/>
+
+        <report auto="False" id="doctor_disability_half" model="doctor.attentions" name="doctor_disability_half"
+                rml="l10n_co_doctor/report/doctor_disability_half.rml" string="Incapacidad (Media Carta)"
                 usage="default"/>
 
         <report auto="False" id="doctor_attention" model="doctor.attentions" name="doctor_attention"

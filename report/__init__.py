@@ -34,3 +34,8 @@ import doctor_attentions_otra_prescripcion
 import doctor_account_voucher
 import rips_radicacioncuentas
 import doctor_prescription_half
+import doctor_attentions_otra_prescripcion_half
+import doctor_disability_half
+import doctor_clinical_laboratory_half
+import doctor_diagnostic_images_half
+import doctor_referral_half

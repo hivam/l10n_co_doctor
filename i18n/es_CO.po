@@ -21,10 +21,20 @@ msgstr ""
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "User type:"
 msgstr "Tipo de usuario:"
 
@@ -33,10 +43,20 @@ msgstr "Tipo de usuario:"
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "User type: Particular"
 msgstr "Tipo de usuario: Particular"
 
@@ -72,6 +92,7 @@ msgstr ""
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
 #: report:doctor_referral:0
+#: report:doctor_referral_half:0
 msgid "INTER"
 msgstr ""
 
@@ -98,10 +119,20 @@ msgstr ""
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "User type: Otro"
 msgstr "Tipo de usuario: Otro"
 
@@ -116,10 +147,20 @@ msgstr ""
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "Signature:"
 msgstr "Firma:"
 
@@ -183,6 +224,7 @@ msgstr ""
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
 #: report:doctor_disability:0
+#: report:doctor_disability_half:0
 msgid "DISABILITY ORDER"
 msgstr "ORDEN DE INCAPACIDAD"
 
@@ -192,10 +234,20 @@ msgstr "ORDEN DE INCAPACIDAD"
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "Stamp:"
 msgstr "Sello:"
 
@@ -210,10 +262,20 @@ msgstr "Procedimientos Terapéuticos"
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "Attention N°:"
 msgstr "Atención N°:"
 
@@ -305,10 +367,20 @@ msgstr "Presión sanguínea:"
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "Date:"
 msgstr "Fecha:"
 
@@ -323,9 +395,19 @@ msgstr "Incapacidad"
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 #: report:doctor_therapeutic:0
 msgid "PATIENT DATA"
 msgstr "DATOS DEL PACIENTE"
@@ -359,7 +441,7 @@ msgstr ""
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
@@ -391,12 +473,14 @@ msgstr ""
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
 #: report:doctor_referral:0
+#: report:doctor_referral_half:0
 msgid "SPECIALITY"
 msgstr "ESPECIALIDAD"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
 #: report:doctor_referral:0
+#: report:doctor_referral_half:0
 msgid "REFERRAL ORDER"
 msgstr "ORDEN DE REMISIÓN O INTERCONSULTA"
 
@@ -405,7 +489,7 @@ msgstr "ORDEN DE REMISIÓN O INTERCONSULTA"
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
@@ -437,6 +521,13 @@ msgstr "Código ciudad"
 
 #. module: l10n_co_doctor
 #: model:ir.actions.report.xml,name:l10n_co_doctor.doctor_clinical_laboratory
+msgid "Clinical Laboratory"
+msgstr "Exámen de Laboratorio Clínico"
+
+
+#. module: l10n_co_doctor
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_clinical_laboratory_half:0
 msgid "Clinical Laboratory"
 msgstr "Exámen de Laboratorio Clínico"
 
@@ -477,16 +568,26 @@ msgstr "Segundo nombre"
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 #: report:doctor_therapeutic:0
 msgid "Document:"
 msgstr "Documento:"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 msgid "vía"
 msgstr ""
 
@@ -518,6 +619,7 @@ msgstr "Pulsioximetría:"
 
 #. module: l10n_co_doctor
 #: report:doctor_disability:0
+#: report:doctor_disability_half:0
 msgid "DURATION IN DAYS"
 msgstr "DURACIÓN (En días)"
 
@@ -550,6 +652,7 @@ msgstr "Temperatura"
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
 #: report:doctor_referral:0
+#: report:doctor_referral_half:0
 msgid "SERVICE"
 msgstr "SERVICIO"
 
@@ -560,7 +663,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 msgid "durante"
 msgstr ""
 
@@ -571,7 +674,7 @@ msgstr "Imágenes diagnósticas"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 msgid "cada"
 msgstr ""
 
@@ -601,12 +704,27 @@ msgstr ""
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "PHYSICIAN DATA"
 msgstr "DATOS DEL PROFESIONAL"
+
+#. module: l10n_co_doctor
+#: report:doctor_clinical_laboratory_half:0
+msgid "CLINICAL LABORATORY"
+msgstr "EXÁMENES DE LABORATORIO CLÍNICO"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
@@ -660,9 +778,19 @@ msgstr "Ciudades"
 #: report:doctor_clinical_laboratory:0
 #: report:doctor_diagnostic_images:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "QUANTITY"
 msgstr "CANTIDAD"
 
@@ -678,10 +806,20 @@ msgstr ""
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "Register N°:"
 msgstr "Registro N°:"
 
@@ -696,7 +834,7 @@ msgid "EXAM"
 msgstr "EXÁMEN FÍSICO"
 
 #. module: l10n_co_doctor
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 msgid "DRUG PRESCRIPTION"
 msgstr "PRESCRIPCIÓN DE MEDICAMENTOS"
 
@@ -716,10 +854,20 @@ msgstr ""
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "Insurer:"
 msgstr "Asegurador:"
 
@@ -821,6 +969,16 @@ msgstr "Segundo apellido"
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "DISEASES"
 msgstr "DIAGNÓSTICOS"
 
@@ -836,6 +994,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_diagnostic_images:0
+#: report:doctor_diagnostic_images_half:0
 msgid "DIAGNOSTIC IMAGES"
 msgstr "IMÁGENES DIAGNÓSTICAS"
 
@@ -856,6 +1015,7 @@ msgstr "Modelo para gestionar ciudades"
 
 #. module: l10n_co_doctor
 #: report:doctor_disability:0
+#: report:doctor_disability_half:0
 msgid "START DATE"
 msgstr "FECHA DE INICIO"
 
@@ -871,13 +1031,14 @@ msgid "Tercero"
 msgstr ""
 
 #. module: l10n_co_doctor
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 msgid "DRUG"
 msgstr "MEDICAMENTO"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
 #: report:doctor_referral:0
+#: report:doctor_referral_half:0
 msgid "REFERRAL CAUSE"
 msgstr "CAUSA DE REMISIÓN O INTERCONSULTA"
 
@@ -892,10 +1053,20 @@ msgstr "DURACIÓN (En días)"
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "Name:"
 msgstr "Nombre:"
 
@@ -984,10 +1155,20 @@ msgstr ""
 #: report:doctor_diagnostic_images:0
 #: report:doctor_disability:0
 #: report:doctor_other_procedures:0
-#: report:doctor_precription:0
+#: report:doctor_prescription:0
 #: report:doctor_referral:0
 #: report:doctor_surgical:0
 #: report:doctor_therapeutic:0
+#: report:doctor_prescription_half:0
+#: report:doctor_attentions_certificado:0
+#: report:doctor_attentions_certificado_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_attentions_otra_prescripcion_half:0
+#: report:doctor_attentions_otra_prescripcion:0
+#: report:doctor_clinical_laboratory_half:0
+#: report:doctor_diagnostic_images_half:0
+#: report:doctor_disability_half:0
+#: report:doctor_referral_half:0
 msgid "User type: Subsidiado"
 msgstr "Tipo de usuario: Subsidiado"
 
