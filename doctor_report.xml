@@ -3,7 +3,7 @@
     <data>
 
         <report auto="False" id="doctor_prescription" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_precription"
-                rml="l10n_co_doctor/report/doctor_prescription.rml" string="Prescription"
+                rml="l10n_co_doctor/report/doctor_prescription.rml" string="Prescripción"
                 usage="default"/>
 
          <report auto="False" id="doctor_prescription_half" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_prescription_half"
