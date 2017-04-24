@@ -121,4 +121,4 @@ class doctor_precription(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.doctor_prescription_half', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_prescription_half.rml',
-					  parser=doctor_precription,header=False)
+					  parser=doctor_precription, header=False)

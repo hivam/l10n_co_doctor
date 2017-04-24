@@ -92,6 +92,7 @@
     <paraStyle name="terp_default_Bold_8" rightIndent="0.0" leftIndent="0.0" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="terp_default_Bold_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="terp_default_Bold_Right_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="letra_salto_linea" fontName="Helvetica" fontSize="0.0" leading="13" alignment="LEFT"/>
     <images/>
   </stylesheet>
   <story>
@@ -130,29 +131,16 @@
 
     <blockTable colWidths="204.0,330.0" style="Table6">
       <tr>
-    <td>
+        <td>
           <para style="P6">Document: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
-        </td>
-        <td>
-          <para style="P6">Name: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
-    </td>
-      </tr>
-      <tr>
-        <td>
           <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
         </td>
         <td>
+          <para style="P6">Name: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
           <para style="P6">Age: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
-    </td>
-     </tr>
-     <tr>
-        <td>
-          <para style="P6">[[ '' ]]</para>
-        </td>
-        <td>
           <para style="P6">Insurer: [[ (o.patient_id.insurer.id) or removeParentNode('para')]]</para>
-    </td>
-     </tr>
+        </td>
+      </tr>
     </blockTable>
     <section>
         [[o.reason_consultation or o.motivo_consulta or removeParentNode('section') ]]
@@ -213,12 +201,12 @@
     </blockTable>
     <blockTable colWidths="84.0,450.0" style="Table6">
         <tr>
-        <para style="P4">[[ repeatIn(o.review_systems_id, 'line') ]]</para>
+          <para style="p6">[[ repeatIn(o.review_systems_id, 'line') ]]</para>
           <td>
-            <para style="terp_default_8">[[line.system_category.name]]</para>
+            <para style="p6">[[line.system_category.name]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[(line.review_systems) or 'Sin diligenciar']]</para>
+            <para style="p6">[[(line.review_systems) or 'Sin diligenciar']]</para>
           </td>
         </tr>
       </blockTable>
@@ -358,85 +346,44 @@
 
     <blockTable colWidths="133.0,133.0,134.0,134.0" style="Table6">
     [[select_etiqueta_uno(o.professional_id.user_id.id, 'cons-vita') or removeParentNode('blockTable')]]
-        <tr>
-     <td>
-            <para style="P2">Height and weight</para>
-         </td>
-         <td>
-            <para style="P2">Vital signs</para>
-         </td>
-         <td>
-            <para style="P2">Blood pressure</para>
-         </td>
-         <td>
-            <para style="P2">Temperature</para>
-         </td>
-        </tr>
-        <tr>
-     <td>
-            <para style="P3">Weight: [[ (o.weight) ]] kg</para>
-         </td>
-         <td>
-            <para style="P3">Frecuencia Cardiaca: [[ (o.heart_rate) ]] L/min</para>
-         </td>
-         <td>
-            <para style="P3">Systolic: [[ (o.systolic) ]] mmHg</para>
-         </td>
-         <td>
-            <para style="P3">Temperature: [[ (o.temperature) ]] °C</para>
-         </td>
-        </tr>
-        <tr>
-     <td>
-            <para style="P3">Height: [[ (o.height) ]] cm</para>
-         </td>
-         <td>
-            <para style="P3">Respiratory: [[ (o.respiratory_rate) ]] R/min</para>
-         </td>
-         <td>
-            <para style="P3">Diastolic: [[ (o.diastolic) ]] mmHg</para>
-         </td>
-         <td>
-            <para style="P2">SpO2</para>
-         </td>
-        </tr>
-        <tr>
-      <td>
-            <para style="P3">Body mass: [[ (o.body_mass_index) ]] kg/m²</para>
-         </td>
-         <td>
-            <para style="P3">[[ '' ]]</para>
-         </td>
-         <td>
-            <para style="P3">[[ '' ]]</para>
-         </td>
-         <td>
-            <para style="P3">Pulsioximetry: [[ (o.pulsioximetry) ]] %</para>
-         </td>
-        </tr>
+        
+      <tr>
+        <td>
+          <para style="P2">Height and weight</para>
+        </td>
+        <td>
+          <para style="P2">Vital signs</para>
+        </td>
+        <td>
+          <para style="P2">Blood pressure</para>
+        </td>
+        <td>
+          <para style="P2">Temperature</para>
+        </td>
+      </tr>
 
-        <tr>
-      <td>
-            <para style="P3">Superficie Corporal: [[ (o.superficie_corporal) ]] m²</para>
-         </td>
-         <td>
-            <para style="P3">[[ '' ]]</para>
-         </td>
-         <td>
-            <para style="P3">[[ '' ]]</para>
-         </td>
-         <td>
-            <para style="P3">[[ '' ]]</para>
-         </td>
-        </tr>
-
-
-
-
-
-
-
-
+      <tr>
+        <td>
+          <para style="P3">Weight: [[ (o.weight) ]] kg</para>
+          <para style="P3">Height: [[ (o.height) ]] cm</para>
+          <para style="P3">Body mass: [[ (o.body_mass_index) ]] kg/m²</para>
+          <para style="P3">Superficie Corporal: [[ (o.superficie_corporal) ]] m²</para>
+        </td>
+        <td>
+          <para style="P3">Frecuencia Cardiaca: [[ (o.heart_rate) ]] L/min</para>
+          <para style="P3">Respiratory: [[ (o.respiratory_rate) ]] R/min</para>
+        </td>
+        <td>
+          <para style="P3">Systolic: [[ (o.systolic) ]] mmHg</para>
+          <para style="P3">Diastolic: [[ (o.diastolic) ]] mmHg</para>
+        </td>
+        <td>
+          <para style="P3">Temperature: [[ (o.temperature) ]] °C</para>
+          <para style="letra_salto_linea">[[ 'H ' ]]</para>
+          <para style="P2">SpO2</para>
+          <para style="P3">Pulsioximetry: [[ (o.pulsioximetry) ]] %</para>
+        </td>
+      </tr>
       </blockTable>
 
     <section>
@@ -810,20 +757,15 @@
     [[ o.professional_id or removeParentNode('section') ]]
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
-    <td>
-          <para style="P6">Name: [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
-        </td>
         <td>
-          <para style="P6">Register N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
-    </td>
-      </tr>
-      <tr>
-    <td>
+          <para style="P6"><b>Name: </b> [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
+          <para style="P6"><b>Especialidad: </b> [[ (o.professional_id.speciality_id.name or (removeParentNode('para'))) ]]</para>
           <para style="P6"><b>Signature: [[ ''  ]] </b></para>
         </td>
         <td>
+          <para style="P6"><b>Register N°:</b> [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
           <para style="P6"><b>Stamp: [[ ''  ]] </b></para>
-    </td>
+        </td>
       </tr>
     </blockTable>
     </section>

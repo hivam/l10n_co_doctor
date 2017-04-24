@@ -129,28 +129,15 @@
     <blockTable colWidths="204.0,330.0" style="Table6">
       <tr>
         <td>
-            <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
-          </td>
-          <td>
-            <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
-          </td>
-      </tr>
-      <tr>
-        <td>
+          <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
           <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
         </td>
         <td>
+          <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
           <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
-    </td>
-     </tr>
-     <tr>
-        <td>
-          <para style="P6">[[ '' ]]</para>
-        </td>
-        <td>
           <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
-    </td>
-     </tr>
+        </td>
+      </tr>
     </blockTable>
 
 
@@ -201,27 +188,23 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">DATOS DEL MÉDICO</para>
+          <para style="P5">PHYSICIAN DATA</para>
         </td>
      </tr>
     </blockTable>
 
+    [[ o.professional_id or removeParentNode('section') ]]
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
-    <td>
-          <para style="P6">Nombre: [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
+        <td>
+          <para style="P6"><b>Name: </b> [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
+          <para style="P6"><b>Especialidad: </b> [[ (o.professional_id.speciality_id.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6"><b>Signature: [[ ''  ]] </b></para>
         </td>
         <td>
-          <para style="P6">Registro N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
-    </td>
-      </tr>
-      <tr>
-    <td>
-          <para style="P6"><b>Firma: [[ ''  ]] </b></para>
+          <para style="P6"><b>Register N°:</b> [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
+          <para style="P6"><b>Stamp: [[ ''  ]] </b></para>
         </td>
-        <td>
-          <para style="P6"><b>Sello: [[ ''  ]] </b></para>
-    </td>
       </tr>
     </blockTable>
   </story>

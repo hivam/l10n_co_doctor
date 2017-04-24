@@ -92,6 +92,8 @@
     <paraStyle name="terp_default_Bold_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="style_title" fontName="Helvetica-Bold" fontSize="12" leading="22" alignment="CENTER"/>
     <paraStyle name="terp_default_Bold_Right_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="tamano_letra" fontName="Helvetica" fontSize="9.0" leading="13" alignment="LEFT"/>
+    <paraStyle name="tamano_titulo" fontName="Helvetica-Bold" fontSize="12.0" leading="12" spaceBefore="8.0" spaceAfter="2.0" alignment="CENTER"/>
     <images/>
   </stylesheet>
   <story>
@@ -125,31 +127,25 @@
 
     <blockTable colWidths="204.0,330.0" style="Table6">
       <tr>
-		<td>
+		    <td>
           <para style="P6">Document: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
-        </td>
-        <td>
-          <para style="P6">Name: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
-		</td>
-      </tr>
-      <tr>
-        <td>
           <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
         </td>
         <td>
-          <para style="P6">EPS: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Name: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
           <para style="P6">Nº Afiliación: [[ (o.patient_id.nro_afiliacion or (removeParentNode('para'))) ]]</para>
-		  </td>
-     </tr>
+		    </td>
+      </tr>
     </blockTable>
 
   <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
         <td>
-          <para style="style_title">PRESCRIPCIÓN DE MEDICAMENTOS</para>
+          <para style="tamano_titulo">PRESCRIPCIÓN DE MEDICAMENTOS</para>
         </td>
         <td>
-          <para style="style_title">CANTIDAD Y FORMULA FARMACÉUTICA</para>
+          <para style="tamano_titulo">CANTIDAD Y FORMULA FARMACÉUTICA</para>
         </td>
      </tr>
     </blockTable>
@@ -163,31 +159,16 @@
     <blockTable colWidths="350.0,184.0" style="Table6">
         <tr>
      <td>
-            <para style="terp_default_8">[[ (line.drugs_id.atc_id.name) ]] </para>
+            <para style="p6">[[ (line.drugs_id.atc_id.name) ]] </para>
+            <para style="P6">[[ select_prescription_drugs(line.indicacion_tomar, line.quantity, line.measuring_unit_q.name, line.frequency, line.frequency_unit_n, line.duration, line.duration_period_n, line.administration_route_id.name) ]]</para>
+            <para style="p6">[[ (line.indications or (removeParentNode('para'))) ]] </para>
           </td>
           <td>
             <para style="P6">[[ (line.total_quantity) ]] [[ (line.measuring_unit_qt.name) ]] </para>
-            <para style="P6">[[ line.cantidad_total  ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]] [[ (line.drugs_id.drugs_concentration) ]]</para>
-   
+            <para style="tamano_letra">[[ line.cantidad_total  ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]] [[ (line.drugs_id.drugs_concentration) ]]</para>
           </td>
         </tr>
-        <tr>
-     <td>
 
-            <para style="P6">[[ select_prescription_drugs(line.indicacion_tomar, line.quantity, line.measuring_unit_q.name, line.frequency, line.frequency_unit_n, line.duration, line.duration_period_n, line.administration_route_id.name) ]]</para>
-          </td>
-          <td>
-            <para style="terp_default_8">[[  ]] </para>
-          </td>
-        </tr>
-        <tr>
-     <td>
-            <para style="terp_default_8">[[ (line.indications or (removeParentNode('para'))) ]] </para>
-          </td>
-          <td>
-            <para style="terp_default_8">[[ '' ]] </para>
-          </td>
-        </tr>
       </blockTable>
     </section>
 
@@ -199,22 +180,18 @@
      </tr>
     </blockTable>
 
+    [[ o.professional_id or removeParentNode('section') ]]
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
-		<td>
-          <para style="P6">Name: [[ (o.professional_id.professional.name or (removeParentNode('para'))) ]]</para>
+        <td>
+          <para style="P6"><b>Name: </b> [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
+          <para style="P6"><b>Especialidad: </b> [[ (o.professional_id.speciality_id.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6"><b>Signature: [[ ''  ]] </b></para>
         </td>
         <td>
-          <para style="P6">Register N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
-		</td>
-      </tr>
-      <tr>
-		<td>
-          <para style="P6"><b>Signature: [[ '' 	]] </b></para>
+          <para style="P6"><b>Register N°:</b> [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
+          <para style="P6"><b>Stamp: [[ ''  ]] </b></para>
         </td>
-        <td>
-          <para style="P6"><b>Stamp: [[ '' 	]] </b></para>
-		</td>
       </tr>
     </blockTable>
 <!--
