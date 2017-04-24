@@ -199,7 +199,7 @@
         </td>
      </tr>
     </blockTable>
-    <blockTable colWidths="84.0,450.0" style="Table6">
+    <blockTable colWidths="130.0,404.0" style="Table6">
         <tr>
           <para style="p6">[[ repeatIn(o.review_systems_id, 'line') ]]</para>
           <td>
@@ -214,7 +214,7 @@
 
     <section>
     [[o.otro_sintomas_revision_sistema or removeParentNode('section')]]
-    <blockTable colWidths="100.0,434.0" style="Table6">
+    <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
           <para style="p1">Otros Síntomas</para>
@@ -234,7 +234,7 @@
         </td>
      </tr>
     </blockTable>
-    <blockTable colWidths="120,414.0" style="Table6">
+    <blockTable colWidths="130.0,404.0" style="Table6">
         [[ o.past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
@@ -271,12 +271,12 @@
      </tr>
     </blockTable>
        
-    <blockTable colWidths="84.0,450.0" style="Table6">
+    <blockTable colWidths="130.0,404.0" style="Table6">
         [[ o.pathological_past_ids or removeParentNode('blockTable') ]]
         <tr>
         <td>
-          <para style="P4">[[ repeatIn(o.pathological_past_ids, 'line') ]]</para>
-          <para style="terp_default_8">[[ (line.diseases_id.code) ]]</para>
+          <para style="p1">[[ repeatIn(o.pathological_past_ids, 'line') ]]</para>
+          <para style="p1">[[ (line.diseases_id.code) ]]</para>
           </td>
           <td>
             <para style="terp_default_8">[[ (line.diseases_id.name) ]] </para>
@@ -308,12 +308,12 @@
      </tr>
     </blockTable>
 
-    <blockTable colWidths="84.0,450.0" style="Table6">
+    <blockTable colWidths="130.0,404.0" style="Table6">
         [[ o.drugs_past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
           <para style="P4">[[ repeatIn(o.drugs_past_ids, 'line') ]]</para>
-          <para style="terp_default_8">[[ (line.atc_id.code) ]]</para>
+          <para style="p4">[[ (line.atc_id.code) ]]</para>
           </td>
           <td>
             <para style="terp_default_8">[[ (line.atc_id.name) ]] </para>
@@ -396,15 +396,15 @@
      </tr>
     </blockTable>
 
-    <blockTable colWidths="84.0,450.0" style="Table6">
+    <blockTable colWidths="130.0,404.0" style="Table6">
         [[ o.attentions_exam_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
             <para style="P4">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>
-            <para style="terp_default_8">[[ (line.exam_category.name) ]]</para>
+            <para style="p4">[[ (line.exam_category.name) ]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.exam) or 'Sin diligenciar']] </para>
+            <para style="p4">[[ (line.exam) or 'Sin diligenciar']] </para>
           </td>
         </tr>
       </blockTable>
@@ -481,6 +481,8 @@
         </td>
      </tr>
     </blockTable>
+    </section>
+    <section>
     [[ o.diseases_ids or removeParentNode('section') ]]
 
       <para style="P4">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
@@ -488,7 +490,7 @@
       <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
      <td>
-            <para style="terp_header">[[ (line.diseases_id.name) ]]</para>
+            <para style="p6">[[ (line.diseases_id.name) ]]</para>
           </td>
      <td>
             <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
@@ -507,40 +509,27 @@
         </td>
      </tr>
     </blockTable>
+
     <section>
       [[ o.drugs_ids or removeParentNode('section') ]]
       <para style="P4">[[ repeatIn(o.drugs_ids, 'line') ]]</para>
       <blockTable colWidths="350.0,184.0" style="Table6">
         <tr>
           <td>
-            <para style="terp_default_8"> [[ '>' ]]  [[ line.drugs_id.atc_id.name ]] </para>
+            <para style="p6"> [[ '>' ]] <b> [[ line.drugs_id.atc_id.name ]] </b> </para>
+            <para style="p6"> [[ (select_prescription_drugs(line.indicacion_tomar, line.quantity, line.measuring_unit_q.name, line.frequency, line.frequency_unit_n, line.duration, line.duration_period_n, line.administration_route_id.name) or (removeParentNode('para')))]]</para>
+            <para style="p6">[[ (line.indications or (removeParentNode('para'))) ]] </para>
           </td>
           <td>
             <para style="terp_default_8">[[ (line.total_quantity) ]] [[ (line.measuring_unit_qt.name) ]] </para>
             <para style="terp_default_8">[[ line.cantidad_total  ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]] [[ (line.drugs_id.drugs_concentration) ]]</para>
           </td>
         </tr>
-        <tr>
-          <td>
-            <para style="terp_default_8"> [[ (select_prescription_drugs(line.indicacion_tomar, line.quantity, line.measuring_unit_q.name, line.frequency, line.frequency_unit_n, line.duration, line.duration_period_n, line.administration_route_id.name) or (removeParentNode('para')))]]</para>
-          </td>
-          <td>
-            <para style="terp_default_8">[[  ]] </para>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <para style="terp_default_8">[[ (line.indications or (removeParentNode('para'))) ]] </para>
-          </td>
-          <td>
-            <para style="terp_default_8">[[ '' ]] </para>
-          </td>
-        </tr>
       </blockTable>
     </section>
 
 
-    <section>
+  <section>
   <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -548,18 +537,20 @@
         </td>
      </tr>
     </blockTable>
-
+  </section>
+  <section>
     [[ o.diagnostic_images_ids or removeParentNode('section') ]]
 
       <para style="P4">[[ repeatIn(o.diagnostic_images_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-     <td>
-            <para style="terp_default_8">[[ (line.procedures_id.procedure_code) ]] [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
+          <td>
+            <para style="p6"> [[ (line.procedures_id.procedure_description) ]] </para>
+            <para style="p6"> [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.quantity) ]] </para>
+            <para style="p6">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -573,17 +564,20 @@
         </td>
      </tr>
     </blockTable>
+    </section>
+    <section>
     [[ o.clinical_laboratory_ids or removeParentNode('section') ]]
 
-      <para style="P4">[[ repeatIn(o.clinical_laboratory_ids, 'line') ]]</para>
+    <para style="P4">[[ repeatIn(o.clinical_laboratory_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-     <td>
-            <para style="terp_default_8">[[ (line.procedures_id.procedure_code) ]] [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
+          <td>
+            <para style="p6"> [[ (line.procedures_id.procedure_description) ]] </para>
+            <para style="p6"> [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.quantity) ]] </para>
+            <para style="p6">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -598,17 +592,21 @@
         </td>
      </tr>
     </blockTable>
+    </section>
+
+    <section>
     [[ o.surgical_procedure_ids or removeParentNode('section') ]]
 
       <para style="P4">[[ repeatIn(o.surgical_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-     <td>
-            <para style="terp_default_8">[[ (line.procedures_id.procedure_code) ]] [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
+          <td>
+            <para style="p6"> [[ (line.procedures_id.procedure_description) ]] </para>
+            <para style="p6"> [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.quantity) ]] </para>
+            <para style="p6">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -616,24 +614,28 @@
 
     <section>
     [[o.therapeutic_procedure_ids or removeParentNode('section') ]]
-  <blockTable colWidths="534.0" style="Table6">
+    <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
           <para style="P2">THERAPEUTIC ORDER</para>
         </td>
      </tr>
     </blockTable>
+    </section>
+
+    <section>
     [[ o.therapeutic_procedure_ids or removeParentNode('section') ]]
 
       <para style="P4">[[ repeatIn(o.therapeutic_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-     <td>
-            <para style="terp_default_8">[[ (line.procedures_id.procedure_code) ]] [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
+          <td>
+            <para style="p6"> [[ (line.procedures_id.procedure_description) ]]</para>
+            <para style="p6"> [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.quantity) ]] </para>
+            <para style="p6">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -641,13 +643,16 @@
 
     <section>
     [[o.other_procedure_ids or removeParentNode('section') ]]
-  <blockTable colWidths="534.0" style="Table6">
+    <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
           <para style="P2">HEALTH PROCEDURES ORDER</para>
         </td>
      </tr>
     </blockTable>
+    </section>
+
+    <section>
     [[ o.other_procedure_ids or removeParentNode('section') ]]
 
       <para style="P4">[[ repeatIn(o.other_procedure_ids, 'line') ]]</para>
@@ -655,10 +660,11 @@
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
      <td>
-            <para style="terp_default_8">[[ (line.procedures_id.procedure_code) ]] [[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
+            <para style="p6"> [[ (line.procedures_id.procedure_description) ]] </para>
+            <para style="p6">  [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.quantity) ]] </para>
+            <para style="p6">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -724,7 +730,10 @@
         </td>
      </tr>
     </blockTable>
+    </section>
 
+    <section>
+    [[o.disability_ids or removeParentNode('section') ]]
       <para style="P4">[[ repeatIn(o.disability_ids, 'line') ]]</para>
 
      <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
