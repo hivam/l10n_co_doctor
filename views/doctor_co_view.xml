@@ -669,6 +669,10 @@
 								<xpath expr="/form[@string='Attentions']/header/button[@string='Finish attention']" position="after">
 									<button string="Resumen historia" name="resumen_historia" type="object" class="oe_highlight" context="{'patient_id' : patient_id}"/>
 
+									<button string="Imprirmir Informes" name="button_imprimir_informes" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
+
+
+
 									<button string="Actualizar edad" name="actualizar_edad" type="object" class="oe_highlight" attrs="{'invisible':[ ('inv_boton_edad','=',False)]}"/>
 								</xpath>
 								
@@ -1163,6 +1167,62 @@
 				</record>
 
 
+
+
+				<!-- doctor tiempo_espacio Form View -->
+				<record model="ir.ui.view" id="view_doctor_list_report_form">
+						<field name="name">Impresión de Informes</field>
+						<field name="model">doctor.list_report</field>
+						<field name="arch" type="xml">
+							<form string="Impresión de Informes" version="7.0">
+								<header>
+                    				<button string="Imprimir" name="button_confirm_note" type="object" class="oe_highlight"/>
+               				 	</header>		
+               				 	<group col='4'>		
+
+               				 	<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Informes Completos</legend>
+										<group col="2" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration">
+											<field name="reporte_prescripcion"/>
+											<field name="reporte_otra_prescripcion"/>
+											<field name="reporte_laboratorio_clinico"/>
+											<field name="reporte_imagenes_diagnosticas"/>
+											<field name="reporte_procedmientos_quirurgicos"/>
+											<field name="reporte_procedimientos_terapeuticos"/>
+											<field name="reporte_otros_procedimientos"/>
+											<field name="reporte_interconsulta"/>
+											<field name="reporte_incapacidad"/>
+											<field name="reporte_atencion"/>
+											<field name="reporte_recomendaciones"/>
+											<field name="reporte_informes_certificados"/>
+										</group>
+									</fieldset>		
+									<fieldset class="fieldset_margen">
+										<legend class="texto_legend">Informes Media Carta</legend>
+										<group col="2" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration">
+											<field name="reporte_prescripcion_media_carta"/>
+											<field name="reporte_otra_prescripcion_media_carta"/>
+											<field name="reporte_laboratorio_clinico_media_carta"/>
+											<field name="reporte_imagenes_diagnosticas_media_carta"/>
+											<field name="reporte_interconsulta_media_carta"/>
+											<field name="reporte_incapacidad_media_carta"/>
+											<field name="reporte_informes_certificados_media_carta"/>
+										</group>
+									</fieldset>					
+
+								</group>										
+							</form>
+						</field>
+				</record>
+
+
+				<!-- doctor list_report Action -->
+				<record model="ir.actions.act_window" id="action_doctor_list_report">
+						<field name="name">Imprimir Informes</field>
+						<field name="res_model">doctor.list_report</field>
+						<field name="view_type">form</field>
+						<field name="view_mode">form</field>
+				</record>
 
 				<!-- doctor tiempo_espacio Action -->
 				<record model="ir.actions.act_window" id="action_doctor_tiempo_espacio">
