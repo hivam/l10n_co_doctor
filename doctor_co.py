@@ -1967,6 +1967,18 @@ class doctor_attentions_co(osv.osv):
 	]
 
 
+	def obtener_paciente(self, context):
+
+		id_paciente = None
+
+		if context.get('active_model') == "doctor.patient":
+			id_paciente = context.get('default_patient_id')
+		else:
+			id_paciente = context.get('patient_id')
+
+		return id_paciente	
+
+
 	def _get_creador(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
@@ -2053,6 +2065,9 @@ class doctor_attentions_co(osv.osv):
 		'valor_consulta':fields.float('valor consulta'),
 		'couta_moderadora':fields.float('cuota moderadora'),
 		'valor_pagar':fields.float('valor a pagar'),
+
+		'ref': fields.char('Identificacion', readonly=True),
+		'tdoc': fields.char('tdoc', readonly=True),
 	}
 
 
@@ -2068,19 +2083,14 @@ class doctor_attentions_co(osv.osv):
 	def default_get(self, cr, uid, fields, context=None):
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 
-		patient_id = None
+		patient_id = self.obtener_paciente(context)
 		registro = []
-		if 'default_patient_id' in context:
-			patient_id = context.get('default_patient_id')
-		else:
-			if 'patient_id' in context:
-				patient_id = context.get('patient_id')
 
-
-		_logger.info(patient_id)
 
 		if patient_id:
 
+			ref = self.pool.get('doctor.patient').browse(cr,uid,patient_id,context=context).ref
+			tdoc = self.pool.get('doctor.patient').browse(cr,uid,patient_id,context=context).tdoc
 			modelo_buscar = self.pool.get('ir.attachment')
 
 			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', patient_id)], context=context)
@@ -2089,6 +2099,9 @@ class doctor_attentions_co(osv.osv):
 				
 				for datos in modelo_buscar.browse(cr, uid, adjuntos_id, context=context):
 					registro.append((0,0,{'name' : datos.name, 'datas' : datos.datas})) 
+
+			res['ref'] = ref
+			res['tdoc'] = self.pool.get('doctor.doctor').tipo_documento(tdoc)
 
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
