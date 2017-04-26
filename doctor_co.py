@@ -2162,6 +2162,8 @@ class doctor_attentions_co(osv.osv):
 			numero_factura = 0
 			valor_total = None
 			cuota_moderadora = None
+			orden_name = None
+			factura_id = None
 			res_user_id = self.pool.get('res.users').search(cr, uid, [('id', '=', uid)], context=context)
 			for compania in self.pool.get('res.users').browse(cr, uid, res_user_id, context=context):
 				codigo_prestador = compania.company_id.cod_prestadorservicio
@@ -2171,9 +2173,13 @@ class doctor_attentions_co(osv.osv):
 				procedimiento_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', cita_id)], context=context)
 			orden_id = self.pool.get('sale.order').search(cr, uid,[('origin', '=', vals['origin'])], context=context)
 
-			orden_name = self.pool.get('sale.order').browse(cr, uid, orden_id,context=context)[0].name
+			if orden_id:
 
-			factura_id = self.pool.get('account.invoice').search(cr, uid, [('origin', '=', orden_name)], context=context)
+				orden_name = self.pool.get('sale.order').browse(cr, uid, orden_id,context=context)[0].name
+
+			if orden_name:
+
+				factura_id = self.pool.get('account.invoice').search(cr, uid, [('origin', '=', orden_name)], context=context)
 
 			if procedimiento_id:
 				for procedimiento in self.pool.get('doctor.appointment.procedures').browse(cr, uid, procedimiento_id, context=context):
