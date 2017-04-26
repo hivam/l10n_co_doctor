@@ -2252,6 +2252,24 @@ class doctor_attentions_co(osv.osv):
 
 		return True
 
+	def button_imprimir_informes(self, cr, uid, ids, context=None):
+		data_obj = self.pool.get('ir.model.data')
+		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_form')
+		view_id = data_obj.browse(cr, uid, result).res_id
+
+		return {
+			'type': 'ir.actions.act_window',
+			'name': 'Imprimir Informes',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_id': False,
+			'res_model': 'doctor.list_report',
+			'context': context or None,
+			'view_id': [view_id] or False,
+			'nodestroy': False,
+			'target': 'new'
+		}
+
 doctor_attentions_co()
 
 
@@ -3431,6 +3449,38 @@ class doctor_patient_note(osv.osv):
 
 
 doctor_patient_note()
+
+
+class doctor_list_report(osv.osv):
+
+	_name= 'doctor.list_report'
+
+	_columns = {
+		'reporte_prescripcion': fields.boolean(u'Prescripción'),
+		'reporte_otra_prescripcion': fields.boolean(u'Otra Prescripción'),
+		'reporte_laboratorio_clinico': fields.boolean(u'Examen de Laboratorio Clinico'),
+		'reporte_imagenes_diagnosticas': fields.boolean(u'Imágenes Dianósticas'),
+		'reporte_procedmientos_quirurgicos': fields.boolean(u'Procedimientos Quirurgícos'),
+		'reporte_procedimientos_terapeuticos': fields.boolean(u'Procedimientos Terapéuticos'),
+		'reporte_otros_procedimientos': fields.boolean('Otros Procedimientos'),
+		'reporte_interconsulta': fields.boolean(u'Remisión o Interconsulta'),
+		'reporte_incapacidad': fields.boolean('Incapacidad'),
+		'reporte_atencion': fields.boolean(u'HC - Atención'),
+		'reporte_recomendaciones': fields.boolean('Recomendaciones'),
+		'reporte_informes_certificados': fields.boolean(u'Informes y Certificados'),
+
+		'reporte_prescripcion_media_carta': fields.boolean(u'Prescripción (Media Carta)'),
+		'reporte_otra_prescripcion_media_carta': fields.boolean(u'Otra Prescripción (Media Carta)'),
+		'reporte_laboratorio_clinico_media_carta': fields.boolean(u'Examen de Laboratorio Clinico (Media Carta)'),
+		'reporte_imagenes_diagnosticas_media_carta': fields.boolean(u'Imágenes Dianósticas (Media Carta)'),
+		'reporte_interconsulta_media_carta': fields.boolean(u'Remisión o Interconsulta (Media Carta)'),
+		'reporte_incapacidad_media_carta': fields.boolean('Incapacidad (Media Carta)'),
+		'reporte_informes_certificados_media_carta': fields.boolean('Informes y Certificados (Media Carta)'),
+
+	}
+
+
+doctor_list_report()
 
 class doctor_otra_prescripcion(osv.osv):
 
