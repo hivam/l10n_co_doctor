@@ -84,10 +84,13 @@ class doctor_patient_co(osv.osv):
 
 	#Niveles de estudio
 	nivel_estudio = [
-		('1', 'PREGRADO'),
-		('2', 'POSGRADO'),
-		('3', u'MAESTRÍAS'),
-		('4', u'ESPECIALIZACIÓN'),
+		('1', 'JARDIN'),
+		('2', 'PRIMARIA'),
+		('3', 'SECUNDARIA'),
+		('4', 'PREGRADO'),
+		('5', 'POSGRADO'),
+		('6', u'MAESTRÍAS'),
+		('7', u'ESPECIALIZACIÓN'),
 	]
 
 	#Lateralidad
@@ -566,6 +569,7 @@ class doctor_appointment_co(osv.osv):
 	]
 
 	_columns = {
+		'create_date': fields.datetime(u'Fecha Creación'),
 		'contract_id':  fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
 										states={'invoiced': [('readonly', True)]},),
@@ -919,7 +923,6 @@ class doctor_appointment_co(osv.osv):
 						data_appointment['octubre'] = vals['octubre']
 						data_appointment['noviembre'] = vals['noviembre']
 						data_appointment['diciembre'] = vals['diciembre']
-
 						#Se ejecuta la creacion de las citas
 						cita_id = super(doctor_appointment_co,self).create(cr, uid, data_appointment, context=context)
 
@@ -3436,7 +3439,7 @@ class doctor_otra_prescripcion(osv.osv):
 	_inherit = 'product.product'
 
 	_columns = {
-		'is_medicamento_prescripcion': fields.boolean('¿Es un medicamento / otro elemento?')
+		'is_medicamento_prescripcion': fields.boolean(u'¿Es un medicamento / otro elemento?')
 	}
 
 

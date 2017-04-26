@@ -7,7 +7,7 @@
                 usage="default"/>
 
          <report auto="False" id="doctor_prescription_half" model="doctor.attentions" groups="doctor.group_doctor_physician" name="doctor_prescription_half"
-                rml="l10n_co_doctor/report/doctor_prescription_half.rml" string="Prescription (Media Carta)"
+                rml="l10n_co_doctor/report/doctor_prescription_half.rml" string="Prescripción (Media Carta)"
                 usage="default"/>
 
         <report auto="False" id="doctor_attentions_medicamento_otro" model="doctor.attentions" name="doctor_attentions_otra_prescripcion"
