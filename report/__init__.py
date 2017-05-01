@@ -39,3 +39,4 @@ import doctor_disability_half
 import doctor_clinical_laboratory_half
 import doctor_diagnostic_images_half
 import doctor_referral_half
+import doctor_attention_report

@@ -78,6 +78,10 @@
                 rml="l10n_co_doctor/report/doctor_attentions_certificado_half.rml" string="Informes y Certificados (Media Carta)"
                 usage="default"/>
 
+        <report auto="False" id="doctor_attention_report" model="doctor.list_report" name="doctor_attention_report"
+                rml="l10n_co_doctor/report/doctor_attention_report.rml" string="Hc completa"
+                usage="default"/>
+
         <report auto="False" id="doctor_account_voucher" model="account.voucher" name="doctor_account_voucher"
                 rml="l10n_co_doctor/report/doctor_account_voucher.rml" string="Recibo Copago"
                 usage="default"/>

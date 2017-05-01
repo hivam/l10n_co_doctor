@@ -1873,6 +1873,7 @@ class doctor_appointment_co(osv.osv):
 		if agenda_id:
 
 			fecha_agenda= self.pool.get('doctor.schedule').browse(cr, uid, agenda_id, context).date_begin
+			fecha_inicio_cita=None
 			_logger.info('la fecha de la agenda')
 			_logger.info(fecha_agenda)
 
@@ -1882,11 +1883,12 @@ class doctor_appointment_co(osv.osv):
 			dia_cita= str(time_begin)[8:11]
 			mes_cita= str(time_begin)[5:7]
 
-			fecha_inicio= datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
-			diferencia_dias=int(dia_agenda) - int(dia_cita)
-			diferencia_mes= int(mes_agenda) - int(mes_cita) 
-			fecha_inicio_cita=fecha_inicio + timedelta(days=diferencia_dias)
-			fecha_inicio_cita = fecha_inicio_cita.strftime("%Y-%m-%d %H:%M:%S")
+			if time_begin:
+				fecha_inicio= datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
+				diferencia_dias=int(dia_agenda) - int(dia_cita)
+				diferencia_mes= int(mes_agenda) - int(mes_cita) 
+				fecha_inicio_cita=fecha_inicio + timedelta(days=diferencia_dias)
+				fecha_inicio_cita = fecha_inicio_cita.strftime("%Y-%m-%d %H:%M:%S")
 
 
 			#res['value']['time_begin']= fecha_inicio_cita
@@ -2050,6 +2052,7 @@ class doctor_attentions_co(osv.osv):
 		'valor_consulta':fields.float('valor consulta'),
 		'couta_moderadora':fields.float('cuota moderadora'),
 		'valor_pagar':fields.float('valor a pagar'),
+		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),
 	}
 
 
@@ -3467,8 +3470,54 @@ class doctor_list_report(osv.osv):
 		'reporte_interconsulta_media_carta': fields.boolean(u'Remisión o Interconsulta (Media Carta)'),
 		'reporte_incapacidad_media_carta': fields.boolean('Incapacidad (Media Carta)'),
 		'reporte_informes_certificados_media_carta': fields.boolean('Informes y Certificados (Media Carta)'),
+		'reporte_informes_certificados_media_carta': fields.boolean('Informes y Certificados (Media Carta)'),
+		'professional_id': fields.many2one('doctor.professional', 'Doctor', required=True),
+		'attentions_ids': fields.one2many('doctor.attentions', 'list_report_id', 'Attentions'),
+		'patient_id': fields.many2one('doctor.patient', 'Patient',),
 
 	}
+
+	
+	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
+	def onchange_cargar_atenciones(self, cr, uid, ids, patient_id, professional_id, context=None):
+
+		atenciones=''
+		if patient_id and professional_id:
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+
+		return {'value': {'attentions_ids': atenciones}}
+
+	
+
+	def button_imprimir_algunos_informes(self, cr, uid, ids, context=None):
+		_logger.info(ids)
+		_logger.info(context)
+		return self.export_report_print(cr, uid, ids, 'doctor_attention')
+	def onchange_imprimir_algunos_informes(self, cr, uid, ids, report_uno, report_dos, context=None):
+		_logger.info(report_uno)
+		_logger.info(report_dos)
+		_logger.info('imprimir')
+		return self.export_report_print(uid, ids, 'doctor_attention')
+	
+
+	def export_report_print(self, cr, uid, ids, name_report, context=None):
+		if context is None:
+			context = {}
+		data = self.read(cr, uid, ids)[0]
+		_logger.info('entro')
+		_logger.info(data)
+		datas = {
+			'ids': ids,
+			'model': 'doctor.list_report',
+			'form': data
+			}
+		_logger.info(datas)
+		return {
+			'type': 'ir.actions.report.xml',
+			'report_name': 'doctor_attention_report',
+			
+		}
+	
 
 
 doctor_list_report()
