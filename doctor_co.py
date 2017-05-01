@@ -84,10 +84,13 @@ class doctor_patient_co(osv.osv):
 
 	#Niveles de estudio
 	nivel_estudio = [
-		('1', 'PREGRADO'),
-		('2', 'POSGRADO'),
-		('3', u'MAESTRÍAS'),
-		('4', u'ESPECIALIZACIÓN'),
+		('1', 'JARDIN'),
+		('2', 'PRIMARIA'),
+		('3', 'SECUNDARIA'),
+		('4', 'PREGRADO'),
+		('5', 'POSGRADO'),
+		('6', u'MAESTRÍAS'),
+		('7', u'ESPECIALIZACIÓN'),
 	]
 
 	#Lateralidad
@@ -566,6 +569,7 @@ class doctor_appointment_co(osv.osv):
 	]
 
 	_columns = {
+		'create_date': fields.datetime(u'Fecha Creación'),
 		'contract_id':  fields.many2one('doctor.contract.insurer', 'Contrato',required=False),
 		'insurer_id': fields.many2one('doctor.insurer', "insurer", required=False,
 										states={'invoiced': [('readonly', True)]},),
@@ -919,7 +923,6 @@ class doctor_appointment_co(osv.osv):
 						data_appointment['octubre'] = vals['octubre']
 						data_appointment['noviembre'] = vals['noviembre']
 						data_appointment['diciembre'] = vals['diciembre']
-
 						#Se ejecuta la creacion de las citas
 						cita_id = super(doctor_appointment_co,self).create(cr, uid, data_appointment, context=context)
 
@@ -1966,6 +1969,18 @@ class doctor_attentions_co(osv.osv):
 	]
 
 
+	def obtener_paciente(self, context):
+
+		id_paciente = None
+
+		if context.get('active_model') == "doctor.patient":
+			id_paciente = context.get('default_patient_id')
+		else:
+			id_paciente = context.get('patient_id')
+
+		return id_paciente	
+
+
 	def _get_creador(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
@@ -2053,6 +2068,9 @@ class doctor_attentions_co(osv.osv):
 		'couta_moderadora':fields.float('cuota moderadora'),
 		'valor_pagar':fields.float('valor a pagar'),
 		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),
+		'ref': fields.char('Identificacion', readonly=True),
+		'tdoc': fields.char('tdoc', readonly=True),
+
 	}
 
 
@@ -2068,19 +2086,14 @@ class doctor_attentions_co(osv.osv):
 	def default_get(self, cr, uid, fields, context=None):
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 
-		patient_id = None
+		patient_id = self.obtener_paciente(context)
 		registro = []
-		if 'default_patient_id' in context:
-			patient_id = context.get('default_patient_id')
-		else:
-			if 'patient_id' in context:
-				patient_id = context.get('patient_id')
 
-
-		_logger.info(patient_id)
 
 		if patient_id:
 
+			ref = self.pool.get('doctor.patient').browse(cr,uid,patient_id,context=context).ref
+			tdoc = self.pool.get('doctor.patient').browse(cr,uid,patient_id,context=context).tdoc
 			modelo_buscar = self.pool.get('ir.attachment')
 
 			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', patient_id)], context=context)
@@ -2089,6 +2102,9 @@ class doctor_attentions_co(osv.osv):
 				
 				for datos in modelo_buscar.browse(cr, uid, adjuntos_id, context=context):
 					registro.append((0,0,{'name' : datos.name, 'datas' : datos.datas})) 
+
+			res['ref'] = ref
+			res['tdoc'] = self.pool.get('doctor.doctor').tipo_documento(tdoc)
 
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
@@ -2165,6 +2181,8 @@ class doctor_attentions_co(osv.osv):
 			numero_factura = 0
 			valor_total = None
 			cuota_moderadora = None
+			orden_name = None
+			factura_id = None
 			res_user_id = self.pool.get('res.users').search(cr, uid, [('id', '=', uid)], context=context)
 			for compania in self.pool.get('res.users').browse(cr, uid, res_user_id, context=context):
 				codigo_prestador = compania.company_id.cod_prestadorservicio
@@ -2174,9 +2192,13 @@ class doctor_attentions_co(osv.osv):
 				procedimiento_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', cita_id)], context=context)
 			orden_id = self.pool.get('sale.order').search(cr, uid,[('origin', '=', vals['origin'])], context=context)
 
-			orden_name = self.pool.get('sale.order').browse(cr, uid, orden_id,context=context)[0].name
+			if orden_id:
 
-			factura_id = self.pool.get('account.invoice').search(cr, uid, [('origin', '=', orden_name)], context=context)
+				orden_name = self.pool.get('sale.order').browse(cr, uid, orden_id,context=context)[0].name
+
+			if orden_name:
+
+				factura_id = self.pool.get('account.invoice').search(cr, uid, [('origin', '=', orden_name)], context=context)
 
 			if procedimiento_id:
 				for procedimiento in self.pool.get('doctor.appointment.procedures').browse(cr, uid, procedimiento_id, context=context):
@@ -3529,7 +3551,7 @@ class doctor_otra_prescripcion(osv.osv):
 	_inherit = 'product.product'
 
 	_columns = {
-		'is_medicamento_prescripcion': fields.boolean('¿Es un medicamento / otro elemento?')
+		'is_medicamento_prescripcion': fields.boolean(u'¿Es un medicamento / otro elemento?')
 	}
 
 

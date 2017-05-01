@@ -184,6 +184,7 @@
     [[ o.professional_id or removeParentNode('section') ]]
     <blockTable colWidths="350.0,184.0" style="Table6">
       <tr>
+<<<<<<< HEAD
         <td>
           <para style="P6"><b>Name: </b> [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
           <para style="P6"><b>Especialidad: </b> [[ (o.professional_id.speciality_id.name or (removeParentNode('para'))) ]]</para>
@@ -193,6 +194,22 @@
           <para style="P6"><b>Register N°:</b> [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
           <para style="P6"><b>Stamp: [[ ''  ]] </b></para>
         </td>
+=======
+    <td>
+          <para style="tamano_letra_report">Nombre: [[ (o.professional_id.username or (removeParentNode('para'))) ]]</para>
+        </td>
+        <td>
+          <para style="tamano_letra_report">Registro N°: [[ (o.professional_id.professional_card or (removeParentNode('para'))) ]]</para>
+    </td>
+      </tr>
+      <tr>
+    <td>
+          <para style="tamano_letra_report"><b>Firma: [[ ''  ]] </b></para>
+        </td>
+        <td>
+          <para style="tamano_letra_report"><b>Sello: [[ ''  ]] </b></para>
+    </td>
+>>>>>>> e70176a0598b6cbb3dd1a21bfe3066d2d1d4a056
       </tr>
     </blockTable>
 <!--

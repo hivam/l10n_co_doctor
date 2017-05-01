@@ -3,7 +3,11 @@
   <template pageSize="(22.02 cm, 12.59 cm)" title="Gastos" author="hivam" allowSplitting="20">
     <pageTemplate id="first">
       <frame id="first" x1="4cm" y1="3cm" width="20cm" height="14cm"/>
+<<<<<<< HEAD
       <frame id="first" x1="1.3cm" y1="-9.5cm" height="21.7cm" width="19.0cm"/>
+=======
+      <frame id="first" x1="1.3cm" y1="-10cm" height="21.7cm" width="19.0cm"/>>>>>>>> pruebas
+>>>>>>> e70176a0598b6cbb3dd1a21bfe3066d2d1d4a056
     </pageTemplate>
   </template>
   <stylesheet>
@@ -98,7 +102,7 @@
     <images/>
   </stylesheet>
   <story>
-  <nextFrame/>
+<nextFrame/>
   <para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
     <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
 

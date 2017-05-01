@@ -12,9 +12,10 @@
 						<field name="ref"/>
 						<field name="insurer"/>
 						<separator/>
-						<filter name="patient" string="Nombre" domain="[('patient','=',patient)]" help="Nombre" />
-						<filter name="ref" string="Identificacion" domain="[('ref','=',ref)]" help="Identificacion" />
-						<filter name="insurer" string="Aseguradora" domain="[('insurer','=',insurer)]" help="Aseguradora" />
+						<filter name="m_sex" string="Pacientes Hombres" domain="[('sex','=','m')]" help="Lista de pacientes hombres registrados en el sistema" />
+
+						<filter name="f_sex" string="Pacientes Mujeres" domain="[('sex','=','f')]" help="Lista de pacientes mujeres registradas en el sistema" />
+						
 				</search>
 				</field>
 				</record>
@@ -413,6 +414,23 @@
 						</field>
 				</record>
 
+				<!-- appointment Tree View -->
+				<record id="view_doctor_appointment_tree_inherit" model="ir.ui.view">
+        			<field name="name">Appointment</field>
+        			<field name="model">doctor.appointment</field>
+        			<field name="inherit_id" ref="doctor.view_doctor_appointment_tree"/>
+        			<field name="type">tree</field>
+        			<field eval="2" name="priority"/>
+        			<field name="arch" type="xml">
+          			<data>
+            			<xpath expr="//field[@name='schedule_id']" position="before">
+            				<field name="create_date" invisible="1"/>
+            			</xpath>
+          			</data>
+        			</field>
+       			</record>
+
+
 
 				<record id="view_doctor_appointment_type_from_view" model="ir.ui.view">
 						<field name="name">Tipo Cita</field>
@@ -582,42 +600,6 @@
 						<field name="args" eval="'()'"/>
 				</record>
 			
-				<!-- Modificando la busqueda en atencion anadiendo cambios -->
-				<record id="attentions_filter" model="ir.ui.view">
-				<field name="name">Attentions</field>
-				<field name="model">doctor.attentions</field>
-				<field name="arch" type="xml">
-				<search string="Search Attentions" version="7.0">
-						<field name="patient_id"/>
-						<field name="professional_id"/>
-						<field name="speciality"/>
-						<field name="diseases_ids"/>
-						<field name="date_attention"/>
-						
-						<separator/>
-						<filter name="patient_id" string="Nombre" domain="[('patient_id','=',patient_id)]" help="Nombre" />
-
-						<filter name="professional_id" string="Doctor" domain="[('professional_id','=',professional_id)]" help="Doctor" />
-
-						<filter name="speciality" string="Especialidad" domain="[('speciality','=',speciality)]" help="Especialidad" />
-
-						<filter name="diseases_ids" string="Diagnostico" domain="[('diseases_idsdiseases_ids','=',diseases_ids)]" help="Diagnostico" />
-
-						<group expand="0" string= "Agrupar Por...">
-								<filter string="Professional" domain="[]" context="{'group_by' : 'professional_id'}" />
-								<separator/>
-
-								<filter string="Atenciones Hoy"
-										name="atenciones_hoy"
-										domain="[('date_attention','&gt;=', (context_today()).strftime('%%m-%%d-%%Y 00:00:00')),('date_attention','&lt;=',(context_today()).strftime('%%m-%%d-%%Y 23:59:59'))]"
-										help="Dia Actual"/>
-								<filter string="Atenciones Meses" domain="[]" context="{'group_by' : 'date_attention'}" />
-						</group>
-
-				</search>
-				</field>
-				</record>
-
 
 				<!-- doctor disability Form View -->
 				<record model="ir.ui.view" id="view_doctor_attentions_disability_form_inherit">
@@ -646,6 +628,7 @@
 					</field>
 				</record>
 
+			
 				<!-- Attentions Form View -->
 				<record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
 						<field name="name">Attentions</field>
@@ -655,6 +638,16 @@
 						<field name="arch" type="xml">
 								
 
+
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/group[@colspan='4']/fieldset[1]/group[@col='2']/group[@col='1']/group[@col='2']" position="inside">
+									<br/>
+									<br/>
+									<group colspan="6" col="2">
+										<field name='tdoc' style="width:10%%" nolabel="1"/>
+										<field name='ref' style="width:10%%" nolabel="1"/>
+									</group>
+								</xpath>									
+	
 
 								<xpath expr="//form/group/group" position="after">
 								<group colspan='2' >
@@ -890,7 +883,7 @@
 
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" position="replace"/>
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" posgition="replace"/>
 
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[5]/group[@colspan='4']/notebook[@colspan='4']//page[2]" position="attributes">
 										 <attribute name="string">Prescripcion</attribute>
@@ -1013,7 +1006,7 @@
 								</notebook>
 							</xpath>
 						</field>
-				</record>  
+				</record>
 
 				<!-- Secuencia para la creacion de los nombres de los seguimientos paraclinicos -->
 				<record id="seq_type_name_paraclinical" model="ir.sequence.type">

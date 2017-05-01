@@ -86,7 +86,7 @@ class doctor(osv.osv):
 			finalidad_consulta = '10'
 		if cr.dbname == 'DrCaceres':
 			finalidad_consulta = '08'
-			
+
 		return finalidad_consulta
 
 	def causa_externa(self, cr, uid, context=None):
@@ -139,3 +139,27 @@ class doctor(osv.osv):
 		else :
 			_logger.warning('No se encontro el modelo (%s) , no se retornara el ID' , model)
 			return None
+
+
+	def tipo_documento(self, tipo):
+
+		nombre_tipo = None
+
+		if tipo == '13':
+			nombre_tipo = 'CC'
+		elif tipo == '11':
+			nombre_tipo = 'RC'
+		elif tipo == '12':
+			nombre_tipo = 'TI'
+		elif tipo == '21':
+			nombre_tipo = 'CE'
+		elif tipo == '41':
+			nombre_tipo = 'Pasaporte'
+		elif tipo == 'NU':
+			nombre_tipo = 'NU'
+		elif tipo == 'AS':
+			nombre_tipo = 'AS'
+		elif tipo == 'MS':
+			nombre_tipo = 'MS'
+
+		return nombre_tipo
