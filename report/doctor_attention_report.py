@@ -43,6 +43,8 @@ class doctor_attention_report(report_sxw.rml_parse):
 			'select_action_id': self.select_action_id,
 			'select_prescription_drugs': self.select_prescription_drugs,
 			'historia_control_instalada': self.historia_control_instalada,
+			'cargando_atenciones': self.cargando_atenciones,
+			
 		})
 
 	def select_type(self, tipo_usuario):
@@ -189,6 +191,11 @@ class doctor_attention_report(report_sxw.rml_parse):
 		bandera = False
 		if self.pool.get('doctor.doctor').modulo_instalado(self.cr, self.uid, 'doctor_control', context=context):
 			bandera = True
+		return bandera
+
+	def cargando_atenciones(self, attentions):
+		_logger.info('********************************************************************')
+		_logger.info(attentions)
 		return bandera
 
 

@@ -662,10 +662,10 @@
 								<xpath expr="/form[@string='Attentions']/header/button[@string='Finish attention']" position="after">
 									<button string="Resumen historia" name="resumen_historia" type="object" class="oe_highlight" context="{'patient_id' : patient_id}"/>
 
-									<!-- Boton aun no acabado
+									
 									<button string="Imprirmir Informes" name="button_imprimir_informes" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
 
-									-->
+									
 
 									<button string="Actualizar edad" name="actualizar_edad" type="object" class="oe_highlight" attrs="{'invisible':[ ('inv_boton_edad','=',False)]}"/>
 								</xpath>
@@ -688,7 +688,6 @@
 										<field name="otro_sintomas_revision_sistema"/>
 										<label for="plantilla_sintomas_cuestionario_id" string="Plantillas"/>
 										<field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' domain="[('tipo_plantilla', '=', '04')]"/>
-
 								</field>
 
 								<field name="attentions_past_ids" position="after">
@@ -1170,35 +1169,47 @@
 						<field name="arch" type="xml">
 							<form string="Impresión de Informes" version="7.0">
 								<header>
-                    				<button string="Imprimir" name="button_imprimir_algunos_informes" type="object" class="oe_highlight"/>
+                    				<button string="Imprimir Historia" name="button_imprimir_algunos_informes" type="object" class="oe_highlight"/>
                				 	</header>	
-               				 	<group col='2'>
-               				 	<field name="professional_id"/>
-               				 	
-               				 	<field name="patient_id" on_change="onchange_cargar_atenciones(patient_id, professional_id)"/>
-               				 	
-		               			<field name="attentions_ids" nolabel="1" readonly="1">
-		                            <tree string="Attentions" >
-		                                <field name="date_attention"/>
-		                                <field name="professional_id"/>
-		                                <field name="speciality"/>
-		                                <field name="state"/>
-		                            </tree>
-		                            <form string="Attentions" nolabel="1" readonly="1" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo">
-		                                <group>
-		                                    <field name="date_attention"/>
-		                                    <field name="number"/>
-		                                    <field name="professional_id"/>
-		                                    <field name="speciality"/>
-		                                    <field name="origin"/>
-		                                    <field name="state"/>
-		                                </group>
-		                            </form>
-		                        </field>
-		                    
-		                        </group>	
-               				 	<group col='4'>		
 
+               				 	<fieldset class="fieldset_margen">
+									<legend class="texto_legend">Datos Historia Clínica Completa</legend>
+	               				 	<group col='2'>
+	               				 	<field name="professional_id"/>
+	               				 	
+	               				 	<field name="patient_id" on_change="onchange_cargar_atenciones(patient_id, professional_id)"/>
+
+	               				 	<field name="fecha_inicio" col="2"/>
+	               				 	<field name="fecha_fin" col="2"/>
+	               				 	</group>
+
+               				 	</fieldset>	
+
+               				 	<fieldset class="fieldset_margen">
+									<legend class="texto_legend">Lista de Atenciones</legend>
+	               				 	<group col='4'>
+				               			<field name="attentions_ids" nolabel="1" >
+				                            <tree string="Attentions" editable="bottom">
+				                                <field name="date_attention"/>
+				                                <field name="professional_id"/>
+				                                <field name="speciality"/>
+				                                <field name="state"/>
+				                            </tree>
+				                            <form string="Attentions" nolabel="1">
+				                                <group>
+				                                    <field name="date_attention"/>
+				                                    <field name="number"/>
+				                                    <field name="professional_id"/>
+				                                    <field name="speciality"/>
+				                                    <field name="origin"/>
+				                                    <field name="state"/>
+				                                </group>
+				                            </form>
+				                        </field>
+			                        </group>	
+		                        </fieldset>	
+		                        <!--
+               				 	<group col='4'>		
                				 	<fieldset class="fieldset_margen">
 										<legend class="texto_legend">Informes Completos</legend>
 										<group col="2" >
@@ -1228,8 +1239,8 @@
 											<field name="reporte_informes_certificados_media_carta"/>
 										</group>
 									</fieldset>					
-
-								</group>										
+								</group>
+								-->										
 							</form>
 						</field>
 				</record>

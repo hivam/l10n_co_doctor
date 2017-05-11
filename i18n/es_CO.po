@@ -32,6 +32,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "User type:"
@@ -54,6 +55,7 @@ msgstr "Tipo de usuario:"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "User type: Particular"
@@ -90,6 +92,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_referral:0
 #: report:doctor_referral_half:0
 msgid "INTER"
@@ -112,6 +115,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "THERAPEUTIC"
@@ -147,6 +151,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "User type: Otro"
@@ -174,6 +179,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Signature:"
@@ -196,6 +202,7 @@ msgstr "Firma:"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "DRUGS PRESCRIPTION"
@@ -248,6 +255,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "PAST"
@@ -287,6 +295,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "DISABILITY ORDER"
@@ -309,6 +318,7 @@ msgstr "ORDEN DE INCAPACIDAD"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Stamp:"
@@ -341,6 +351,7 @@ msgstr "Procedimientos Terapéuticos"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Attention N°:"
@@ -363,6 +374,7 @@ msgstr "Atención N°:"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Height and weight"
@@ -385,6 +397,7 @@ msgstr "Talla y Peso"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "THERAPEUTIC ORDER"
@@ -407,6 +420,7 @@ msgstr "ORDEN PROCEDIMIENTOS TERAPÉUTICOS"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Heart rate:"
@@ -429,6 +443,7 @@ msgstr "Frecuencia Cardiaca"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "REVIEW SYSTEMS"
@@ -487,11 +502,13 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "START DATE:"
 msgstr "FECHA DE INICIO:"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Blood pressure"
 msgstr "Presión sanguínea:"
 
@@ -512,6 +529,7 @@ msgstr "Presión sanguínea:"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Date:"
@@ -539,6 +557,7 @@ msgstr "Incapacidad"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "PATIENT DATA"
@@ -574,6 +593,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "PATHOLOGICAL PAST"
@@ -602,6 +622,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "User type: Vinculado"
@@ -624,6 +645,7 @@ msgstr "Tipo de usuario: Vinculado"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "CLINICAL LABORATORY ORDER"
@@ -631,6 +653,7 @@ msgstr "ORDEN DE EXÁMENES DE LABORATORIO CLÍNICO"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Temperature:"
 msgstr "Temperatura:"
 
@@ -651,6 +674,7 @@ msgstr "Temperatura:"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "CLINICAL LABORATORY"
@@ -679,6 +703,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "SPECIALITY"
@@ -701,6 +726,7 @@ msgstr "ESPECIALIDAD"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "REFERRAL ORDER"
@@ -723,6 +749,7 @@ msgstr "ORDEN DE REMISIÓN O INTERCONSULTA"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "User type: Contributivo"
@@ -745,6 +772,7 @@ msgstr "Tipo de usuario: Contributivo"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Age:"
@@ -767,6 +795,7 @@ msgstr "Edad:"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "SURGICAL ORDER"
@@ -800,6 +829,7 @@ msgstr "Exámen de Laboratorio Clínico"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Clinical Laboratory"
@@ -807,6 +837,7 @@ msgstr "Exámen de Laboratorio Clínico"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Diastolic:"
 msgstr "Distólica:"
 
@@ -853,6 +884,7 @@ msgstr "Segundo nombre"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Document:"
@@ -875,6 +907,7 @@ msgstr "Documento:"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "vía"
@@ -893,6 +926,7 @@ msgstr "Primer nombre"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Body mass:"
 msgstr "Índice de Masa Corporal"
 
@@ -903,6 +937,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Pulsioximetry:"
 msgstr "Pulsioximetría:"
 
@@ -925,6 +960,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "MEDICAL RECORD"
 msgstr "REGISTROS CLÍNICOS"
 
@@ -935,6 +971,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Temperature"
 msgstr "Temperatura"
 
@@ -955,6 +992,7 @@ msgstr "Temperatura"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "SERVICE"
@@ -982,6 +1020,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "durante"
@@ -1009,6 +1048,7 @@ msgstr "Imágenes diagnósticas"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "cada"
@@ -1041,6 +1081,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "VITAL SIGNS"
@@ -1068,6 +1109,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 #: report:doctor_attentions_recomendaciones:0
@@ -1092,6 +1134,7 @@ msgstr "DATOS DEL PROFESIONAL"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "CLINICAL LABORATORY"
@@ -1114,6 +1157,7 @@ msgstr "EXÁMENES DE LABORATORIO CLÍNICO"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "HEALTH PROCEDURES ORDER"
@@ -1121,6 +1165,7 @@ msgstr "ORDEN DE OTROS PROCEDIMIENTOS"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Systolic:"
 msgstr "Sistólica:"
 
@@ -1141,6 +1186,7 @@ msgstr "Sistólica:"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Cédula de extranjería"
@@ -1163,6 +1209,7 @@ msgstr "Primer apellido"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "REASON CONSULTATION"
 msgstr "MOTIVO DE CONSULTA"
 
@@ -1194,6 +1241,7 @@ msgstr "Ciudades"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "QUANTITY"
@@ -1222,6 +1270,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Register N°:"
@@ -1234,6 +1283,7 @@ msgstr "Prescripción"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "EXAM"
 msgstr "EXÁMEN FÍSICO"
 
@@ -1269,6 +1319,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Insurer:"
@@ -1291,6 +1342,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Vital signs"
 msgstr "Signos vitales"
 
@@ -1306,6 +1358,7 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "ANALYSIS"
 msgstr "ANÁLISIS"
 
@@ -1351,6 +1404,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "DIAGNOSTIC IMAGES ORDER"
@@ -1396,6 +1450,7 @@ msgstr "Segundo apellido"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "DISEASES"
@@ -1428,6 +1483,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "DIAGNOSTIC IMAGES"
@@ -1435,6 +1491,7 @@ msgstr "IMÁGENES DIAGNÓSTICAS"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Finalidad:"
 msgstr ""
 
@@ -1482,6 +1539,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "DRUG"
@@ -1504,6 +1562,7 @@ msgstr "MEDICAMENTO"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "REFERRAL CAUSE"
@@ -1511,6 +1570,7 @@ msgstr "CAUSA DE REMISIÓN O INTERCONSULTA"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "DURATION IN DAYS:"
 msgstr "DURACIÓN (En días)"
 
@@ -1531,6 +1591,7 @@ msgstr "DURACIÓN (En días)"
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "Name:"
@@ -1548,6 +1609,7 @@ msgstr "OTROS PROCEDIMIENTOS"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Weight:"
 msgstr "Peso:"
 
@@ -1573,26 +1635,31 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "SpO2"
 msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Height:"
 msgstr "Talla:"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Body surface"
 msgstr "Superficie Corporal"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "DRUGS PAST"
 msgstr "ANTECEDENTES FARMACOLÓGICOS"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "CONDUCT"
 msgstr "CONDUCTA"
 
@@ -1633,6 +1700,7 @@ msgstr ""
 #: report:doctor_disability:0
 #: report:doctor_disability_half:0
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 #: report:doctor_attentions_certificado:0
 #: report:doctor_attentions_certificado_half:0
 msgid "User type: Subsidiado"
@@ -1640,6 +1708,7 @@ msgstr "Tipo de usuario: Subsidiado"
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "Respiratory:"
 msgstr "Frecuencia respiratoria:"
 
@@ -1658,5 +1727,6 @@ msgstr ""
 
 #. module: l10n_co_doctor
 #: report:doctor_attention:0
+#: report:doctor_attention_report:0
 msgid "ACTUAL DISEASE"
 msgstr "ENFERMEDAD ACTUAL"

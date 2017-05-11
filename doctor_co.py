@@ -2273,6 +2273,17 @@ class doctor_attentions_co(osv.osv):
 		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_form')
 		view_id = data_obj.browse(cr, uid, result).res_id
 
+
+
+		profesional=''
+		patient=''
+		for x in self.browse(cr,uid,ids):
+			patient= x.patient_id.id
+			profesional= x.professional_id.id
+
+		context['default_patient_id']= patient
+		context['default_professional_id']= profesional
+
 		return {
 			'type': 'ir.actions.act_window',
 			'name': 'Imprimir Informes',
@@ -3495,11 +3506,16 @@ class doctor_list_report(osv.osv):
 		'reporte_informes_certificados_media_carta': fields.boolean('Informes y Certificados (Media Carta)'),
 		'professional_id': fields.many2one('doctor.professional', 'Doctor', required=True),
 		'attentions_ids': fields.one2many('doctor.attentions', 'list_report_id', 'Attentions'),
-		'patient_id': fields.many2one('doctor.patient', 'Patient',),
+		'patient_id': fields.many2one('doctor.patient', 'Paciente', required=True),
+		'fecha_inicio':fields.datetime('Inicio Atención'),
+		'fecha_fin':fields.datetime('Fin Atención'),
 
 	}
 
-	
+	_defaults = {
+		'patient_id' : lambda self, cr, uid, context: context.get('default_patient_id', False),
+		'professional_id' : lambda self, cr, uid, context: context.get('default_professional_id', False),
+	}	
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_cargar_atenciones(self, cr, uid, ids, patient_id, professional_id, context=None):
 
