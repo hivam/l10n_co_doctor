@@ -3515,6 +3515,7 @@ class doctor_list_report(osv.osv):
 	_defaults = {
 		'patient_id' : lambda self, cr, uid, context: context.get('default_patient_id', False),
 		'professional_id' : lambda self, cr, uid, context: context.get('default_professional_id', False),
+		'fecha_fin' : lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
 	}	
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_cargar_atenciones(self, cr, uid, ids, patient_id, professional_id, context=None):
