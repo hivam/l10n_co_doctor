@@ -1175,12 +1175,16 @@
                				 	<fieldset class="fieldset_margen">
 									<legend class="texto_legend">Datos Historia Clínica Completa</legend>
 	               				 	<group col='2'>
-	               				 	<field name="professional_id"/>
-	               				 	
-	               				 	<field name="patient_id" on_change="onchange_cargar_atenciones(patient_id, professional_id)"/>
-
-	               				 	<field name="fecha_inicio" col="2"/>
-	               				 	<field name="fecha_fin" col="2"/>
+	               				 		
+		               				 	<field name="professional_id"/>
+		               				 	
+		               				 	<field name="patient_id" on_change="onchange_cargar_atenciones(patient_id, professional_id, fecha_inicio, fecha_fin)"/>
+		               				 	<field name="especialidad_id"/>
+		               				
+		               				 	<field name="fecha_inicio"/>
+		               				
+		               				 	<field name="fecha_fin"/>
+		               				 	
 	               				 	</group>
 
                				 	</fieldset>	
@@ -1248,11 +1252,15 @@
 
 				<!-- doctor list_report Action -->
 				<record model="ir.actions.act_window" id="action_doctor_list_report">
-						<field name="name">Imprimir Informes</field>
+						<field name="name">Impresión HC</field>
 						<field name="res_model">doctor.list_report</field>
 						<field name="view_type">form</field>
 						<field name="view_mode">form</field>
+						<field name="context">{}</field>
+
 				</record>
+
+				<menuitem id="menu_doctor_list_report" name="Impresión HC" parent="doctor.menu_doctor_process" action="action_doctor_list_report"/>
 
 				<!-- doctor tiempo_espacio Action -->
 				<record model="ir.actions.act_window" id="action_doctor_tiempo_espacio">

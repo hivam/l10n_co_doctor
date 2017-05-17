@@ -3504,11 +3504,12 @@ class doctor_list_report(osv.osv):
 		'reporte_incapacidad_media_carta': fields.boolean('Incapacidad (Media Carta)'),
 		'reporte_informes_certificados_media_carta': fields.boolean('Informes y Certificados (Media Carta)'),
 		'reporte_informes_certificados_media_carta': fields.boolean('Informes y Certificados (Media Carta)'),
-		'professional_id': fields.many2one('doctor.professional', 'Doctor', required=True),
+		'professional_id': fields.many2one('doctor.professional', 'Doctor'),
 		'attentions_ids': fields.one2many('doctor.attentions', 'list_report_id', 'Attentions'),
 		'patient_id': fields.many2one('doctor.patient', 'Paciente', required=True),
 		'fecha_inicio':fields.datetime('Inicio Atención'),
 		'fecha_fin':fields.datetime('Fin Atención'),
+		'especialidad_id':fields.many2one('doctor.speciality', 'Especialidad'),
 
 	}
 
@@ -3518,12 +3519,28 @@ class doctor_list_report(osv.osv):
 		'fecha_fin' : lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
 	}	
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
-	def onchange_cargar_atenciones(self, cr, uid, ids, patient_id, professional_id, context=None):
+	def onchange_cargar_atenciones(self, cr, uid, ids, patient_id, professional_id, date_begin, date_end, context=None):
 
 		atenciones=''
 		if patient_id and professional_id:
+			_logger.info('entro en esta simple')
 			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
 
+		if patient_id and professional_id and date_end:
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+
+		if patient_id and professional_id and date_begin and date_end:
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention', '>=', date_begin),('date_attention', '<=', date_begin),('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+
+		if patient_id and date_begin and date_end:
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention', '>=', date_begin),('date_attention', '<=', date_begin),('patient_id', '=', patient_id)])
+
+		if patient_id and date_end:
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])
+
+
+		_logger.info('Atenciones')
+		_logger.info(atenciones)
 		return {'value': {'attentions_ids': atenciones}}
 
 	
