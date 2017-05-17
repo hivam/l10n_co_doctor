@@ -255,6 +255,7 @@ class doctor_patient_co(osv.osv):
 		'desmovilizado': fields.char(u'Desmovilizado'),
 		'victima_conflicto': fields.char(u'Victima del Conflicto'),
 		'localidad_otros_paises_id':fields.many2one('doctor.localidad.country', u'Localidad/Ciudad', domain="[('country_id','=',nacimiento_country_id)]"),
+		'codigo_prestador':fields.char('Codigo de prestador', size=12),
 
 	}
 
@@ -296,7 +297,12 @@ class doctor_patient_co(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		_logger.info(vals)
-
+		res_user_id = self.pool.get('res.users').search(cr, uid, [('id', '=', uid)], context=context)
+		for compania in self.pool.get('res.users').browse(cr, uid, res_user_id, context=context):
+			codigo_prestador = compania.company_id.cod_prestadorservicio
+		
+		if codigo_prestador:
+			vals['codigo_prestador'] = codigo_prestador
 		return super(doctor_patient_co,self).create(cr, uid, vals, context=context)
 
 	def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
