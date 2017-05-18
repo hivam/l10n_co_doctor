@@ -663,7 +663,7 @@
 									<button string="Resumen historia" name="resumen_historia" type="object" class="oe_highlight" context="{'patient_id' : patient_id}"/>
 
 									
-									<button string="Imprirmir Informes" name="button_imprimir_informes" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
+									<button string="Ver HC" name="button_imprimir_informes" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
 
 									
 
@@ -1164,25 +1164,25 @@
 
 				<!-- doctor tiempo_espacio Form View -->
 				<record model="ir.ui.view" id="view_doctor_list_report_form">
-						<field name="name">Impresión de Informes</field>
+						<field name="name">Historia Clinica Completa</field>
 						<field name="model">doctor.list_report</field>
 						<field name="arch" type="xml">
-							<form string="Impresión de Informes" version="7.0">
+							<form string="Historia Clinica Completa" version="7.0">
 								<header>
-                    				<button string="Imprimir Historia" name="button_imprimir_algunos_informes" type="object" class="oe_highlight"/>
+                    				<button string="Ver Historia" name="button_imprimir_algunos_informes" type="object" class="oe_highlight"/>
                				 	</header>	
 
                				 	<fieldset class="fieldset_margen">
 									<legend class="texto_legend">Datos Historia Clínica Completa</legend>
 	               				 	<group col='2'>
 	               				 		
-		               				 	<field name="professional_id" on_change="onchange_cargar_atenciones(patient_id, professional_id,especialidad_id, fecha_inicio, fecha_fin)"/>
+		               				 	<field name="professional_id" on_change="onchange_cargar_atenciones_doctor(patient_id, professional_id, fecha_inicio, fecha_fin)"/>
 		               				 	
 		               				 	<field name="patient_id" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 
-		               				 	<field name="especialidad_id" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
+		               				 	<field name="especialidad_id" on_change="onchange_cargar_atenciones_especialidad(patient_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 		               				
-		               				 	<field name="fecha_inicio" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id,  fecha_inicio, fecha_fin)"/>
+		               				 	<field name="fecha_inicio" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 		               				
 		               				 	<field name="fecha_fin" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 		               				 	
@@ -1193,14 +1193,14 @@
                				 	<fieldset class="fieldset_margen">
 									<legend class="texto_legend">Lista de Atenciones</legend>
 	               				 	<group col='4'>
-				               			<field name="attentions_ids" nolabel="1" >
-				                            <tree string="Attentions" editable="bottom">
+				               			<field name="attentions_ids" nolabel="1" default_order="sequence,date_attention asc">
+				                            <tree string="Attentions" editable="bottom" default_order="sequence,date_attention asc">
 				                                <field name="date_attention"/>
 				                                <field name="professional_id"/>
 				                                <field name="speciality"/>
 				                                <field name="state"/>
 				                            </tree>
-				                            <form string="Attentions" nolabel="1">
+				                            <form string="Attentions" nolabel="1" default_order="sequence,date_attention asc">
 				                                <group>
 				                                    <field name="date_attention"/>
 				                                    <field name="number"/>
