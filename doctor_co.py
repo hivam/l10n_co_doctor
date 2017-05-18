@@ -3531,6 +3531,17 @@ class doctor_list_report(osv.osv):
 				return {'value': {'attentions_ids': atenciones, 'especialidad_id': None}}
 		return False
 
+	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
+	def onchange_cargar_atenciones_especialidad(self, cr, uid, ids, patient_id, especialidad_id, date_begin, date_end, context=None):
+		atenciones=''
+		arreglo= [patient_id, especialidad_id, date_begin, date_end]
+		if patient_id and especialidad_id:
+			_logger.info('especialidad')
+			if (arreglo[0] != False) and (arreglo[1] != False) and (arreglo[2] == False) and (arreglo[2] == False):
+				_logger.info('Caso especialidad')
+				atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('speciality', '=', especialidad_id)])
+				return {'value': {'attentions_ids': atenciones, 'professional_id': None}}
+		return False
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_cargar_atenciones_fecha_inicio(self, cr, uid, ids, patient_id, especialidad_id, date_begin, date_end, context=None):
