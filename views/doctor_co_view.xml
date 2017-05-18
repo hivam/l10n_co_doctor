@@ -1176,14 +1176,15 @@
 									<legend class="texto_legend">Datos Historia Clínica Completa</legend>
 	               				 	<group col='2'>
 	               				 		
-		               				 	<field name="professional_id"/>
+		               				 	<field name="professional_id" on_change="onchange_cargar_atenciones(patient_id, professional_id,especialidad_id, fecha_inicio, fecha_fin)"/>
 		               				 	
-		               				 	<field name="patient_id" on_change="onchange_cargar_atenciones(patient_id, professional_id, fecha_inicio, fecha_fin)"/>
-		               				 	<field name="especialidad_id"/>
+		               				 	<field name="patient_id" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
+
+		               				 	<field name="especialidad_id" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 		               				
-		               				 	<field name="fecha_inicio"/>
+		               				 	<field name="fecha_inicio" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id,  fecha_inicio, fecha_fin)"/>
 		               				
-		               				 	<field name="fecha_fin"/>
+		               				 	<field name="fecha_fin" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 		               				 	
 	               				 	</group>
 

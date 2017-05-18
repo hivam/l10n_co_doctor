@@ -3482,6 +3482,7 @@ class doctor_list_report(osv.osv):
 
 	_name= 'doctor.list_report'
 
+
 	_columns = {
 		'reporte_prescripcion': fields.boolean(u'Prescripción'),
 		'reporte_otra_prescripcion': fields.boolean(u'Otra Prescripción'),
@@ -3519,29 +3520,59 @@ class doctor_list_report(osv.osv):
 		'fecha_fin' : lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
 	}	
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
-	def onchange_cargar_atenciones(self, cr, uid, ids, patient_id, professional_id, date_begin, date_end, context=None):
+	def onchange_cargar_atenciones(self, cr, uid, ids, patient_id, professional_id, especialidad_id, date_begin, date_end, context=None):
+
 
 		atenciones=''
-		if patient_id and professional_id:
-			_logger.info('entro en esta simple')
-			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+		doctor=''
+		paciente=''
+		especialidad=''
+		fecha_incio=''
+		fecha_fin=''
 
-		if patient_id and professional_id and date_end:
-			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+		arreglo= [patient_id, professional_id, especialidad_id, date_begin, date_end]
 
-		if patient_id and professional_id and date_begin and date_end:
-			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention', '>=', date_begin),('date_attention', '<=', date_begin),('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+		if (arreglo[0] != False) and (arreglo[1] == False) and (arreglo[2] == False) and (arreglo[3] == False) and (arreglo[4] != False):
+			_logger.info('Caso 1')
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+			return {'value': {'attentions_ids': atenciones}}
 
-		if patient_id and date_begin and date_end:
-			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention', '>=', date_begin),('date_attention', '<=', date_begin),('patient_id', '=', patient_id)])
+		if (arreglo[0] != False) and (arreglo[1] != False) and (arreglo[2] == False) and (arreglo[3] == False) and (arreglo[4] != False):
+			_logger.info('Caso 2')
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])	
+			return {'value': {'attentions_ids': atenciones}}
 
-		if patient_id and date_end:
-			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])
+		if (arreglo[0] != False) and (arreglo[1] != False) and (arreglo[2] != False) and (arreglo[3] == False) and (arreglo[4] != False):
+			_logger.info('Caso 3')
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('speciality', '=', especialidad_id)])
+			return {'value': {'attentions_ids': atenciones}}
+
+		if (arreglo[0] != False) and (arreglo[1] == False) and (arreglo[2] != False) and (arreglo[3] == False) and (arreglo[4] != False):
+			_logger.info('Caso 4')
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('speciality', '=', especialidad_id)])
+			return {'value': {'attentions_ids': atenciones}}
+
+		if (arreglo[0] != False) and (arreglo[1] != False) and (arreglo[2] == False) and (arreglo[3] != False) and (arreglo[4] != False):
+			_logger.info('Caso 5')
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention', '>=', str(date_begin)),('date_attention', '<=', str(date_end))])
+			_logger.info(atenciones)
+
+
+			return {'value': {'attentions_ids': atenciones}}
+
+		if (arreglo[0] != False) and (arreglo[1] == False) and (arreglo[2] == False) and (arreglo[3] != False) and (arreglo[4] != False):
+			_logger.info('Caso 6')
+
+
+		for i in range(len(arreglo)):
+			_logger.info(arreglo[i])
+
+
 
 
 		_logger.info('Atenciones')
 		_logger.info(atenciones)
-		return {'value': {'attentions_ids': atenciones}}
+		return False
 
 	
 
@@ -3571,7 +3602,7 @@ class doctor_list_report(osv.osv):
 		return {
 			'type': 'ir.actions.report.xml',
 			'report_name': 'doctor_attention_report',
-			
+
 		}
 	
 
