@@ -226,6 +226,7 @@
 											<field name="nombre_responsable"/>
 											<field name="telefono_responsable"/>
 											<field name="parentesco_id"/>
+											<field name="codigo_prestador" invisible="1"/>
 										</group>
 									</fieldset>
 								</xpath>
