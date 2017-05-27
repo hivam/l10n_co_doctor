@@ -84,13 +84,13 @@ class doctor_patient_co(osv.osv):
 
 	#Niveles de estudio
 	nivel_estudio = [
-		('1', 'JARDIN'),
-		('2', 'PRIMARIA'),
-		('3', 'SECUNDARIA'),
-		('4', 'PREGRADO'),
-		('5', 'POSGRADO'),
-		('6', u'MAESTRÍAS'),
-		('7', u'ESPECIALIZACIÓN'),
+		('5', 'JARDIN'),
+		('6', 'PRIMARIA'),
+		('7', 'SECUNDARIA'),
+		('1', 'PREGRADO'),
+		('2', 'POSGRADO'),
+		('3', u'MAESTRÍAS'),
+		('4', u'ESPECIALIZACIÓN'),
 	]
 
 	#Lateralidad
@@ -236,7 +236,7 @@ class doctor_patient_co(osv.osv):
 		'description_others': fields.char(u'Descripción', size=32),
 		'dependencia_empleado_id': fields.many2one('doctor.dependencia', 'Dependencia'),
 		'nivel_educativo':fields.selection(nivel_estudio, 'Nivel de Estudio'),
-		'programa_id':fields.many2one('doctor.programa_academico', 'Programa Academico', required=False, domain="[('nivel_estudio','=', str(nivel_educativo))]"),
+		'programa_id':fields.many2one('doctor.programa_academico', 'Programa Academico', required=False, domain="[('nivel_estudio','=', (nivel_educativo))]"),
 		'lateralidad_id':fields.selection(lateralidad, 'Lateralidad'),
 
 		#campos agregados para pais y estado de nacimiento
