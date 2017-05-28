@@ -2,6 +2,45 @@
 <openerp>
   <data>
 
+    <!--Tipo Búsqueda-->
+        <record model="ir.ui.view" id="attentions_search">
+            <field name="name">doctor.attentions</field>
+            <field name="model">doctor.attentions</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Buscar en Atenciones">
+                    <field name="patient_id" />
+                    <field name="ref"/>
+                    <field name="professional_id"/>
+                    <filter string="Abiertas" name="Atenciones abiertas" domain="[('state','=','open')]" />
+                    <filter string="Cerradas" name="Atenciones cerradas" domain="[('state','=','closed')]" />
+
+                    <group expand="0" string="Agrupar por...">
+                      <filter context="{'group_by' : 'professional_id'}" string="Profesionales de la salud"/>
+                      <separator />
+                      
+
+                      <filter string="Atenciones Año pasado" name="atenciones_anio_pasado" domain="[('date_attention','&gt;=',(context_today()-relativedelta(years=1)).strftime('%%Y-01-01')),('date_attention','&lt;',time.strftime('%%Y-01-01'))]" help="Atenciones programadas para el año pasado." />
+                      
+                      <filter string="Atenciones Este Año" name="atenciones_anio_actual" domain="[('date_attention','&lt;=', time.strftime('%%Y-12-31')),('date_attention','&gt;=',time.strftime('%%Y-01-01'))]" help="Atenciones programadas para este año." />
+                      <separator />
+
+                      <filter string="Atenciones Mes pasado" name="atenciones_mes_pasado" domain="[('date_attention','&gt;=',(context_today()-relativedelta(months=1)).strftime('%%Y-%%m-01')),('date_attention','&lt;',time.strftime('%%Y-%%m-01'))]" help="Atenciones del mes anterior."/>
+                      
+                      <filter string="Atenciones Este Mes" name="atenciones_mes_actual" domain="[('date_attention','&lt;=',(context_today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('date_attention','&gt;=',(context_today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones programadas para este mes." />
+                      <separator />
+
+                      <filter string="Atenciones Ayer" name="atenciones_ayer" domain="[('date_attention','&gt;=',((context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones del dia de ayer."/>
+                      
+                      <filter string="Atenciones Hoy" name="Atenciones_hoy" domain="[('date_attention','&gt;=',((context_today()).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()).strftime('%%Y-%%m-%%d'))]" help="Atenciones Programadas para el dia de hoy."/>
+                      
+
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
     <!--doctor attention inherit-->
     <record id="doctor_co_atention_form" model="ir.ui.view">
       <field name="name">doctor_co_atention_form_view</field>

@@ -90,6 +90,9 @@ class doctor_attentions_co_inherit(osv.osv):
 	
 
 	_columns = {
+		'ref' : fields.related('patient_id', 'ref',
+			type = 'char',
+			string = 'Documento identidad', readonly  = True),  
 		'interpretacion_imc' : fields.char(u'Interpretación', size=80, help=u'Interpretación de indice de masa corporal.', states={'closed': [('readonly', True)]}),
 	}
 
