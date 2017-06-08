@@ -43,6 +43,7 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_action_id': self.select_action_id,
 			'select_prescription_drugs': self.select_prescription_drugs,
 			'historia_control_instalada': self.historia_control_instalada,
+			'cargar_peso': self.cargar_peso,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -190,6 +191,14 @@ class doctor_attention(report_sxw.rml_parse):
 		if self.pool.get('doctor.doctor').modulo_instalado(self.cr, self.uid, 'doctor_control', context=context):
 			bandera = True
 		return bandera
+
+	def cargar_peso(self, weight):
+		_logger.info(weight)
+		cadena=""
+		if weight:
+			cadena= "Peso:" + " " +  str(weight) + " " + "kg"
+			_logger.info(cadena)
+		return cadena
 
 
 

@@ -209,10 +209,10 @@
         <tr>
           <para style="p6">[[ repeatIn(code.review_systems_id, 'line') ]]</para>
           <td>
-            <para style="p6">[[line.system_category.name]]</para>
+            <para style="p6">[[line.system_category.name or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="p6">[[(line.review_systems) or 'Sin diligenciar']]</para>
+            <para style="p6">[[(line.review_systems) or (removeParentNode('para'))]]</para>
           </td>
         </tr>
       </blockTable>
@@ -248,7 +248,7 @@
             <para style="terp_default_8">[[ (line.past_category.name) ]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.past) or 'Sin diligenciar']] </para>
+            <para style="terp_default_8">[[ (line.past) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -282,10 +282,10 @@
         <tr>
         <td>
           <para style="p1">[[ repeatIn(code.pathological_past_ids, 'line') ]]</para>
-          <para style="p1">[[ (line.diseases_id.code) ]]</para>
+          <para style="p1">[[ (line.diseases_id.code) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.diseases_id.name) ]] </para>
+            <para style="terp_default_8">[[ (line.diseases_id.name) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -319,10 +319,10 @@
         <tr>
           <td>
           <para style="P4">[[ repeatIn(code.drugs_past_ids, 'line') ]]</para>
-          <para style="p4">[[ (line.atc_id.code) ]]</para>
+          <para style="p4">[[ (line.atc_id.code) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.atc_id.name) ]] </para>
+            <para style="terp_default_8">[[ (line.atc_id.name) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -342,7 +342,7 @@
     </section>
 
     <blockTable colWidths="534.0" style="Table6">
-    [[select_etiqueta_uno(code.professional_id.user_id.id, 'cons-vita') or removeParentNode('blockTable')]]
+    [[select_etiqueta_uno(code.professional_id.user_id.id, 'cons-vita') or removeParentNode('section')]]
       <tr>
         <td>
           <para style="P2">VITAL SIGNS</para>
@@ -351,7 +351,7 @@
     </blockTable>
 
     <blockTable colWidths="133.0,133.0,134.0,134.0" style="Table6">
-    [[select_etiqueta_uno(code.professional_id.user_id.id, 'cons-vita') or removeParentNode('blockTable')]]
+    [[select_etiqueta_uno(code.professional_id.user_id.id, 'cons-vita') or removeParentNode('section')]]
         
       <tr>
         <td>
@@ -407,10 +407,10 @@
         <tr>
           <td>
             <para style="P4">[[ repeatIn(code.attentions_exam_ids, 'line') ]]</para>
-            <para style="p4">[[ (line.exam_category.name) ]]</para>
+            <para style="p4">[[ (line.exam_category.name) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="p4">[[ (line.exam) or 'Sin diligenciar']] </para>
+            <para style="p4">[[ (line.exam) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -465,7 +465,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P2">[[(select_etiqueta_uno(code.professional_id.user_id.id, 'condu-planmanejo'))]]</para>
+          <para style="P2">[[(select_etiqueta_uno(code.professional_id.user_id.id, 'condu-planmanejo') or (removeParentNode('para')))]]</para>
         </td>
      </tr>
     </blockTable>
@@ -496,7 +496,7 @@
       <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
      <td>
-            <para style="p6">[[ (line.diseases_id.name) ]]</para>
+            <para style="p6">[[ (line.diseases_id.name) or (removeParentNode('para'))]]</para>
           </td>
      <td>
             <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>

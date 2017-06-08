@@ -203,10 +203,10 @@
         <tr>
           <para style="p6">[[ repeatIn(o.review_systems_id, 'line') ]]</para>
           <td>
-            <para style="p6">[[line.system_category.name]]</para>
+            <para style="p6">[[line.system_category.name or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="p6">[[(line.review_systems) or 'Sin diligenciar']]</para>
+            <para style="p6">[[(line.review_systems) or (removeParentNode('para'))]]</para>
           </td>
         </tr>
       </blockTable>
@@ -239,10 +239,10 @@
         <tr>
           <td>
             <para style="P4">[[ repeatIn(o.past_ids, 'line') ]]</para>
-            <para style="terp_default_8">[[ (line.past_category.name) ]]</para>
+            <para style="terp_default_8">[[ (line.past_category.name) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.past) or 'Sin diligenciar']] </para>
+            <para style="terp_default_8">[[ (line.past) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -276,10 +276,10 @@
         <tr>
         <td>
           <para style="p1">[[ repeatIn(o.pathological_past_ids, 'line') ]]</para>
-          <para style="p1">[[ (line.diseases_id.code) ]]</para>
+          <para style="p1">[[ (line.diseases_id.code) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.diseases_id.name) ]] </para>
+            <para style="terp_default_8">[[ (line.diseases_id.name) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -313,10 +313,10 @@
         <tr>
           <td>
           <para style="P4">[[ repeatIn(o.drugs_past_ids, 'line') ]]</para>
-          <para style="p4">[[ (line.atc_id.code) ]]</para>
+          <para style="p4">[[ (line.atc_id.code) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.atc_id.name) ]] </para>
+            <para style="terp_default_8">[[ (line.atc_id.name) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -335,21 +335,24 @@
     </blockTable>
     </section>
 
+    <section>
     <blockTable colWidths="534.0" style="Table6">
-    [[select_etiqueta_uno(o.professional_id.user_id.id, 'cons-vita') or removeParentNode('blockTable')]]
+    [[select_etiqueta_uno(o.professional_id.user_id.id, 'cons-vita')]]
       <tr>
         <td>
           <para style="P2">VITAL SIGNS</para>
         </td>
      </tr>
     </blockTable>
+    </section>
+
 
     <blockTable colWidths="133.0,133.0,134.0,134.0" style="Table6">
     [[select_etiqueta_uno(o.professional_id.user_id.id, 'cons-vita') or removeParentNode('blockTable')]]
         
       <tr>
         <td>
-          <para style="P2">Height and weight</para>
+          <para style="P2">Height and weight </para>
         </td>
         <td>
           <para style="P2">Vital signs</para>
@@ -364,7 +367,7 @@
 
       <tr>
         <td>
-          <para style="P3">Weight: [[ (o.weight) ]] kg</para>
+          <para style="P3">[[cargar_peso(o.weight)]]</para>
           <para style="P3">Height: [[ (o.height) ]] cm</para>
           <para style="P3">Body mass: [[ (o.body_mass_index) ]] kg/m²</para>
           <para style="P3">Superficie Corporal: [[ (o.superficie_corporal) ]] m²</para>
@@ -401,10 +404,10 @@
         <tr>
           <td>
             <para style="P4">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>
-            <para style="p4">[[ (line.exam_category.name) ]]</para>
+            <para style="p4">[[ (line.exam_category.name) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="p4">[[ (line.exam) or 'Sin diligenciar']] </para>
+            <para style="p4">[[ (line.exam) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
