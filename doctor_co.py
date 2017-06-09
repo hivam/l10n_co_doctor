@@ -200,7 +200,7 @@ class doctor_patient_co(osv.osv):
 		'direccion_padre':fields.char(u'Dirección', size=70),
 		'completar_datos_acom':fields.boolean('Desea completar los datos de los padres:'),
 		'notas_paciente': fields.text('Notas'),
-		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , u'Ocupación' , required=False),
+		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , u'Profesión' , required=False),
 		'ocupacion_madre' : fields.many2one('doctor.patient.ocupacion' , u'Ocupación Madre' , required=False),
 		'ocupacion_padre' : fields.many2one('doctor.patient.ocupacion' , u'Ocupación Padre' , required=False),
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
@@ -256,7 +256,7 @@ class doctor_patient_co(osv.osv):
 		'victima_conflicto': fields.char(u'Victima del Conflicto'),
 		'localidad_otros_paises_id':fields.many2one('doctor.localidad.country', u'Localidad/Ciudad', domain="[('country_id','=',nacimiento_country_id)]"),
 		'codigo_prestador':fields.char('Codigo de prestador', size=12),
-
+		'ocupacion_actual': fields.char(u'Ocupación'),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
