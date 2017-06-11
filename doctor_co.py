@@ -2077,6 +2077,33 @@ class doctor_attentions_co(osv.osv):
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
 
+
+
+		'paciente_identificacion': fields.char(u'Identificación', store=False, required=True),
+		'paciente_edad_atencion': fields.integer('Edad Actual', store=False, required=True, readonly=True),
+		'paciente_unidad_edad': fields.selection([('1', u'Años'), ('2', 'Meses'), ('3', 'Dias'), ], 'Unidad medida edad',
+									 store=False, required=True, readonly=True),
+		'paciente_birth_date': fields.date('Fecha cumpleaños', required=True, store=False),
+		'paciente_primer_nombre': fields.char('Primer Nombre', store=False, required=True),
+		'paciente_segundo_nombre': fields.char('Segundo Nombre', store=False),
+		'paciente_primer_apellido': fields.char('Primer Apellido', store=False, required=True),
+		'paciente_segundo_apellido': fields.char('Segundo Apellido', store=False),
+		'paciente_tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
+								  ('13',u'Cédula de ciudadanía'), ('21',u'Cédula de extranjería'), ('41','Pasaporte'),
+								  ('NU',u'Número único de identificación'), ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')),
+								  'Tipo de Documento', required=True, store=False),
+		'paciente_sexo': fields.selection([('m', 'Masculino'), ('f', 'Femenino'), ], 'Sexo', select=True, required=True, store=False),
+		'paciente_ocupacion_actual': fields.char(u'Ocupación',  store=False),
+		'paciente_ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , u'Profesión' , store=False),
+		'paciente_street' :  fields.char(u'Dirección',  store=False),
+		'paciente_telefono' : fields.char(u'Teléfono', size=12),
+		'paciente_insurer_prepagada_id': fields.many2one('doctor.insurer', "Aseguradora", store=False),
+		'paciente_nombre_acompaniante': fields.char(u'Nombre Acompañante', size=70, store=False),
+		'paciente_telefono_acompaniante' : fields.char(u'Teléfono Acompañante', size=12, store=False),
+		'paciente_nombre_responsable': fields.char('Nombre responsable', size=70, store=False),
+		'paciente_parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , store=False),
+		'paciente_telefono_responsable' : fields.char(u'Teléfono', size=12, store=False),
+
 	}
 
 
@@ -2096,10 +2123,53 @@ class doctor_attentions_co(osv.osv):
 		registro = []
 
 
+
 		if patient_id:
 
-			ref = self.pool.get('doctor.patient').browse(cr,uid,patient_id,context=context).ref
-			tdoc = self.pool.get('doctor.patient').browse(cr,uid,patient_id,context=context).tdoc
+			patient_id = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context).id
+			_logger.info(type(patient_id))
+
+			for datos_paciente in self.pool.get('doctor.patient').browse(cr, uid, [patient_id], context=context):
+
+				ref = datos_paciente.ref
+				tdoc = datos_paciente.tdoc
+
+				res['paciente_tdoc'] = datos_paciente.tdoc
+				res['paciente_identificacion'] = datos_paciente.ref
+				res['paciente_primer_nombre'] = datos_paciente.firstname
+				res['paciente_primer_apellido'] = datos_paciente.lastname
+				res['paciente_sexo'] = datos_paciente.sex
+				res['paciente_birth_date'] = datos_paciente.birth_date
+				res['paciente_edad_atencion'] = self.calcular_edad(datos_paciente.birth_date)
+				res['paciente_unidad_edad'] = self.calcular_age_unit(datos_paciente.birth_date)
+
+				if datos_paciente.middlename:
+					res['paciente_segundo_nombre'] = datos_paciente.middlename
+				if datos_paciente.surname:
+					res['paciente_segundo_apellido'] = datos_paciente.surname
+				if datos_paciente.ocupacion_actual:
+					res['paciente_ocupacion_actual'] = datos_paciente.ocupacion_actual
+				if datos_paciente.ocupacion_id:
+					res['paciente_ocupacion_id'] = datos_paciente.ocupacion_id.id
+				if datos_paciente.street:
+					res['paciente_street'] = datos_paciente.street
+				if datos_paciente.telefono:
+					res['paciente_telefono'] = datos_paciente.telefono
+				if datos_paciente.nombre_acompaniante:
+					res['paciente_nombre_acompaniante'] = datos_paciente.nombre_acompaniante
+				if datos_paciente.telefono_acompaniante:
+					res['paciente_telefono_acompaniante'] = datos_paciente.telefono_acompaniante
+				if datos_paciente.nombre_responsable:
+					res['paciente_nombre_responsable'] = datos_paciente.nombre_responsable
+				if datos_paciente.telefono_responsable:
+					res['paciente_telefono_responsable'] = datos_paciente.telefono_responsable
+				if datos_paciente.parentesco_id:
+					res['paciente_parentesco_id'] = datos_paciente.parentesco_id
+				if datos_paciente.insurer_prepagada_id:
+					res['paciente_insurer_prepagada_id'] = datos_paciente.insurer_prepagada_id.id
+						
+
+
 			modelo_buscar = self.pool.get('ir.attachment')
 
 			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', patient_id)], context=context)
@@ -2117,6 +2187,24 @@ class doctor_attentions_co(osv.osv):
 
 		return res
 
+
+
+	def onchange_write_paciente(self, cr, uid, ids, patient_id, campo, nombre_campo, context=None):
+		res={'value':{}}
+
+		dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', patient_id), (nombre_campo, '=', campo)], context=context)
+
+		if nombre_campo == 'birth_date':
+			res['value']['paciente_edad_atencion']= self.calcular_edad(campo)
+			res['value']['paciente_unidad_edad']=self.calcular_age_unit(campo)
+
+		if not dato_cambio_id:
+			if nombre_campo <> 'birth_date':
+				self.pool.get('doctor.patient').write(cr, uid, [patient_id], {nombre_campo : campo})
+			else:
+				self.pool.get('doctor.patient').write(cr, uid, [patient_id], {nombre_campo : campo, 'edad_calculada' : self.calcular_edad(campo), 'unidad_edad_calculada' : self.calcular_age_unit(campo)})
+		
+		return res
 
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
