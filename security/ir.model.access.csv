@@ -225,3 +225,4 @@ restriction_doctor_list_report_psicologo,doctor.list_report,model_doctor_list_re
 access_list_report_psicologia,doctor.list_report,model_doctor_list_report,doctor.group_doctor_psicologo,1,1,1,1
 
 access_doctor_patient_ocupacion_medico,doctor.patient.ocupacion,model_doctor_patient_ocupacion,doctor.group_doctor_physician,1,1,1,0
+access_doctor_res_partner_medico,res.partner_medico,base.model_res_partner,doctor.group_doctor_physician,1,1,1,0
