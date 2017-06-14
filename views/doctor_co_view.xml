@@ -907,6 +907,9 @@
 										</page>
 								</xpath>
 
+								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[1]/field[@name='diseases_ids']" position="replace"/>
+								
+
 								<xpath expr="//page[@string='Anamnesis']" position="before">
 
 									<page string="Datos Administrativos">

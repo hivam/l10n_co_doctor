@@ -2012,6 +2012,35 @@ class doctor_attentions_co(osv.osv):
 				res[datos.id] = False
 		return res
 
+	def load_attentions_diseases_ago(self, cr, uid, ids, field_name, arg, context=None):
+
+		_logger.info('**************************************************************')
+		_logger.info(ids)
+		res = {}
+		patient_id=None
+		for datos in self.browse(cr, uid, ids):
+			patient_id= datos.patient_id.id
+		atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+		diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
+		_logger.info('esto es lo que tiene que cargar')
+		_logger.info(diseases_ago_ids)
+		for datos in self.browse(cr, uid, ids):
+			_logger.info(datos.id)
+			res[datos.id] = diseases_ago_ids
+
+		return res
+
+	def _previous(self, cr, uid, patient_id, type_past, attentiont_id=None):
+		condition = [('patient_id', '=', patient_id.id)]
+		if attentiont_id != None:
+			condition.append(('attentiont_id', '<=', attentiont_id))
+		if type_past == 'past':
+			return self.pool.get('doctor.attentions.past').search(cr, uid, condition, order='id desc')
+		if type_past == 'pathological':
+			return self.pool.get('doctor.diseases.past').search(cr, uid, condition, order='id desc')
+		if type_past == 'drugs':
+			return self.pool.get('doctor.atc.past').search(cr, uid, condition, order='id desc')
+
 
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean(u'NC', states={'closed': [('readonly', True)]}),
@@ -2103,7 +2132,8 @@ class doctor_attentions_co(osv.osv):
 		'paciente_nombre_responsable': fields.char('Nombre responsable', size=70, store=False),
 		'paciente_parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , store=False),
 		'paciente_telefono_responsable' : fields.char(u'Teléfono', size=12, store=False),
-
+		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string="Diagnósticos Anteriores"),
+		
 	}
 
 
@@ -2114,6 +2144,8 @@ class doctor_attentions_co(osv.osv):
 		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
 		'complicacion_eventoadverso' : '01',
 	}
+
+
 
 
 	def default_get(self, cr, uid, fields, context=None):
