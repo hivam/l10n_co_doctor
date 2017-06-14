@@ -914,7 +914,7 @@
 
 									<page string="Datos Administrativos">
 										
-										<legend class="texto_legend" id="DatosAdministrativos">Datos Administrativos</legend>
+										<legend class="texto_legend" id="DatosAdministrativos">Identificacion</legend>
 										<group colspan='6' col='4'>
 											<field name="paciente_tdoc" on_change="onchange_write_paciente(patient_id, paciente_tdoc, 'tdoc')" />
 											<field name="paciente_identificacion" on_change="onchange_write_paciente(patient_id, paciente_identificacion, 'ref')"/>
