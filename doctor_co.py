@@ -2192,18 +2192,19 @@ class doctor_attentions_co(osv.osv):
 	def onchange_write_paciente(self, cr, uid, ids, patient_id, campo, nombre_campo, context=None):
 		res={'value':{}}
 
-		dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', patient_id), (nombre_campo, '=', campo)], context=context)
+		if campo:
+			dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', patient_id), (nombre_campo, '=', campo)], context=context)
 
-		if nombre_campo == 'birth_date':
-			res['value']['paciente_edad_atencion']= self.calcular_edad(campo)
-			res['value']['paciente_unidad_edad']=self.calcular_age_unit(campo)
+			if nombre_campo == 'birth_date':
+				res['value']['paciente_edad_atencion']= self.calcular_edad(campo)
+				res['value']['paciente_unidad_edad']=self.calcular_age_unit(campo)
 
-		if not dato_cambio_id:
-			if nombre_campo <> 'birth_date':
-				self.pool.get('doctor.patient').write(cr, uid, [patient_id], {nombre_campo : campo})
-			else:
-				self.pool.get('doctor.patient').write(cr, uid, [patient_id], {nombre_campo : campo, 'edad_calculada' : self.calcular_edad(campo), 'unidad_edad_calculada' : self.calcular_age_unit(campo)})
-		
+			if not dato_cambio_id:
+				if nombre_campo <> 'birth_date':
+					self.pool.get('doctor.patient').write(cr, uid, [patient_id], {nombre_campo : campo})
+				else:
+					self.pool.get('doctor.patient').write(cr, uid, [patient_id], {nombre_campo : campo, 'edad_calculada' : self.calcular_edad(campo), 'unidad_edad_calculada' : self.calcular_age_unit(campo)})
+			
 		return res
 
 
