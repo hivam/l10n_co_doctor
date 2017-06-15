@@ -100,8 +100,8 @@
 
         <xpath expr="//page[@string='Diseases']" position="inside">
           <notebook colspan="4" groups="doctor.group_doctor_physician,doctor.group_doctor_psicologo">
-            <page string="Diseases" >
-                <field name="diseases_ids" colspan="4" nolabel="1">
+            <page string="Diagnósticos Anteriores" >
+                <field name="diseases_ago_ids" colspan="4" nolabel="1" readonly="1">
                     <tree string="Diseases" editable="bottom">
                         <field name="diseases_id" />
                         <field name="status"/>
@@ -116,8 +116,8 @@
                     </form>
                 </field>
             </page>
-            <page string="Diagnósticos Anteriores" >
-                <field name="diseases_ago_ids" colspan="4" nolabel="1" readonly="1" context="{'patient_id' : patient_id}">
+            <page string="Diseases" >
+                <field name="diseases_ids" colspan="4" nolabel="1">
                     <tree string="Diseases" editable="bottom">
                         <field name="diseases_id" />
                         <field name="status"/>

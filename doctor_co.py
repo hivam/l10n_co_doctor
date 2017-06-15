@@ -2727,17 +2727,17 @@ class doctor_attentions_co(osv.osv):
 
 
 		notas=''
+		if 'notas_confidenciales' in vals:
+			result= vals['notas_confidenciales']
+			notas_actuales= result.split(". \n")
 
-		result= vals['notas_confidenciales']
-		notas_actuales= result.split(". \n")
+			for x in range(len(notas_actuales)-1):
+				if notas_actuales[x]:
+					if len(str(notas_actuales[x]).strip()) != 10:
+						notas += str(notas_actuales[x]) + ". \n"
 
-		for x in range(len(notas_actuales)-1):
-			if notas_actuales[x]:
-				if len(str(notas_actuales[x]).strip()) != 10:
-					notas += str(notas_actuales[x]) + ". \n"
-
-		vals['notas_confidenciales']= notas	
-		_logger.info(vals)
+			vals['notas_confidenciales']= notas	
+			_logger.info(vals)
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
