@@ -2344,7 +2344,7 @@ class doctor_attentions_co(osv.osv):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
 			if datos.patient_id.insurer_prepagada_id:
-				res[datos.id] = datos.patient_id.insurer_prepagada_id
+				res[datos.id] = datos.patient_id.insurer_prepagada_id.id
 		return res
 
 	def _get_parentesco(self, cr, uid, ids, field_name, arg, context=None):
