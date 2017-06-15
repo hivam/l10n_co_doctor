@@ -916,27 +916,26 @@
 										
 										<legend class="texto_legend" id="DatosAdministrativos">Identificacion</legend>
 										<group colspan='6' col='4'>
-											<field name="paciente_tdoc" on_change="onchange_write_paciente(patient_id, paciente_tdoc, 'tdoc')" />
-											<field name="paciente_identificacion" on_change="onchange_write_paciente(patient_id, paciente_identificacion, 'ref')"/>
-											<field name="paciente_primer_nombre"  on_change="onchange_write_paciente(patient_id, paciente_primer_nombre, 'firstname')"/>
-											<field name="paciente_segundo_nombre" on_change="onchange_write_paciente(patient_id, paciente_segundo_nombre, 'middlename')"/>
-											<field name="paciente_primer_apellido" on_change="onchange_write_paciente(patient_id, paciente_primer_apellido, 'lastname')"/>
-											<field name="paciente_segundo_apellido" on_change="onchange_write_paciente(patient_id, paciente_segundo_apellido, 'surname')"/>
-											<field name="paciente_birth_date" on_change="onchange_write_paciente(patient_id, paciente_birth_date, 'birth_date')"/>
-											<field name="paciente_sexo" on_change="onchange_write_paciente(patient_id, paciente_sexo, 'sex')"/>
+											<field name="paciente_tdoc"/>
+											<field name="paciente_identificacion"/>
+											<field name="paciente_primer_nombre"/>
+											<field name="paciente_segundo_nombre"/>
+											<field name="paciente_primer_apellido"/>
+											<field name="paciente_segundo_apellido"/>
+											<field name="paciente_birth_date" on_change="onchange_edad(paciente_birth_date)"/>
+											<field name="paciente_sexo"/>
 											<field name="paciente_edad_atencion"/>
 											<field name="paciente_unidad_edad"/>
-											<field name="paciente_ocupacion_actual" on_change="onchange_write_paciente(patient_id, paciente_ocupacion_actual, 'ocupacion_actual')"/>
-											<field name="paciente_ocupacion_id" on_change="onchange_write_paciente(patient_id, paciente_ocupacion_id, 'ocupacion_id')"/>
-											<field name="paciente_street" on_change="onchange_write_paciente(patient_id, paciente_street, 'street')"/>
-											<field name="paciente_telefono" on_change="onchange_write_paciente(patient_id, paciente_telefono, 'telefono')"/>
-											<field name="paciente_nombre_acompaniante" on_change="onchange_write_paciente(patient_id, paciente_nombre_acompaniante, 'nombre_acompaniante')"/>
-											<field name="paciente_telefono_acompaniante" on_change="onchange_write_paciente(patient_id, paciente_telefono_acompaniante, 'telefono_acompaniante')"/>
-											<field name="paciente_nombre_responsable" on_change="onchange_write_paciente(patient_id, paciente_nombre_responsable, 'nombre_responsable')"/>
-											<field name="paciente_parentesco_id" on_change="onchange_write_paciente(patient_id, paciente_parentesco_id, 'parentesco_id')"/>
-											<field name="paciente_nombre_responsable" on_change="onchange_write_paciente(patient_id, paciente_nombre_responsable, 'nombre_responsable')"/>
-											<field name="paciente_telefono_responsable" on_change="onchange_write_paciente(patient_id, paciente_telefono_responsable, 'telefono_responsable')"/>
-											<field name="paciente_insurer_prepagada_id" on_change="onchange_write_paciente(patient_id, paciente_insurer_prepagada_id, 'insurer_prepagada_id')"/>
+											<field name="paciente_ocupacion_actual"/>
+											<field name="paciente_ocupacion_id"/>
+											<field name="paciente_street"/>
+											<field name="paciente_telefono"/>
+											<field name="paciente_nombre_acompaniante"/>
+											<field name="paciente_telefono_acompaniante"/>
+											<field name="paciente_nombre_responsable"/>
+											<field name="paciente_parentesco_id"/>
+											<field name="paciente_telefono_responsable"/>
+											<field name="paciente_insurer_prepagada_id"/>
 
 											
 										</group>
