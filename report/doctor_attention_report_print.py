@@ -44,6 +44,8 @@ class doctor_attention_report_print(report_sxw.rml_parse):
 			'select_prescription_drugs': self.select_prescription_drugs,
 			'historia_control_instalada': self.historia_control_instalada,
 			'cargando_atenciones': self.cargando_atenciones,
+			'cargar_examen_fisico': self.cargar_examen_fisico,
+			'cargar_past': self.cargar_past,
 			
 		})
 
@@ -194,11 +196,21 @@ class doctor_attention_report_print(report_sxw.rml_parse):
 		return bandera
 
 	def cargando_atenciones(self, attentions):
-		_logger.info('********************************************************************')
-		_logger.info(attentions)
 		return bandera
 
+	def cargar_examen_fisico(self, name_exam, exam):
+		if exam:
+			return name_exam
+		else:
+			return ""
+		return ""
 
+	def cargar_past(self, category_past, name):
+		if name:
+			return category_past
+		else:
+			return ""
+		return ""
 
 
 report_sxw.report_sxw('report.doctor_attention_report_print', 'doctor.list_report_print',

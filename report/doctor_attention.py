@@ -44,6 +44,8 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_prescription_drugs': self.select_prescription_drugs,
 			'historia_control_instalada': self.historia_control_instalada,
 			'cargar_peso': self.cargar_peso,
+			'cargar_examen_fisico': self.cargar_examen_fisico,
+			'cargar_past': self.cargar_past,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -201,6 +203,19 @@ class doctor_attention(report_sxw.rml_parse):
 		return cadena
 
 
+	def cargar_examen_fisico(self, name_exam, exam):
+		if exam:
+			return name_exam
+		else:
+			return ""
+		return ""
+
+	def cargar_past(self, category_past, name):
+		if name:
+			return category_past
+		else:
+			return ""
+		return ""
 
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',

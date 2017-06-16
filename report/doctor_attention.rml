@@ -93,6 +93,7 @@
     <paraStyle name="terp_default_Bold_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="terp_default_Bold_Right_9" rightIndent="0.0" leftIndent="-3.0" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
     <paraStyle name="letra_salto_linea" fontName="Helvetica" fontSize="0.0" leading="13" alignment="LEFT"/>
+    <paraStyle name="letra_exam" fontName="Helvetica" fontSize="10.0" leading="5" spaceBefore="-1.0" spaceAfter="2.0" alignment="LEFT"/>
     <images/>
   </stylesheet>
   <story>
@@ -238,11 +239,11 @@
         [[ o.past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
-            <para style="P4">[[ repeatIn(o.past_ids, 'line') ]]</para>
-            <para style="terp_default_8">[[ (line.past_category.name) or (removeParentNode('para'))]]</para>
+            <para style="P6">[[ repeatIn(o.past_ids, 'line') ]]</para>
+            <para style="P6">[[ cargar_past(line.past_category.name, line.past)]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.past) or (removeParentNode('para'))]] </para>
+            <para style="P6">[[ (line.past) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -389,9 +390,9 @@
       </tr>
       </blockTable>
 
-    <section>
-    [[o.attentions_exam_ids or o.otros_hallazgos_examen_fisico or removeParentNode('section') ]]
+    
     <blockTable colWidths="534.0" style="Table6">
+    [[o.attentions_exam_ids or o.otros_hallazgos_examen_fisico or removeParentNode('blockTable') ]]
       <tr>
         <td>
           <para style="P2">EXAM</para>
@@ -400,17 +401,18 @@
     </blockTable>
 
     <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ o.attentions_exam_ids or removeParentNode('blockTable') ]]
+        [[ (o.attentions_exam_ids)]]
         <tr>
           <td>
-            <para style="P4">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>
-            <para style="p4">[[ (line.exam_category.name) or (removeParentNode('para'))]]</para>
+            <para style="p6">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>
+            <para style="p6">[[ cargar_examen_fisico(line.exam_category.name, line.exam) or removeParentNode('para')]]</para>
           </td>
           <td>
-            <para style="p4">[[ (line.exam) or (removeParentNode('para'))]] </para>
+            <para style="p6">[[ (line.exam)]] </para>
           </td>
         </tr>
       </blockTable>
+
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
@@ -421,7 +423,7 @@
         </td>
      </tr>
     </blockTable>
-    </section>
+
 
     <section>
       <blockTable colWidths="534" style="Table6">

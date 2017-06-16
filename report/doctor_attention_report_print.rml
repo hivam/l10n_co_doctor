@@ -406,11 +406,11 @@
         [[ code.attentions_exam_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
-            <para style="P4">[[ repeatIn(code.attentions_exam_ids, 'line') ]]</para>
-            <para style="p4">[[ (line.exam_category.name) or (removeParentNode('para'))]]</para>
+            <para style="P6">[[ repeatIn(code.attentions_exam_ids, 'line') ]]</para>
+            <para style="p6">[[ cargar_examen_fisico(line.exam_category.name, line.exam)]]</para>
           </td>
           <td>
-            <para style="p4">[[ (line.exam) or (removeParentNode('para'))]] </para>
+            <para style="p6">[[ (line.exam)]] </para>
           </td>
         </tr>
       </blockTable>
