@@ -2417,6 +2417,7 @@ class doctor_attentions_co(osv.osv):
 		'couta_moderadora':fields.float('cuota moderadora'),
 		'valor_pagar':fields.float('valor a pagar'),
 		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),
+		'list_report_print_id': fields.many2one('doctor.list_report_print', 'List Report'),
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
 
@@ -2797,6 +2798,34 @@ class doctor_attentions_co(osv.osv):
 			'view_mode': 'form',
 			'res_id': False,
 			'res_model': 'doctor.list_report',
+			'context': context or None,
+			'view_id': [view_id] or False,
+			'nodestroy': False,
+			'target': 'new'
+		}
+
+
+	def button_imprimir_ultimas_hc(self, cr, uid, ids, context=None):
+		data_obj = self.pool.get('ir.model.data')
+		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_print_form')
+		view_id = data_obj.browse(cr, uid, result).res_id
+
+		profesional=''
+		patient=''
+		for x in self.browse(cr,uid,ids):
+			patient= x.patient_id.id
+			profesional= x.professional_id.id
+
+		context['default_patient_id']= patient
+		context['default_professional_id']= profesional
+
+		return {
+			'type': 'ir.actions.act_window',
+			'name': 'Ver últimas Atenciones',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_id': False,
+			'res_model': 'doctor.list_report_print',
 			'context': context or None,
 			'view_id': [view_id] or False,
 			'nodestroy': False,
@@ -4168,6 +4197,62 @@ class doctor_list_report(osv.osv):
 
 
 doctor_list_report()
+
+
+
+class doctor_list_report_print(osv.osv):
+
+	_name= 'doctor.list_report_print'
+
+	_columns = {
+		'professional_id': fields.many2one('doctor.professional', 'Doctor'),
+		'attentions_ids': fields.one2many('doctor.attentions', 'list_report_print_id', 'Attentions'),
+		'patient_id': fields.many2one('doctor.patient', 'Paciente', required=True),
+		'especialidad_id':fields.many2one('doctor.speciality', 'Especialidad'),
+	}
+
+	_defaults = {
+		'patient_id' : lambda self, cr, uid, context: context.get('default_patient_id', False),
+		'professional_id' : lambda self, cr, uid, context: context.get('default_professional_id', False),
+	}	
+
+	def button_print_attention(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		data = self.read(cr, uid, ids)[0]
+		_logger.info('entro')
+		_logger.info(data)
+		datas = {
+			'ids': ids,
+			'model': 'doctor.list_report_print',
+			'form': data
+			}
+		_logger.info(datas)
+		return {
+			'type': 'ir.actions.report.xml',
+			'report_name': 'doctor_attention_report_print',
+
+		}
+
+	#Funcion para cargar las ultimas atenciones
+	def onchange_cargar_atenciones_print(self, cr, uid, ids, patient_id, professional_id, context=None):
+		atenciones=''
+		if patient_id and professional_id:
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+			_logger.info(atenciones)
+			_logger.info(atenciones[0])
+			atenciones_id=[]
+			if len(atenciones) > 3:
+				for x in range(3):
+					atenciones_id.append(atenciones[x])
+				return {'value': {'attentions_ids': atenciones_id}}
+			else:
+				for x in range(len(atenciones)):
+					atenciones_id.append(atenciones[x])
+				return {'value': {'attentions_ids': atenciones_id}}
+		return False
+
+doctor_list_report_print()
 
 class doctor_otra_prescripcion(osv.osv):
 

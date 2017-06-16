@@ -669,12 +669,10 @@
 									
 									<button string="Ver HC" name="button_imprimir_informes" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
 
-									
-
 									<button string="Actualizar edad" name="actualizar_edad" type="object" class="oe_highlight" attrs="{'invisible':[ ('inv_boton_edad','=',False)]}"/>
+
+									<button string="Última Atención" name="button_imprimir_ultimas_hc" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
 								</xpath>
-								
-									
 								
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']" position="inside">	
 									<page string="Adjuntos">
@@ -1282,6 +1280,32 @@
 						</field>
 				</record>
 
+
+				<record model="ir.ui.view" id="view_doctor_list_report_print_form">
+						<field name="name">Últimas Atenciones</field>
+						<field name="model">doctor.list_report_print</field>
+						<field name="arch" type="xml">
+							<form string="Últimas Atenciones" version="7.0">
+								<header >
+                    				<button string="Ver Atenciones" name="button_print_attention" type="object" class="oe_highlight"/>
+               				 	</header>	
+
+               				 	<field name="professional_id" on_change="onchange_cargar_atenciones_print(patient_id, professional_id)" invisible="1" style="width:40%%"/>
+
+
+               				 	<field name="patient_id" invisible="1" style="width:40%%"/>
+               				 	
+		               			<field name="attentions_ids" nolabel="1" style="width:40%%" invisible="1">
+		                            <tree string="Attentions" editable="bottom" limit="3">
+		                                <field name="date_attention"/>
+		                                <field name="professional_id"/>
+		                                <field name="speciality"/>
+		                                <field name="state"/>
+		                            </tree>
+		                        </field>
+							</form>
+						</field>
+				</record>
 
 				<!-- doctor list_report Action -->
 				<record model="ir.actions.act_window" id="action_doctor_list_report">
