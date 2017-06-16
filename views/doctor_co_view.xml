@@ -717,6 +717,99 @@
 									<group col="1" colspan="2">
 										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" /> 
 									</group>
+
+
+																	<notebook>
+									<page string="Seguimientos Paraclínicos">
+										<group col='1'>
+											<fieldset class="fieldset_margen">
+												<group colspan="6" col="4">
+													<field name="ver_reporte_paraclinico"/>
+													<field name="paraclinical_monitoring" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}"/>
+												</group>
+												<group colspan="2" col='1'>
+													
+													<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+													
+													<field name="reportes_paraclinicos" nolabel="1" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+													<label for="plantilla_paraclinicos_id" string="Plantillas" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+													<field name="plantilla_paraclinicos_id" on_change='onchange_plantillas(plantilla_paraclinicos_id, "reportes_paraclinicos")' nolabel="1" domain="[('tipo_plantilla', '=', '16')]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
+
+												</group>
+												<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" domain="[('patient_id', '=', patient_id)]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}">
+													<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+														<group colspan='1' col='1'>
+															<field name="seguimientos_id">
+																<form>
+																	<group colspan='4' col='2'>
+																	<field name="code" invisible="1"/>
+																	<field name="name"/>
+																	</group>
+																</form>
+															</field>
+														</group> 
+														<group colspan='4' col='2'>
+															<field name="result_paraclinical"/>
+															<field name="regitration_date"/>
+														</group> 
+														<group colspan='4' col='2'>
+															<field name="patient_id" invisible="1"/>
+															<field name="doctor_id" invisible="1"/>
+														</group>			
+													</form>
+													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+														<field name="seguimientos_id"/>
+														<field name="result_paraclinical"/>
+														<field name="regitration_date"/>
+														<field name="patient_id" invisible="1"/>
+														<field name="doctor_id" invisible="1"/>
+													</tree>
+												</field>
+											</fieldset>
+										</group>
+										<group colspan='2' col='2'>
+											<fieldset class="fieldset_margen" attrs="{'invisible': [('paraclinical_monitoring', '=', False)]}">
+												<legend class="texto_legend">Filtro de Seguimientos</legend>
+												<br/>
+												<group colspan="4" col="2">
+													<label for="filter_segumiento_id" string="Filtrar Por:"/>
+													<field name="filter_segumiento_id" style="width:45%%" on_change='onchange_paraclinical_monitoring(filter_segumiento_id, patient_id)' create="false" nolabel="1" context="{'patient_id' : patient_id, 'doctor_id': professional_id}"/>
+												</group>
+												<field name="filter_paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" domain="[('patient_id', '=', patient_id)]">
+													<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
+														<group colspan='1' col='1'>
+															<field name="seguimientos_id">
+																<form>
+																	<group colspan='4' col='2'>
+																	<field name="code" invisible="1"/>
+																	<field name="name"/>
+																	</group>
+																</form>
+															</field>
+														</group> 
+														<group colspan='4' col='2'>
+															<field name="result_paraclinical"/>
+															<field name="regitration_date"/>
+														</group> 
+														<group colspan='4' col='2'>
+															<field name="patient_id" invisible="1"/>
+															<field name="doctor_id" invisible="1"/>
+														</group>			
+													</form>
+													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]" create="false">
+														<field name="seguimientos_id"/>
+														<field name="result_paraclinical"/>
+														<field name="regitration_date"/>
+														<field name="patient_id" invisible="1"/>
+														<field name="doctor_id" invisible="1"/>
+													</tree>
+												</field>
+											</fieldset>
+										</group>
+									</page>
+								</notebook>
 								</field>
 								
 								<field name="attentions_exam_ids" position="after">
@@ -907,6 +1000,9 @@
 
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[1]/field[@name='diseases_ids']" position="replace"/>
 								
+								<xpath expr="//page[@string='Paraclínicos']" position="attributes">
+									<attribute name="invisible">1</attribute>
+								</xpath>
 
 								<xpath expr="//page[@string='Anamnesis']" position="before">
 
@@ -934,108 +1030,10 @@
 											<field name="paciente_parentesco_id"/>
 											<field name="paciente_telefono_responsable"/>
 											<field name="paciente_insurer_prepagada_id"/>
-
-											
 										</group>
 									</page>
-
-								</xpath>
-								
+								</xpath>								
 								<!--fin quitando campos de medicamentos-->
-
-							<xpath expr="//group[@id='group_paraclinical']" position="after">
-								<notebook>
-									<page string="Seguimientos Paraclínicos">
-										<group col='1'>
-											<fieldset class="fieldset_margen">
-												<group colspan="6" col="4">
-													<field name="ver_reporte_paraclinico"/>
-													<field name="paraclinical_monitoring" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}"/>
-												</group>
-												<group colspan="2" col='1'>
-													
-													<label for="reportes_paraclinicos" string="Reportes de Paraclínicos" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
-													
-													<field name="reportes_paraclinicos" nolabel="1" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
-
-													<label for="plantilla_paraclinicos_id" string="Plantillas" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
-
-													<field name="plantilla_paraclinicos_id" on_change='onchange_plantillas(plantilla_paraclinicos_id, "reportes_paraclinicos")' nolabel="1" domain="[('tipo_plantilla', '=', '16')]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', True)]}"/>
-
-												</group>
-												<field name="paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" domain="[('patient_id', '=', patient_id)]" attrs="{'invisible': [('ver_reporte_paraclinico', '=', False)]}">
-													<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
-														<group colspan='1' col='1'>
-															<field name="seguimientos_id">
-																<form>
-																	<group colspan='4' col='2'>
-																	<field name="code" invisible="1"/>
-																	<field name="name"/>
-																	</group>
-																</form>
-															</field>
-														</group> 
-														<group colspan='4' col='2'>
-															<field name="result_paraclinical"/>
-															<field name="regitration_date"/>
-														</group> 
-														<group colspan='4' col='2'>
-															<field name="patient_id" invisible="1"/>
-															<field name="doctor_id" invisible="1"/>
-														</group>			
-													</form>
-													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
-														<field name="seguimientos_id"/>
-														<field name="result_paraclinical"/>
-														<field name="regitration_date"/>
-														<field name="patient_id" invisible="1"/>
-														<field name="doctor_id" invisible="1"/>
-													</tree>
-												</field>
-											</fieldset>
-										</group>
-										<group colspan='2' col='2'>
-											<fieldset class="fieldset_margen" attrs="{'invisible': [('paraclinical_monitoring', '=', False)]}">
-												<legend class="texto_legend">Filtro de Seguimientos</legend>
-												<br/>
-												<group colspan="4" col="2">
-													<label for="filter_segumiento_id" string="Filtrar Por:"/>
-													<field name="filter_segumiento_id" style="width:45%%" on_change='onchange_paraclinical_monitoring(filter_segumiento_id, patient_id)' create="false" nolabel="1" context="{'patient_id' : patient_id, 'doctor_id': professional_id}"/>
-												</group>
-												<field name="filter_paraclinical_monitoring_ids" nolabel="1" create='true' context="{'patient_id' : patient_id, 'doctor_id': professional_id}" domain="[('patient_id', '=', patient_id)]">
-													<form string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]">
-														<group colspan='1' col='1'>
-															<field name="seguimientos_id">
-																<form>
-																	<group colspan='4' col='2'>
-																	<field name="code" invisible="1"/>
-																	<field name="name"/>
-																	</group>
-																</form>
-															</field>
-														</group> 
-														<group colspan='4' col='2'>
-															<field name="result_paraclinical"/>
-															<field name="regitration_date"/>
-														</group> 
-														<group colspan='4' col='2'>
-															<field name="patient_id" invisible="1"/>
-															<field name="doctor_id" invisible="1"/>
-														</group>			
-													</form>
-													<tree string="Seguimientos Paraclínicos" domain="[('patient_id', '=', patient_id)]" create="false">
-														<field name="seguimientos_id"/>
-														<field name="result_paraclinical"/>
-														<field name="regitration_date"/>
-														<field name="patient_id" invisible="1"/>
-														<field name="doctor_id" invisible="1"/>
-													</tree>
-												</field>
-											</fieldset>
-										</group>
-									</page>
-								</notebook>
-							</xpath>
 						</field>
 				</record>
 
