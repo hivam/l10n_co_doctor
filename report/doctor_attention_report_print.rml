@@ -232,7 +232,7 @@
     </blockTable>
     </section>
     <section>
-    [[code.past_ids or removeParentNode('section') ]]
+    [[code.attentions_past_ids or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -241,7 +241,7 @@
      </tr>
     </blockTable>
     <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ code.past_ids or removeParentNode('blockTable') ]]
+        [[ code.attentions_past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
             <para style="P4">[[ repeatIn(code.attentions_past_ids, 'line') ]]</para>
