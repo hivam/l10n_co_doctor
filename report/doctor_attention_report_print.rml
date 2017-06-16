@@ -244,8 +244,8 @@
         [[ code.past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
-            <para style="P4">[[ repeatIn(code.past_ids, 'line') ]]</para>
-            <para style="terp_default_8">[[ (line.past_category.name) ]]</para>
+            <para style="P4">[[ repeatIn(code.attentions_past_ids, 'line') ]]</para>
+            <para style="P6">[[ cargar_past(line.past_category.name, line.past)]]</para>
           </td>
           <td>
             <para style="terp_default_8">[[ (line.past) or (removeParentNode('para'))]] </para>

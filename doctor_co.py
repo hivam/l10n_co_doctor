@@ -4242,9 +4242,14 @@ class doctor_list_report_print(osv.osv):
 			_logger.info(atenciones)
 			_logger.info(atenciones[0])
 			atenciones_id=[]
-			for x in range(3):
-				atenciones_id.append(atenciones[x])
-			return {'value': {'attentions_ids': atenciones_id}}
+			if len(atenciones) > 3:
+				for x in range(3):
+					atenciones_id.append(atenciones[x])
+				return {'value': {'attentions_ids': atenciones_id}}
+			else:
+				for x in range(len(atenciones)):
+					atenciones_id.append(atenciones[x])
+				return {'value': {'attentions_ids': atenciones_id}}
 		return False
 
 doctor_list_report_print()
