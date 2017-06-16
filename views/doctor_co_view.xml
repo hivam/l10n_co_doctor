@@ -671,10 +671,8 @@
 
 									<button string="Actualizar edad" name="actualizar_edad" type="object" class="oe_highlight" attrs="{'invisible':[ ('inv_boton_edad','=',False)]}"/>
 
-									<button string="Últimas HC" name="button_imprimir_ultimas_hc" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
+									<button string="Última Atención" name="button_imprimir_ultimas_hc" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
 								</xpath>
-								
-									
 								
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']" position="inside">	
 									<page string="Adjuntos">
