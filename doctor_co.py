@@ -2462,7 +2462,7 @@ class doctor_attentions_co(osv.osv):
 		'paciente_ocupacion_id': fields.function(_get_profesion, fnct_inv=_set_profesion , type="many2one", store= False, 
 								string=u'Profesión', relation='doctor.patient.ocupacion'), 
 		'paciente_insurer_prepagada_id': fields.function(_get_insurer, fnct_inv=_set_insurer , type="many2one", store= False, 
-								string=u'Aseguradora', relation='insurer_prepagada_id'),
+								string=u'Aseguradora', relation='doctor.insurer'),
 		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
 								string=u'Parentesco', relation='doctor.patient.parentesco'), 
 		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string="Diagnósticos Anteriores"),
