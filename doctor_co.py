@@ -2012,24 +2012,6 @@ class doctor_attentions_co(osv.osv):
 				res[datos.id] = False
 		return res
 
-	def load_attentions_diseases_ago(self, cr, uid, ids, field_name, arg, context=None):
-
-		_logger.info('**************************************************************')
-		_logger.info(ids)
-		res = {}
-		patient_id=None
-		for datos in self.browse(cr, uid, ids):
-			patient_id= datos.patient_id.id
-		atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
-		diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
-		_logger.info('esto es lo que tiene que cargar')
-		_logger.info(diseases_ago_ids)
-		for datos in self.browse(cr, uid, ids):
-			_logger.info(datos.id)
-			res[datos.id] = diseases_ago_ids
-
-		return res
-
 	def _previous(self, cr, uid, patient_id, type_past, attentiont_id=None):
 		condition = [('patient_id', '=', patient_id.id)]
 		if attentiont_id != None:
@@ -2354,7 +2336,13 @@ class doctor_attentions_co(osv.osv):
 				res[datos.id] = datos.patient_id.parentesco_id.id
 		return res
 
-
+	#Funcion para cargar los diagnosticos que tenga el paciente
+	def cargando_diagnosticos(self, cr, uid, ids, context=None):
+		if ids:
+			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient'])] )
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', id_patient)])
+			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones)])
+		return diseases_ago_ids
 
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean(u'NC', states={'closed': [('readonly', True)]}),
@@ -2465,8 +2453,7 @@ class doctor_attentions_co(osv.osv):
 								string=u'Aseguradora', relation='doctor.insurer'),
 		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
 								string=u'Parentesco', relation='doctor.patient.parentesco'), 
-		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string="Diagnósticos Anteriores"),
-		
+		'diseases_ago_ids': fields.one2many('doctor.attentions.diseases', 'attentiont_id', u'Diagnósticos Anteriores', store=False, readonly=True),
 	}
 
 
@@ -2476,6 +2463,7 @@ class doctor_attentions_co(osv.osv):
 		'inv' : True,
 		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
 		'complicacion_eventoadverso' : '01',
+		'diseases_ago_ids': cargando_diagnosticos
 	}
 
 
@@ -2532,8 +2520,6 @@ class doctor_attentions_co(osv.osv):
 				if datos_paciente.insurer_prepagada_id:
 					res['paciente_insurer_prepagada_id'] = datos_paciente.insurer_prepagada_id.id
 						
-
-
 			modelo_buscar = self.pool.get('ir.attachment')
 
 			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', patient_id)], context=context)
