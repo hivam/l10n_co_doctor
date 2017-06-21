@@ -227,7 +227,7 @@
     </blockTable>
     </section>
     <section>
-    [[o.past_ids or removeParentNode('section') ]]
+    [[o.attentions_past_ids or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -236,7 +236,7 @@
      </tr>
     </blockTable>
     <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ o.past_ids or removeParentNode('blockTable') ]]
+        [[ o.attentions_past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
             <para style="P6">[[ repeatIn(o.attentions_past_ids, 'line') ]]</para>
@@ -401,7 +401,7 @@
     </blockTable>
 
     <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ (o.attentions_exam_ids) or removeParentNode('blockTable') ]]
+        [[ o.attentions_exam_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
             <para style="p6">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>

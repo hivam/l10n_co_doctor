@@ -211,11 +211,16 @@ class doctor_attention(report_sxw.rml_parse):
 		return ""
 
 	def cargar_past(self, category_past, name):
-		if name:
-			return category_past
+		_logger.info(category_past)
+		_logger.info(name)
+		if category_past:
+			if name:
+				return category_past
+			else:
+				return ""
 		else:
-			return ""
-		return ""
+			return None
+		return None
 
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
