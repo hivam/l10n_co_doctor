@@ -2339,10 +2339,28 @@ class doctor_attentions_co(osv.osv):
 	#Funcion para cargar los diagnosticos que tenga el paciente
 	def cargando_diagnosticos(self, cr, uid, ids, context=None):
 		if ids:
-			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient'])] )
+			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient'][0])] )
 			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', id_patient)])
 			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones)])
 		return diseases_ago_ids
+
+	def load_attentions_diseases_ago(self, cr, uid, ids, field_name, arg, context=None):
+
+			_logger.info('**************************************************************')
+			_logger.info(ids)
+			res = {}
+			patient_id=None
+			for datos in self.browse(cr, uid, ids):
+				patient_id= datos.patient_id.id
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
+			_logger.info('esto es lo que tiene que cargar')
+			_logger.info(diseases_ago_ids)
+			for datos in self.browse(cr, uid, ids):
+				_logger.info(datos.id)
+				res[datos.id] = diseases_ago_ids
+
+			return res
 
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean(u'NC', states={'closed': [('readonly', True)]}),
@@ -2453,9 +2471,9 @@ class doctor_attentions_co(osv.osv):
 								string=u'Aseguradora', relation='doctor.insurer'),
 		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
 								string=u'Parentesco', relation='doctor.patient.parentesco'), 
-		'diseases_ago_ids': fields.one2many('doctor.attentions.diseases', 'attentiont_id', u'Diagnósticos Anteriores', store=False, readonly=True),
+		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string="Diagnósticos Anteriores"),
+			
 	}
-
 
 	_defaults = {
 		'finalidad_consulta': lambda self, cr, uid, context: self.pool.get('doctor.doctor').finalidad_consulta_db(cr, uid),
@@ -2463,23 +2481,22 @@ class doctor_attentions_co(osv.osv):
 		'inv' : True,
 		'causa_externa': lambda self, cr, uid, context: self.pool.get('doctor.doctor').causa_externa(cr, uid),
 		'complicacion_eventoadverso' : '01',
-		'diseases_ago_ids': cargando_diagnosticos
 	}
-
-
 
 	def default_get(self, cr, uid, fields, context=None):
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
-
 		patient_id = self.obtener_paciente(context)
 		registro = []
-
-
-
+		arreglo_ago=[]
 		if patient_id:
 
 			patient_id = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context).id
 			_logger.info(type(patient_id))
+
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
+			for i in self.pool.get('doctor.attentions.diseases').browse(cr,uid,diseases_ago_ids,context=context):
+				arreglo_ago.append((0,0,{'diseases_id' : i.diseases_id.id , 'status' : i.status, 'diseases_type': i.diseases_type}))
 
 			for datos_paciente in self.pool.get('doctor.patient').browse(cr, uid, [patient_id], context=context):
 
@@ -2531,13 +2548,12 @@ class doctor_attentions_co(osv.osv):
 
 			res['ref'] = ref
 			res['tdoc'] = self.pool.get('doctor.doctor').tipo_documento(tdoc)
+			res['diseases_ago_ids'] = arreglo_ago
 
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
 
 		return res
-
-
 
 	def onchange_edad(self, cr, uid, ids, birth_date, context=None):
 		res={'value':{}}
@@ -2545,7 +2561,6 @@ class doctor_attentions_co(osv.osv):
 			res['value']['paciente_edad_atencion']= self.calcular_edad(birth_date)
 			res['value']['paciente_unidad_edad']=self.calcular_age_unit(birth_date)
 		return res
-
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
