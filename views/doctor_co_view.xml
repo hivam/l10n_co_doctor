@@ -1007,9 +1007,7 @@
 
 								<xpath expr="//page[@string='Anamnesis']" position="before">
 
-									<page string="Datos Administrativos">
-										
-										<legend class="texto_legend" id="DatosAdministrativos">Identificacion</legend>
+									<page string="Identificacion">
 										<group colspan='6' col='4'>
 											<field name="paciente_tdoc"/>
 											<field name="paciente_identificacion"/>
