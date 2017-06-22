@@ -61,7 +61,7 @@
       <paraStyle name="all" alignment="justify"/>
     </initialize>
     <paraStyle name="P1" fontName="Helvetica"/>
-    <paraStyle name="P2" fontName="Helvetica-Bold" fontSize="10.0" leading="13" alignment="CENTER"/>
+    <paraStyle name="P2" fontName="Helvetica-Bold" fontSize="12.0" leading="13" alignment="CENTER"/>
     <paraStyle name="P3" fontName="Helvetica" fontSize="10.0" leading="13" alignment="LEFT"/>
     <paraStyle name="P4" fontName="Helvetica" fontSize="2.0" leading="3" alignment="LEFT"/>
     <paraStyle name="P5" fontName="Helvetica-Bold" fontSize="14" leading="22" alignment="CENTER"/>
@@ -96,8 +96,8 @@
     <images/>
   </stylesheet>
   <story>
-  <para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
-    <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
+  <para style="p6">[[ repeatIn(objects,'o') ]]</para>
+    <para style="p6">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
 
 <!--
     <para style="Heading"><b>MEDICAL RECORD</b></para>
@@ -111,7 +111,7 @@
 
    <section>
     [[o.attentions_ids or removeParentNode('section') ]]
-    <para style="P4">[[ repeatIn(o.attentions_ids, 'code') ]]</para>
+    <para style="P6">[[ repeatIn(o.attentions_ids, 'code') ]]</para>
 
     <blockTable colWidths="175.0,175.0,184.0 " style="Table1">
       <tr>
@@ -144,7 +144,7 @@
         <td>
           <para style="P6">Name: [[ (code.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
           <para style="P6">Age: [[ (code.age_attention or (removeParentNode('para'))) ]] [[ (select_age(code.age_unit) or (removeParentNode('para'))) ]]</para>
-          <para style="P6">Insurer: [[ (code.patient_id.insurer.id) or removeParentNode('para')]]</para>
+          <para style="P6">Insurer: [[ (code.patient_id.insurer.insurer.name) or removeParentNode('para')]]</para>
         </td>
       </tr>
     </blockTable>
@@ -161,19 +161,19 @@
         <blockTable colWidths="534" style="Table6">
           <tr>
             <td>
-              <para style="terp_default_8">[[code.motivo_consulta or removeParentNode('blockTable')]]</para>
+              <para style="p6">[[code.motivo_consulta or removeParentNode('blockTable')]]</para>
             </td>
           </tr>
           </blockTable>
           <blockTable colWidths="84.0,450.0" style="Table6">
             <tr>
             [[ code.reason_consultation or removeParentNode('blockTable') ]]
-            <para style="P4">[[ repeatIn(code.reason_consultation, 'line') ]]</para>
+            <para style="P6">[[ repeatIn(code.reason_consultation, 'line') ]]</para>
              <td>
-                <para style="terp_default_8">[[ (line.code) ]]</para>
+                <para style="p6">[[ (line.code) ]]</para>
               </td>
               <td>
-                <para style="terp_default_8">[[ (line.name) ]] </para>
+                <para style="p6">[[ (line.name) ]] </para>
               </td>
             </tr>
           </blockTable>
@@ -190,7 +190,7 @@
     <blockTable colWidths="534.0" style="Table6">
         <tr>
      <td>
-            <para style="P3">[[ code.actual_disease or removeParentNode('section') ]]</para>
+            <para style="P6">[[ code.actual_disease or removeParentNode('section') ]]</para>
          </td>
         </tr>
       </blockTable>
@@ -223,10 +223,10 @@
     <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
-          <para style="p1">Otros Síntomas</para>
+          <para style="p6">Otros Síntomas</para>
         </td>
         <td>
-          <para style="p1">[[ (code.otro_sintomas_revision_sistema) or removeParentNode('blockTable')]] </para>
+          <para style="p6">[[ (code.otro_sintomas_revision_sistema) or removeParentNode('blockTable')]] </para>
         </td>
      </tr>
     </blockTable>
@@ -244,11 +244,11 @@
         [[ code.attentions_past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
-            <para style="P4">[[ repeatIn(code.attentions_past_ids, 'line') ]]</para>
+            <para style="P6">[[ repeatIn(code.attentions_past_ids, 'line') ]]</para>
             <para style="P6">[[ cargar_past(line.past_category.name, line.past)]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.past) or (removeParentNode('para'))]] </para>
+            <para style="p6">[[ (line.past) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -258,10 +258,10 @@
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
-          <para style="p1">Otros Antecedentes</para>
+          <para style="p6">Otros Antecedentes</para>
         </td>
         <td>
-          <para style="p1">[[ (code.otros_antecedentes) or removeParentNode('blockTable')]] </para>
+          <para style="p6">[[ (code.otros_antecedentes) or removeParentNode('blockTable')]] </para>
         </td>
      </tr>
     </blockTable>
@@ -281,11 +281,11 @@
         [[ code.pathological_past_ids or removeParentNode('blockTable') ]]
         <tr>
         <td>
-          <para style="p1">[[ repeatIn(code.pathological_past_ids, 'line') ]]</para>
-          <para style="p1">[[ (line.diseases_id.code) or (removeParentNode('para'))]]</para>
+          <para style="p6">[[ repeatIn(code.pathological_past_ids, 'line') ]]</para>
+          <para style="p6">[[ (line.diseases_id.code) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.diseases_id.name) or (removeParentNode('para'))]] </para>
+            <para style="p6">[[ (line.diseases_id.name) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -295,10 +295,10 @@
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
-          <para style="p1">Otros Antecedentes Patológicos</para>
+          <para style="p6">Otros Antecedentes Patológicos</para>
         </td>
         <td>
-          <para style="p1">[[ (code.otros_antecedentes_patologicos) or removeParentNode('blockTable')]] </para>
+          <para style="p6">[[ (code.otros_antecedentes_patologicos) or removeParentNode('blockTable')]] </para>
         </td>
      </tr>
     </blockTable>
@@ -318,11 +318,11 @@
         [[ code.drugs_past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
-          <para style="P4">[[ repeatIn(code.drugs_past_ids, 'line') ]]</para>
-          <para style="p4">[[ (line.atc_id.code) or (removeParentNode('para'))]]</para>
+          <para style="P6">[[ repeatIn(code.drugs_past_ids, 'line') ]]</para>
+          <para style="p6">[[ (line.atc_id.code) or (removeParentNode('para'))]]</para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.atc_id.name) or (removeParentNode('para'))]] </para>
+            <para style="p6">[[ (line.atc_id.name) or (removeParentNode('para'))]] </para>
           </td>
         </tr>
       </blockTable>
@@ -332,10 +332,10 @@
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
-          <para style="p1">Otros Antecedentes farmacológicos</para>
+          <para style="p6">Otros Antecedentes farmacológicos</para>
         </td>
         <td>
-          <para style="p1">[[ (code.otros_antecedentes_farmacologicos) or removeParentNode('blockTable')]] </para>
+          <para style="p6">[[ (code.otros_antecedentes_farmacologicos) or removeParentNode('blockTable')]] </para>
         </td>
      </tr>
     </blockTable>
@@ -370,24 +370,24 @@
 
       <tr>
         <td>
-          <para style="P3">Weight: [[ (code.weight) ]] kg</para>
-          <para style="P3">Height: [[ (code.height) ]] cm</para>
-          <para style="P3">Body mass: [[ (code.body_mass_index) ]] kg/m²</para>
-          <para style="P3">Superficie Corporal: [[ (code.superficie_corporal) ]] m²</para>
+          <para style="P6">Weight: [[ (code.weight) ]] kg</para>
+          <para style="P6">Height: [[ (code.height) ]] cm</para>
+          <para style="P6">Body mass: [[ (code.body_mass_index) ]] kg/m²</para>
+          <para style="P6">Superficie Corporal: [[ (code.superficie_corporal) ]] m²</para>
         </td>
         <td>
-          <para style="P3">Frecuencia Cardiaca: [[ (code.heart_rate) ]] L/min</para>
-          <para style="P3">Respiratory: [[ (code.respiratory_rate) ]] R/min</para>
+          <para style="P6">Frecuencia Cardiaca: [[ (code.heart_rate) ]] L/min</para>
+          <para style="P6">Respiratory: [[ (code.respiratory_rate) ]] R/min</para>
         </td>
         <td>
-          <para style="P3">Systolic: [[ (code.systolic) ]] mmHg</para>
-          <para style="P3">Diastolic: [[ (code.diastolic) ]] mmHg</para>
+          <para style="P6">Systolic: [[ (code.systolic) ]] mmHg</para>
+          <para style="P6">Diastolic: [[ (code.diastolic) ]] mmHg</para>
         </td>
         <td>
-          <para style="P3">Temperature: [[ (code.temperature) ]] °C</para>
+          <para style="P6">Temperature: [[ (code.temperature) ]] °C</para>
           <para style="letra_salto_linea">[[ 'H ' ]]</para>
           <para style="P2">SpO2</para>
-          <para style="P3">Pulsioximetry: [[ (code.pulsioximetry) ]] %</para>
+          <para style="P6">Pulsioximetry: [[ (code.pulsioximetry) ]] %</para>
         </td>
       </tr>
       </blockTable>
@@ -417,10 +417,10 @@
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
-          <para style="p1">Otros hallazgos y signos clínicos en el examen físico</para>
+          <para style="p6">Otros hallazgos y signos clínicos en el examen físico</para>
         </td>
         <td>
-          <para style="p1">[[ (code.otros_hallazgos_examen_fisico) or removeParentNode('blockTable')]] </para>
+          <para style="p6">[[ (code.otros_hallazgos_examen_fisico) or removeParentNode('blockTable')]] </para>
         </td>
      </tr>
     </blockTable>
@@ -437,7 +437,7 @@
     <blockTable colWidths="534" style="Table6">
       <tr>
         <td>
-          <para style="p1">[[ (code.reportes_paraclinicos) or removeParentNode('section')]] </para>
+          <para style="p6">[[ (code.reportes_paraclinicos) or removeParentNode('section')]] </para>
         </td>
       </tr>  
     </blockTable>
@@ -455,7 +455,7 @@
     <blockTable colWidths="534.0" style="Table6">
         <tr>
      <td>
-            <para style="P3">[[ code.analysis or removeParentNode('section') ]]</para>
+            <para style="P6">[[ code.analysis or removeParentNode('section') ]]</para>
          </td>
         </tr>
       </blockTable>
@@ -465,7 +465,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P2">[[(select_etiqueta_uno(code.professional_id.user_id.id, 'condu-planmanejo') or (removeParentNode('para')))]]</para>
+          <para style="P6">[[(select_etiqueta_uno(code.professional_id.user_id.id, 'condu-planmanejo') or (removeParentNode('para')))]]</para>
         </td>
      </tr>
     </blockTable>
@@ -473,7 +473,7 @@
     <blockTable colWidths="534.0" style="Table6">
         <tr>
      <td>
-            <para style="P3">[[ code.conduct or removeParentNode('section') ]]</para>
+            <para style="P6">[[ code.conduct or removeParentNode('section') ]]</para>
          </td>
         </tr>
       </blockTable>
@@ -491,7 +491,7 @@
     <section>
     [[ code.diseases_ids or removeParentNode('section') ]]
 
-      <para style="P4">[[ repeatIn(code.diseases_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(code.diseases_ids, 'line') ]]</para>
 
       <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
@@ -518,7 +518,7 @@
 
     <section>
       [[ code.drugs_ids or removeParentNode('section') ]]
-      <para style="P4">[[ repeatIn(code.drugs_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(code.drugs_ids, 'line') ]]</para>
       <blockTable colWidths="350.0,184.0" style="Table6">
         <tr>
           <td>
@@ -527,8 +527,8 @@
             <para style="p6">[[ (line.indications or (removeParentNode('para'))) ]] </para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.total_quantity) ]] [[ (line.measuring_unit_qt.name) ]] </para>
-            <para style="terp_default_8">[[ line.cantidad_total  ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]] [[ (line.drugs_id.drugs_concentration) ]]</para>
+            <para style="p6">[[ (line.total_quantity) ]] [[ (line.measuring_unit_qt.name) ]] </para>
+            <para style="p6">[[ line.cantidad_total  ]] [[ (line.drugs_id.pharmaceutical_form.name) ]] [[ (line.drugs_id.administration_route.name) ]] [[ (line.drugs_id.drugs_concentration) ]]</para>
           </td>
         </tr>
       </blockTable>
@@ -547,7 +547,7 @@
   <section>
     [[ code.diagnostic_images_ids or removeParentNode('section') ]]
 
-      <para style="P4">[[ repeatIn(code.diagnostic_images_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(code.diagnostic_images_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
@@ -556,7 +556,7 @@
             <para style="p6"> [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="p6">[[ (line.quantity) ]] </para>
+            <para style="p7">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -574,7 +574,7 @@
     <section>
     [[ code.clinical_laboratory_ids or removeParentNode('section') ]]
 
-    <para style="P4">[[ repeatIn(code.clinical_laboratory_ids, 'line') ]]</para>
+    <para style="P6">[[ repeatIn(code.clinical_laboratory_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
@@ -583,7 +583,7 @@
             <para style="p6"> [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="p6">[[ (line.quantity) ]] </para>
+            <para style="p7">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -603,7 +603,7 @@
     <section>
     [[ code.surgical_procedure_ids or removeParentNode('section') ]]
 
-      <para style="P4">[[ repeatIn(code.surgical_procedure_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(code.surgical_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
@@ -612,7 +612,7 @@
             <para style="p6"> [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="p6">[[ (line.quantity) ]] </para>
+            <para style="p7">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -632,7 +632,7 @@
     <section>
     [[ code.therapeutic_procedure_ids or removeParentNode('section') ]]
 
-      <para style="P4">[[ repeatIn(code.therapeutic_procedure_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(code.therapeutic_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
@@ -641,7 +641,7 @@
             <para style="p6"> [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="p6">[[ (line.quantity) ]] </para>
+            <para style="p7">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -661,7 +661,7 @@
     <section>
     [[ code.other_procedure_ids or removeParentNode('section') ]]
 
-      <para style="P4">[[ repeatIn(code.other_procedure_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(code.other_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
@@ -670,7 +670,7 @@
             <para style="p6">  [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="p6">[[ (line.quantity) ]] </para>
+            <para style="p7">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -706,21 +706,21 @@
     </blockTable>
 
   
-      <para style="P4">[[ repeatIn(code.referral_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(code.referral_ids, 'line') ]]</para>
     <para >[[ setLang(code.partner_id.lang) ]]</para>
     <blockTable colWidths="100.0,150.0,50.0,234.0" style="Table6">
         <tr>
      <td>
-            <para style="terp_default_8">[[ select_type_attention(line.referral_ids) ]] </para>
+            <para style="p6">[[ select_type_attention(line.referral_ids) ]] </para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.speciality_id.name or "") ]] </para>
+            <para style="p6">[[ (line.speciality_id.name or "") ]] </para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (select_type_interconsultation(line.interconsultation) or "") ]] </para>
+            <para style="p6">[[ (select_type_interconsultation(line.interconsultation) or "") ]] </para>
           </td>
           <td>
-            <para style="terp_default_8">[[ (line.cause or "") ]] </para>
+            <para style="p6">[[ (line.cause or "") ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -740,15 +740,15 @@
 
     <section>
     [[code.disability_ids or removeParentNode('section') ]]
-      <para style="P4">[[ repeatIn(code.disability_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(code.disability_ids, 'line') ]]</para>
 
      <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
         <tr>
           <td>
-            <para style="P12">START DATE: [[ formatLang(line.disability_ids,date=True) ]]</para>
+            <para style="P6">START DATE: [[ formatLang(line.disability_ids,date=True) ]]</para>
           </td>
           <td>
-            <para style="P12">FECHA DE FINALIZACIÓN: [[ formatLang(line.date_end,date=True) ]]</para>
+            <para style="P6">FECHA DE FINALIZACIÓN: [[ formatLang(line.date_end,date=True) ]]</para>
           </td>
           <td>
             <para style="P7">DURATION IN DAYS: [[ (line.duration) ]] </para>
@@ -762,7 +762,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">PHYSICIAN DATA</para>
+          <para style="P2">PHYSICIAN DATA</para>
         </td>
      </tr>
     </blockTable>

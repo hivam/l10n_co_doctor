@@ -666,7 +666,7 @@
 								<xpath expr="/form[@string='Attentions']/header/button[@string='Finish attention']" position="after">
 									<!--
 									<button string="Resumen historia" name="resumen_historia" type="object" class="oe_highlight" context="{'patient_id' : patient_id}"/>
-									-->
+								-->
 									
 									<button string="Ver HC" name="button_imprimir_informes" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
 
