@@ -239,14 +239,14 @@
     </section>
     <section>
       <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ o.past_ids or removeParentNode('blockTable') ]]
+        [[ o.past_ids or removeParentNode('section') ]]
         <tr>
           <td>
             
-            <para style="P6">[[cargar_past(line.past_category.name, line.past)]]</para>
+            <para style="P6">[[cargar_antecedente_name(o.patient_id.id)]]</para>
           </td>
           <td>
-            <para style="P6">[[ (line.past) ]] </para>
+            <para style="P6">[[ cargar_antecedente(o.patient_id.id) ]] </para>
           </td>
         </tr>
       </blockTable>

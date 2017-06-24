@@ -247,10 +247,10 @@
         <para style="P6">[[ repeatIn(code.past_ids, 'line') ]]</para>
         <tr>
           <td>
-            <para style="P6">[[cargar_past(line.past_category.name, line.past)]]</para>
+            <para style="P6">[[cargar_antecedente_name(code.patient_id.id)]]</para>
           </td>
           <td>
-            <para style="P6">[[ (line.past) ]] </para>
+            <para style="P6">[[ cargar_antecedente(code.patient_id.id) ]] </para>
           </td>
         </tr>
       </blockTable>
