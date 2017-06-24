@@ -2345,22 +2345,17 @@ class doctor_attentions_co(osv.osv):
 		return diseases_ago_ids
 
 	def load_attentions_diseases_ago(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		patient_id=None
+		for datos in self.browse(cr, uid, ids):
+			patient_id= datos.patient_id.id
+		atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+		diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
+		for datos in self.browse(cr, uid, ids):
+			_logger.info(datos.id)
+			res[datos.id] = diseases_ago_ids
 
-			_logger.info('**************************************************************')
-			_logger.info(ids)
-			res = {}
-			patient_id=None
-			for datos in self.browse(cr, uid, ids):
-				patient_id= datos.patient_id.id
-			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
-			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
-			_logger.info('esto es lo que tiene que cargar')
-			_logger.info(diseases_ago_ids)
-			for datos in self.browse(cr, uid, ids):
-				_logger.info(datos.id)
-				res[datos.id] = diseases_ago_ids
-
-			return res
+		return res
 
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean(u'NC', states={'closed': [('readonly', True)]}),
@@ -4240,11 +4235,10 @@ class doctor_list_report_print(osv.osv):
 		atenciones=''
 		if patient_id and professional_id:
 			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
-			_logger.info(atenciones)
-			_logger.info(atenciones[0])
 			atenciones_id=[]
-			if len(atenciones) > 3:
-				for x in range(3):
+			if len(atenciones) > 4:
+				for x in range(1, 4):
+					_logger.info(atenciones[x])
 					atenciones_id.append(atenciones[x])
 				return {'value': {'attentions_ids': atenciones_id}}
 			else:

@@ -226,8 +226,9 @@
      </tr>
     </blockTable>
     </section>
+
     <section>
-    [[o.attentions_past_ids or removeParentNode('section') ]]
+    [[o.past_ids or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -235,14 +236,17 @@
         </td>
      </tr>
     </blockTable>
-    <blockTable colWidths="130.0,404.0" style="Table6">
+    </section>
+    <section>
+      <blockTable colWidths="130.0,404.0" style="Table6">
         [[ o.past_ids or removeParentNode('blockTable') ]]
         <tr>
           <td>
-            <para style="P6">[[ cargar_antecedente_name(o.patient_id.id)]]</para>
+            
+            <para style="P6">[[cargar_past(line.past_category.name, line.past)]]</para>
           </td>
           <td>
-            <para style="P6">[[ cargar_antecedente(o.patient_id.id) ]] </para>
+            <para style="P6">[[ (line.past) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -411,7 +415,7 @@
           </blockTable>
         </section>
 
-    [[o.o.otros_hallazgos_examen_fisico or removeParentNode('blockTable') ]]
+    [[o.otros_hallazgos_examen_fisico or removeParentNode('blockTable') ]]
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
@@ -488,16 +492,35 @@
     </section>
     <section>
     [[ o.diseases_ids or removeParentNode('section') ]]
-
       <para style="P6">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
 
       <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-     <td>
-            <para style="p6">[[ (line.diseases_id.name) ]]</para>
+        <td>
+            <para style="p6">[[ line.diseases_id.code ]] [[line.diseases_id.name]]</para>
+           
           </td>
-     <td>
+          <td>
             <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
+
+          </td>
+        </tr>
+      </blockTable>
+    </section>
+
+  <section>
+    [[ o.diseases_ago_ids or removeParentNode('section') ]]
+      <para style="P6">[[ repeatIn(o.diseases_ago_ids, 'line') ]]</para>
+
+      <blockTable colWidths="384.0,150.0" style="Table6">
+        <tr>
+        <td>
+            <para style="p6">[[ line.diseases_id.code ]] [[ (line.diseases_id.name) ]]</para>
+           
+          </td>
+          <td>
+            <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
+
           </td>
         </tr>
       </blockTable>

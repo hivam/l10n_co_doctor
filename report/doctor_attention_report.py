@@ -223,4 +223,3 @@ class doctor_attention_report(report_sxw.rml_parse):
 report_sxw.report_sxw('report.doctor_attention_report', 'doctor.list_report',
 					  'addons/l10n_co_doctor/report/doctor_attention_report.rml',
 					  parser=doctor_attention_report)
-		

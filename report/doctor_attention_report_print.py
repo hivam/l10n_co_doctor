@@ -46,6 +46,11 @@ class doctor_attention_report_print(report_sxw.rml_parse):
 			'cargando_atenciones': self.cargando_atenciones,
 			'cargar_examen_fisico': self.cargar_examen_fisico,
 			'cargar_past': self.cargar_past,
+			'cargar_title_exam': self.cargar_title_exam,
+			'cargar_exam': self.cargar_exam,
+			'cargar_exam_name': self.cargar_exam_name,
+			'cargar_antecedente': self.cargar_antecedente,
+			'cargar_antecedente_name': self.cargar_antecedente_name,
 			
 		})
 
@@ -216,6 +221,54 @@ class doctor_attention_report_print(report_sxw.rml_parse):
 		else:
 			return None
 		return None
+
+	def cargar_title_exam(self, attention_id):
+		exam=""
+		if attention_id:
+			exam_ids = self.pool.get('doctor.attentions.exam').search(self.cr, self.uid, [('attentiont_id', '=', attention_id), ('exam', '!=', '')])
+			if exam_ids:
+				exam="EXÁMEN FÍSICO"
+		return exam
+
+	def cargar_exam(self, attention_id):
+		exam=""
+		if attention_id:
+			exam_ids = self.pool.get('doctor.attentions.exam').search(self.cr, self.uid, [('attentiont_id', '=', attention_id), ('exam', '!=', '')])
+
+			for x in range(0, len(exam_ids)):
+				examen = self.pool.get('doctor.attentions.exam').browse(self.cr, self.uid, exam_ids[x]).exam
+				exam+= examen + '\n'
+		return exam
+
+	def cargar_exam_name(self, attention_id):
+		name=""
+		exam_ids = self.pool.get('doctor.attentions.exam').search(self.cr, self.uid, [('attentiont_id', '=', attention_id), ('exam', '!=', '')])
+		for x in range(0, len(exam_ids)):
+			name_exam = self.pool.get('doctor.attentions.exam').browse(self.cr, self.uid, exam_ids[x]).exam_category.name
+			name+= name_exam + '\n'
+
+		return name
+
+
+	def cargar_antecedente(self, patient_id):
+		past=""
+		if patient_id:
+			past_ids = self.pool.get('doctor.attentions.past').search(self.cr, self.uid, [('patient_id', '=', patient_id)])
+			_logger.info('past')
+			_logger.info(past_ids)
+			for x in range(0, len(past_ids)):
+				descripcion = self.pool.get('doctor.attentions.past').browse(self.cr, self.uid, past_ids[x]).past
+				past+= descripcion + '\n'
+		return past
+
+	def cargar_antecedente_name(self, patient_id):
+		name=""
+		past_ids = self.pool.get('doctor.attentions.past').search(self.cr, self.uid, [('patient_id', '=', patient_id)])
+		for x in range(0, len(past_ids)):
+			name_exam = self.pool.get('doctor.attentions.past').browse(self.cr, self.uid, past_ids[x]).past_category.name
+			name+= name_exam + '\n'
+
+		return name
 
 
 report_sxw.report_sxw('report.doctor_attention_report_print', 'doctor.list_report_print',
