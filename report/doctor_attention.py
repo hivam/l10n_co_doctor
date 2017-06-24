@@ -265,7 +265,9 @@ class doctor_attention(report_sxw.rml_parse):
 			_logger.info(past_ids)
 			for x in range(0, len(past_ids)):
 				descripcion = self.pool.get('doctor.attentions.past').browse(self.cr, self.uid, past_ids[x]).past
-				past+= descripcion + '\n'
+
+			_logger.info('descripcion antecedente')
+			_logger.info(past)
 		return past
 
 	def cargar_antecedente_name(self, patient_id):
@@ -274,7 +276,8 @@ class doctor_attention(report_sxw.rml_parse):
 		for x in range(0, len(past_ids)):
 			name_exam = self.pool.get('doctor.attentions.past').browse(self.cr, self.uid, past_ids[x]).past_category.name
 			name+= name_exam + '\n'
-
+		_logger.info('nombre antecedente')
+		_logger.info(name)
 		return name
 
 	def cargar_diagnostico(self, patient_id, atencion_id):
