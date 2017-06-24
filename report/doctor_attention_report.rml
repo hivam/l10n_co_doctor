@@ -244,10 +244,10 @@
     </section>
     <section>
       <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ code.past_ids or removeParentNode('blockTable') ]]
-        <para style="P6">[[ repeatIn(code.past_ids, 'line') ]]</para>
+        [[ code.past_ids or removeParentNode('section') ]]
         <tr>
           <td>
+            
             <para style="P6">[[cargar_antecedente_name(code.patient_id.id)]]</para>
           </td>
           <td>
@@ -256,6 +256,7 @@
         </tr>
       </blockTable>
     </section>
+
     <section>
       [[code.otros_antecedentes or removeParentNode('section') ]]
       <blockTable colWidths="130.0,404.0" style="Table6">
