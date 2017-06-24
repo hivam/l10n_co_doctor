@@ -261,13 +261,11 @@ class doctor_attention(report_sxw.rml_parse):
 		past=""
 		if patient_id:
 			past_ids = self.pool.get('doctor.attentions.past').search(self.cr, self.uid, [('patient_id', '=', patient_id)])
-			_logger.info('past')
+			
 			_logger.info(past_ids)
 			for x in range(0, len(past_ids)):
 				descripcion = self.pool.get('doctor.attentions.past').browse(self.cr, self.uid, past_ids[x]).past
-
-			_logger.info('descripcion antecedente')
-			_logger.info(past)
+				past+= descripcion.replace('\n', " ") + '\n'
 		return past
 
 	def cargar_antecedente_name(self, patient_id):
