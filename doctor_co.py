@@ -2362,6 +2362,17 @@ class doctor_attentions_co(osv.osv):
 
 			return res
 
+	def  _get_adjuntos(self, cr, uid, ids, field_name, arg, context=None):
+
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			modelo_buscar = self.pool.get('ir.attachment')
+			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', datos.patient_id)], context=context)
+
+			if adjuntos_id:
+				res[datos.id] = adjuntos_id
+		return res	
+
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean(u'NC', states={'closed': [('readonly', True)]}),
 		'causa_externa' : fields.selection(causa_externa, u'Causa Externa',states={'closed': [('readonly', True)]}),
@@ -2411,7 +2422,8 @@ class doctor_attentions_co(osv.osv):
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
 		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
 								readonly=True, method=True, string='inv boton edad',), 
-		'adjuntos_paciente_ids': fields.one2many('ir.attachment', 'res_id', 'Adjuntos', states={'closed': [('readonly', True)]}),
+		'adjuntos_paciente_ids': fields.function(_get_adjuntos, type="one2many", store= False, 
+								string=u'Adjuntos', relation='ir.attachment',states={'closed': [('readonly', True)]}),
 		'superficie_corporal': fields.float('Superficie Corporal'),
 
 		#campos necesarios para crear rips, especialmente el AC.

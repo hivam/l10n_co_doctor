@@ -680,7 +680,10 @@
 										<field name="adjuntos_paciente_ids" nolabel="1" >
 				                            <tree string="Adjuntos" >
 				                                <field name="name"/>
-				                                <field name="datas"/>
+				                                <field name="type" invisible="1"/>
+				                                <field name="store_fname" invisible="1"/>
+				                                <field name="datas" filename="datas_fname"/>
+				                                <field name="datas_fname" invisible="1"/>
 				                            </tree>
 				                        </field>
 									</page>
