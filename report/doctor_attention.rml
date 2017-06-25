@@ -226,8 +226,9 @@
      </tr>
     </blockTable>
     </section>
+
     <section>
-    [[o.attentions_past_ids or removeParentNode('section') ]]
+    [[o.past_ids or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -235,15 +236,17 @@
         </td>
      </tr>
     </blockTable>
-    <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ o.attentions_past_ids or removeParentNode('blockTable') ]]
+    </section>
+    <section>
+      <blockTable colWidths="130.0,404.0" style="Table6">
+        [[ o.past_ids or removeParentNode('section') ]]
         <tr>
           <td>
-            <para style="P6">[[ repeatIn(o.attentions_past_ids, 'line') ]]</para>
-            <para style="P6">[[ cargar_past(line.past_category.name, line.past)]]</para>
+            
+            <para style="P6">[[cargar_antecedente_name(o.patient_id.id)]]</para>
           </td>
           <td>
-            <para style="P6">[[ (line.past) ]] </para>
+            <para style="P6">[[ cargar_antecedente(o.patient_id.id) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -390,28 +393,29 @@
       </tr>
       </blockTable>
 
-    
-    <blockTable colWidths="534.0" style="Table6">
-    [[o.attentions_exam_ids or o.otros_hallazgos_examen_fisico or removeParentNode('blockTable') ]]
-      <tr>
-        <td>
-          <para style="P2">EXAM</para>
-        </td>
-     </tr>
-    </blockTable>
+      <section>
+      [[o.attentions_exam_ids or removeParentNode('section') ]]
+        <blockTable colWidths="534.0" style="Table6">
+          <tr>
+            <td>
+              <para style="P2">[[ (cargar_title_exam(o.id)) or removeParentNode('blockTable')]]</para>
+            </td>
+         </tr>
+        </blockTable>
+            <blockTable colWidths="130.0,404.0" style="Table6">
+            [[ o.attentions_exam_ids or removeParentNode('blockTable') ]]
+            <tr>
+              <td>
+                <para style="p6">[[ (cargar_exam_name(o.id)) or removeParentNode('blockTable')]]</para>
+              </td>
+              <td>
+                <para style="p6">[[ (cargar_exam(o.id)) or removeParentNode('blockTable')]] </para>
+              </td>
+            </tr>
+          </blockTable>
+        </section>
 
-    <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ o.attentions_exam_ids or removeParentNode('blockTable') ]]
-        <tr>
-          <td>
-            <para style="p6">[[ repeatIn(o.attentions_exam_ids, 'line') ]]</para>
-            <para style="p6">[[ cargar_examen_fisico(line.exam_category.name, line.exam)]]</para>
-          </td>
-          <td>
-            <para style="p6">[[ (line.exam)]] </para>
-          </td>
-        </tr>
-      </blockTable>
+    [[o.otros_hallazgos_examen_fisico or removeParentNode('blockTable') ]]
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
@@ -488,16 +492,35 @@
     </section>
     <section>
     [[ o.diseases_ids or removeParentNode('section') ]]
-
       <para style="P6">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
 
       <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-     <td>
-            <para style="p6">[[ (line.diseases_id.name) ]]</para>
+        <td>
+            <para style="p6">[[ line.diseases_id.code ]] [[line.diseases_id.name]]</para>
+           
           </td>
-     <td>
+          <td>
             <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
+
+          </td>
+        </tr>
+      </blockTable>
+    </section>
+
+  <section>
+    [[ o.diseases_ago_ids or removeParentNode('section') ]]
+      <para style="P6">[[ repeatIn(o.diseases_ago_ids, 'line') ]]</para>
+
+      <blockTable colWidths="384.0,150.0" style="Table6">
+        <tr>
+        <td>
+            <para style="p6">[[ line.diseases_id.code ]] [[ (line.diseases_id.name) ]]</para>
+           
+          </td>
+          <td>
+            <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
+
           </td>
         </tr>
       </blockTable>
@@ -734,6 +757,19 @@
         </td>
      </tr>
     </blockTable>
+        <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
+      <tr>
+        <td>
+          <para style="P2">FECHA DE INICIACIÓN</para>
+        </td>
+        <td>
+          <para style="P2">FECHA DE FINALIZACIÓN</para>
+        </td>
+        <td>
+          <para style="P2">DURACIÓN EN DÍAS</para>
+        </td>
+     </tr>
+    </blockTable>
     </section>
 
     <section>
@@ -743,21 +779,18 @@
      <blockTable colWidths="175.0,175.0,184.0 " style="Table6">
         <tr>
           <td>
-            <para style="P12">START DATE: [[ formatLang(line.disability_ids,date=True) ]]</para>
+            <para style="P7">[[ formatLang(line.disability_ids,date=True) ]]</para>
           </td>
           <td>
-            <para style="P12">FECHA DE FINALIZACIÓN: [[ formatLang(line.date_end,date=True) ]]</para>
+            <para style="P7">[[ formatLang(line.date_end,date=True) ]]</para>
           </td>
           <td>
-            <para style="P12">DURATION IN DAYS: [[ (line.duration) ]] </para>
+            <para style="P7">[[ (line.duration) ]] </para>
           </td>
 
         </tr>
       </blockTable>
     </section>
-
-
-
 
    <section>
     <blockTable colWidths="534.0" style="Table6">

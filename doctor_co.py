@@ -2345,22 +2345,17 @@ class doctor_attentions_co(osv.osv):
 		return diseases_ago_ids
 
 	def load_attentions_diseases_ago(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		patient_id=None
+		for datos in self.browse(cr, uid, ids):
+			patient_id= datos.patient_id.id
+		atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+		diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
+		for datos in self.browse(cr, uid, ids):
+			_logger.info(datos.id)
+			res[datos.id] = diseases_ago_ids
 
-			_logger.info('**************************************************************')
-			_logger.info(ids)
-			res = {}
-			patient_id=None
-			for datos in self.browse(cr, uid, ids):
-				patient_id= datos.patient_id.id
-			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
-			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
-			_logger.info('esto es lo que tiene que cargar')
-			_logger.info(diseases_ago_ids)
-			for datos in self.browse(cr, uid, ids):
-				_logger.info(datos.id)
-				res[datos.id] = diseases_ago_ids
-
-			return res
+		return res
 
 	def  _get_adjuntos(self, cr, uid, ids, field_name, arg, context=None):
 
@@ -2496,6 +2491,8 @@ class doctor_attentions_co(osv.osv):
 	}
 
 	def default_get(self, cr, uid, fields, context=None):
+		#Eliminando espacios vacios de antecedentes
+		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 		patient_id = self.obtener_paciente(context)
 		registro = []
@@ -2654,6 +2651,8 @@ class doctor_attentions_co(osv.osv):
 		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
+		#Eliminando espacios vacios de antecedentes
+		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
 		notas=''
 		result=''
@@ -2681,6 +2680,8 @@ class doctor_attentions_co(osv.osv):
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
+		#Eliminando espacios vacios de antecedentes
+		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
 		if 'origin' in vals:
 			
@@ -4252,11 +4253,10 @@ class doctor_list_report_print(osv.osv):
 		atenciones=''
 		if patient_id and professional_id:
 			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
-			_logger.info(atenciones)
-			_logger.info(atenciones[0])
 			atenciones_id=[]
-			if len(atenciones) > 3:
-				for x in range(3):
+			if len(atenciones) > 4:
+				for x in range(1, 4):
+					_logger.info(atenciones[x])
 					atenciones_id.append(atenciones[x])
 				return {'value': {'attentions_ids': atenciones_id}}
 			else:
@@ -4722,6 +4722,8 @@ class doctor_attentions_past(osv.osv):
 	}
 
 	def create(self, cr, uid, vals, context=None):
+		#Eliminando espacios vacios de antecedentes
+		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 
 			if 'active_model' in context:
@@ -4731,6 +4733,19 @@ class doctor_attentions_past(osv.osv):
 
 			if not 'active_model' in context:
 				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
+
+				
+	#Eliminando antecedentes que tienen el past vacio
+	def eliminar_antecedentes_vacios(self, cr, uid, context=None):
+
+		past_ids= self.pool.get('doctor.attentions.past').search(cr, uid, [])
+		_logger.info('esto es lo que hay que eliminar')
+		_logger.info(past_ids)
+
+		for x in range(len(past_ids)):
+			if self.pool.get('doctor.attentions.past').browse(cr, uid, past_ids[x]).past == False:
+				self.pool.get('doctor.attentions.past').unlink(cr, uid, past_ids[x], context)
+		return True
 
 
 class doctor_appointment_procedures(osv.osv):

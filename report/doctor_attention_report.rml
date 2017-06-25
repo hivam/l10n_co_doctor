@@ -231,8 +231,9 @@
      </tr>
     </blockTable>
     </section>
+
     <section>
-    [[code.attentions_past_ids or removeParentNode('section') ]]
+    [[code.past_ids or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -240,19 +241,22 @@
         </td>
      </tr>
     </blockTable>
-    <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ code.attentions_past_ids or removeParentNode('blockTable') ]]
+    </section>
+    <section>
+      <blockTable colWidths="130.0,404.0" style="Table6">
+        [[ code.past_ids or removeParentNode('section') ]]
         <tr>
           <td>
-            <para style="P6">[[ repeatIn(code.attentions_past_ids, 'line') ]]</para>
-            <para style="P6">[[ cargar_past(line.past_category.name, line.past)]]</para>
+            
+            <para style="P6">[[cargar_antecedente_name(code.patient_id.id)]]</para>
           </td>
           <td>
-            <para style="P6">[[ (line.past) or (removeParentNode('para'))]] </para>
+            <para style="P6">[[ cargar_antecedente(code.patient_id.id) ]] </para>
           </td>
         </tr>
       </blockTable>
     </section>
+
     <section>
       [[code.otros_antecedentes or removeParentNode('section') ]]
       <blockTable colWidths="130.0,404.0" style="Table6">
@@ -392,28 +396,29 @@
       </tr>
       </blockTable>
 
-    <section>
-    [[code.attentions_exam_ids or code.otros_hallazgos_examen_fisico or removeParentNode('section') ]]
-    <blockTable colWidths="534.0" style="Table6">
-      <tr>
-        <td>
-          <para style="P2">EXAM</para>
-        </td>
-     </tr>
-    </blockTable>
+      <section>
+      [[code.attentions_exam_ids or removeParentNode('section') ]]
+        <blockTable colWidths="534.0" style="Table6">
+          <tr>
+            <td>
+              <para style="P2">[[ (cargar_title_exam(code.id)) or removeParentNode('blockTable')]]</para>
+            </td>
+         </tr>
+        </blockTable>
+            <blockTable colWidths="130.0,404.0" style="Table6">
+            [[ code.attentions_exam_ids or removeParentNode('blockTable') ]]
+            <tr>
+              <td>
+                <para style="p6">[[ (cargar_exam_name(code.id)) or removeParentNode('blockTable')]]</para>
+              </td>
+              <td>
+                <para style="p6">[[ (cargar_exam(code.id)) or removeParentNode('blockTable')]] </para>
+              </td>
+            </tr>
+          </blockTable>
+        </section>
 
-    <blockTable colWidths="130.0,404.0" style="Table6">
-        [[ code.attentions_exam_ids or removeParentNode('blockTable') ]]
-        <tr>
-          <td>
-            <para style="P6">[[ repeatIn(code.attentions_exam_ids, 'line') ]]</para>
-            <para style="p6">[[ cargar_examen_fisico(line.exam_category.name, line.exam) or removeParentNode('para')]]</para>
-          </td>
-          <td>
-            <para style="p6">[[ (line.exam)]] </para>
-          </td>
-        </tr>
-      </blockTable>
+    [[code.otros_hallazgos_examen_fisico or removeParentNode('blockTable') ]]
       <blockTable colWidths="130.0,404.0" style="Table6">
       <tr>
         <td>
@@ -424,7 +429,6 @@
         </td>
      </tr>
     </blockTable>
-    </section>
 
     <section>
       <blockTable colWidths="534" style="Table6">
@@ -495,10 +499,27 @@
 
       <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
-     <td>
-            <para style="p6">[[ (line.diseases_id.name) or (removeParentNode('para'))]]</para>
+          <td>
+            <para style="p6">[[ line.diseases_id.code ]] [[line.diseases_id.name]]</para>
           </td>
-     <td>
+          <td>
+            <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
+          </td>
+        </tr>
+      </blockTable>
+    </section>
+
+    <section>
+    [[ code.diseases_ago_ids or removeParentNode('section') ]]
+
+      <para style="P6">[[ repeatIn(code.diseases_ago_ids, 'line') ]]</para>
+
+      <blockTable colWidths="384.0,150.0" style="Table6">
+        <tr>
+          <td>
+            <para style="p6">[[ line.diseases_id.code ]] [[line.diseases_id.name]]</para>
+          </td>
+          <td>
             <para style="P6">[[select_diseases(line.status) or ""]] [[ select_diseases_type(line.diseases_type) or "" ]] </para>
           </td>
         </tr>
