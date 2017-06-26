@@ -82,6 +82,10 @@
                 rml="l10n_co_doctor/report/doctor_attention_report.rml" string="Hc completa"
                 usage="default"/>
 
+        <report auto="False" id="doctor_attention_report_print" model="doctor.list_report_print" name="doctor_attention_report_print"
+                rml="l10n_co_doctor/report/doctor_attention_report_print.rml" string="Últimas HC"
+                usage="default"/>
+
         <report auto="False" id="doctor_account_voucher" model="account.voucher" name="doctor_account_voucher"
                 rml="l10n_co_doctor/report/doctor_account_voucher.rml" string="Recibo Copago"
                 usage="default"/>

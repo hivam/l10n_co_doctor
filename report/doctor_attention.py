@@ -43,6 +43,16 @@ class doctor_attention(report_sxw.rml_parse):
 			'select_action_id': self.select_action_id,
 			'select_prescription_drugs': self.select_prescription_drugs,
 			'historia_control_instalada': self.historia_control_instalada,
+			'cargar_peso': self.cargar_peso,
+			'cargar_examen_fisico': self.cargar_examen_fisico,
+			'cargar_past': self.cargar_past,
+			'cargar_title_exam': self.cargar_title_exam,
+			'cargar_exam': self.cargar_exam,
+			'cargar_exam_name': self.cargar_exam_name,
+			'cargar_antecedente': self.cargar_antecedente,
+			'cargar_antecedente_name': self.cargar_antecedente_name,
+			'cargar_diagnostico': self.cargar_diagnostico,
+			'cargar_diagnostico_name': self.cargar_diagnostico_name,
 		})
 
 	def select_type(self, tipo_usuario):
@@ -191,14 +201,152 @@ class doctor_attention(report_sxw.rml_parse):
 			bandera = True
 		return bandera
 
+	def cargar_peso(self, weight):
+		_logger.info(weight)
+		cadena=""
+		if weight:
+			cadena= "Peso:" + " " +  str(weight) + " " + "kg"
+			_logger.info(cadena)
+		return cadena
+
+
+	def cargar_examen_fisico(self, name_exam, exam):
+		if exam:
+			return name_exam
+		else:
+			return ""
+		return ""
+
+	def cargar_past(self, category_past, name):
+		_logger.info(category_past)
+		_logger.info(name)
+		if category_past:
+			if name:
+				return category_past
+			else:
+				return ""
+		else:
+			return None
+		return None
+
+	def cargar_title_exam(self, attention_id):
+		exam=""
+		if attention_id:
+			exam_ids = self.pool.get('doctor.attentions.exam').search(self.cr, self.uid, [('attentiont_id', '=', attention_id), ('exam', '!=', '')])
+			if exam_ids:
+				exam="EXÁMEN FÍSICO"
+		return exam
+
+	def cargar_exam(self, attention_id):
+		exam=""
+		if attention_id:
+			exam_ids = self.pool.get('doctor.attentions.exam').search(self.cr, self.uid, [('attentiont_id', '=', attention_id), ('exam', '!=', '')])
+
+			for x in range(0, len(exam_ids)):
+				examen = self.pool.get('doctor.attentions.exam').browse(self.cr, self.uid, exam_ids[x]).exam
+				exam+= examen + '\n'
+		return exam
+
+	def cargar_exam_name(self, attention_id):
+		name=""
+		exam_ids = self.pool.get('doctor.attentions.exam').search(self.cr, self.uid, [('attentiont_id', '=', attention_id), ('exam', '!=', '')])
+		for x in range(0, len(exam_ids)):
+			name_exam = self.pool.get('doctor.attentions.exam').browse(self.cr, self.uid, exam_ids[x]).exam_category.name
+			name+= name_exam + '\n'
+
+		return name
+
+
+	def cargar_antecedente(self, patient_id):
+		past=""
+		if patient_id:
+			past_ids = self.pool.get('doctor.attentions.past').search(self.cr, self.uid, [('patient_id', '=', patient_id)])
+			
+			_logger.info(past_ids)
+			for x in range(0, len(past_ids)):
+				descripcion = self.pool.get('doctor.attentions.past').browse(self.cr, self.uid, past_ids[x]).past
+				past+= descripcion.replace('\n', " ") + '\n'
+		return past
+
+	def cargar_antecedente_name(self, patient_id):
+		name=""
+		past_ids = self.pool.get('doctor.attentions.past').search(self.cr, self.uid, [('patient_id', '=', patient_id)])
+		for x in range(0, len(past_ids)):
+			name_exam = self.pool.get('doctor.attentions.past').browse(self.cr, self.uid, past_ids[x]).past_category.name
+			name+= name_exam + '\n'
+		_logger.info('nombre antecedente')
+		_logger.info(name)
+		return name
+
+	def cargar_diagnostico(self, patient_id, atencion_id):
+		diagnostico=""
+		descripcion=""
+		diagnostico_ids=[]
+		if patient_id:
+			attentions_ids = self.pool.get('doctor.attentions').search(self.cr, self.uid, [('patient_id', '=', patient_id)])
+			_logger.info('Dianosticos')
+			_logger.info(attentions_ids)
+			for x in range(0, len(attentions_ids)):
+				diseases_id =self.pool.get('doctor.attentions.diseases').search(self.cr, self.uid, [('attentiont_id', '=', attentions_ids[x]), ('status', '=', 'recurrent')])
+				if diseases_id:
+					for x in range(len(diseases_id)):
+						diagnostico_ids.append(diseases_id[x])
+			
+			diagnostico_actual_id = self.pool.get('doctor.attentions.diseases').search(self.cr, self.uid, [('attentiont_id', '=', atencion_id)])
+			if diagnostico_actual_id:
+				for x in range(len(diagnostico_actual_id)):
+					diagnostico_ids.append(diagnostico_actual_id[x])
+
+		_logger.info(len(diagnostico_ids))
+		for x in range(len(diagnostico_ids)):
+			_logger.info(diagnostico_ids[x])
+
+		status=[]
+		diseases_type=[]
+		for x in range(len(diagnostico_ids)):
+			status_id = self.pool.get('doctor.attentions.diseases').browse(self.cr, self.uid, diagnostico_ids[x]).status
+			status.append(self.select_diseases(status_id))
+		
+		for y in range(len(diagnostico_ids)):
+			diseases_type_id = self.pool.get('doctor.attentions.diseases').browse(self.cr, self.uid, diagnostico_ids[y]).diseases_type
+			diseases_type.append(self.select_diseases_type(diseases_type_id))
+
+
+		for x in range(len(status)):
+			descripcion+= status[x] + '\n' + diseases_type[x] + '\n'
+
+		return descripcion
+
+	def cargar_diagnostico_name(self, patient_id, atencion_id):
+		diagnostico=""
+		diagnostico_ids=[]
+		if patient_id:
+			attentions_ids = self.pool.get('doctor.attentions').search(self.cr, self.uid, [('patient_id', '=', patient_id)])
+			_logger.info('Dianosticos')
+			_logger.info(attentions_ids)
+			for x in range(0, len(attentions_ids)):
+				diseases_id =self.pool.get('doctor.attentions.diseases').search(self.cr, self.uid, [('attentiont_id', '=', attentions_ids[x]), ('status', '=', 'recurrent')])
+				if diseases_id:
+					for x in range(len(diseases_id)):
+						diagnostico_ids.append(diseases_id[x])
+			
+			diagnostico_actual_id = self.pool.get('doctor.attentions.diseases').search(self.cr, self.uid, [('attentiont_id', '=', atencion_id)])
+			if diagnostico_actual_id:
+				for x in range(len(diagnostico_actual_id)):
+					diagnostico_ids.append(diagnostico_actual_id[x])	
+	
+
+		for x in range(len(diagnostico_ids)):
+			name = self.pool.get('doctor.attentions.diseases').browse(self.cr, self.uid, diagnostico_ids[x]).diseases_id.name
+			diagnostico+= name + '\n' + "`" + '\n'
+
+		_logger.info('Los nombres son:')
+		_logger.info(diagnostico)
+
+		return diagnostico
 
 
 
 report_sxw.report_sxw('report.doctor_attention', 'doctor.attentions',
 					  'addons/l10n_co_doctor/report/doctor_attention.rml',
 					  parser=doctor_attention)
-
-		
-		
-		
-		

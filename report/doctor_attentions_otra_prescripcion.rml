@@ -61,7 +61,7 @@
       <paraStyle name="all" alignment="justify"/>
     </initialize>
     <paraStyle name="P1" fontName="Helvetica"/>
-    <paraStyle name="P2" fontName="Helvetica" fontSize="10.0" leading="13" alignment="CENTER"/>
+    <paraStyle name="P2" fontName="Helvetica-Bold" fontSize="12.0" leading="13" alignment="CENTER"/>
     <paraStyle name="P3" fontName="Helvetica" fontSize="10.0" leading="13" alignment="LEFT"/>
     <paraStyle name="P4" fontName="Helvetica" fontSize="2.0" leading="3" alignment="LEFT"/>
     <paraStyle name="P5" fontName="Helvetica-Bold" fontSize="14" leading="22" alignment="CENTER"/>

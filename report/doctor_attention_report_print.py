@@ -26,9 +26,9 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class doctor_attention_report(report_sxw.rml_parse):
+class doctor_attention_report_print(report_sxw.rml_parse):
 	def __init__(self, cr, uid, name, context):
-		super(doctor_attention_report, self).__init__(cr, uid, name, context=context)
+		super(doctor_attention_report_print, self).__init__(cr, uid, name, context=context)
 		self.localcontext.update({
 			'time': time,
 			'select_type': self.select_type,
@@ -51,6 +51,7 @@ class doctor_attention_report(report_sxw.rml_parse):
 			'cargar_exam_name': self.cargar_exam_name,
 			'cargar_antecedente': self.cargar_antecedente,
 			'cargar_antecedente_name': self.cargar_antecedente_name,
+			
 		})
 
 	def select_type(self, tipo_usuario):
@@ -270,7 +271,7 @@ class doctor_attention_report(report_sxw.rml_parse):
 		return name
 
 
-
-report_sxw.report_sxw('report.doctor_attention_report', 'doctor.list_report',
-					  'addons/l10n_co_doctor/report/doctor_attention_report.rml',
-					  parser=doctor_attention_report)
+report_sxw.report_sxw('report.doctor_attention_report_print', 'doctor.list_report_print',
+					  'addons/l10n_co_doctor/report/doctor_attention_report_print.rml',
+					  parser=doctor_attention_report_print)
+		

@@ -61,7 +61,7 @@
       <paraStyle name="all" alignment="justify"/>
     </initialize>
     <paraStyle name="P1" fontName="Helvetica"/>
-    <paraStyle name="P2" fontName="Helvetica" fontSize="10.0" leading="13" alignment="CENTER"/>
+    <paraStyle name="P2" fontName="Helvetica-Bold" fontSize="12.0" leading="13" alignment="CENTER"/>
     <paraStyle name="P3" fontName="Helvetica" fontSize="10.0" leading="13" alignment="LEFT"/>
     <paraStyle name="P4" fontName="Helvetica" fontSize="2.0" leading="3" alignment="LEFT"/>
     <paraStyle name="P5" fontName="Helvetica-Bold" fontSize="14" leading="22" alignment="CENTER"/>
@@ -94,8 +94,8 @@
     <images/>
   </stylesheet>
   <story>
-	<para style="terp_default_8">[[ repeatIn(objects,'o') ]]</para>
-    <para style="terp_default_8">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
+	<para style="p6">[[ repeatIn(objects,'o') ]]</para>
+    <para style="p6">[[ setLang(o.patient_id.patient.lang) or setLang(o.professional_id.user_id.partner_id.lang)]]</para>
 
     <para style="Heading"><b>SURGICAL ORDER</b></para>
 <!--
@@ -117,7 +117,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">PATIENT DATA</para>
+          <para style="P2">PATIENT DATA</para>
         </td>
      </tr>
     </blockTable>
@@ -139,16 +139,16 @@
 	<blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
 		 <td>
-            <para style="P5">SURGICAL</para>
+            <para style="P2">SURGICAL</para>
           </td>
           <td>
-            <para style="P5">QUANTITY</para>
+            <para style="P2">QUANTITY</para>
           </td>
         </tr>
     </blockTable>
 
     <section>
-      <para style="P4">[[ repeatIn(o.surgical_procedure_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(o.surgical_procedure_ids, 'line') ]]</para>
 
     <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
@@ -156,7 +156,7 @@
             <para style="P6">[[ (line.procedures_id.procedure_description) ]] [[ (line.indications) ]]</para>
           </td>
           <td>
-            <para style="P7">[[ (line.quantity) ]] </para>
+            <para style="P6">[[ (line.quantity) ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -165,13 +165,13 @@
 	<blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">DISEASES</para>
+          <para style="P2">DISEASES</para>
         </td>
      </tr>
     </blockTable>
 
     <section>
-      <para style="P4">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
+      <para style="P6">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
 
       <blockTable colWidths="384.0,150.0" style="Table6">
         <tr>
@@ -188,7 +188,7 @@
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="P5">PHYSICIAN DATA</para>
+          <para style="P2">PHYSICIAN DATA</para>
         </td>
      </tr>
     </blockTable>

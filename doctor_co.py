@@ -84,13 +84,13 @@ class doctor_patient_co(osv.osv):
 
 	#Niveles de estudio
 	nivel_estudio = [
-		('1', 'JARDIN'),
-		('2', 'PRIMARIA'),
-		('3', 'SECUNDARIA'),
-		('4', 'PREGRADO'),
-		('5', 'POSGRADO'),
-		('6', u'MAESTRÍAS'),
-		('7', u'ESPECIALIZACIÓN'),
+		('5', 'JARDIN'),
+		('6', 'PRIMARIA'),
+		('7', 'SECUNDARIA'),
+		('1', 'PREGRADO'),
+		('2', 'POSGRADO'),
+		('3', u'MAESTRÍAS'),
+		('4', u'ESPECIALIZACIÓN'),
 	]
 
 	#Lateralidad
@@ -200,7 +200,7 @@ class doctor_patient_co(osv.osv):
 		'direccion_padre':fields.char(u'Dirección', size=70),
 		'completar_datos_acom':fields.boolean('Desea completar los datos de los padres:'),
 		'notas_paciente': fields.text('Notas'),
-		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , u'Ocupación' , required=False),
+		'ocupacion_id' : fields.many2one('doctor.patient.ocupacion' , u'Profesión' , required=False),
 		'ocupacion_madre' : fields.many2one('doctor.patient.ocupacion' , u'Ocupación Madre' , required=False),
 		'ocupacion_padre' : fields.many2one('doctor.patient.ocupacion' , u'Ocupación Padre' , required=False),
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
@@ -236,7 +236,7 @@ class doctor_patient_co(osv.osv):
 		'description_others': fields.char(u'Descripción', size=32),
 		'dependencia_empleado_id': fields.many2one('doctor.dependencia', 'Dependencia'),
 		'nivel_educativo':fields.selection(nivel_estudio, 'Nivel de Estudio'),
-		'programa_id':fields.many2one('doctor.programa_academico', 'Programa Academico', required=False, domain="[('nivel_estudio','=', str(nivel_educativo))]"),
+		'programa_id':fields.many2one('doctor.programa_academico', 'Programa Academico', required=False, domain="[('nivel_estudio','=', (nivel_educativo))]"),
 		'lateralidad_id':fields.selection(lateralidad, 'Lateralidad'),
 
 		#campos agregados para pais y estado de nacimiento
@@ -256,7 +256,7 @@ class doctor_patient_co(osv.osv):
 		'victima_conflicto': fields.char(u'Victima del Conflicto'),
 		'localidad_otros_paises_id':fields.many2one('doctor.localidad.country', u'Localidad/Ciudad', domain="[('country_id','=',nacimiento_country_id)]"),
 		'codigo_prestador':fields.char('Codigo de prestador', size=12),
-
+		'ocupacion_actual': fields.char(u'Ocupación'),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -2012,6 +2012,361 @@ class doctor_attentions_co(osv.osv):
 				res[datos.id] = False
 		return res
 
+	def _previous(self, cr, uid, patient_id, type_past, attentiont_id=None):
+		condition = [('patient_id', '=', patient_id.id)]
+		if attentiont_id != None:
+			condition.append(('attentiont_id', '<=', attentiont_id))
+		if type_past == 'past':
+			return self.pool.get('doctor.attentions.past').search(cr, uid, condition, order='id desc')
+		if type_past == 'pathological':
+			return self.pool.get('doctor.diseases.past').search(cr, uid, condition, order='id desc')
+		if type_past == 'drugs':
+			return self.pool.get('doctor.atc.past').search(cr, uid, condition, order='id desc')
+
+
+
+
+	def _set_ref(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('ref', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'ref' : field_value})
+
+	def _set_fecha_nacimiento(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('birth_date', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'birth_date' : field_value})
+
+
+	def _set_primer_nombre(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('firstname', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'firstname' : field_value})
+
+
+	def _set_segundo_nombre(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('middlename', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'middlename' : field_value})
+
+
+	def _set_primer_apellido(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('lastname', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'lastname' : field_value})
+
+
+	def _set_segundo_apellido(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('surname', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'surname' : field_value})
+
+	def _set_tdoc(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('tdoc', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'tdoc' : field_value})
+
+	def _set_sexo(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('sex', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'sex' : field_value})
+
+	def _set_ocupacion(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('ocupacion_actual', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'ocupacion_actual' : field_value})
+
+	def _set_direccion(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('street', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'street' : field_value})
+
+	def _set_telefono(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('telefono', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'telefono' : field_value})
+
+
+	def _set_nom_acom(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('nombre_acompaniante', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'nombre_acompaniante' : field_value})
+
+	def _set_tel_acom(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('telefono_acompaniante', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'telefono_acompaniante' : field_value})
+
+
+	def _set_nom_res(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('nombre_responsable', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'nombre_responsable' : field_value})
+
+
+	def _set_tel_res(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('telefono_responsable', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'telefono_responsable' : field_value})
+
+	def _set_profesion(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('ocupacion_id', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'ocupacion_id' : field_value})
+
+	def _set_insurer(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('insurer_prepagada_id', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'insurer_prepagada_id' : field_value})
+
+	def _set_parentesco(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('parentesco_id', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'parentesco_id' : field_value})
+
+
+
+	def _get_ref(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = datos.patient_id.ref
+		return res
+
+	def _get_edad_paciente(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = self.calcular_edad(datos.patient_id.birth_date)
+		return res
+
+	def _get_unidad_edad_paciente(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = self.calcular_age_unit(datos.patient_id.birth_date)
+		return res
+
+	def _get_fecha_nacimiento(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = datos.patient_id.birth_date
+		return res
+
+	def _get_primer_nombre(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = datos.patient_id.firstname
+		return res
+
+	def _get_segundo_nombre(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.middlename:
+				res[datos.id] = datos.patient_id.middlename
+		return res
+
+	def _get_primer_apellido(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = datos.patient_id.lastname
+		return res
+
+	def _get_segundo_apellido(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.surname:
+				res[datos.id] = datos.patient_id.surname
+		return res
+
+	def _get_tdoc(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = datos.patient_id.tdoc
+		return res
+
+	def _get_sexo(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = datos.patient_id.sex
+		return res
+
+	def _get_ocupacion(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.ocupacion_actual:
+				res[datos.id] = datos.patient_id.ocupacion_actual
+		return res
+
+
+	def _get_direccion(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.street:
+				res[datos.id] = datos.patient_id.street
+		return res
+
+
+	def _get_telefono(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.telefono:
+				res[datos.id] = datos.patient_id.telefono
+		return res
+
+
+	def _get_nom_acom(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.nombre_acompaniante:
+				res[datos.id] = datos.patient_id.nombre_acompaniante
+		return res
+
+
+	def _get_tel_acom(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.telefono_acompaniante:
+				res[datos.id] = datos.patient_id.telefono_acompaniante
+		return res
+
+
+	def _get_nom_res(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.nombre_responsable:
+				res[datos.id] = datos.patient_id.nombre_responsable
+		return res
+
+	def _get_tel_res(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.telefono_responsable:
+				res[datos.id] = datos.patient_id.telefono_responsable
+		return res
+
+	def _get_profesion(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			_logger.info("###############")
+			_logger.info(datos.patient_id.ocupacion_id.id)
+			if datos.patient_id.ocupacion_id:
+				res[datos.id] = datos.patient_id.ocupacion_id.id
+		return res
+
+	def _get_insurer(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.insurer_prepagada_id:
+				res[datos.id] = datos.patient_id.insurer_prepagada_id.id
+		return res
+
+	def _get_parentesco(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.parentesco_id:
+				res[datos.id] = datos.patient_id.parentesco_id.id
+		return res
+
+	#Funcion para cargar los diagnosticos que tenga el paciente
+	def cargando_diagnosticos(self, cr, uid, ids, context=None):
+		if ids:
+			id_patient= self.pool.get('doctor.patient').search(cr, uid,[('patient', '=', ids['patient'][0])] )
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', id_patient)])
+			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones)])
+		return diseases_ago_ids
+
+	def load_attentions_diseases_ago(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		patient_id=None
+		for datos in self.browse(cr, uid, ids):
+			patient_id= datos.patient_id.id
+		atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+		diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
+		for datos in self.browse(cr, uid, ids):
+			_logger.info(datos.id)
+			res[datos.id] = diseases_ago_ids
+
+		return res
+
+	def  _get_adjuntos(self, cr, uid, ids, field_name, arg, context=None):
+
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			modelo_buscar = self.pool.get('ir.attachment')
+			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', datos.patient_id)], context=context)
+
+			if adjuntos_id:
+				res[datos.id] = adjuntos_id
+		return res	
 
 	_columns = {
 		'activar_notas_confidenciales':fields.boolean(u'NC', states={'closed': [('readonly', True)]}),
@@ -2062,7 +2417,8 @@ class doctor_attentions_co(osv.osv):
 		'ver_reporte_paraclinico':fields.boolean(u'Seguimientos Paraclinico'),
 		'inv_boton_edad': fields.function(_get_edad, type="boolean", store= False, 
 								readonly=True, method=True, string='inv boton edad',), 
-		'adjuntos_paciente_ids': fields.one2many('ir.attachment', 'res_id', 'Adjuntos', states={'closed': [('readonly', True)]}),
+		'adjuntos_paciente_ids': fields.function(_get_adjuntos, type="one2many", store= False, 
+								string=u'Adjuntos', relation='ir.attachment',states={'closed': [('readonly', True)]}),
 		'superficie_corporal': fields.float('Superficie Corporal'),
 
 		#campos necesarios para crear rips, especialmente el AC.
@@ -2074,11 +2430,57 @@ class doctor_attentions_co(osv.osv):
 		'couta_moderadora':fields.float('cuota moderadora'),
 		'valor_pagar':fields.float('valor a pagar'),
 		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),
+		'list_report_print_id': fields.many2one('doctor.list_report_print', 'List Report'),
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
 
-	}
 
+
+		'paciente_identificacion': fields.function(_get_ref, fnct_inv=_set_ref , type="char", store= False, 
+								string=u'Identificación', required=True), 
+		'paciente_edad_atencion': fields.function(_get_edad_paciente, type='integer', store=False, required=True, readonly=True, string='Edad Actual',),
+		'paciente_unidad_edad': fields.function(_get_unidad_edad_paciente, type='selection', selection=[('1', u'Años'), ('2', 'Meses'), ('3', 'Dias'),], string='Unidad medida edad',
+									store=False, required=True, readonly=True),
+		'paciente_birth_date': fields.function(_get_fecha_nacimiento, fnct_inv=_set_fecha_nacimiento, type='date', string='Fecha cumpleaños', required=True, store=False),
+		
+		'paciente_primer_nombre': fields.function(_get_primer_nombre, fnct_inv=_set_primer_nombre, type="char", store= False, 
+								string=u'Primer Nombre', required=True), 
+		'paciente_segundo_nombre': fields.function(_get_segundo_nombre, fnct_inv=_set_segundo_nombre, type="char", store= False, 
+								string=u'Segundo Nombre',), 
+		'paciente_primer_apellido': fields.function(_get_primer_apellido, fnct_inv=_set_primer_apellido, type="char", store= False, 
+								string=u'Primer Apellido', required=True), 
+		'paciente_segundo_apellido': fields.function(_get_segundo_apellido, fnct_inv=_set_segundo_apellido, type="char", store= False, 
+								string=u'Segundo Apellido',),
+		'paciente_tdoc': fields.function(_get_tdoc, fnct_inv=_set_tdoc, type='selection', selection=[('11','Registro civil'), ('12','Tarjeta de identidad'),
+								  ('13',u'Cédula de ciudadanía'), ('21',u'Cédula de extranjería'), ('41','Pasaporte'),
+								  ('NU',u'Número único de identificación'), ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')],
+								  string='Tipo Documento', store=False, required=True, readonly=True),		
+		'paciente_sexo': fields.function(_get_sexo,fnct_inv=_set_sexo, type='selection', selection=[('m', 'Masculino'), ('f', 'Femenino'),], string='Sexo',
+									store=False, required=True, readonly=True),
+
+		'paciente_ocupacion_actual': fields.function(_get_ocupacion, fnct_inv=_set_ocupacion , type="char", store= False, 
+								string=u'Ocupacion'), 
+		'paciente_street': fields.function(_get_direccion, fnct_inv=_set_direccion , type="char", store= False, 
+								string=u'Dirección'), 
+		'paciente_telefono': fields.function(_get_telefono, fnct_inv=_set_telefono , type="char", store= False, 
+								string=u'telefono'), 
+		'paciente_nombre_acompaniante': fields.function(_get_nom_acom, fnct_inv=_set_nom_acom , type="char", store= False, 
+								string=u'Nombre Acompañante'), 
+		'paciente_telefono_acompaniante': fields.function(_get_tel_acom, fnct_inv=_set_tel_acom , type="char", store= False, 
+								string=u'Teléfono Acompañante'), 
+		'paciente_nombre_responsable': fields.function(_get_nom_res, fnct_inv=_set_nom_res , type="char", store= False, 
+								string=u'Nombre responsable'), 
+		'paciente_telefono_responsable': fields.function(_get_tel_res, fnct_inv=_set_tel_res , type="char", store= False, 
+								string=u'Telefono responsable'), 
+		'paciente_ocupacion_id': fields.function(_get_profesion, fnct_inv=_set_profesion , type="many2one", store= False, 
+								string=u'Profesión', relation='doctor.patient.ocupacion'), 
+		'paciente_insurer_prepagada_id': fields.function(_get_insurer, fnct_inv=_set_insurer , type="many2one", store= False, 
+								string=u'Aseguradora', relation='doctor.insurer'),
+		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
+								string=u'Parentesco', relation='doctor.patient.parentesco'), 
+		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string="Diagnósticos Anteriores"),
+			
+	}
 
 	_defaults = {
 		'finalidad_consulta': lambda self, cr, uid, context: self.pool.get('doctor.doctor').finalidad_consulta_db(cr, uid),
@@ -2088,18 +2490,62 @@ class doctor_attentions_co(osv.osv):
 		'complicacion_eventoadverso' : '01',
 	}
 
-
 	def default_get(self, cr, uid, fields, context=None):
+		#Eliminando espacios vacios de antecedentes
+		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
-
 		patient_id = self.obtener_paciente(context)
 		registro = []
-
-
+		arreglo_ago=[]
 		if patient_id:
 
-			ref = self.pool.get('doctor.patient').browse(cr,uid,patient_id,context=context).ref
-			tdoc = self.pool.get('doctor.patient').browse(cr,uid,patient_id,context=context).tdoc
+			patient_id = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context).id
+			_logger.info(type(patient_id))
+
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
+			for i in self.pool.get('doctor.attentions.diseases').browse(cr,uid,diseases_ago_ids,context=context):
+				arreglo_ago.append((0,0,{'diseases_id' : i.diseases_id.id , 'status' : i.status, 'diseases_type': i.diseases_type}))
+
+			for datos_paciente in self.pool.get('doctor.patient').browse(cr, uid, [patient_id], context=context):
+
+				ref = datos_paciente.ref
+				tdoc = datos_paciente.tdoc
+
+				res['paciente_tdoc'] = datos_paciente.tdoc
+				res['paciente_identificacion'] = datos_paciente.ref
+				res['paciente_primer_nombre'] = datos_paciente.firstname
+				res['paciente_primer_apellido'] = datos_paciente.lastname
+				res['paciente_sexo'] = datos_paciente.sex
+				res['paciente_birth_date'] = datos_paciente.birth_date
+				res['paciente_edad_atencion'] = self.calcular_edad(datos_paciente.birth_date)
+				res['paciente_unidad_edad'] = self.calcular_age_unit(datos_paciente.birth_date)
+
+				if datos_paciente.middlename:
+					res['paciente_segundo_nombre'] = datos_paciente.middlename
+				if datos_paciente.surname:
+					res['paciente_segundo_apellido'] = datos_paciente.surname
+				if datos_paciente.ocupacion_actual:
+					res['paciente_ocupacion_actual'] = datos_paciente.ocupacion_actual
+				if datos_paciente.ocupacion_id:
+					res['paciente_ocupacion_id'] = datos_paciente.ocupacion_id.id
+				if datos_paciente.street:
+					res['paciente_street'] = datos_paciente.street
+				if datos_paciente.telefono:
+					res['paciente_telefono'] = datos_paciente.telefono
+				if datos_paciente.nombre_acompaniante:
+					res['paciente_nombre_acompaniante'] = datos_paciente.nombre_acompaniante
+				if datos_paciente.telefono_acompaniante:
+					res['paciente_telefono_acompaniante'] = datos_paciente.telefono_acompaniante
+				if datos_paciente.nombre_responsable:
+					res['paciente_nombre_responsable'] = datos_paciente.nombre_responsable
+				if datos_paciente.telefono_responsable:
+					res['paciente_telefono_responsable'] = datos_paciente.telefono_responsable
+				if datos_paciente.parentesco_id:
+					res['paciente_parentesco_id'] = datos_paciente.parentesco_id
+				if datos_paciente.insurer_prepagada_id:
+					res['paciente_insurer_prepagada_id'] = datos_paciente.insurer_prepagada_id.id
+						
 			modelo_buscar = self.pool.get('ir.attachment')
 
 			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', patient_id)], context=context)
@@ -2111,13 +2557,19 @@ class doctor_attentions_co(osv.osv):
 
 			res['ref'] = ref
 			res['tdoc'] = self.pool.get('doctor.doctor').tipo_documento(tdoc)
+			res['diseases_ago_ids'] = arreglo_ago
 
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
 
 		return res
 
-
+	def onchange_edad(self, cr, uid, ids, birth_date, context=None):
+		res={'value':{}}
+		if birth_date:
+			res['value']['paciente_edad_atencion']= self.calcular_edad(birth_date)
+			res['value']['paciente_unidad_edad']=self.calcular_age_unit(birth_date)
+		return res
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
@@ -2142,17 +2594,46 @@ class doctor_attentions_co(osv.osv):
 	def onchange_cargar_notas_confidenciales(self, cr, uid, ids, activar_notas_confidenciales, professional_id, patient_id, context=None):
 		notas_confidenciales=[]
 		notas=''
+		bandera=False
 		res={'value':{}}
+		contador=0
+		tamano_notas=0
+		notas_finales=''
+		posicion=0
+		notas_nueva=[]
 		ids_notas= self.search(cr, uid, [('professional_id', '=', professional_id), ('patient_id', '=', patient_id)])
 
+		#cargando notas confidenciales
 		if activar_notas_confidenciales:
 			for id_nota in self.browse(cr,uid,ids_notas):
-				notas_confidenciales.append(id_nota.notas_confidenciales)
+				if str(id_nota.notas_confidenciales).isspace() == False:
+					notas_confidenciales.append(id_nota.notas_confidenciales)
 
-		for i in range(len(notas_confidenciales)):
-			if notas_confidenciales[i]:
-				notas += notas_confidenciales[i] + ". \n" 
-			
+		#Buscar la nota con mas caracteres
+		if len(notas_confidenciales) > 0:
+			for y in range(len(notas_confidenciales)):
+				if notas_confidenciales[y]:
+					if posicion > len(str(notas_confidenciales[y])):
+						posicion= y
+		
+			notas_finales=str(notas_confidenciales[posicion]).split(". \n")
+
+			_logger.info('Nota con mas caracteres')
+			_logger.info(str(notas_confidenciales[posicion]))
+
+		if  len(notas_finales) > 1:
+			_logger.info('es bandera')
+			for z in range(len(notas_finales)-1):
+					notas+= str(notas_finales[z]) + ". \n"
+		else:
+			_logger.info('no es bandera')
+			for i in range(len(notas_confidenciales)-1):
+				if notas_confidenciales[i]:
+					if len(str(notas_confidenciales[i]).strip()) != 10: 
+						_logger.info(str(notas_confidenciales[i]))
+						_logger.info( len(str(notas_confidenciales[i]).strip()))
+						notas += str(notas_confidenciales[i]) + ". \n"
+
 		res['value']['notas_confidenciales'] = notas + datetime.strftime(datetime.now(), "%Y-%m-%d")
 
 		return res
@@ -2170,15 +2651,37 @@ class doctor_attentions_co(osv.osv):
 		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
+		#Eliminando espacios vacios de antecedentes
+		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
+		notas=''
+		result=''
+		if 'notas_confidenciales' in vals:
+			result= vals['notas_confidenciales']
+			_logger.info(result)
 
-		_logger.info(vals)
+			notas_actuales= result.split(". \n")
 
+			_logger.info(len(notas_actuales))
+			_logger.info(len(str(notas_actuales[len(notas_actuales)-1]).strip()))
+			_logger.info(str(notas_actuales[len(notas_actuales)-1]).strip())
+
+			for x in range(len(notas_actuales)):
+
+				if len(str(notas_actuales[x]).strip()) != 10:
+					_logger.info(str(notas_actuales[x]))
+					notas += notas_actuales[x] + ". \n"	
+
+			vals['notas_confidenciales']= notas
+			_logger.info('esto es lo que guardo')
+			_logger.info(notas)
 
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
+		#Eliminando espacios vacios de antecedentes
+		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
 		if 'origin' in vals:
 			
@@ -2237,7 +2740,19 @@ class doctor_attentions_co(osv.osv):
 			if cuota_moderadora:
 				vals['couta_moderadora'] = cuota_moderadora
 
-		_logger.info(vals)
+
+		notas=''
+		if 'notas_confidenciales' in vals:
+			result= vals['notas_confidenciales']
+			notas_actuales= result.split(". \n")
+
+			for x in range(len(notas_actuales)-1):
+				if notas_actuales[x]:
+					if len(str(notas_actuales[x]).strip()) != 10:
+						notas += str(notas_actuales[x]) + ". \n"
+
+			vals['notas_confidenciales']= notas	
+			_logger.info(vals)
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
@@ -2297,6 +2812,34 @@ class doctor_attentions_co(osv.osv):
 			'view_mode': 'form',
 			'res_id': False,
 			'res_model': 'doctor.list_report',
+			'context': context or None,
+			'view_id': [view_id] or False,
+			'nodestroy': False,
+			'target': 'new'
+		}
+
+
+	def button_imprimir_ultimas_hc(self, cr, uid, ids, context=None):
+		data_obj = self.pool.get('ir.model.data')
+		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_print_form')
+		view_id = data_obj.browse(cr, uid, result).res_id
+
+		profesional=''
+		patient=''
+		for x in self.browse(cr,uid,ids):
+			patient= x.patient_id.id
+			profesional= x.professional_id.id
+
+		context['default_patient_id']= patient
+		context['default_professional_id']= profesional
+
+		return {
+			'type': 'ir.actions.act_window',
+			'name': 'Ver últimas Atenciones',
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_id': False,
+			'res_model': 'doctor.list_report_print',
 			'context': context or None,
 			'view_id': [view_id] or False,
 			'nodestroy': False,
@@ -3669,6 +4212,61 @@ class doctor_list_report(osv.osv):
 
 doctor_list_report()
 
+
+
+class doctor_list_report_print(osv.osv):
+
+	_name= 'doctor.list_report_print'
+
+	_columns = {
+		'professional_id': fields.many2one('doctor.professional', 'Doctor'),
+		'attentions_ids': fields.one2many('doctor.attentions', 'list_report_print_id', 'Attentions'),
+		'patient_id': fields.many2one('doctor.patient', 'Paciente', required=True),
+		'especialidad_id':fields.many2one('doctor.speciality', 'Especialidad'),
+	}
+
+	_defaults = {
+		'patient_id' : lambda self, cr, uid, context: context.get('default_patient_id', False),
+		'professional_id' : lambda self, cr, uid, context: context.get('default_professional_id', False),
+	}	
+
+	def button_print_attention(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		data = self.read(cr, uid, ids)[0]
+		_logger.info('entro')
+		_logger.info(data)
+		datas = {
+			'ids': ids,
+			'model': 'doctor.list_report_print',
+			'form': data
+			}
+		_logger.info(datas)
+		return {
+			'type': 'ir.actions.report.xml',
+			'report_name': 'doctor_attention_report_print',
+
+		}
+
+	#Funcion para cargar las ultimas atenciones
+	def onchange_cargar_atenciones_print(self, cr, uid, ids, patient_id, professional_id, context=None):
+		atenciones=''
+		if patient_id and professional_id:
+			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+			atenciones_id=[]
+			if len(atenciones) > 4:
+				for x in range(1, 4):
+					_logger.info(atenciones[x])
+					atenciones_id.append(atenciones[x])
+				return {'value': {'attentions_ids': atenciones_id}}
+			else:
+				for x in range(len(atenciones)):
+					atenciones_id.append(atenciones[x])
+				return {'value': {'attentions_ids': atenciones_id}}
+		return False
+
+doctor_list_report_print()
+
 class doctor_otra_prescripcion(osv.osv):
 
 	_name= 'product.product'
@@ -4124,6 +4722,8 @@ class doctor_attentions_past(osv.osv):
 	}
 
 	def create(self, cr, uid, vals, context=None):
+		#Eliminando espacios vacios de antecedentes
+		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 
 			if 'active_model' in context:
@@ -4133,6 +4733,19 @@ class doctor_attentions_past(osv.osv):
 
 			if not 'active_model' in context:
 				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
+
+				
+	#Eliminando antecedentes que tienen el past vacio
+	def eliminar_antecedentes_vacios(self, cr, uid, context=None):
+
+		past_ids= self.pool.get('doctor.attentions.past').search(cr, uid, [])
+		_logger.info('esto es lo que hay que eliminar')
+		_logger.info(past_ids)
+
+		for x in range(len(past_ids)):
+			if self.pool.get('doctor.attentions.past').browse(cr, uid, past_ids[x]).past == False:
+				self.pool.get('doctor.attentions.past').unlink(cr, uid, past_ids[x], context)
+		return True
 
 
 class doctor_appointment_procedures(osv.osv):
