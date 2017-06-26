@@ -912,16 +912,13 @@
 								</xpath>
 
 
-								<!--añadiendo onchange a campo drugs_id de medicamentos-->
+								<!--añadiendo onchange a campo drugs_id de medicamentos-
 						
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="attributes">
 
 										<attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
 								</xpath>
-							
-								<!--fin de añadiendo onchange a campo drugs_id de medicamentos-->
 
-								<!--quitando campos de medicamentos-->
 								
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
 
@@ -951,7 +948,7 @@
 
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]//group[2]" position="replace"/>
 								
-								<!-- ya esta listo -->
+								
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="after">
 										<field name="cantidad_total"/>
 								</xpath>
@@ -1001,13 +998,14 @@
 												</field>
 										</page>
 								</xpath>
-
+							
 								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[1]/field[@name='diseases_ids']" position="replace"/>
 								
 								<xpath expr="//page[@string='Paraclínicos']" position="attributes">
 									<attribute name="invisible">1</attribute>
 								</xpath>
-
+								-->
+								
 								<xpath expr="//page[@string='Anamnesis']" position="before">
 
 									<page string="Identificacion">
