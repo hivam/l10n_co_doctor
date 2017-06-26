@@ -2603,40 +2603,7 @@ class doctor_attentions_co(osv.osv):
 		notas_nueva=[]
 		ids_notas= self.search(cr, uid, [('professional_id', '=', professional_id), ('patient_id', '=', patient_id)])
 
-		#cargando notas confidenciales
-		if activar_notas_confidenciales:
-			for id_nota in self.browse(cr,uid,ids_notas):
-				if str(id_nota.notas_confidenciales).isspace() == False:
-					notas_confidenciales.append(id_nota.notas_confidenciales)
-
-		#Buscar la nota con mas caracteres
-		if len(notas_confidenciales) > 0:
-			for y in range(len(notas_confidenciales)):
-				if notas_confidenciales[y]:
-					if posicion > len(str(notas_confidenciales[y])):
-						posicion= y
-		
-			notas_finales=str(notas_confidenciales[posicion]).split(". \n")
-
-			_logger.info('Nota con mas caracteres')
-			_logger.info(str(notas_confidenciales[posicion]))
-
-		if  len(notas_finales) > 1:
-			_logger.info('es bandera')
-			for z in range(len(notas_finales)-1):
-					notas+= str(notas_finales[z]) + ". \n"
-		else:
-			_logger.info('no es bandera')
-			for i in range(len(notas_confidenciales)-1):
-				if notas_confidenciales[i]:
-					if len(str(notas_confidenciales[i]).strip()) != 10: 
-						_logger.info(str(notas_confidenciales[i]))
-						_logger.info( len(str(notas_confidenciales[i]).strip()))
-						notas += str(notas_confidenciales[i]) + ". \n"
-
-		res['value']['notas_confidenciales'] = notas + datetime.strftime(datetime.now(), "%Y-%m-%d")
-
-		return res
+		return True
 
 	def onchange_plantillas(self, cr, uid, ids, plantilla_id, campo, context=None):
 		res={'value':{}}
@@ -2654,27 +2621,6 @@ class doctor_attentions_co(osv.osv):
 		#Eliminando espacios vacios de antecedentes
 		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
-		notas=''
-		result=''
-		if 'notas_confidenciales' in vals:
-			result= vals['notas_confidenciales']
-			_logger.info(result)
-
-			notas_actuales= result.split(". \n")
-
-			_logger.info(len(notas_actuales))
-			_logger.info(len(str(notas_actuales[len(notas_actuales)-1]).strip()))
-			_logger.info(str(notas_actuales[len(notas_actuales)-1]).strip())
-
-			for x in range(len(notas_actuales)):
-
-				if len(str(notas_actuales[x]).strip()) != 10:
-					_logger.info(str(notas_actuales[x]))
-					notas += notas_actuales[x] + ". \n"	
-
-			vals['notas_confidenciales']= notas
-			_logger.info('esto es lo que guardo')
-			_logger.info(notas)
 
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 		return attentions_past
@@ -2741,18 +2687,6 @@ class doctor_attentions_co(osv.osv):
 				vals['couta_moderadora'] = cuota_moderadora
 
 
-		notas=''
-		if 'notas_confidenciales' in vals:
-			result= vals['notas_confidenciales']
-			notas_actuales= result.split(". \n")
-
-			for x in range(len(notas_actuales)-1):
-				if notas_actuales[x]:
-					if len(str(notas_actuales[x]).strip()) != 10:
-						notas += str(notas_actuales[x]) + ". \n"
-
-			vals['notas_confidenciales']= notas	
-			_logger.info(vals)
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
