@@ -2542,7 +2542,7 @@ class doctor_attentions_co(osv.osv):
 				if datos_paciente.telefono_responsable:
 					res['paciente_telefono_responsable'] = datos_paciente.telefono_responsable
 				if datos_paciente.parentesco_id:
-					res['paciente_parentesco_id'] = datos_paciente.parentesco_id
+					res['paciente_parentesco_id'] = datos_paciente.parentesco_id.id
 				if datos_paciente.insurer_prepagada_id:
 					res['paciente_insurer_prepagada_id'] = datos_paciente.insurer_prepagada_id.id
 						
