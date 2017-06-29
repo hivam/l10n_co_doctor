@@ -2492,7 +2492,7 @@ class doctor_attentions_co(osv.osv):
 
 	def default_get(self, cr, uid, fields, context=None):
 		#Eliminando espacios vacios de antecedentes
-		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 		patient_id = self.obtener_paciente(context)
 		registro = []
@@ -2619,7 +2619,7 @@ class doctor_attentions_co(osv.osv):
 
 	def write(self, cr, uid, ids, vals, context=None):
 		#Eliminando espacios vacios de antecedentes
-		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
 
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
@@ -4657,7 +4657,7 @@ class doctor_attentions_past(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		#Eliminando espacios vacios de antecedentes
-		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 
 			if 'active_model' in context:
@@ -4672,13 +4672,13 @@ class doctor_attentions_past(osv.osv):
 	#Eliminando antecedentes que tienen el past vacio
 	def eliminar_antecedentes_vacios(self, cr, uid, context=None):
 
-		past_ids= self.pool.get('doctor.attentions.past').search(cr, uid, [])
-		_logger.info('esto es lo que hay que eliminar')
-		_logger.info(past_ids)
+		#past_ids= self.pool.get('doctor.attentions.past').search(cr, uid, [])
+		#_logger.info('esto es lo que hay que eliminar')
+		#_logger.info(past_ids)
 
-		for x in range(len(past_ids)):
-			if self.pool.get('doctor.attentions.past').browse(cr, uid, past_ids[x]).past == False:
-				self.pool.get('doctor.attentions.past').unlink(cr, uid, past_ids[x], context)
+		#for x in range(len(past_ids)):
+		#	if self.pool.get('doctor.attentions.past').browse(cr, uid, past_ids[x]).past == False:
+		#		self.pool.get('doctor.attentions.past').unlink(cr, uid, past_ids[x], context)
 		return True
 
 
