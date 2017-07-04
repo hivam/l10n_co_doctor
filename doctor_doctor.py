@@ -163,3 +163,37 @@ class doctor(osv.osv):
 			nombre_tipo = 'MS'
 
 		return nombre_tipo
+
+
+	def obtener_ultimas_atenciones_paciente(self, cr, uid, modelo_buscar, tiempo, paciente, fecha_atencion, context=None):
+
+		if modelo_buscar:
+
+			fecha_cita = datetime.strptime(fecha_atencion, "%Y-%m-%d %H:%M:%S")
+
+			fecha_atencion_horas_menos = fecha_cita - timedelta(hours=tiempo)
+
+			ids_atenciones = self.pool.get(modelo_buscar).search(cr, uid, [('patient_id', '=', paciente),
+																		('date_attention', '>=', str(fecha_atencion_horas_menos)),
+																		('date_attention', '<=', str(fecha_cita))], context=context)
+			
+			if ids_atenciones:
+				raise osv.except_osv(_('ATENCION !!!'),_('El paciente ya fue atendido por otro profesional en la salud'))
+
+
+	def tipo_historia(self, modelo):
+
+		if modelo == 'doctor_psychology':
+			return 'doctor.psicologia'
+
+		if modelo == 'doctor_control':
+			return 'doctor.hc.control'
+
+		if modelo == 'doctor_dental_care':
+			return 'doctor.hc.odontologia'
+
+		if modelo == 'doctor_biological_risk':
+			return 'doctor.atencion.ries.bio'
+
+		if modelo == 'doctor' or modelo == '10n_co_doctor':
+			return 'doctor.attentions'
