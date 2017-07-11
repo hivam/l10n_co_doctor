@@ -175,11 +175,13 @@ class doctor(osv.osv):
 
 			ids_atenciones = self.pool.get(modelo_buscar).search(cr, uid, [('patient_id', '=', paciente),
 																		('date_attention', '>=', str(fecha_atencion_horas_menos)),
-																		('date_attention', '<=', str(fecha_cita))], context=context)
+																		('date_attention', '<=', str(fecha_cita)),
+																		('origin', '<>', None)], context=context)
 			
 			if ids_atenciones:
+			
 				raise osv.except_osv(_('ATENCION !!!'),_('El paciente ya fue atendido por otro profesional en la salud'))
-
+				#_logger.info('asasasasas')
 
 	def tipo_historia(self, modelo):
 

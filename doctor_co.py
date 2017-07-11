@@ -2441,7 +2441,7 @@ class doctor_attentions_co(osv.osv):
 		'paciente_edad_atencion': fields.function(_get_edad_paciente, type='integer', store=False, required=True, readonly=True, string='Edad Actual',),
 		'paciente_unidad_edad': fields.function(_get_unidad_edad_paciente, type='selection', selection=[('1', u'Años'), ('2', 'Meses'), ('3', 'Dias'),], string='Unidad medida edad',
 									store=False, required=True, readonly=True),
-		'paciente_birth_date': fields.function(_get_fecha_nacimiento, fnct_inv=_set_fecha_nacimiento, type='date', string='Fecha cumpleaños', required=True, store=False),
+		'paciente_birth_date': fields.function(_get_fecha_nacimiento, fnct_inv=_set_fecha_nacimiento, type='date', string=u'Fecha cumpleaños', required=True, store=False),
 		
 		'paciente_primer_nombre': fields.function(_get_primer_nombre, fnct_inv=_set_primer_nombre, type="char", store= False, 
 								string=u'Primer Nombre', required=True), 
@@ -2622,6 +2622,51 @@ class doctor_attentions_co(osv.osv):
 		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
 
+		if 'attentions_past_ids' in vals:
+
+			_logger.info(len(vals['attentions_past_ids']))
+
+			for antecedentes in range(0, (len(vals['attentions_past_ids'])), 1):
+				_logger.info(antecedentes)
+				if vals['attentions_past_ids'][antecedentes][2]:
+
+					if 'past' in vals['attentions_past_ids'][antecedentes][2]:
+
+						antecedente_id = vals['attentions_past_ids'][antecedentes][1]
+						antecedente_texto = vals['attentions_past_ids'][antecedentes][2]['past']
+
+						for datos in self.pool.get('doctor.attentions.past').browse(cr, uid, [antecedente_id], context=context):
+
+							paciente_id = datos.patient_id.id
+							antecedente = datos.past_category.id
+
+
+							antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
+										[('past_category', '=', antecedente), ('patient_id', '=', paciente_id),
+										('past', '<>', None)],
+										 limit=1, order='id desc',context=context)							
+
+							_logger.info(antecedentes_ids)
+
+							if antecedentes_ids: 
+
+								for datos in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
+
+									if datos.past:
+										nuevo_antecedente = datos.past +', '+antecedente_texto
+									else:
+										nuevo_antecedente = antecedente_texto
+
+								self.pool.get('doctor.attentions.past').write(cr, uid, antecedentes_ids, {'past': nuevo_antecedente}, context=context)
+								self.pool.get('doctor.attentions.past').unlink(cr, uid, antecedente_id, context=context)
+							else:
+								antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
+										[('past_category', '=', antecedente), ('patient_id', '=', paciente_id)],
+										 limit=1, order='id desc',context=context)
+								self.pool.get('doctor.attentions.past').unlink(cr, uid, antecedente_id, context=context)		
+								self.pool.get('doctor.attentions.past').create(cr, uid, {'past_category' : antecedente,'past': antecedente_texto, 'patient_id': paciente_id, 'attentiont_id': ids[0]}, context=context)		
+			del vals['attentions_past_ids']
+		_logger.info(vals)		
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 		return attentions_past
 
@@ -2686,7 +2731,33 @@ class doctor_attentions_co(osv.osv):
 			if cuota_moderadora:
 				vals['couta_moderadora'] = cuota_moderadora
 
+		if 'attentions_past_ids' in vals:
+	
+			for antecedentes in range(0, (len(vals['attentions_past_ids'])), 1):
+				
 
+				if 'past' in vals['attentions_past_ids'][antecedentes][2]:
+
+					antecedente_id = vals['attentions_past_ids'][antecedentes][2]['past_category']
+					antecedente_texto = vals['attentions_past_ids'][antecedentes][2]['past']
+					paciente_id = vals['attentions_past_ids'][antecedentes][2]['patient_id']
+
+					antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
+										[('past_category', '=', antecedente_id), ('patient_id', '=', paciente_id)],
+										 limit=1, order='id desc',context=context)
+
+					if antecedentes_ids:
+
+						for datos in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
+
+							if datos.past:
+								nuevo_antecedente = datos.past +', '+antecedente_texto
+							else:
+								nuevo_antecedente = antecedente_texto
+
+							self.pool.get('doctor.attentions.past').write(cr, uid, antecedentes_ids, {'past': nuevo_antecedente}, context=context)
+							
+			del vals['attentions_past_ids']					
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
