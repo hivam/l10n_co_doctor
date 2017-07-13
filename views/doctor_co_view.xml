@@ -681,8 +681,8 @@
             		<field name="context">{'search_default_tipohistoria_filter':1}</field>
     			</record>
  				-->
- 				
-				<!-- Attentions Form View -->
+ 			
+							<!-- Attentions Form View -->
 				<record id="view_doctor_attentions_form_inherit" model="ir.ui.view">
 						<field name="name">Attentions</field>
 						<field name="model">doctor.attentions</field>

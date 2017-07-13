@@ -1988,7 +1988,6 @@ class doctor_attentions_co(osv.osv):
 
 		return id_paciente	
 
-
 	def _get_creador(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
@@ -2236,8 +2235,6 @@ class doctor_attentions_co(osv.osv):
 			if cuota_moderadora:
 				vals['couta_moderadora'] = cuota_moderadora
 
-		_logger.info(vals)
-
 		# esSicologia = self.esSicologia(cr, uid, vals, context=None )
 		# if esSicologia:
 		# 	vals['tipo_historia'] = 'hc_psicologia'
@@ -2245,6 +2242,7 @@ class doctor_attentions_co(osv.osv):
 		# 	vals['tipo_historia'] = 'hc_general'
 		# vals['tipo_historia'] = 'hc_general'
 		vals['activar_notas_confidenciales'] = False
+
 		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
 	def actualizar_edad(self, cr, uid, ids, context=None):
