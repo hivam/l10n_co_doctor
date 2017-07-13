@@ -28,12 +28,15 @@
                       <filter string="Atenciones Mes pasado" name="atenciones_mes_pasado" domain="[('date_attention','&gt;=',(context_today()-relativedelta(months=1)).strftime('%%Y-%%m-01')),('date_attention','&lt;',time.strftime('%%Y-%%m-01'))]" help="Atenciones del mes anterior."/>
                       
                       <filter string="Atenciones Este Mes" name="atenciones_mes_actual" domain="[('date_attention','&lt;=',(context_today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('date_attention','&gt;=',(context_today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones programadas para este mes." />
+                       
+                      <filter string="Atenciones Meses" domain="[]" context="{'group_by' : 'date_attention'}" />  
+                      
                       <separator />
 
                       <filter string="Atenciones Ayer" name="atenciones_ayer" domain="[('date_attention','&gt;=',((context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" help="Atenciones del dia de ayer."/>
                       
                       <filter string="Atenciones Hoy" name="Atenciones_hoy" domain="[('date_attention','&gt;=',((context_today()).strftime('%%Y-%%m-%%d'))),('date_attention','&lt;=' , (context_today()).strftime('%%Y-%%m-%%d'))]" help="Atenciones Programadas para el dia de hoy."/>
-                      
+                                            
 
                     </group>
 

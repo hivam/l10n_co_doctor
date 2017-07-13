@@ -2478,7 +2478,7 @@ class doctor_attentions_co(osv.osv):
 								string=u'Aseguradora', relation='doctor.insurer'),
 		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
 								string=u'Parentesco', relation='doctor.patient.parentesco'), 
-		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string="Diagnósticos Anteriores"),
+		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string=u"Diagnósticos Anteriores"),
 			
 	}
 
