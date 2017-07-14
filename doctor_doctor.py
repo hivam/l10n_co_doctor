@@ -250,7 +250,7 @@ class doctor(osv.osv):
 		return nombre_finalidad
 
 	def obtener_ultimas_atenciones_paciente(self, cr, uid, modelo_buscar, tiempo, paciente, fecha_atencion, context=None):
-		'''
+
 		if modelo_buscar:
 
 			fecha_cita = datetime.strptime(fecha_atencion, "%Y-%m-%d %H:%M:%S")
@@ -266,8 +266,7 @@ class doctor(osv.osv):
 			
 				raise osv.except_osv(_('ATENCION !!!'),_('El paciente ya fue atendido por otro profesional en la salud'))
 				#_logger.info('asasasasas')
-		'''
-		pass
+
 	def tipo_historia(self, modelo):
 
 		if modelo == 'doctor_psychology':
