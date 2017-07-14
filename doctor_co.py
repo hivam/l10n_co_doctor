@@ -1988,7 +1988,6 @@ class doctor_attentions_co(osv.osv):
 
 		return id_paciente	
 
-
 	def _get_creador(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
@@ -2437,7 +2436,6 @@ class doctor_attentions_co(osv.osv):
 		'tdoc': fields.char('tdoc', readonly=True),
 
 
-
 		'paciente_identificacion': fields.function(_get_ref, fnct_inv=_set_ref , type="char", store= False, 
 								string=u'Identificación', required=True), 
 		'paciente_edad_atencion': fields.function(_get_edad_paciente, type='integer', store=False, required=True, readonly=True, string='Edad Actual',),
@@ -2573,7 +2571,6 @@ class doctor_attentions_co(osv.osv):
 			res['value']['paciente_unidad_edad']=self.calcular_age_unit(birth_date)
 		return res
 
-
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
 	def onchange_paraclinical_monitoring(self, cr, uid, ids, seguimiento_id, patient_id, context=None):
 
@@ -2637,11 +2634,7 @@ class doctor_attentions_co(osv.osv):
 		# 	vals['tipo_historia'] = 'hc_psicologia'
 		# else:
 		# 	vals['tipo_historia'] = 'hc_general'
-<<<<<<< 6f1495b526e16613fe4a42894566a2759aae16d0
-		
-=======
 
->>>>>>> cambios menores
 		vals['activar_notas_confidenciales'] = False
 		if 'origin' in vals:
 			
@@ -2701,8 +2694,15 @@ class doctor_attentions_co(osv.osv):
 				vals['couta_moderadora'] = cuota_moderadora
 
 
-		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
-		return atencion_id
+		# esSicologia = self.esSicologia(cr, uid, vals, context=None )
+		# if esSicologia:
+		# 	vals['tipo_historia'] = 'hc_psicologia'
+		# else:
+		# 	vals['tipo_historia'] = 'hc_general'
+		# vals['tipo_historia'] = 'hc_general'
+		vals['activar_notas_confidenciales'] = False
+
+		return super(doctor_attentions_co,self).create(cr, uid, vals, context)
 
 	def actualizar_edad(self, cr, uid, ids, context=None):
 		u={}
