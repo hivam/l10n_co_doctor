@@ -2433,8 +2433,6 @@ class doctor_attentions_co(osv.osv):
 		'list_report_print_id': fields.many2one('doctor.list_report_print', 'List Report'),
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
-		'finalidad_consulta_rips': fields.char('finalidad consulta rips'),
-		'causa_externa_rips': fields.char('causa externa rips'),
 
 
 
@@ -2502,15 +2500,6 @@ class doctor_attentions_co(osv.osv):
 		patient_id = self.obtener_paciente(context)
 		registro = []
 		arreglo_ago=[]
-		
-		if 'finalidad_consulta' in res:
-			res['finalidad_consulta_rips'] = self.pool.get('doctor.doctor').finalidad_consulta_rips(res['finalidad_consulta'])
-
-
-		if 'causa_externa' in res:
-			res['causa_externa_rips'] = self.pool.get('doctor.doctor').causa_externa_rips(res['causa_externa'])
-
-
 		if patient_id:
 
 			patient_id = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context).id
@@ -2636,16 +2625,6 @@ class doctor_attentions_co(osv.osv):
 		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
 
-
-		if 'finalidad_consulta' in vals:
-			_logger.info(vals['finalidad_consulta'])
-			vals['finalidad_consulta_rips'] = self.pool.get('doctor.doctor').finalidad_consulta_rips(vals['finalidad_consulta'])
-
-
-		if 'causa_externa' in vals:
-			_logger.info(vals['causa_externa'])
-			vals['causa_externa_rips'] = self.pool.get('doctor.doctor').causa_externa_rips(vals['causa_externa'])
-
 		if 'attentions_past_ids' in vals:
 
 			_logger.info(len(vals['attentions_past_ids']))
@@ -2698,14 +2677,6 @@ class doctor_attentions_co(osv.osv):
 		#Eliminando espacios vacios de antecedentes
 		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
-
-		if 'finalidad_consulta' in vals:
-			vals['finalidad_consulta_rips'] = self.pool.get('doctor.doctor').finalidad_consulta_rips(self, vals['finalidad_consulta'])
-
-
-		if 'causa_externa' in vals:
-			vals['causa_externa_rips'] = self.pool.get('doctor.doctor').causa_externa_rips(self, vals['causa_externa'])
-
 
 		if 'origin' in vals:
 			

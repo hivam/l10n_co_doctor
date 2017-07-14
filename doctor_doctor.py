@@ -186,68 +186,6 @@ class doctor(osv.osv):
 		return nombre_tipo
 
 
-	def causa_externa_rips(self, numero_causa):
-
-		nombre_causa = None
-
-		if numero_causa == '01':
-			nombre_causa = 'Accidente de trabajo'
-		elif numero_causa == '02':
-			nombre_causa = u'Accidente de tránsito'
-		elif numero_causa == '03':
-			nombre_causa = u'Accidente rábico'
-		elif numero_causa == '04':
-			nombre_causa = u'Accidente ofídico'
-		elif numero_causa == '05':
-			nombre_causa = 'Otro tipo de accidente'
-		elif numero_causa == '06':
-			nombre_causa = u'Evento Catastrófico'
-		elif numero_causa == '07':
-			nombre_causa = u'Lesión por agresión'
-		elif numero_causa == '08':
-			nombre_causa = u'Lesión auto infligida'
-		elif numero_causa == '09':
-			nombre_causa = u'Sospecha de maltrato físico'
-		elif numero_causa == '10':
-			nombre_causa = 'Sospecha de abuso sexual'
-		elif numero_causa == '11':
-			nombre_causa = 'Sospecha de abuso sexual'
-		elif numero_causa == '12':
-			nombre_causa = 'Sospecha de maltrato emocional'
-		elif numero_causa == '13':
-			nombre_causa = 'Enfermedad general'
-		elif numero_causa == '14':
-			nombre_causa = 'Enfermedad profesional'
-		elif numero_causa == '15':
-			nombre_causa = 'Otra'
-		return nombre_causa
-
-
-	def finalidad_consulta_rips(self, numero_finalidad):
-
-		nombre_finalidad = None
-
-		if numero_finalidad == '01':
-			nombre_finalidad = u'Atención del parto -puerperio'
-		elif numero_finalidad == '02':
-			nombre_finalidad = u'Atención del recién nacido'
-		elif numero_finalidad == '03':
-			nombre_finalidad = u'Atención en planificación familiar'
-		elif numero_finalidad == '04':
-			nombre_finalidad = u'Detección de alteraciones del crecimiento y desarrollo del menor de diez años'
-		elif numero_finalidad == '05':
-			nombre_finalidad = u'Detección de alteración del desarrollo joven'
-		elif numero_finalidad == '06':
-			nombre_finalidad = u'Detección de alteraciones del embarazo'
-		elif numero_finalidad == '07':
-			nombre_finalidad = u'Detección de alteración del adulto'
-		elif numero_finalidad == '08':
-			nombre_finalidad = u'Detección de alteración de agudeza visual'
-		elif numero_finalidad == '09':
-			nombre_finalidad = u'Detección de enfermedad profesional'
-		elif numero_finalidad == '10':
-			nombre_finalidad = u'No aplica'
-		return nombre_finalidad
 
 	def obtener_ultimas_atenciones_paciente(self, cr, uid, modelo_buscar, tiempo, paciente, fecha_atencion, context=None):
 
