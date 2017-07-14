@@ -2433,7 +2433,8 @@ class doctor_attentions_co(osv.osv):
 		'list_report_print_id': fields.many2one('doctor.list_report_print', 'List Report'),
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
-
+		'finalidad_consulta_rips': fields.char('finalidad consulta rips'),
+		'causa_externa_rips': fields.char('causa externa rips'),
 
 
 		'paciente_identificacion': fields.function(_get_ref, fnct_inv=_set_ref , type="char", store= False, 
