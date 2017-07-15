@@ -861,9 +861,7 @@
 										<field name="numero_procedimiento" invisible="1"/>
 										<field name="valor_consulta" invisible="1"/>
 										<field name="couta_moderadora" invisible="1"/>
-										<field name="valor_pagar" invisible="1"/>
-										<field name="finalidad_consulta_rips" invisible="1"/>
- 										<field name="causa_externa_rips" invisible="1"/>										
+										<field name="valor_pagar" invisible="1"/>									
 								</field>
 
 								<field name="analysis" position="after">
