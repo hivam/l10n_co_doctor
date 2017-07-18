@@ -201,7 +201,8 @@ class doctor(osv.osv):
 																		('origin', '<>', None)], context=context)
 			
 			if ids_atenciones:
-			
+				cr.execute("SELECT * FROM doctor_espacios")
+				return cr.fetchall()
 				raise osv.except_osv(_('ATENCION !!!'),_('El paciente ya fue atendido por otro profesional en la salud'))
 				#_logger.info('asasasasas')
 
