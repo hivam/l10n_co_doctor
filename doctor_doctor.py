@@ -201,7 +201,7 @@ class doctor(osv.osv):
 																		('origin', '<>', None)], context=context)
 			
 			if ids_atenciones:
-				return True #raise osv.except_osv(_('ATENCION !!!'),_('El paciente ya fue atendido por otro profesional en la salud'))
+				raise osv.except_osv(_('ATENCION !!!'),_('El paciente ya fue atendido por otro profesional en la salud'))
 				#_logger.info('asasasasas')
 
 	def tipo_historia(self, modelo):
