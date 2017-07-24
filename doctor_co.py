@@ -272,19 +272,26 @@ class doctor_patient_co(osv.osv):
 		_logger.info(nombre_ocupacion)
 		if nombre_ocupacion == 'Estudiante':
 			res['value']['filter_ocupacion'] = 'estu'
+			res['value']['ocupacion_actual'] = 'Estudiante'
+			res['value']['ocupacion_id'] = None
 
 		if nombre_ocupacion == 'Docente':
 			res['value']['filter_ocupacion'] = 'doc'
+			res['value']['ocupacion_actual'] = 'Docente'
+			res['value']['ocupacion_id'] = None
 
 		if nombre_ocupacion == 'Egresado':
 			res['value']['filter_ocupacion'] = 'egre'
+			res['value']['ocupacion_actual'] = 'Egresado'
+			res['value']['ocupacion_id'] = None
 
 		if nombre_ocupacion == 'Empleado':
 			res['value']['filter_ocupacion'] = 'emp'
+			res['value']['ocupacion_actual'] = 'Empleado'
+			res['value']['ocupacion_id'] = None
 
 		if nombre_ocupacion == 'Otros':
 			res['value']['filter_ocupacion'] = 'otro'
-
 
 		if nombre_ocupacion != 'Estudiante' and nombre_ocupacion != 'Docente' and nombre_ocupacion != 'Egresado' and nombre_ocupacion != 'Empleado' and nombre_ocupacion != 'Otros':
 			res['value']['semestre_actual'] = ''  
