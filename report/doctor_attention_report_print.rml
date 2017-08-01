@@ -450,6 +450,32 @@
     </blockTable>
     </section>
 
+        <section>
+      <blockTable colWidths="534" style="Table6">
+      <tr>
+        <td>
+          <para style="P2">REPORTES PARACLÍNICOS</para>
+        </td>
+     </tr>
+    </blockTable>
+    [[ code.paraclinical_monitoring_ids or removeParentNode('section') ]]
+      <para style="P6">[[ repeatIn(code.paraclinical_monitoring_ids, 'line') ]]</para>
+
+          <blockTable colWidths="84.0,450.0" style="Table6">
+        <tr>
+        <td>
+            <para style="p6"> [[line.seguimientos_id.name or removeParentNode('section')]]</para>
+           
+          </td>
+          <td>
+            <para style="p6">[[ (line.result_paraclinical) or removeParentNode('section') ]] </para>
+
+          </td>
+        </tr>
+      </blockTable>
+
+    </section>
+
     <section>
     <blockTable colWidths="534.0" style="Table6">
       <tr>
