@@ -41,3 +41,4 @@ import doctor_diagnostic_images_half
 import doctor_referral_half
 import doctor_attention_report
 import doctor_attention_report_print
+import doctor_patient
