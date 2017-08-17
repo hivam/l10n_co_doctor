@@ -94,6 +94,9 @@
                 rml="l10n_co_doctor/report/rips_radicacioncuentas.rml" string="Cuenta de Cobro"
                 usage="default"/>
 
+        <report auto="False" id="doctor_patient" model="doctor.patient" name="doctor_patient"
+                rml="l10n_co_doctor/report/doctor_patient.rml" string="Imprimir Paciente"
+                usage="default"/>
 
     </data>
 </openerp>
