@@ -192,8 +192,12 @@ class doctor(osv.osv):
 		if modelo_buscar:
 
 			fecha_cita = datetime.strptime(fecha_atencion, "%Y-%m-%d %H:%M:%S")
-
 			fecha_atencion_horas_menos = fecha_cita - timedelta(hours=tiempo)
+
+			_logger.info("############################################")
+			_logger.info(fecha_cita)
+			_logger.info(fecha_atencion_horas_menos)
+
 
 			ids_atenciones = self.pool.get(modelo_buscar).search(cr, uid, [('patient_id', '=', paciente),
 																		('date_attention', '>=', str(fecha_atencion_horas_menos)),
@@ -201,6 +205,8 @@ class doctor(osv.osv):
 																		('origin', '<>', None)], context=context)
 			
 			if ids_atenciones:
+				_logger.info("Entra para saber si hay atenciones")
+				_logger.info(ids_atenciones)
 				raise osv.except_osv(_('ATENCION !!!'),_('El paciente ya fue atendido por otro profesional en la salud refresque la ventana'))
 				#_logger.info('asasasasas')
 
