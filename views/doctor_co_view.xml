@@ -1038,7 +1038,11 @@
                     							<label for="paciente_blood_type" string="Tipo de sangre"/>
 							                    <field name="paciente_blood_type" class="left-margin" style="width: 15%%"/>
 							                    <field name="paciente_rh" style="width: 15%%" nolabel="1"/>
-							                  </div>
+							                </div>
+							                <group colspan="3" col="2">
+								                <field name='paciente_otros'/>
+								                <field name="plantilla_paciente_otros" on_change="onchange_plantillas(plantilla_paciente_otros, 'paciente_otros')" domain="[('tipo_plantilla', '=', '18')]"/>
+								            </group>
 										</group>
 									</page>
 								</xpath>								

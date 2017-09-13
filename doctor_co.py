@@ -2553,6 +2553,9 @@ class doctor_attentions_co(osv.osv):
 
 		'paciente_rh': fields.function(_get_rh,fnct_inv=_set_rh, type='selection', selection=[('+', '+'), ('-', '-'), ], string='Rh',
 									store=False),
+
+		'paciente_otros': fields.text('Otros'),
+		'plantilla_paciente_otros': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 			
 	}
 
@@ -2580,6 +2583,14 @@ class doctor_attentions_co(osv.osv):
 			_logger.info(type(patient_id))
 
 			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+
+			for otros_paciente in self.browse(cr, uid, atenciones, context=context):
+
+				if otros_paciente.paciente_otros:
+
+					res['paciente_otros'] = otros_paciente.paciente_otros + '\n'
+
+
 			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
 			for i in self.pool.get('doctor.attentions.diseases').browse(cr,uid,diseases_ago_ids,context=context):
 				arreglo_ago.append((0,0,{'diseases_id' : i.diseases_id.id , 'status' : i.status, 'diseases_type': i.diseases_type}))
@@ -4568,6 +4579,7 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('15', u'Revisión por Sistemas'),
 		('16', u'Paraclínicos'),
 		('17', u'Odontologia'),
+		('18', u'Otros paciente')
 	]
 
 	_columns = {
