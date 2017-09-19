@@ -273,11 +273,11 @@ class doctor_attention(report_sxw.rml_parse):
 			_logger.info(cadena)
 		return cadena
 
-	def cargar_respiracion_diastolica(self, pulsioximetry):
+	def cargar_pulsioximetria(self, pulsioximetry):
 		_logger.info(pulsioximetry)
 		cadena=""
 		if pulsioximetry:
-			cadena= "Pulsioximetría:" + " " +  str(pulsioximetry) + " " + "°C"
+			cadena= "Pulsioximetría:" + " " +  str(pulsioximetry) + " " + "%"
 			_logger.info(cadena)
 		return cadena
 
