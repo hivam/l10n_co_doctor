@@ -139,7 +139,7 @@
       <tr>
         <td>
           <para style="P6">Document: [[ (code.patient_id.ref or (removeParentNode('para'))) ]]</para>
-          <para style="P6">Tipo de usuario: [[ select_type(code.patient_id.tipo_usuaricode.id) or removeParentNode('para')]]</para>
+          <para style="P6">Tipo de usuario: [[ select_type(code.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
         </td>
         <td>
           <para style="P6">Name: [[ (code.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
@@ -444,7 +444,7 @@
     <blockTable colWidths="534" style="Table6">
       <tr>
         <td>
-          <para style="p6">[[ (code.reportes_paraclinicos) or removeParentNode('section')]] </para>
+          <para style="p6">[[ (code.reportes_paraclinicos or removeParentNode('section'))]] </para>
         </td>
       </tr>  
     </blockTable>
@@ -464,11 +464,11 @@
           <blockTable colWidths="84.0,450.0" style="Table6">
         <tr>
         <td>
-            <para style="p6"> [[line.seguimientos_id.name or removeParentNode('section')]]</para>
+            <para style="p6"> [[(line.seguimientos_id.name or removeParentNode('section'))]]</para>
            
           </td>
           <td>
-            <para style="p6">[[ (line.result_paraclinical) or removeParentNode('section') ]] </para>
+            <para style="p6">[[ (line.result_paraclinical or removeParentNode('section'))]] </para>
 
           </td>
         </tr>

@@ -209,6 +209,77 @@ class doctor_attention(report_sxw.rml_parse):
 			_logger.info(cadena)
 		return cadena
 
+	def cargar_altura(self, height):
+		_logger.info(height)
+		cadena=""
+		if height:
+			cadena= "Altura:" + " " +  str(height) + " " + "cm"
+			_logger.info(cadena)
+		return cadena
+
+	def cargar_masa_muscular(self, body_mass_index):
+		_logger.info(body_mass_index)
+		cadena=""
+		if body_mass_index:
+			cadena= "Masa Muscular:" + " " +  str(body_mass_index) + " " + "kg/m²"
+			_logger.info(cadena)
+		return cadena
+
+	def cargar_superficie_muscular(self, superficie_corporal):
+		_logger.info(superficie_corporal)
+		cadena=""
+		if superficie_corporal:
+			cadena= "Superficie Corporal:" + " " +  str(superficie_corporal) + " " + "m²"
+			_logger.info(cadena)
+		return cadena
+
+	def cargar_frecuencia_cardiaca(self, heart_rate):
+		_logger.info(heart_rate)
+		cadena=""
+		if heart_rate:
+			cadena= "Frecuencia Cardiaca:" + " " +  str(heart_rate) + " " + "L/min"
+			_logger.info(cadena)
+		return cadena
+
+	def cargar_frecuencia_respiratoria(self, respiratory_rate):
+		_logger.info(respiratory_rate)
+		cadena=""
+		if respiratory_rate:
+			cadena= "Frecuencia Respiratoria:" + " " +  str(respiratory_rate) + " " + "R/min"
+			_logger.info(cadena)
+		return cadena
+
+	def cargar_respiracion_sistolica(self, systolic):
+		_logger.info(systolic)
+		cadena=""
+		if systolic:
+			cadena= "Respiración Sistolica:" + " " +  str(systolic) + " " + "mmHg"
+			_logger.info(cadena)
+		return cadena
+
+	def cargar_respiracion_diastolica(self, diastolic):
+		_logger.info(diastolic)
+		cadena=""
+		if diastolic:
+			cadena= "Respiración Diastolica:" + " " +  str(diastolic) + " " + "mmHg"
+			_logger.info(cadena)
+		return cadena
+
+	def cargar_temperatura(self, temperature):
+		_logger.info(temperature)
+		cadena=""
+		if temperature:
+			cadena= "Temperatura:" + " " +  str(temperature) + " " + "°C"
+			_logger.info(cadena)
+		return cadena
+
+	def cargar_respiracion_diastolica(self, pulsioximetry):
+		_logger.info(pulsioximetry)
+		cadena=""
+		if pulsioximetry:
+			cadena= "Pulsioximetría:" + " " +  str(pulsioximetry) + " " + "°C"
+			_logger.info(cadena)
+		return cadena
 
 	def cargar_examen_fisico(self, name_exam, exam):
 		if exam:

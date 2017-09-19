@@ -402,23 +402,23 @@
       <tr>
         <td>
           <para style="P6">[[cargar_peso(o.weight)]]</para>
-          <para style="P6">Height: [[ (o.height) ]] cm</para>
-          <para style="P6">Body mass: [[ (o.body_mass_index) ]] kg/m²</para>
-          <para style="P6">Superficie Corporal: [[ (o.superficie_corporal) ]] m²</para>
+          <para style="P6">[[ cargar_altura(o.height) ]]</para>
+          <para style="P6">[[ cargar_masa_muscular(o.body_mass_index) ]] </para>
+          <para style="P6">[[ cargar_superficie_muscular(o.superficie_corporal) ]] </para>
         </td>
         <td>
-          <para style="P6">Frecuencia Cardiaca: [[ (o.heart_rate) ]] L/min</para>
-          <para style="P6">Respiratory: [[ (o.respiratory_rate) ]] R/min</para>
+          <para style="P6">[[ cargar_frecuencia_cardiaca(o.heart_rate) ]] </para>
+          <para style="P6">[[ cargar_frecuencia_respiratoria(o.respiratory_rate) ]] </para>
         </td>
         <td>
-          <para style="P6">Systolic: [[ (o.systolic) ]] mmHg</para>
-          <para style="P6">Diastolic: [[ (o.diastolic) ]] mmHg</para>
+          <para style="P6">[[ cargar_respiracion_sistolica(o.systolic) ]] </para>
+          <para style="P6">[[ cargar_respiracion_diastolica(o.diastolic) ]] </para>
         </td>
         <td>
-          <para style="P6">Temperature: [[ (o.temperature) ]] °C</para>
+          <para style="P6">[[ cargar_temperatura(o.temperature) ]] </para>
           <para style="letra_salto_linea">[[ 'H ' ]]</para>
           <para style="P2">SpO2</para>
-          <para style="P6">Pulsioximetry: [[ (o.pulsioximetry) ]] %</para>
+          <para style="P6">[[ cargar_pulsioximetria(o.pulsioximetry) ]] </para>
         </td>
       </tr>
       </blockTable>
@@ -542,16 +542,15 @@
     </section>
 
     <section>
-  <blockTable colWidths="534.0" style="Table6">
+      [[ o.diseases_ids or removeParentNode('section') ]]
+    <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
           <para style="P2">DIAGNÓSTICOS</para>
         </td>
      </tr>
     </blockTable>
-    </section>
-    <section>
-    [[ o.diseases_ids or removeParentNode('section') ]]
+
       <para style="P6">[[ repeatIn(o.diseases_ids, 'line') ]]</para>
 
       <blockTable colWidths="384.0,150.0" style="Table6">
