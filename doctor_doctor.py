@@ -226,3 +226,22 @@ class doctor(osv.osv):
 
 		if modelo == 'doctor' or modelo == '10n_co_doctor':
 			return 'doctor.attentions'
+
+
+	#Eliminando espacios
+	def eliminar_antecedentes_vacios(self, cr, uid):
+
+		#Eliminando espacios vacios de revision por sistemas
+		review_systems_ids= self.pool.get('doctor.review.systems').search(cr, uid, [])
+		if review_systems_ids:
+			for x in self.pool.get('doctor.review.systems').browse(cr, uid, review_systems_ids):
+				if x.review_systems == False:
+					self.pool.get('doctor.review.systems').unlink(cr, uid, x.id)
+
+		#Eliminando espacios vacios de antecedentes
+		past_ids= self.pool.get('doctor.attentions.past').search(cr, uid, [])
+		if past_ids:
+			for x in self.pool.get('doctor.attentions.past').browse(cr, uid, past_ids):
+				if x.past == False:
+					self.pool.get('doctor.attentions.past').unlink(cr, uid, x.id)
+		return True

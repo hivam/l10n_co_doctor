@@ -2568,10 +2568,6 @@ class doctor_attentions_co(osv.osv):
 	}
 
 	def default_get(self, cr, uid, fields, context=None):
-		#Eliminando espacios vacios de antecedentes
-		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
-
-
 
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 		patient_id = self.obtener_paciente(context)
@@ -2711,9 +2707,12 @@ class doctor_attentions_co(osv.osv):
 		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
-		#Eliminando espacios vacios de antecedentes
-		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+		#Eliminando espacios
+		self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
+
 		vals['activar_notas_confidenciales'] = False
+		paciente_id=None
+		antecedente= None
 
 		if 'attentions_past_ids' in vals:
 
@@ -2727,45 +2726,46 @@ class doctor_attentions_co(osv.osv):
 
 						antecedente_id = vals['attentions_past_ids'][antecedentes][1]
 						antecedente_texto = vals['attentions_past_ids'][antecedentes][2]['past']
-
+						_logger.info('esto es el for')
+						_logger.info(self.pool.get('doctor.attentions.past').browse(cr, uid, [antecedente_id], context=context))
 						for datos in self.pool.get('doctor.attentions.past').browse(cr, uid, [antecedente_id], context=context):
+							_logger.info(datos)
+							if datos.id:
+								paciente_id = datos.patient_id.id
+								antecedente = datos.past_category.id
 
-							paciente_id = datos.patient_id.id
-							antecedente = datos.past_category.id
 
-
-							antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
-										[('past_category', '=', antecedente), ('patient_id', '=', paciente_id),
-										('past', '<>', None)],
-										 limit=1, order='id desc',context=context)							
-
-							_logger.info(antecedentes_ids)
-
-							if antecedentes_ids: 
-
-								for datos in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
-
-									if datos.past:
-										nuevo_antecedente = datos.past +', '+antecedente_texto
-									else:
-										nuevo_antecedente = antecedente_texto
-
-								self.pool.get('doctor.attentions.past').write(cr, uid, antecedentes_ids, {'past': nuevo_antecedente}, context=context)
-								self.pool.get('doctor.attentions.past').unlink(cr, uid, antecedente_id, context=context)
-							else:
 								antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
-										[('past_category', '=', antecedente), ('patient_id', '=', paciente_id)],
-										 limit=1, order='id desc',context=context)
-								self.pool.get('doctor.attentions.past').unlink(cr, uid, antecedente_id, context=context)		
-								self.pool.get('doctor.attentions.past').create(cr, uid, {'past_category' : antecedente,'past': antecedente_texto, 'patient_id': paciente_id, 'attentiont_id': ids[0]}, context=context)		
+											[('past_category', '=', antecedente), ('patient_id', '=', paciente_id),
+											('past', '<>', None)],
+											 limit=1, order='id desc',context=context)							
+
+								_logger.info(antecedentes_ids)
+
+								if antecedentes_ids: 
+
+									for datos in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
+
+										if datos.past:
+											nuevo_antecedente = datos.past +', '+antecedente_texto
+										else:
+											nuevo_antecedente = antecedente_texto
+
+									self.pool.get('doctor.attentions.past').write(cr, uid, antecedentes_ids, {'past': nuevo_antecedente}, context=context)
+									self.pool.get('doctor.attentions.past').unlink(cr, uid, antecedente_id, context=context)
+								else:
+									antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
+											[('past_category', '=', antecedente), ('patient_id', '=', paciente_id)],
+											 limit=1, order='id desc',context=context)
+									self.pool.get('doctor.attentions.past').unlink(cr, uid, antecedente_id, context=context)		
+									self.pool.get('doctor.attentions.past').create(cr, uid, {'past_category' : antecedente,'past': antecedente_texto, 'patient_id': paciente_id, 'attentiont_id': ids[0]}, context=context)		
 			del vals['attentions_past_ids']
 		_logger.info(vals)		
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
-		#Eliminando espacios vacios de antecedentes
-		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+
 		vals['activar_notas_confidenciales'] = False
 
 		if 'origin' in vals:
@@ -4824,8 +4824,7 @@ class doctor_attentions_past(osv.osv):
 	}
 
 	def create(self, cr, uid, vals, context=None):
-		#Eliminando espacios vacios de antecedentes
-		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 
 			if 'active_model' in context:
@@ -4837,19 +4836,6 @@ class doctor_attentions_past(osv.osv):
 				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
 
 				
-	#Eliminando antecedentes que tienen el past vacio
-	def eliminar_antecedentes_vacios(self, cr, uid, context=None):
-
-		#past_ids= self.pool.get('doctor.attentions.past').search(cr, uid, [])
-		#_logger.info('esto es lo que hay que eliminar')
-		#_logger.info(past_ids)
-
-		#for x in range(len(past_ids)):
-		#	if self.pool.get('doctor.attentions.past').browse(cr, uid, past_ids[x]).past == False:
-		#		self.pool.get('doctor.attentions.past').unlink(cr, uid, past_ids[x], context)
-		return True
-
-
 class doctor_appointment_procedures(osv.osv):
 
 	_name = 'doctor.appointment.procedures'
