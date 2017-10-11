@@ -2237,9 +2237,6 @@ class doctor_attentions_co(osv.osv):
 
 
 
-
-
-
 	def _get_ref(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
