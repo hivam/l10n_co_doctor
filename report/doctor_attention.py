@@ -53,6 +53,22 @@ class doctor_attention(report_sxw.rml_parse):
 			'cargar_antecedente_name': self.cargar_antecedente_name,
 			'cargar_diagnostico': self.cargar_diagnostico,
 			'cargar_diagnostico_name': self.cargar_diagnostico_name,
+			'cargar_altura': self.cargar_altura,
+			'cargar_masa_muscular': self.cargar_masa_muscular,
+			'cargar_superficie_muscular': self.cargar_superficie_muscular,
+			'cargar_frecuencia_cardiaca': self.cargar_frecuencia_cardiaca,
+			'cargar_frecuencia_respiratoria': self.cargar_frecuencia_respiratoria,
+			'cargar_respiracion_sistolica': self.cargar_respiracion_sistolica,
+			'cargar_respiracion_diastolica': self.cargar_respiracion_diastolica,
+			'cargar_temperatura': self.cargar_temperatura,
+			'cargar_pulsioximetria': self.cargar_pulsioximetria,
+			'cargar_title_height_weight': self.cargar_title_height_weight,
+			'cargar_vital_signs': self.cargar_vital_signs,
+			'cargar_blood_pressure': self.cargar_blood_pressure,
+			'cargar_temperature': self.cargar_temperature,
+			'cargar_spodos': self.cargar_spodos,
+			'esconder_signos_vitales': self.esconder_signos_vitales,
+
 		})
 
 	def select_type(self, tipo_usuario):
@@ -202,13 +218,64 @@ class doctor_attention(report_sxw.rml_parse):
 		return bandera
 
 	def cargar_peso(self, weight):
-		_logger.info(weight)
 		cadena=""
 		if weight:
 			cadena= "Peso:" + " " +  str(weight) + " " + "kg"
-			_logger.info(cadena)
 		return cadena
 
+	def cargar_altura(self, height):
+		cadena=""
+		if height:
+			cadena= "Altura:" + " " +  str(height) + " " + "cm"
+		return cadena
+
+	def cargar_masa_muscular(self, body_mass_index):
+		cadena=""
+		if body_mass_index:
+			cadena= "Masa Muscular:" + '\n' +  str(body_mass_index) + " " + "kg/m²"
+		return cadena
+
+	def cargar_superficie_muscular(self, superficie_corporal):
+		cadena=""
+		if superficie_corporal:
+			cadena= "Superficie Corporal:" + '\n' +  str(superficie_corporal) + " " + "m²"
+		return cadena
+
+	def cargar_frecuencia_cardiaca(self, heart_rate):
+		cadena=""
+		if heart_rate:
+			cadena= "Frecuencia Cardiaca:" + '\n' +  str(heart_rate) + " " + "L/min"
+		return cadena
+
+	def cargar_frecuencia_respiratoria(self, respiratory_rate):
+		cadena=""
+		if respiratory_rate:
+			cadena= "Frecuencia Respiratoria:" + '\n' +  str(respiratory_rate) + " " + "R/min"
+		return cadena
+
+	def cargar_respiracion_sistolica(self, systolic):
+		cadena=""
+		if systolic:
+			cadena= "Respiración Sistolica:" + '\n' +  str(systolic) + " " + "mmHg"
+		return cadena
+
+	def cargar_respiracion_diastolica(self, diastolic):
+		cadena=""
+		if diastolic:
+			cadena= "Respiración Diastolica:" + '\n' +  str(diastolic) + " " + "mmHg"
+		return cadena
+
+	def cargar_temperatura(self, temperature):
+		cadena=""
+		if temperature:
+			cadena= "Temperatura:" + " " +  str(temperature) + " " + "°C"
+		return cadena
+
+	def cargar_pulsioximetria(self, pulsioximetry):
+		cadena=""
+		if pulsioximetry:
+			cadena= "Pulsioximetría:" + " " +  str(pulsioximetry) + " " + "%"
+		return cadena
 
 	def cargar_examen_fisico(self, name_exam, exam):
 		if exam:
@@ -218,8 +285,6 @@ class doctor_attention(report_sxw.rml_parse):
 		return ""
 
 	def cargar_past(self, category_past, name):
-		_logger.info(category_past)
-		_logger.info(name)
 		if category_past:
 			if name:
 				return category_past
@@ -274,8 +339,6 @@ class doctor_attention(report_sxw.rml_parse):
 		for x in range(0, len(past_ids)):
 			name_exam = self.pool.get('doctor.attentions.past').browse(self.cr, self.uid, past_ids[x]).past_category.name
 			name+= name_exam + '\n'
-		_logger.info('nombre antecedente')
-		_logger.info(name)
 		return name
 
 	def cargar_diagnostico(self, patient_id, atencion_id):
@@ -340,10 +403,78 @@ class doctor_attention(report_sxw.rml_parse):
 			name = self.pool.get('doctor.attentions.diseases').browse(self.cr, self.uid, diagnostico_ids[x]).diseases_id.name
 			diagnostico+= name + '\n' + "`" + '\n'
 
-		_logger.info('Los nombres son:')
-		_logger.info(diagnostico)
-
 		return diagnostico
+
+
+	def cargar_title_height_weight(self, o):
+		result=""
+		peso= self.cargar_peso(o.weight)
+		altura = self.cargar_altura(o.height)
+		mas_muscular = self.cargar_masa_muscular(o.body_mass_index) 
+		superficie_corporal = self.cargar_superficie_muscular(o.superficie_corporal) 
+
+		if (  (len(peso) == 0)  and (len(altura) == 0) and (len(mas_muscular) == 0) and (len(superficie_corporal) == 0)):
+			return result
+
+		result="Talla y Peso"
+		return result
+
+
+	def cargar_vital_signs(self, o):
+		result=""
+		frecuencia_cardiaca = self.cargar_frecuencia_cardiaca(o.heart_rate)
+		frecuencia_respiratoria = self.cargar_frecuencia_respiratoria(o.respiratory_rate)
+
+		if (  (len(frecuencia_cardiaca) == 0)  and (len(frecuencia_respiratoria) == 0)):
+			return result
+
+		result="Signos Vitales"
+		return result
+
+	def cargar_blood_pressure(self, o):
+		result=""
+		respiracion_sistolica = self.cargar_respiracion_sistolica(o.systolic) 
+		respiracion_diastolica = self.cargar_respiracion_diastolica(o.diastolic) 
+
+		if (  (len(respiracion_sistolica) == 0)  and (len(respiracion_diastolica) == 0)):
+			return result
+
+		result="Presión Sanguínea"
+		return result
+
+	def cargar_temperature(self, o):
+		result=""
+		temperatura = self.cargar_temperatura(o.temperature)
+		pulsioximetria= self.cargar_pulsioximetria(o.pulsioximetry)
+
+		if (  (len(temperatura) == 0) and (len(pulsioximetria) == 0)):
+			return result
+
+		result="Temperatura"
+		return result
+
+	def cargar_spodos(self, o):
+		result=""
+		pulsioximetria= self.cargar_pulsioximetria(o.pulsioximetry) 
+
+		if (  (len(pulsioximetria) == 0)):
+			return result
+
+		result="SpO2"
+		return result
+
+	def esconder_signos_vitales(self, o):
+		result=""
+		spo= self.cargar_spodos(o)
+		temperatura= self.cargar_temperature(o)
+		presion_sanguinea = self.cargar_blood_pressure(o)
+		signos_vitales = self.cargar_vital_signs(o)
+		peso = self.cargar_title_height_weight(o)
+
+		if (  (len(spo) == 0)  and (len(temperatura) == 0) and (len(presion_sanguinea) == 0) and (len(signos_vitales) == 0) and (len(peso) == 0)):
+			return result
+		result="Cargando datos..."
+		return result
 
 
 

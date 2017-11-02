@@ -1,3 +1,24 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#   OpenERP, Open Source Management Solution
+#   Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU Affero General Public License as
+#   published by the Free Software Foundation, either version 3 of the
+#   License, or (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU Affero General Public License for more details.
+#
+#   You should have received a copy of the GNU Affero General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
 import logging
 from openerp.osv import fields, osv;
 from datetime import datetime, timedelta, date
@@ -163,3 +184,64 @@ class doctor(osv.osv):
 			nombre_tipo = 'MS'
 
 		return nombre_tipo
+
+
+
+	def obtener_ultimas_atenciones_paciente(self, cr, uid, modelo_buscar, tiempo, paciente, fecha_atencion, context=None):
+
+		if modelo_buscar:
+
+			fecha_cita = datetime.strptime(fecha_atencion, "%Y-%m-%d %H:%M:%S")
+			fecha_atencion_horas_menos = fecha_cita - timedelta(hours=tiempo)
+
+			_logger.info("############################################")
+			_logger.info(fecha_cita)
+			_logger.info(fecha_atencion_horas_menos)
+
+
+			ids_atenciones = self.pool.get(modelo_buscar).search(cr, uid, [('patient_id', '=', paciente),
+																		('date_attention', '>=', str(fecha_atencion_horas_menos)),
+																		('date_attention', '<=', str(fecha_cita)),
+																		('origin', '<>', None)], context=context)
+			
+			if ids_atenciones:
+				_logger.info("Entra para saber si hay atenciones")
+				_logger.info(ids_atenciones)
+				raise osv.except_osv(_('ATENCION !!!'),_('El paciente ya fue atendido por otro profesional en la salud refresque la ventana'))
+				#_logger.info('asasasasas')
+
+	def tipo_historia(self, modelo):
+
+		if modelo == 'doctor_psychology':
+			return 'doctor.psicologia'
+
+		if modelo == 'doctor_control':
+			return 'doctor.hc.control'
+
+		if modelo == 'doctor_dental_care':
+			return 'doctor.hc.odontologia'
+
+		if modelo == 'doctor_biological_risk':
+			return 'doctor.atencion.ries.bio'
+
+		if modelo == 'doctor' or modelo == '10n_co_doctor':
+			return 'doctor.attentions'
+
+
+	#Eliminando espacios
+	def eliminar_antecedentes_vacios(self, cr, uid):
+
+		#Eliminando espacios vacios de revision por sistemas
+		review_systems_ids= self.pool.get('doctor.review.systems').search(cr, uid, [])
+		if review_systems_ids:
+			for x in self.pool.get('doctor.review.systems').browse(cr, uid, review_systems_ids):
+				if x.review_systems == False:
+					self.pool.get('doctor.review.systems').unlink(cr, uid, x.id)
+
+		#Eliminando espacios vacios de antecedentes
+		past_ids= self.pool.get('doctor.attentions.past').search(cr, uid, [])
+		if past_ids:
+			for x in self.pool.get('doctor.attentions.past').browse(cr, uid, past_ids):
+				if x.past == False:
+					self.pool.get('doctor.attentions.past').unlink(cr, uid, x.id)
+		return True

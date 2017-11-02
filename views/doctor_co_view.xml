@@ -129,6 +129,7 @@
 
 								<field name="sex" position="after" >
 									<field name="estadocivil_id"/>
+									<field name="creencias"/>
 									<field name="ocupacion_id" on_change="onchange_ocupacion_id(ocupacion_id)"/>
 									<field name="ocupacion_actual"/>
 									<field name="filter_ocupacion" invisible="1"/>
@@ -1022,6 +1023,7 @@
 											<field name="paciente_sexo"/>
 											<field name="paciente_edad_atencion"/>
 											<field name="paciente_unidad_edad"/>
+											<field name="paciente_creencias"/>
 											<field name="paciente_ocupacion_actual"/>
 											<field name="paciente_ocupacion_id"/>
 											<field name="paciente_street"/>
@@ -1032,6 +1034,15 @@
 											<field name="paciente_parentesco_id"/>
 											<field name="paciente_telefono_responsable"/>
 											<field name="paciente_insurer_prepagada_id"/>
+											<div>
+                    							<label for="paciente_blood_type" string="Tipo de sangre"/>
+							                    <field name="paciente_blood_type" class="left-margin" style="width: 15%%"/>
+							                    <field name="paciente_rh" style="width: 15%%" nolabel="1"/>
+							                </div>
+							                <group colspan="3" col="2">
+								                <field name='paciente_otros'/>
+								                <field name="plantilla_paciente_otros" on_change="onchange_plantillas(plantilla_paciente_otros, 'paciente_otros')" domain="[('tipo_plantilla', '=', '18')]"/>
+								            </group>
 										</group>
 									</page>
 								</xpath>								

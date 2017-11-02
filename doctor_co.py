@@ -257,6 +257,7 @@ class doctor_patient_co(osv.osv):
 		'localidad_otros_paises_id':fields.many2one('doctor.localidad.country', u'Localidad/Ciudad', domain="[('country_id','=',nacimiento_country_id)]"),
 		'codigo_prestador':fields.char('Codigo de prestador', size=12),
 		'ocupacion_actual': fields.char(u'Ocupación'),
+		'creencias': fields.char('Creencias'),
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):
@@ -272,19 +273,26 @@ class doctor_patient_co(osv.osv):
 		_logger.info(nombre_ocupacion)
 		if nombre_ocupacion == 'Estudiante':
 			res['value']['filter_ocupacion'] = 'estu'
+			res['value']['ocupacion_actual'] = 'Estudiante'
+			res['value']['ocupacion_id'] = None
 
 		if nombre_ocupacion == 'Docente':
 			res['value']['filter_ocupacion'] = 'doc'
+			res['value']['ocupacion_actual'] = 'Docente'
+			res['value']['ocupacion_id'] = None
 
 		if nombre_ocupacion == 'Egresado':
 			res['value']['filter_ocupacion'] = 'egre'
+			res['value']['ocupacion_actual'] = 'Egresado'
+			res['value']['ocupacion_id'] = None
 
 		if nombre_ocupacion == 'Empleado':
 			res['value']['filter_ocupacion'] = 'emp'
+			res['value']['ocupacion_actual'] = 'Empleado'
+			res['value']['ocupacion_id'] = None
 
 		if nombre_ocupacion == 'Otros':
 			res['value']['filter_ocupacion'] = 'otro'
-
 
 		if nombre_ocupacion != 'Estudiante' and nombre_ocupacion != 'Docente' and nombre_ocupacion != 'Egresado' and nombre_ocupacion != 'Empleado' and nombre_ocupacion != 'Otros':
 			res['value']['semestre_actual'] = ''  
@@ -2167,6 +2175,16 @@ class doctor_attentions_co(osv.osv):
 					('telefono_responsable', '=', field_value)], context=context)
 				if not dato_cambio_id:
 					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'telefono_responsable' : field_value})
+	
+	def _set_creencias(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('creencias', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'creencias' : field_value})
+
 
 	def _set_profesion(self, cr, uid, ids, field_name, field_value, arg, context=None):
 		field_value = field_value or None
@@ -2194,6 +2212,28 @@ class doctor_attentions_co(osv.osv):
 					('parentesco_id', '=', field_value)], context=context)
 				if not dato_cambio_id:
 					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'parentesco_id' : field_value})
+
+
+	def _set_blood_type(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('blood_type', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'blood_type' : field_value})
+
+
+
+
+	def _set_rh(self, cr, uid, ids, field_name, field_value, arg, context=None):
+		field_value = field_value or None
+		if field_value:
+			for datos in self.browse(cr, uid, [ids], context=context):
+				dato_cambio_id = self.pool.get('doctor.patient').search(cr, uid, [('id', '=', datos.patient_id.id), 
+					('rh', '=', field_value)], context=context)
+				if not dato_cambio_id:
+					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'rh' : field_value})
 
 
 
@@ -2313,6 +2353,15 @@ class doctor_attentions_co(osv.osv):
 				res[datos.id] = datos.patient_id.telefono_responsable
 		return res
 
+
+	def _get_creencias(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			if datos.patient_id.creencias:
+				res[datos.id] = datos.patient_id.creencias
+		return res
+
+
 	def _get_profesion(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
@@ -2335,6 +2384,21 @@ class doctor_attentions_co(osv.osv):
 			if datos.patient_id.parentesco_id:
 				res[datos.id] = datos.patient_id.parentesco_id.id
 		return res
+
+	def _get_blood_type(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = datos.patient_id.blood_type
+		return res
+
+
+
+	def _get_rh(self, cr, uid, ids, field_name, arg, context=None):
+		res = {}
+		for datos in self.browse(cr, uid, ids):
+			res[datos.id] = datos.patient_id.rh
+		return res
+
 
 	#Funcion para cargar los diagnosticos que tenga el paciente
 	def cargando_diagnosticos(self, cr, uid, ids, context=None):
@@ -2434,8 +2498,6 @@ class doctor_attentions_co(osv.osv):
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
 
-
-
 		'paciente_identificacion': fields.function(_get_ref, fnct_inv=_set_ref , type="char", store= False, 
 								string=u'Identificación', required=True), 
 		'paciente_edad_atencion': fields.function(_get_edad_paciente, type='integer', store=False, required=True, readonly=True, string='Edad Actual',),
@@ -2479,6 +2541,17 @@ class doctor_attentions_co(osv.osv):
 		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
 								string=u'Parentesco', relation='doctor.patient.parentesco'), 
 		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string=u"Diagnósticos Anteriores"),
+		'paciente_creencias': fields.function(_get_creencias, fnct_inv=_set_creencias , type="char", store= False, 
+								string=u'Creencias'), 
+
+		'paciente_blood_type': fields.function(_get_blood_type,fnct_inv=_set_blood_type, type='selection', selection=[('A', 'A'), ('B', 'B'), ('AB', 'AB'), ('O', 'O')], string='Tipo Sangre',
+									store=False),
+
+		'paciente_rh': fields.function(_get_rh,fnct_inv=_set_rh, type='selection', selection=[('+', '+'), ('-', '-'), ], string='Rh',
+									store=False),
+
+		'paciente_otros': fields.text('Otros'),
+		'plantilla_paciente_otros': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
 			
 	}
 
@@ -2491,8 +2564,7 @@ class doctor_attentions_co(osv.osv):
 	}
 
 	def default_get(self, cr, uid, fields, context=None):
-		#Eliminando espacios vacios de antecedentes
-		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 		patient_id = self.obtener_paciente(context)
 		registro = []
@@ -2503,6 +2575,14 @@ class doctor_attentions_co(osv.osv):
 			_logger.info(type(patient_id))
 
 			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+
+			for otros_paciente in self.browse(cr, uid, atenciones, context=context):
+
+				if otros_paciente.paciente_otros:
+
+					res['paciente_otros'] = otros_paciente.paciente_otros + '\n'
+
+
 			diseases_ago_ids = self.pool.get('doctor.attentions.diseases').search(cr, uid, [('attentiont_id', 'in', atenciones), ('status', '=', 'recurrent')])
 			for i in self.pool.get('doctor.attentions.diseases').browse(cr,uid,diseases_ago_ids,context=context):
 				arreglo_ago.append((0,0,{'diseases_id' : i.diseases_id.id , 'status' : i.status, 'diseases_type': i.diseases_type}))
@@ -2545,7 +2625,12 @@ class doctor_attentions_co(osv.osv):
 					res['paciente_parentesco_id'] = datos_paciente.parentesco_id.id
 				if datos_paciente.insurer_prepagada_id:
 					res['paciente_insurer_prepagada_id'] = datos_paciente.insurer_prepagada_id.id
-						
+				if datos_paciente.creencias:
+					res['paciente_creencias'] = datos_paciente.creencias
+				if datos_paciente.rh:
+					res['paciente_rh'] = datos_paciente.rh
+				if datos_paciente.blood_type:
+					res['paciente_blood_type'] = datos_paciente.blood_type		
 			modelo_buscar = self.pool.get('ir.attachment')
 
 			adjuntos_id = modelo_buscar.search(cr, uid, [('res_id', '=', patient_id)], context=context)
@@ -2618,17 +2703,89 @@ class doctor_attentions_co(osv.osv):
 		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
-		#Eliminando espacios vacios de antecedentes
-		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
-		vals['activar_notas_confidenciales'] = False
+		#Eliminando espacios
+		self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
 
+		vals['activar_notas_confidenciales'] = False
+		paciente_id=None
+		antecedentes_ids = None
+		antecedente_texto = ' '
+		if 'attentions_past_ids' in vals:
+
+			for antecedentes in range(0, (len(vals['attentions_past_ids'])), 1):
+
+				if vals['attentions_past_ids'][antecedentes][2]:
+
+					if 'past' in vals['attentions_past_ids'][antecedentes][2]:
+
+						if 'past_category' in vals['attentions_past_ids'][antecedentes][2]:
+
+							#obtenemos el id del antecedente que viene en la lista del vals[attentions_past_ids]
+							antecedente_id = vals['attentions_past_ids'][antecedentes][2]['past_category']
+
+							#obtenemos lo que escribio el usuario en el antecedente
+							if vals['attentions_past_ids'][antecedentes][2]['past']:
+								antecedente_texto = vals['attentions_past_ids'][antecedentes][2]['past']
+
+							paciente_id = vals['attentions_past_ids'][antecedentes][2]['patient_id']
+
+							antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
+										[('past_category', '=', antecedente_id), ('patient_id', '=', paciente_id),
+										('past', '<>', None)],
+										 limit=1, order='id desc',context=context)		
+
+						else:
+							antecedente_id = vals['attentions_past_ids'][antecedentes][1]
+							
+							#obtenemos lo que escribio el usuario en el antecedente
+							
+							if vals['attentions_past_ids'][antecedentes][2]['past']:
+								antecedente_texto = vals['attentions_past_ids'][antecedentes][2]['past']
+
+							antecedente_id = self.pool.get('doctor.attentions.past').search(cr, uid, [('id', '=', antecedente_id)], context=context)
+
+							if antecedente_id:
+
+								for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
+
+									antecedente_id = datos_x.past_category.id
+									paciente_id = datos_x.patient_id.id
+
+									antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
+												[('past_category', '=', antecedente_id), ('patient_id', '=', paciente_id),
+												('past', '<>', None)],
+												 limit=1, order='id desc',context=context)		
+
+						if antecedentes_ids: 
+
+							for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
+
+								if datos_x.past:
+									nuevo_antecedente = datos_x.past +', '+antecedente_texto
+								else:
+									nuevo_antecedente = antecedente_texto
+
+								self.pool.get('doctor.attentions.past').write(cr, uid, antecedentes_ids, {'past': nuevo_antecedente}, context=context)
+								self.pool.get('doctor.attentions.past').unlink(cr, uid, antecedente_id, context=context)
+						
+						else:
+							antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
+									[('past_category', '=', antecedente_id), ('patient_id', '=', paciente_id)],
+									 limit=1, order='id desc',context=context)
+
+							self.pool.get('doctor.attentions.past').unlink(cr, uid, antecedente_id, context=context)		
+							self.pool.get('doctor.attentions.past').create(cr, uid, {'past_category' : antecedente_id,'past': antecedente_texto, 'patient_id': paciente_id, 'attentiont_id': ids[0]}, context=context)		
+			
+			del vals['attentions_past_ids']
+	
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
-		#Eliminando espacios vacios de antecedentes
-		self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+		#Eliminando espacios
+		self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
 		vals['activar_notas_confidenciales'] = False
+
 		if 'origin' in vals:
 			
 			numero_autorizacion = 0
@@ -2686,7 +2843,34 @@ class doctor_attentions_co(osv.osv):
 			if cuota_moderadora:
 				vals['couta_moderadora'] = cuota_moderadora
 
+		if 'attentions_past_ids' in vals:
+	
+			for antecedentes in range(0, (len(vals['attentions_past_ids'])), 1):
+				
+				if 'past' in vals['attentions_past_ids'][antecedentes][2]:
 
+					antecedente_id = vals['attentions_past_ids'][antecedentes][2]['past_category']
+					antecedente_texto = vals['attentions_past_ids'][antecedentes][2]['past']
+					paciente_id = vals['attentions_past_ids'][antecedentes][2]['patient_id']
+
+					antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
+										[('past_category', '=', antecedente_id), ('patient_id', '=', paciente_id)],
+										 limit=1, order='id desc',context=context)
+
+					if antecedentes_ids:
+
+						for datos in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
+
+							if datos.past:
+								nuevo_antecedente = datos.past +', '+antecedente_texto
+							else:
+								nuevo_antecedente = antecedente_texto
+
+							self.pool.get('doctor.attentions.past').write(cr, uid, antecedentes_ids, {'past': nuevo_antecedente}, context=context)
+							
+			del vals['attentions_past_ids']	
+
+		_logger.info(vals)		
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		return atencion_id
 
@@ -4412,6 +4596,7 @@ class doctor_attentions_recomendaciones(osv.osv):
 		('15', u'Revisión por Sistemas'),
 		('16', u'Paraclínicos'),
 		('17', u'Odontologia'),
+		('18', u'Otros paciente')
 	]
 
 	_columns = {
@@ -4656,8 +4841,7 @@ class doctor_attentions_past(osv.osv):
 	}
 
 	def create(self, cr, uid, vals, context=None):
-		#Eliminando espacios vacios de antecedentes
-		#self.pool.get('doctor.attentions.past').eliminar_antecedentes_vacios(cr, uid)
+
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
 
 			if 'active_model' in context:
@@ -4669,19 +4853,6 @@ class doctor_attentions_past(osv.osv):
 				return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
 
 				
-	#Eliminando antecedentes que tienen el past vacio
-	def eliminar_antecedentes_vacios(self, cr, uid, context=None):
-
-		#past_ids= self.pool.get('doctor.attentions.past').search(cr, uid, [])
-		#_logger.info('esto es lo que hay que eliminar')
-		#_logger.info(past_ids)
-
-		#for x in range(len(past_ids)):
-		#	if self.pool.get('doctor.attentions.past').browse(cr, uid, past_ids[x]).past == False:
-		#		self.pool.get('doctor.attentions.past').unlink(cr, uid, past_ids[x], context)
-		return True
-
-
 class doctor_appointment_procedures(osv.osv):
 
 	_name = 'doctor.appointment.procedures'
