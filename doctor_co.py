@@ -2705,7 +2705,7 @@ class doctor_attentions_co(osv.osv):
 
 	def write(self, cr, uid, ids, vals, context=None):
 		#Eliminando espacios
-		self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
+		#self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
 
 		vals['activar_notas_confidenciales'] = False
 		paciente_id=None
