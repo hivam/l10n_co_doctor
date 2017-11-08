@@ -2703,8 +2703,7 @@ class doctor_attentions_co(osv.osv):
 		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
-		#Eliminando espacios
-		self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
+		
 
 		vals['activar_notas_confidenciales'] = False
 		paciente_id=None
@@ -2746,7 +2745,7 @@ class doctor_attentions_co(osv.osv):
 
 							if antecedente_id:
 
-								for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
+								for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedente_id, context=context):
 
 									antecedente_id = datos_x.past_category.id
 									paciente_id = datos_x.patient_id.id
@@ -2757,7 +2756,7 @@ class doctor_attentions_co(osv.osv):
 												 limit=1, order='id desc',context=context)		
 
 						if antecedentes_ids: 
-
+							_logger.info(antecedentes_ids)
 							for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
 
 								if datos_x.past:
@@ -2779,6 +2778,9 @@ class doctor_attentions_co(osv.osv):
 			del vals['attentions_past_ids']
 	
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
+
+		#Eliminando espacios
+		self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
