@@ -2758,7 +2758,7 @@ class doctor_attentions_co(osv.osv):
 												 limit=1, order='id desc',context=context)		
 
 						if antecedentes_ids: 
-
+							_logger.info(antecedentes_ids)
 							for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
 
 								if datos_x.past:
