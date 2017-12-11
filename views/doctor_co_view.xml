@@ -1310,7 +1310,7 @@
 
                				 	<field name="patient_id" invisible="1" style="width:40%%"/>
                				 	
-		               			<field name="attentions_ids" nolabel="1" style="width:40%%" invisible="1">
+		               			<field name="attentions_ids" nolabel="1" style="width:40%%">
 		                            <tree string="Attentions" editable="bottom" limit="3">
 		                                <field name="date_attention"/>
 		                                <field name="professional_id"/>
