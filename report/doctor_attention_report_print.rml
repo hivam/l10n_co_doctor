@@ -103,6 +103,7 @@
    <section>
     [[o.attentions_ids or removeParentNode('section') ]]
     <para style="P6">[[ repeatIn(o.attentions_ids, 'code') ]]</para>
+    <para style="P6">hola [[ o ]]</para>
 
     <blockTable colWidths="175.0,175.0,184.0 " style="Table1">
       <tr>

@@ -4366,18 +4366,8 @@ class doctor_list_report_print(osv.osv):
 
 		id_especialidad= self.pool.get('doctor.professional').browse(cr, uid, data['professional_id'][0] ).speciality_id.name
 
-		if id_especialidad == "PSICOLOGIA":
-			_logger.info('Es un psicologo')
 
-			return {
-						'type': 'ir.actions.report.xml',
-						'report_name': 'doctor_attention_psicologia_report',
-					}
-
-		if id_especialidad != "PSICOLOGIA":
-			_logger.info('Es un medico')
-
-			return {
+		return {
 			'type': 'ir.actions.report.xml',
 			'report_name': 'doctor_attention_report_print',}
 
@@ -4405,19 +4395,6 @@ class doctor_list_report_print(osv.osv):
 						atenciones_id.append(atenciones[x])
 					return {'value': {'attentions_ids': atenciones_id}}
 
-			if id_especialidad == "PSICOLOGIA":
-
-				atenciones = self.pool.get('doctor.psicologia').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
-				atenciones_id=[]
-				if len(atenciones) > 4:
-					for x in range(1, 4):
-						_logger.info(atenciones[x])
-						atenciones_id.append(atenciones[x])
-					return {'value': {'attentions_psicologia_ids': atenciones_id}}
-				else:
-					for x in range(len(atenciones)):
-						atenciones_id.append(atenciones[x])
-					return {'value': {'attentions_psicologia_ids': atenciones_id}}
 doctor_list_report_print()
 
 class doctor_otra_prescripcion(osv.osv):
