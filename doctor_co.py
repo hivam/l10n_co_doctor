@@ -2915,8 +2915,6 @@ class doctor_attentions_co(osv.osv):
 		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_form')
 		view_id = data_obj.browse(cr, uid, result).res_id
 
-
-
 		profesional=''
 		patient=''
 		for x in self.browse(cr,uid,ids):
@@ -2925,6 +2923,7 @@ class doctor_attentions_co(osv.osv):
 
 		context['default_patient_id']= patient
 		context['default_professional_id']= profesional
+		context['default_ultimas_citas'] = False
 
 		return {
 			'type': 'ir.actions.act_window',
@@ -2940,9 +2939,14 @@ class doctor_attentions_co(osv.osv):
 		}
 
 
+
 	def button_imprimir_ultimas_hc(self, cr, uid, ids, context=None):
-		data_obj = self.pool.get('ir.model.data')
+
 		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_print_form')
+
+
+		data_obj = self.pool.get('ir.model.data')
+		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_form')
 		view_id = data_obj.browse(cr, uid, result).res_id
 
 		profesional=''
@@ -2953,14 +2957,15 @@ class doctor_attentions_co(osv.osv):
 
 		context['default_patient_id']= patient
 		context['default_professional_id']= profesional
+		context['default_ultimas_citas'] = True
 
 		return {
 			'type': 'ir.actions.act_window',
-			'name': 'Ver últimas Atenciones',
+			'name': 'Ver Historia Clínica Completa',
 			'view_type': 'form',
 			'view_mode': 'form',
 			'res_id': False,
-			'res_model': 'doctor.list_report_print',
+			'res_model': 'doctor.list_report',
 			'context': context or None,
 			'view_id': [view_id] or False,
 			'nodestroy': False,
@@ -4154,51 +4159,165 @@ class doctor_list_report(osv.osv):
 
 
 	_columns = {
-		'reporte_prescripcion': fields.boolean(u'Prescripción'),
-		'reporte_otra_prescripcion': fields.boolean(u'Otra Prescripción'),
-		'reporte_laboratorio_clinico': fields.boolean(u'Examen de Laboratorio Clinico'),
-		'reporte_imagenes_diagnosticas': fields.boolean(u'Imágenes Dianósticas'),
-		'reporte_procedmientos_quirurgicos': fields.boolean(u'Procedimientos Quirurgícos'),
-		'reporte_procedimientos_terapeuticos': fields.boolean(u'Procedimientos Terapéuticos'),
-		'reporte_otros_procedimientos': fields.boolean('Otros Procedimientos'),
-		'reporte_interconsulta': fields.boolean(u'Remisión o Interconsulta'),
-		'reporte_incapacidad': fields.boolean('Incapacidad'),
-		'reporte_atencion': fields.boolean(u'HC - Atención'),
-		'reporte_recomendaciones': fields.boolean('Recomendaciones'),
-		'reporte_informes_certificados': fields.boolean(u'Informes y Certificados'),
-
-		'reporte_prescripcion_media_carta': fields.boolean(u'Prescripción (Media Carta)'),
-		'reporte_otra_prescripcion_media_carta': fields.boolean(u'Otra Prescripción (Media Carta)'),
-		'reporte_laboratorio_clinico_media_carta': fields.boolean(u'Examen de Laboratorio Clinico (Media Carta)'),
-		'reporte_imagenes_diagnosticas_media_carta': fields.boolean(u'Imágenes Dianósticas (Media Carta)'),
-		'reporte_interconsulta_media_carta': fields.boolean(u'Remisión o Interconsulta (Media Carta)'),
-		'reporte_incapacidad_media_carta': fields.boolean('Incapacidad (Media Carta)'),
-		'reporte_informes_certificados_media_carta': fields.boolean('Informes y Certificados (Media Carta)'),
-		'reporte_informes_certificados_media_carta': fields.boolean('Informes y Certificados (Media Carta)'),
 		'professional_id': fields.many2one('doctor.professional', 'Doctor'),
 		'attentions_ids': fields.one2many('doctor.attentions', 'list_report_id', 'Attentions'),
 		'patient_id': fields.many2one('doctor.patient', 'Paciente', required=True),
 		'fecha_inicio':fields.datetime('Inicio Atención'),
 		'fecha_fin':fields.datetime('Fin Atención'),
 		'especialidad_id':fields.many2one('doctor.speciality', 'Especialidad'),
-
+		'ultimas_citas' :fields.boolean('Ultima Cita'),
 	}
 
 	_defaults = {
 		'patient_id' : lambda self, cr, uid, context: context.get('default_patient_id', False),
 		'professional_id' : lambda self, cr, uid, context: context.get('default_professional_id', False),
+		'ultimas_citas' : lambda self, cr, uid, context: context.get('default_ultimas_citas', False),
 		#'fecha_fin' : lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
 	}	
 
-	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
-	def onchange_cargar_atenciones_doctor(self, cr, uid, ids, patient_id, professional_id, date_begin, date_end, context=None):
-		atenciones=''
-		arreglo= [patient_id, professional_id, date_begin, date_end]
+
+	#Funcion para cargar la especialidad del profesional en la salud
+	def onchange_cargar_especialidad_doctor(self, cr, uid, ids, patient_id, professional_id, date_begin, date_end, context=None):
+
 		if patient_id and professional_id:
-			if (arreglo[0] != False) and (arreglo[1] != False) and (arreglo[2] == False) and (arreglo[3] == False):
-				_logger.info('Caso doctor')
+			return self.cargar_datos_impresion_atencion(cr, uid, patient_id, professional_id, None, date_begin, date_end, "1", context=context)
+
+		if professional_id and not patient_id:
+			return self.cargar_datos_impresion_atencion(cr, uid, patient_id, professional_id, None, date_begin, date_end, "2", context=context)
+
+		return False
+
+	#Funcion para cargar las atenciones por especialidad
+	def onchange_cargar_por_especialidad(self, cr, uid, ids, patient_id, professional_id, especialidad_id, date_begin, date_end, context=None):
+
+		if especialidad_id and patient_id and professional_id:
+			return self.cargar_datos_impresion_atencion(cr, uid, patient_id, professional_id, None, date_begin, date_end, "1", context=context)
+
+		if especialidad_id and patient_id and not professional_id:
+			return self.cargar_datos_impresion_atencion(cr, uid, patient_id, None, especialidad_id, date_begin, date_end, "3", context=context)				
+
+		return False
+
+	#Funcion para cargar las atenciones por fecha inicio y fecha fin
+	def onchange_cargar_por_fechas(self, cr, uid, ids, patient_id, professional_id, date_begin, date_end, context=None):
+
+		return False
+
+	def cargar_datos_impresion_atencion(self, cr, uid, patient_id, professional_id, especialidad_id, date_begin, date_end, opcion, context=None):
+		atenciones=''
+		atenciones_psicologia=''
+		nombre_especialidad=''
+		fecha_inicial=''
+		fecha_final=''
+		nombre_especialidad_id=''
+
+		#Almacenamos la fecha en la variable fecha_inicial dependiendo si tiene o no el date_begin
+		if date_begin:
+			fecha_inicial=date_begin
+		else:
+			fecha_inicial= "2010-11-30 00:27:09"
+
+		#Almacenamos la fecha en la variable fecha_final dependiendo si tiene o no el date_begin
+		if date_end:
+			fecha_final=date_end
+		else:
+			fecha_final= datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+		#Almacenamos el nombre de la especialidad en la varianle nombre_especialidad dependiendo si ha escogido un doctor o no
+		if professional_id:
+			nombre_especialidad = self.pool.get('doctor.professional').browse(cr, uid, professional_id ).speciality_id.name
+			nombre_especialidad_id= self.pool.get('doctor.professional').browse(cr, uid, professional_id ).speciality_id.id
+		else:
+			nombre_especialidad = self.pool.get('doctor.speciality').browse(cr, uid, especialidad_id ).name
+			nombre_especialidad_id = especialidad_id
+
+		#Opcion donde hay paciente y doctor, como tambien la posible fecha inicial y final
+		if opcion == "1":
+			#Se valida que el nombre de la especialidad del doctor sea psicologia y seguido de esto se comprueba que este el modulo de psicologia instaldo
+			#Tambien se almacena en la variable atenciones_spicologias todas las atenciones que se encuentren por el paciente y el doctor
+			if nombre_especialidad == 'PSICOLOGIA':
+				if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context):
+					atenciones_psicologia = self.pool.get('doctor.psicologia').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id), ('date_attention', '>=', fecha_inicial), ('date_attention', '<=', fecha_final)])
+					_logger.info('Estamos capturando psicologia')
+					return {'value': {'attentions_psychology_ids': atenciones_psicologia, 'attentions_ids': None, 'especialidad_id': nombre_especialidad_id,}}
+			#Se valida que el nombre de la especialidad del doctor sea odontologia y seguido de esto se comprueba que este el modulo de odontologia instaldo
+			#Tambien se almacena en la variable atenciones_odontologicas todas las atenciones que se encuentren por el paciente y el doctor
+			elif nombre_especialidad == 'ODONTOLOGIA INTEGRAL DEL ADOLESCENTE Y ORTODONCIA':
+				_logger.info('odontologia')
+				return {'value': {'especialidad_id': nombre_especialidad_id, 'attentions_ids': None, 'attentions_psychology_ids': None}}
+
+			else:
+				_logger.info('Capturando desde cualquier historia')
+				atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id), ('date_attention', '>=', fecha_inicial), ('date_attention', '<=', fecha_final)])
+				return {'value': {'attentions_ids': atenciones, 'especialidad_id': nombre_especialidad_id, 'attentions_psychology_ids': None}}
+
+		#Opcion de solamente el doctor, como tambien la posible fecha incial y final
+		if opcion == '2':
+			#Se valida que el nombre de la especialidad del doctor sea psicologia y seguido de esto se comprueba que este el modulo de psicologia instaldo
+			#Tambien se almacena en la variable atenciones_spicologias todas las atenciones que se encuentren por el doctor
+			if nombre_especialidad == 'PSICOLOGIA':
+				if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context):
+					atenciones_psicologia = self.pool.get('doctor.psicologia').search(cr, uid, [('professional_id', '=', professional_id), ('date_attention', '>=', fecha_inicial), ('date_attention', '<=', fecha_final)])
+					_logger.info('Estamos capturando psicologia')
+					return {'value': {'attentions_psychology_ids': atenciones_psicologia, 'attentions_ids': None, 'especialidad_id': nombre_especialidad_id,}}
+			#Se valida que el nombre de la especialidad del doctor sea odontologia y seguido de esto se comprueba que este el modulo de odontologia instaldo
+			#Tambien se almacena en la variable atenciones_odontologicas todas las atenciones que se encuentren por el doctor
+			elif nombre_especialidad == 'ODONTOLOGIA INTEGRAL DEL ADOLESCENTE Y ORTODONCIA':
+				_logger.info('odontologia')
+				return {'value': {'especialidad_id': nombre_especialidad_id, 'attentions_ids': None, 'attentions_psychology_ids': None}}
+
+			else:
+				_logger.info('Capturando desde cualquier historia')
+				atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('professional_id', '=', professional_id), ('date_attention', '>=', fecha_inicial), ('date_attention', '<=', fecha_final)])
+				return {'value': {'attentions_ids': atenciones, 'especialidad_id': nombre_especialidad_id, 'attentions_psychology_ids': None}}
+
+		#Opcion de solamente la especialidad y paciente, como tambien la posible fecha incial y final
+		if opcion == '3':
+			#Se valida que el nombre de la especialidad del doctor sea psicologia y seguido de esto se comprueba que este el modulo de psicologia instaldo
+			#Tambien se almacena en la variable atenciones_spicologias todas las atenciones que se encuentren por el paciente
+			if nombre_especialidad == 'PSICOLOGIA':
+				if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context):
+					atenciones_psicologia = self.pool.get('doctor.psicologia').search(cr, uid, [('patient_id', '=', patient_id), ('speciality', '=', especialidad_id), ('date_attention', '>=', fecha_inicial), ('date_attention', '<=', fecha_final)])
+					_logger.info('Estamos capturando psicologia')
+					return {'value': {'attentions_psychology_ids': atenciones_psicologia, 'attentions_ids': None, 'especialidad_id': nombre_especialidad_id,}}
+			#Se valida que el nombre de la especialidad del doctor sea odontologia y seguido de esto se comprueba que este el modulo de odontologia instaldo
+			#Tambien se almacena en la variable atenciones_odontologicas todas las atenciones que se encuentren por el paciente
+			elif nombre_especialidad == 'ODONTOLOGIA INTEGRAL DEL ADOLESCENTE Y ORTODONCIA':
+				_logger.info('odontologia')
+				return {'value': {'especialidad_id': nombre_especialidad_id, 'attentions_ids': None, 'attentions_psychology_ids': None}}
+
+			else:
+				_logger.info('Capturando desde cualquier historia')
+				atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('speciality', '=', especialidad_id), ('date_attention', '>=', fecha_inicial), ('date_attention', '<=', fecha_final)])
+				return {'value': {'attentions_ids': atenciones, 'especialidad_id': nombre_especialidad_id, 'attentions_psychology_ids': None}}
+
+
+
+		return False	
+
+
+
+	#Funcion para cargar las ultimas atenciones
+	def onchange_cargar_ultimas_atenciones(self, cr, uid, ids, patient_id, professional_id, ultimas_citas, context=None):
+		atenciones=''
+		if patient_id and professional_id:
+
+			id_especialidad= self.pool.get('doctor.professional').browse(cr, uid, professional_id ).speciality_id.name
+
+			if id_especialidad != "PSICOLOGIA":
+
 				atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
-				return {'value': {'attentions_ids': atenciones, 'especialidad_id': None}}
+				atenciones_id=[]
+				if len(atenciones) > 4:
+					for x in range(1, 4):
+						_logger.info(atenciones[x])
+						atenciones_id.append(atenciones[x])
+					return {'value': {'attentions_ids': atenciones_id}}
+				else:
+					for x in range(len(atenciones)):
+						atenciones_id.append(atenciones[x])
+					return {'value': {'attentions_ids': atenciones_id}}		
+
 		return False
 
 	#Funcion para cargar los seguimientos paraclinicos de acuerdo a una relacion
@@ -4290,25 +4409,75 @@ class doctor_list_report(osv.osv):
 			raise osv.except_osv(_('Error al cargar las Atenciones!'),_('Para cargar las Atenciones por fechas \n Debe seleccionar una fecha incial'))
 		
 
-			
-
-
-
 		_logger.info('Atenciones')
 		_logger.info(atenciones)
 		return True
 
-	
+	#Funcion que permite cargar las ultimas tres atenciones que tenga el paciente en el momento.
+	def button_cargar_ultimas_atenciones(self, cr, uid, ids, context=None):
 
+		_logger.info('Estamos imprimiendo ultimas tres atenciones: ')
+		data = self.read(cr, uid, ids)[0]
+		_logger.info(data['attentions_ids'])
+
+		if not data['attentions_ids']:
+			_logger.info('No hay atenciones de psicologia')
+
+		#Validamos si esta instalado el modulo de psicologia, de no estarlo se imprime la atencion de medicina general
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) == False:
+			_logger.info('No se ha instalado el modulo de psicologia')
+			if data['attentions_ids']:
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
+
+		#Validamos de que este instalado el modulo de psicologia
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context):
+			
+			#Validamos de que attentions_ids este lleno para imprimir una atencion de medicina general
+			if data['attentions_ids'] and not data['attentions_psychology_ids']:
+				_logger.info('se ha instalado el modulo de psicologia pero solo hay atenciones de medicina general')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
+
+			#Validamos de que attentions_psychology_ids este lleno para imprimir una atencion de psicologia
+			if not data['attentions_ids'] and  data['attentions_psychology_ids']:
+				_logger.info('se ha instalado el modulo de psicologia pero solo hay atenciones de psicologia')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_psicologia_report')
+
+		
+		return False
+
+
+	
 	def button_imprimir_algunos_informes(self, cr, uid, ids, context=None):
-		_logger.info(ids)
-		_logger.info(context)
-		return self.export_report_print(cr, uid, ids, 'doctor_attention')
-	def onchange_imprimir_algunos_informes(self, cr, uid, ids, report_uno, report_dos, context=None):
-		_logger.info(report_uno)
-		_logger.info(report_dos)
-		_logger.info('imprimir')
-		return self.export_report_print(uid, ids, 'doctor_attention')
+
+		data = self.read(cr, uid, ids)[0]
+		_logger.info('Ver historia')
+		_logger.info(data)
+
+		if not data['attentions_ids']:
+			_logger.info('No hay atenciones de psicologia')
+
+		#Validamos si esta instalado el modulo de psicologia, de no estarlo se imprime la atencion de medicina general
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) == False:
+			_logger.info('No se ha instalado el modulo de psicologia')
+			if data['attentions_ids']:
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
+
+		#Validamos de que este instalado el modulo de psicologia
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context):
+			
+			#Validamos de que attentions_ids este lleno para imprimir una atencion de medicina general
+			if data['attentions_ids'] and not data['attentions_psychology_ids']:
+				_logger.info('se ha instalado el modulo de psicologia pero solo hay atenciones de medicina general')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
+
+			#Validamos de que attentions_psychology_ids este lleno para imprimir una atencion de psicologia
+			if not data['attentions_ids'] and  data['attentions_psychology_ids']:
+				_logger.info('se ha instalado el modulo de psicologia pero solo hay atenciones de psicologia')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_psicologia_report')
+
+		
+		return False
+		
 	
 
 	def export_report_print(self, cr, uid, ids, name_report, context=None):
@@ -4317,20 +4486,12 @@ class doctor_list_report(osv.osv):
 		data = self.read(cr, uid, ids)[0]
 		_logger.info('entro')
 		_logger.info(data)
-		datas = {
-			'ids': ids,
-			'model': 'doctor.list_report',
-			'form': data
-			}
-		_logger.info(datas)
 		return {
 			'type': 'ir.actions.report.xml',
-			'report_name': 'doctor_attention_report',
+			'report_name': name_report,
 
 		}
 	
-
-
 doctor_list_report()
 
 
