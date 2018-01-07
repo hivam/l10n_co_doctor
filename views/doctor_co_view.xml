@@ -1214,22 +1214,25 @@
 						<field name="arch" type="xml">
 							<form string="Historia Clinica Completa" version="7.0">
 								<header>
-                    				<button string="Ver Historia" name="button_imprimir_algunos_informes" type="object" class="oe_highlight"/>
+                    				<button string="Ver Historia" name="button_imprimir_algunos_informes" type="object" class="oe_highlight" attrs="{'invisible':[ ('ultimas_citas','=',True)]}"/>
+                    				<button string="Ver Atenciones" name="button_cargar_ultimas_atenciones" type="object" class="oe_highlight" attrs="{'invisible':[ ('ultimas_citas','=',False)]}"/>
                				 	</header>	
 
-               				 	<fieldset class="fieldset_margen">
+               				 	<fieldset class="fieldset_margen" attrs="{'invisible':[ ('ultimas_citas','=',True)]}">
 									<legend class="texto_legend">Datos Historia Clínica Completa</legend>
 	               				 	<group col='2'>
 	               				 		
-		               				 	<field name="professional_id" on_change="onchange_cargar_atenciones_doctor(patient_id, professional_id, fecha_inicio, fecha_fin)"/>
+		               				 	<field name="professional_id" on_change="onchange_cargar_especialidad_doctor(patient_id, professional_id, fecha_inicio, fecha_fin)"/>
 		               				 	
 		               				 	<field name="patient_id" on_change="onchange_cargar_atenciones(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 
-		               				 	<field name="especialidad_id" on_change="onchange_cargar_atenciones_especialidad(patient_id, especialidad_id, fecha_inicio, fecha_fin)"/>
+		               				 	<field name="especialidad_id" on_change="onchange_cargar_por_especialidad(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 		               				
-		               				 	<field name="fecha_inicio" on_change="onchange_cargar_atenciones_fecha_inicio(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
+		               				 	<field name="fecha_inicio" on_change="onchange_cargar_por_fechas(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 		               				
-		               				 	<field name="fecha_fin" on_change="onchange_cargar_atenciones_fecha_fin(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
+		               				 	<field name="fecha_fin" on_change="onchange_cargar_por_fechas(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
+
+		               				 	<field name= "ultimas_citas" on_change="onchange_cargar_ultimas_atenciones(patient_id, professional_id, ultimas_citas)" invisible="1"/>
 		               				 	
 	               				 	</group>
 
@@ -1257,40 +1260,7 @@
 				                            </form>
 				                        </field>
 			                        </group>	
-		                        </fieldset>	
-		                        <!--
-               				 	<group col='4'>		
-               				 	<fieldset class="fieldset_margen">
-										<legend class="texto_legend">Informes Completos</legend>
-										<group col="2" >
-											<field name="reporte_prescripcion"/>
-											<field name="reporte_otra_prescripcion" on_change="onchange_imprimir_algunos_informes(reporte_prescripcion ,reporte_laboratorio_clinico )"/>
-											<field name="reporte_laboratorio_clinico"/>
-											<field name="reporte_imagenes_diagnosticas"/>
-											<field name="reporte_procedmientos_quirurgicos"/>
-											<field name="reporte_procedimientos_terapeuticos"/>
-											<field name="reporte_otros_procedimientos"/>
-											<field name="reporte_interconsulta"/>
-											<field name="reporte_incapacidad"/>
-											<field name="reporte_atencion"/>
-											<field name="reporte_recomendaciones"/>
-											<field name="reporte_informes_certificados"/>
-										</group>
-									</fieldset>		
-									<fieldset class="fieldset_margen">
-										<legend class="texto_legend">Informes Media Carta</legend>
-										<group col="2" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration">
-											<field name="reporte_prescripcion_media_carta"/>
-											<field name="reporte_otra_prescripcion_media_carta"/>
-											<field name="reporte_laboratorio_clinico_media_carta"/>
-											<field name="reporte_imagenes_diagnosticas_media_carta"/>
-											<field name="reporte_interconsulta_media_carta"/>
-											<field name="reporte_incapacidad_media_carta"/>
-											<field name="reporte_informes_certificados_media_carta"/>
-										</group>
-									</fieldset>					
-								</group>
-								-->										
+		                        </fieldset>										
 							</form>
 						</field>
 				</record>
