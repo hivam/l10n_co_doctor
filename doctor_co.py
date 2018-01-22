@@ -2846,7 +2846,7 @@ class doctor_attentions_co(osv.osv):
 				vals['couta_moderadora'] = cuota_moderadora
 
 		if 'attentions_past_ids' in vals:
-	
+			
 			for antecedentes in range(0, (len(vals['attentions_past_ids'])), 1):
 				
 				if 'past' in vals['attentions_past_ids'][antecedentes][2]:
@@ -2869,11 +2869,17 @@ class doctor_attentions_co(osv.osv):
 								nuevo_antecedente = antecedente_texto
 
 							self.pool.get('doctor.attentions.past').write(cr, uid, antecedentes_ids, {'past': nuevo_antecedente}, context=context)
-							
-			del vals['attentions_past_ids']	
+					else:
 
-		_logger.info(vals)		
+						self.pool.get('doctor.attentions.past').create(cr, uid, {'past': antecedente_texto, 'patient_id': paciente_id, 'past_category': antecedente_id}, context=context)
+					
+			del vals['attentions_past_ids']
+				
+
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
+		datos = self.pool.get('doctor.attentions.past').search(cr, uid, [('attentiont_id', '=', False)],context=context)
+		if datos:
+			self.pool.get('doctor.attentions.past').write(cr, uid, datos, {'attentiont_id': atencion_id}, context=context)
 		return atencion_id
 
 	def actualizar_edad(self, cr, uid, ids, context=None):
