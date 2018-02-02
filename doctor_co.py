@@ -4309,24 +4309,60 @@ class doctor_list_report(osv.osv):
 
 	#Funcion para cargar las ultimas atenciones
 	def onchange_cargar_ultimas_atenciones(self, cr, uid, ids, patient_id, professional_id, ultimas_citas, context=None):
-		atenciones=''
-		if patient_id and professional_id:
 
-			id_especialidad= self.pool.get('doctor.professional').browse(cr, uid, professional_id ).speciality_id.name
 
-			if id_especialidad != "PSICOLOGIA":
+		if ultimas_citas:
 
-				atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
-				atenciones_id=[]
-				if len(atenciones) > 4:
-					for x in range(1, 4):
-						_logger.info(atenciones[x])
-						atenciones_id.append(atenciones[x])
-					return {'value': {'attentions_ids': atenciones_id}}
+			atenciones=''
+			if patient_id and professional_id:
+
+				id_especialidad= self.pool.get('doctor.professional').browse(cr, uid, professional_id ).speciality_id.name
+
+				if id_especialidad == "PSICOLOGIA":
+
+					if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context):
+						atenciones_psicologia = self.pool.get('doctor.psicologia').search(cr, uid, [('professional_id', '=', professional_id), ('patient_id', '=', patient_id)])
+						_logger.info('Estamos los ultimos 3 capturando psicologia')
+
+						atenciones_psicologia_id=[]
+						if len(atenciones_psicologia) > 4:
+							for x in range(1, 4):
+								atenciones_psicologia_id.append(atenciones_psicologia[x])
+							return {'value': {'attentions_psychology_ids': atenciones_psicologia_id}}
+						else:
+							for x in range(len(atenciones_psicologia)):
+								atenciones_psicologia_id.append(atenciones_psicologia[x])
+							return {'value': {'attentions_psychology_ids': atenciones_psicologia_id}}	
+
+				elif (id_especialidad == "ODONTOLOGIA INTEGRAL DEL ADOLESCENTE Y ORTODONCIA") or (id_especialidad == "ODONTOLOGIA INTEGRAL DEL ADULTO"):
+
+					if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_dental_care',context=context):
+						atenciones_odontologia = self.pool.get('doctor.hc.odontologia').search(cr, uid, [('professional_id', '=', professional_id), ('patient_id', '=', patient_id)])
+						_logger.info('Estamos los ultimos 3 capturando odontologia')
+
+						atenciones_odontologia_id=[]
+						if len(atenciones_odontologia) > 4:
+							for x in range(1, 4):
+								atenciones_odontologia_id.append(atenciones_odontologia[x])
+							return {'value': {'attentions_odontology_ids': atenciones_odontologia_id}}
+						else:
+							for x in range(len(atenciones_odontologia)):
+								atenciones_odontologia_id.append(atenciones_odontologia[x])
+							return {'value': {'attentions_odontology_ids': atenciones_odontologia_id}}
+
 				else:
-					for x in range(len(atenciones)):
-						atenciones_id.append(atenciones[x])
-					return {'value': {'attentions_ids': atenciones_id}}		
+
+					atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id), ('professional_id', '=', professional_id)])
+					atenciones_id=[]
+					if len(atenciones) > 4:
+						for x in range(1, 4):
+							_logger.info(atenciones[x])
+							atenciones_id.append(atenciones[x])
+						return {'value': {'attentions_ids': atenciones_id}}
+					else:
+						for x in range(len(atenciones)):
+							atenciones_id.append(atenciones[x])
+						return {'value': {'attentions_ids': atenciones_id}}		
 
 		return False
 
@@ -4430,17 +4466,14 @@ class doctor_list_report(osv.osv):
 		data = self.read(cr, uid, ids)[0]
 		_logger.info(data['attentions_ids'])
 
-		if not data['attentions_ids']:
-			_logger.info('No hay atenciones de psicologia')
-
 		#Validamos si esta instalado el modulo de psicologia, de no estarlo se imprime la atencion de medicina general
-		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) == False:
+		if (self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) == False) and (self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_dental_care',context=context) == False):
 			_logger.info('No se ha instalado el modulo de psicologia')
 			if data['attentions_ids']:
 				return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
 
 		#Validamos de que este instalado el modulo de psicologia
-		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context):
+		elif self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) and (self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_dental_care',context=context) == False):
 			
 			#Validamos de que attentions_ids este lleno para imprimir una atencion de medicina general
 			if data['attentions_ids'] and not data['attentions_psychology_ids']:
@@ -4452,11 +4485,40 @@ class doctor_list_report(osv.osv):
 				_logger.info('se ha instalado el modulo de psicologia pero solo hay atenciones de psicologia')
 				return self.export_report_print(cr, uid, ids, 'doctor_attention_psicologia_report')
 
+		#Validamos de que este instalado el modulo de odontologia
+		elif (self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) == False) and self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_dental_care',context=context):
+			
+			#Validamos de que attentions_ids este lleno para imprimir una atencion de medicina general
+			if data['attentions_ids'] and not data['attentions_odontology_ids']:
+				_logger.info('se ha instalado el modulo de odontologia pero solo hay atenciones de medicina general')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
+
+			#Validamos de que attentions_psychology_ids este lleno para imprimir una atencion de psicologia
+			if not data['attentions_ids'] and  data['attentions_odontology_ids']:
+				_logger.info('se ha instalado el modulo de odontologia pero solo hay atenciones de odontologia')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_odontologia_report')
+
+		#Validamos de que este instalado el modulo de psicologia y odontologia
+		elif self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) and self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_dental_care',context=context):
+			
+			#Validamos de que attentions_ids este lleno para imprimir una atencion de medicina general
+			if data['attentions_ids'] and not data['attentions_odontology_ids'] and not data['attentions_psychology_ids']:
+				_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de medicina general')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
+
+			#Validamos de que attentions_odontology_ids este lleno para imprimir una atencion de psicologia
+			if not data['attentions_ids'] and data['attentions_odontology_ids'] and not data['attentions_psychology_ids']:
+				_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de odontologia')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_odontologia_report')
+
+			#Validamos de que attentions_psychology_ids este lleno para imprimir una atencion de psicologia
+			if not data['attentions_ids'] and not data['attentions_odontology_ids'] and data['attentions_psychology_ids']:
+				_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de odontologia')
+				return self.export_report_print(cr, uid, ids, 'doctor_attention_psicologia_report')
 		
 		return False
 
 
-	
 	def button_imprimir_algunos_informes(self, cr, uid, ids, context=None):
 
 		data = self.read(cr, uid, ids)[0]

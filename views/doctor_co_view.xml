@@ -1232,7 +1232,7 @@
 		               				
 		               				 	<field name="fecha_fin" on_change="onchange_cargar_por_fechas(patient_id, professional_id, especialidad_id, fecha_inicio, fecha_fin)"/>
 
-		               				 	<field name= "ultimas_citas" on_change="onchange_cargar_ultimas_atenciones(patient_id, professional_id, ultimas_citas)" invisible="1"/>
+		               				 	<field name= "ultimas_citas" on_change="onchange_cargar_ultimas_atenciones(patient_id, professional_id, ultimas_citas)" invisible="1" attrs="{'invisible': [('ultimas_citas','=',False), ('ultimas_citas','=',True)]}"/>
 		               				 	
 	               				 	</group>
 
