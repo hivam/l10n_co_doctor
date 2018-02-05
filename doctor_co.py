@@ -2728,7 +2728,10 @@ class doctor_attentions_co(osv.osv):
 							if vals['attentions_past_ids'][antecedentes][2]['past']:
 								antecedente_texto = vals['attentions_past_ids'][antecedentes][2]['past']
 
-							paciente_id = vals['attentions_past_ids'][antecedentes][2]['patient_id']
+							try:
+								paciente_id = vals['attentions_past_ids'][antecedentes][2]['patient_id']
+							except KeyError:
+								paciente_id = None;
 
 							antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
 										[('past_category', '=', antecedente_id), ('patient_id', '=', paciente_id),
