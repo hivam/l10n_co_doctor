@@ -2053,7 +2053,7 @@ class doctor_attentions_co(osv.osv):
 					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'birth_date' : field_value})
 
 
-	def _set_primer_nombre(self, cr, uid, ids, field_name, field_value, arg, context=None):
+	def _set_primer_nombre(self, cr, uid, ids, field_name, field_value, arg, context	=None):
 		field_value = field_value or None
 		if field_value:
 			for datos in self.browse(cr, uid, [ids], context=context):
@@ -2493,7 +2493,7 @@ class doctor_attentions_co(osv.osv):
 		'valor_consulta':fields.float('valor consulta'),
 		'couta_moderadora':fields.float('cuota moderadora'),
 		'valor_pagar':fields.float('valor a pagar'),
-		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),
+		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),	
 		'list_report_print_id': fields.many2one('doctor.list_report_print', 'List Report'),
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
@@ -2541,7 +2541,6 @@ class doctor_attentions_co(osv.osv):
 		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
 								string=u'Parentesco', relation='doctor.patient.parentesco'), 
 		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string=u"Diagnósticos Anteriores"),
-
 		'paciente_creencias': fields.function(_get_creencias, fnct_inv=_set_creencias , type="char", store= False, 
 								string=u'Creencias'), 
 
@@ -2704,8 +2703,7 @@ class doctor_attentions_co(osv.osv):
 		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
-		#Eliminando espacios
-		self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
+		
 
 		vals['activar_notas_confidenciales'] = False
 		paciente_id=None
@@ -2750,7 +2748,7 @@ class doctor_attentions_co(osv.osv):
 
 							if antecedente_id:
 
-								for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
+								for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedente_id, context=context):
 
 									antecedente_id = datos_x.past_category.id
 									paciente_id = datos_x.patient_id.id
@@ -2761,7 +2759,7 @@ class doctor_attentions_co(osv.osv):
 												 limit=1, order='id desc',context=context)		
 
 						if antecedentes_ids: 
-
+							_logger.info(antecedentes_ids)
 							for datos_x in self.pool.get('doctor.attentions.past').browse(cr, uid, antecedentes_ids, context=context):
 
 								if datos_x.past:
@@ -2783,6 +2781,9 @@ class doctor_attentions_co(osv.osv):
 			del vals['attentions_past_ids']
 	
 		attentions_past = super(doctor_attentions_co,self).write(cr, uid, ids, vals, context)
+
+		#Eliminando espacios
+		self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
 		return attentions_past
 
 	def create(self, cr, uid, vals, context=None):
@@ -2848,7 +2849,7 @@ class doctor_attentions_co(osv.osv):
 				vals['couta_moderadora'] = cuota_moderadora
 
 		if 'attentions_past_ids' in vals:
-	
+			
 			for antecedentes in range(0, (len(vals['attentions_past_ids'])), 1):
 				
 				if 'past' in vals['attentions_past_ids'][antecedentes][2]:
@@ -2871,11 +2872,17 @@ class doctor_attentions_co(osv.osv):
 								nuevo_antecedente = antecedente_texto
 
 							self.pool.get('doctor.attentions.past').write(cr, uid, antecedentes_ids, {'past': nuevo_antecedente}, context=context)
-							
-			del vals['attentions_past_ids']	
+					else:
 
-		_logger.info(vals)		
+						self.pool.get('doctor.attentions.past').create(cr, uid, {'past': antecedente_texto, 'patient_id': paciente_id, 'past_category': antecedente_id}, context=context)
+					
+			del vals['attentions_past_ids']
+				
+
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
+		datos = self.pool.get('doctor.attentions.past').search(cr, uid, [('attentiont_id', '=', False)],context=context)
+		if datos:
+			self.pool.get('doctor.attentions.past').write(cr, uid, datos, {'attentiont_id': atencion_id}, context=context)
 		return atencion_id
 
 	def actualizar_edad(self, cr, uid, ids, context=None):
@@ -3714,7 +3721,7 @@ class doctor_co_schedule_inherit(osv.osv):
 		_logger.info(duracion_horas)
 
 		if duracion_horas%int(tiempo_espacios) == 0:
-			for i in range(0, duracion_horas, int(tiempo_espacios)):
+			for i in range(0, int(duracion_horas), int(tiempo_espacios)):
 				fecha_espacio=fecha_inicio + timedelta(minutes=i)
 				fecha_espacio_fin=fecha_inicio + timedelta(minutes=i+ int(tiempo_espacios))
 
