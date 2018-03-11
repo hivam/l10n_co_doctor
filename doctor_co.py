@@ -1921,8 +1921,7 @@ class doctor_appointment_type(osv.osv):
 	_inherit = "doctor.appointment.type"
 
 	_columns = {
-		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud',
-										 ondelete='restrict'),
+		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud', ondelete='restrict'),
 		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|', ('author','=','TIX SAS'), '|',('author','=','Proyecto Evoluzion'), ('author','=','PROYECTO EVOLUZION') ]"),
 	}
 
@@ -2365,8 +2364,6 @@ class doctor_attentions_co(osv.osv):
 	def _get_profesion(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
-			_logger.info("###############")
-			_logger.info(datos.patient_id.ocupacion_id.id)
 			if datos.patient_id.ocupacion_id:
 				res[datos.id] = datos.patient_id.ocupacion_id.id
 		return res
@@ -2398,7 +2395,6 @@ class doctor_attentions_co(osv.osv):
 		for datos in self.browse(cr, uid, ids):
 			res[datos.id] = datos.patient_id.rh
 		return res
-
 
 	#Funcion para cargar los diagnosticos que tenga el paciente
 	def cargando_diagnosticos(self, cr, uid, ids, context=None):
@@ -2552,7 +2548,8 @@ class doctor_attentions_co(osv.osv):
 
 		'paciente_otros': fields.text('Otros'),
 		'plantilla_paciente_otros': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
-			
+
+		'type_id': fields.many2one('doctor.appointment.type', 'Tipo Cita'),	
 	}
 
 	_defaults = {
@@ -2564,7 +2561,6 @@ class doctor_attentions_co(osv.osv):
 	}
 
 	def default_get(self, cr, uid, fields, context=None):
-
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 		patient_id = self.obtener_paciente(context)
 		registro = []
@@ -2646,6 +2642,12 @@ class doctor_attentions_co(osv.osv):
 
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
+
+		for datos in self.browse(cr, uid, ids):
+			appointment_id= self.pool.get('doctor.appointment').search(cr, uid,[('number', '=', datos.origin )])
+			if appointment_id:
+				appointment_type = self.pool.get('doctor.appointment').browse(cr, uid, appointment_id, context=context)[0]['type_id'].id
+				res['type_id'] = appointment_type
 
 		return res
 

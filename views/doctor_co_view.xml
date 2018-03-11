@@ -724,7 +724,7 @@
 									</group>
 
 
-																	<notebook>
+									<notebook>
 									<page string="Seguimientos Paraclínicos">
 										<group col='1'>
 											<fieldset class="fieldset_margen">
@@ -1034,11 +1034,13 @@
 											<field name="paciente_parentesco_id"/>
 											<field name="paciente_telefono_responsable"/>
 											<field name="paciente_insurer_prepagada_id"/>
-											<div>
-                    							<label for="paciente_blood_type" string="Tipo de sangre"/>
-							                    <field name="paciente_blood_type" class="left-margin" style="width: 15%%"/>
-							                    <field name="paciente_rh" style="width: 15%%" nolabel="1"/>
+										    <label for="paciente_blood_type" string="Tipo de sangre"/>
+							                <div>
+							                <field name="paciente_blood_type" style="width: 10%%"/>
+							                <field name="paciente_rh" style="width: 10%%" nolabel="1"/>
 							                </div>
+							                <field name="type_id" string="Tipo Cita"/>
+
 							                <group colspan="3" col="2">
 								                <field name='paciente_otros'/>
 								                <field name="plantilla_paciente_otros" on_change="onchange_plantillas(plantilla_paciente_otros, 'paciente_otros')" domain="[('tipo_plantilla', '=', '18')]"/>
