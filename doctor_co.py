@@ -2553,7 +2553,7 @@ class doctor_attentions_co(osv.osv):
 
 		'paciente_otros': fields.text('Otros'),
 		'plantilla_paciente_otros': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
-			
+		'type_id' : fields.many2one('doctor.appointment.type','Tipo Cita')
 	}
 
 	_defaults = {
