@@ -1921,8 +1921,7 @@ class doctor_appointment_type(osv.osv):
 	_inherit = "doctor.appointment.type"
 
 	_columns = {
-		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud',
-										 ondelete='restrict'),
+		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud', ondelete='restrict'),
 		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|', ('author','=','TIX SAS'), '|',('author','=','Proyecto Evoluzion'), ('author','=','PROYECTO EVOLUZION') ]"),
 	}
 
@@ -2053,7 +2052,7 @@ class doctor_attentions_co(osv.osv):
 					return self.pool.get('doctor.patient').write(cr, uid, [datos.patient_id.id], {'birth_date' : field_value})
 
 
-	def _set_primer_nombre(self, cr, uid, ids, field_name, field_value, arg, context=None):
+	def _set_primer_nombre(self, cr, uid, ids, field_name, field_value, arg, context	=None):
 		field_value = field_value or None
 		if field_value:
 			for datos in self.browse(cr, uid, [ids], context=context):
@@ -2365,8 +2364,6 @@ class doctor_attentions_co(osv.osv):
 	def _get_profesion(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
-			_logger.info("###############")
-			_logger.info(datos.patient_id.ocupacion_id.id)
 			if datos.patient_id.ocupacion_id:
 				res[datos.id] = datos.patient_id.ocupacion_id.id
 		return res
@@ -2398,7 +2395,6 @@ class doctor_attentions_co(osv.osv):
 		for datos in self.browse(cr, uid, ids):
 			res[datos.id] = datos.patient_id.rh
 		return res
-
 
 	#Funcion para cargar los diagnosticos que tenga el paciente
 	def cargando_diagnosticos(self, cr, uid, ids, context=None):
@@ -2493,7 +2489,7 @@ class doctor_attentions_co(osv.osv):
 		'valor_consulta':fields.float('valor consulta'),
 		'couta_moderadora':fields.float('cuota moderadora'),
 		'valor_pagar':fields.float('valor a pagar'),
-		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),
+		'list_report_id': fields.many2one('doctor.list_report', 'List Report'),	
 		'list_report_print_id': fields.many2one('doctor.list_report_print', 'List Report'),
 		'ref': fields.char('Identificacion', readonly=True),
 		'tdoc': fields.char('tdoc', readonly=True),
@@ -2541,7 +2537,6 @@ class doctor_attentions_co(osv.osv):
 		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
 								string=u'Parentesco', relation='doctor.patient.parentesco'), 
 		'diseases_ago_ids': fields.function(load_attentions_diseases_ago, relation="doctor.attentions.diseases", type="one2many", store=False, readonly=True, method=True, string=u"Diagnósticos Anteriores"),
-
 		'paciente_creencias': fields.function(_get_creencias, fnct_inv=_set_creencias , type="char", store= False, 
 								string=u'Creencias'), 
 
@@ -2553,7 +2548,7 @@ class doctor_attentions_co(osv.osv):
 
 		'paciente_otros': fields.text('Otros'),
 		'plantilla_paciente_otros': fields.many2one('doctor.attentions.recomendaciones', 'Plantillas'),
-		'type_id' : fields.many2one('doctor.appointment.type','Tipo Cita')
+		'type_id': fields.many2one('doctor.appointment.type', 'Tipo Cita'),	
 	}
 
 	_defaults = {
@@ -2565,7 +2560,6 @@ class doctor_attentions_co(osv.osv):
 	}
 
 	def default_get(self, cr, uid, fields, context=None):
-
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 		patient_id = self.obtener_paciente(context)
 		registro = []
@@ -2648,6 +2642,12 @@ class doctor_attentions_co(osv.osv):
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
 
+		for datos in self.browse(cr, uid, ids):
+			appointment_id= self.pool.get('doctor.appointment').search(cr, uid,[('number', '=', datos.origin )])
+			if appointment_id:
+				appointment_type = self.pool.get('doctor.appointment').browse(cr, uid, appointment_id, context=context)[0]['type_id'].id
+				res['type_id'] = appointment_type
+
 		return res
 
 	def onchange_edad(self, cr, uid, ids, birth_date, context=None):
@@ -2727,7 +2727,10 @@ class doctor_attentions_co(osv.osv):
 							if vals['attentions_past_ids'][antecedentes][2]['past']:
 								antecedente_texto = vals['attentions_past_ids'][antecedentes][2]['past']
 
-							paciente_id = vals['attentions_past_ids'][antecedentes][2]['patient_id']
+							try:
+								paciente_id = vals['attentions_past_ids'][antecedentes][2]['patient_id']
+							except KeyError:
+								paciente_id = None;
 
 							antecedentes_ids = self.pool.get('doctor.attentions.past').search(cr, uid, 
 										[('past_category', '=', antecedente_id), ('patient_id', '=', paciente_id),
@@ -3724,7 +3727,7 @@ class doctor_co_schedule_inherit(osv.osv):
 		_logger.info(duracion_horas)
 
 		if duracion_horas%int(tiempo_espacios) == 0:
-			for i in range(0, duracion_horas, int(tiempo_espacios)):
+			for i in range(0, int(duracion_horas), int(tiempo_espacios)):
 				fecha_espacio=fecha_inicio + timedelta(minutes=i)
 				fecha_espacio_fin=fecha_inicio + timedelta(minutes=i+ int(tiempo_espacios))
 
