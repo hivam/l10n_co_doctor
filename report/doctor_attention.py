@@ -256,13 +256,13 @@ class doctor_attention(report_sxw.rml_parse):
 	def cargar_respiracion_sistolica(self, systolic):
 		cadena=""
 		if systolic:
-			cadena= "Sistolica:" + '\n' +  str(systolic) + " " + "mmHg"
+			cadena= "Sistolica:" +  str(systolic) + " " + "mmHg"
 		return cadena
 
 	def cargar_respiracion_diastolica(self, diastolic):
 		cadena=""
 		if diastolic:
-			cadena= "Diastolica:" + '\n' +  str(diastolic) + " " + "mmHg"
+			cadena= "Diastolica:"+  str(diastolic) + " " + "mmHg"
 		return cadena
 
 	def cargar_temperatura(self, temperature):
