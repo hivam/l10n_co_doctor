@@ -2951,7 +2951,7 @@ class doctor_attentions_co(osv.osv):
 
 	def button_imprimir_ultimas_hc(self, cr, uid, ids, context=None):
 
-		result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_print_form')
+		#result = data_obj._get_id(cr, uid, 'l10n_co_doctor', 'view_doctor_list_report_print_form')
 
 
 		data_obj = self.pool.get('ir.model.data')
