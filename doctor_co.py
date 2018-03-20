@@ -4500,20 +4500,24 @@ class doctor_list_report(osv.osv):
 		#Validamos de que este instalado el modulo de psicologia y odontologia
 		elif self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) and self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_dental_care',context=context):
 			
-			#Validamos de que attentions_ids este lleno para imprimir una atencion de medicina general
-			if data['attentions_ids'] and not data['attentions_odontology_ids'] and not data['attentions_psychology_ids']:
-				_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de medicina general')
-				return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
+				
+#TODO solucionar bug en validaciones que tienen que ver con odontologia, KeyError: 'attentions_odontology_ids'
+ 
 
-			#Validamos de que attentions_odontology_ids este lleno para imprimir una atencion de psicologia
-			if not data['attentions_ids'] and data['attentions_odontology_ids'] and not data['attentions_psychology_ids']:
-				_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de odontologia')
-				return self.export_report_print(cr, uid, ids, 'doctor_attention_odontologia_report')
+			# #Validamos de que attentions_ids este lleno para imprimir una atencion de medicina general
+			# if data['attentions_ids'] and not data['attentions_odontology_ids'] and not data['attentions_psychology_ids']:
+			# 	_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de medicina general')
+			# 	return self.export_report_print(cr, uid, ids, 'doctor_attention_report')
 
-			#Validamos de que attentions_psychology_ids este lleno para imprimir una atencion de psicologia
-			if not data['attentions_ids'] and not data['attentions_odontology_ids'] and data['attentions_psychology_ids']:
-				_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de odontologia')
-				return self.export_report_print(cr, uid, ids, 'doctor_attention_psicologia_report')
+			# #Validamos de que attentions_odontology_ids este lleno para imprimir una atencion de psicologia
+			# if not data['attentions_ids'] and data['attentions_odontology_ids'] and not data['attentions_psychology_ids']:
+			# 	_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de odontologia')
+			# 	return self.export_report_print(cr, uid, ids, 'doctor_attention_odontologia_report')
+
+			# #Validamos de que attentions_psychology_ids este lleno para imprimir una atencion de psicologia
+			# if not data['attentions_ids'] and not data['attentions_odontology_ids'] and data['attentions_psychology_ids']:
+			# 	_logger.info('se ha instalado el modulo de psicologia y odontologia pero solo hay atenciones de odontologia')
+			# 	return self.export_report_print(cr, uid, ids, 'doctor_attention_psicologia_report')
 		
 		return False
 
