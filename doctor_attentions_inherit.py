@@ -59,13 +59,13 @@ class doctor_attentions_co_inherit(osv.osv):
 		return resultado
 
 
-	def onchange_interpretacionimc(self, cr, uid, ids, masa_corporal, context=None):
+	def onchange_interpretacionimc(self, cr, uid, ids, masa_corporal, age_attention, context=None):
 		res = {'value':{}}
 		interpretacion = ''
-		this = self.browse(cr, uid, ids)[0]
-		unidad_edad = self.pool.get('doctor.attentions').calcular_edad(this.patient_id.birth_date)	
+		#this = self.browse(cr, uid, ids)[0]
+		#unidad_edad = self.pool.get('doctor.attentions').calcular_edad(this.patient_id.birth_date)	
 
-		if unidad_edad < 15:
+		if age_attention < 15:
 			res['value']['interpretacion_imc'] =  ''
 			superficie_corporal= self.pool.get('doctor.attentions').calcular_superficie_corporal(cr, uid, ids, 55, 165)
 			return res

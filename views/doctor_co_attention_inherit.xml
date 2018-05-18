@@ -64,7 +64,7 @@
           <div>m²</div>
         </xpath>
          <xpath expr="//field[@name='body_mass_index']" position="replace">
-          <field name="body_mass_index" on_change="onchange_interpretacionimc(body_mass_index)"/>
+          <field name="body_mass_index" on_change="onchange_interpretacionimc(body_mass_index,age_attention)"/>
           <div>kg/m²</div>
         </xpath>
         <xpath expr="//field[@name='review_systems_id']" position="replace">
