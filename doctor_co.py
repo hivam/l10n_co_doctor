@@ -2642,11 +2642,22 @@ class doctor_attentions_co(osv.osv):
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
 
+<<<<<<< HEAD
 		# for datos in self.browse(cr, uid, ids):
 		# 	appointment_id= self.pool.get('doctor.appointment').search(cr, uid,[('number', '=', datos.origin )])
 		# 	if appointment_id:
 		# 		appointment_type = self.pool.get('doctor.appointment').browse(cr, uid, appointment_id, context=context)[0]['type_id'].id
 		# 		res['type_id'] = appointment_type
+=======
+
+		
+		modelo = context.get('active_id',False)
+
+		if modelo:
+			appointment_id= self.pool.get('doctor.appointment').search(cr, uid,[('number', '=', modelo.origin )])
+			appointment_type = self.pool.get('doctor.appointment').browse(cr, uid, appointment_id, context=context)[0]['type_id'].id
+			res['type_id'] = appointment_type
+>>>>>>> patient's age ymd -C
 
 		return res
 
