@@ -2559,7 +2559,7 @@ class doctor_attentions_co(osv.osv):
 		'complicacion_eventoadverso' : '01',
 	}
 
-	def default_get(self, cr, uid, fields, context=None):
+	def default_get(self, cr, uid, fields, context):
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
 		patient_id = self.obtener_paciente(context)
 		registro = []
@@ -2567,8 +2567,6 @@ class doctor_attentions_co(osv.osv):
 		if patient_id:
 
 			patient_id = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context).id
-			_logger.info(type(patient_id))
-
 			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
 
 			for otros_paciente in self.browse(cr, uid, atenciones, context=context):
@@ -2641,24 +2639,10 @@ class doctor_attentions_co(osv.osv):
 
 		if registro:		
 			res['adjuntos_paciente_ids'] = registro
-
-<<<<<<< HEAD
-		# for datos in self.browse(cr, uid, ids):
-		# 	appointment_id= self.pool.get('doctor.appointment').search(cr, uid,[('number', '=', datos.origin )])
-		# 	if appointment_id:
-		# 		appointment_type = self.pool.get('doctor.appointment').browse(cr, uid, appointment_id, context=context)[0]['type_id'].id
-		# 		res['type_id'] = appointment_type
-=======
-
 		
-		modelo = context.get('active_id',False)
-
-		if modelo:
-			appointment_id= self.pool.get('doctor.appointment').search(cr, uid,[('number', '=', modelo.origin )])
-			appointment_type = self.pool.get('doctor.appointment').browse(cr, uid, appointment_id, context=context)[0]['type_id'].id
-			res['type_id'] = appointment_type
->>>>>>> patient's age ymd -C
-
+		if context.get('type_id'):
+			res['type_id'] = context.get('type_id')
+		
 		return res
 
 	def onchange_edad(self, cr, uid, ids, birth_date, context=None):
@@ -2904,7 +2888,7 @@ class doctor_attentions_co(osv.osv):
 			if fecha_nacimiento :
 				u['age_attention'] = self.calcular_edad(fecha_nacimiento)
 				u['age_unit'] = self.calcular_age_unit(fecha_nacimiento)
-		
+				u['age_patient_ymd'] = self.calcular_edad_ymd(fecha_nacimiento)
 		return super(doctor_attentions_co,self).write(cr, uid, ids, u, context)
 
 	def resumen_historia(self, cr, uid, ids, context=None):
