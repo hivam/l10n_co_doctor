@@ -457,6 +457,43 @@
 						</field>
 					</record>
 
+			<record model="ir.ui.view" id="doctor_schedule_filters">
+            <field name="name">doctor.shedule.filter</field>
+            <field name="model">doctor.schedule</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Buscar en Agenda">
+                    <group col='5' colspan='2'>
+                        <field name="professional_id" select="1" string="Profesional de la salud"/>
+                        <!--<field name="consultorio_id" string="Consultorio"/>  -->         
+                    </group>
+                    <group expand="0" string="Filtros de Tiempo">
+                        <filter string="Agendas Creadas Ayer" name="agendas_ayer" domain="[('date_begin','&gt;=',((context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))),('date_begin','&lt;=' , (context_today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" help="Historias del dia de ayer."/>
+                        <filter string="Agendas Creadas Hoy" name="agendas_hoy" domain="[('date_begin','&gt;=',((context_today()).strftime('%%Y-%%m-%%d'))),('date_begin','&lt;=' , (context_today()).strftime('%%Y-%%m-%%d'))]" help="Historias Programadas para el dia de hoy."/>
+                        <filter string="Agendas Mes pasado" name="agendas_mes_pasado" domain="[('date_begin','&gt;=',(context_today()-relativedelta(months=1)).strftime('%%Y-%%m-01')),('date_begin','&lt;',time.strftime('%%Y-%%m-01 00:00:00'))]" help="agendas del mes anterior."/>
+                        <filter string="Agendas Este Mes" name="agendas_mes_actual" domain="[('date_begin','&lt;=',(context_today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('date_begin','&gt;=',(context_today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]" help="Agenda para este mes." />
+                        <filter name="Agendas_primer_trimestre" string="Agendas 1er Trimestre" domain="[('date_begin','&lt;=', time.strftime('%%Y-03-31')),('date_begin','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                        <filter name="agendas_segundo_trimestre" string="Agendas 2do Trimestre" domain="[('date_begin','&lt;=', time.strftime('%%Y-06-30')),('date_begin','&gt;=',time.strftime('%%Y-04-01'))]"/>
+                        <filter name="agendas_tercer_trimestre" string="Agendas 3ro Trimestre" domain="[('date_begin','&lt;=', time.strftime('%%Y-09-30')),('date_begin','&gt;=',time.strftime('%%Y-07-01'))]"/>    
+                        <filter name="agendas_cuarto_trimestre" string="Agendas 4to Trimestre" domain="[('date_begin','&lt;=', time.strftime('%%Y-12-31')),('date_begin','&gt;=',time.strftime('%%Y-10-01'))]"/>
+                        <filter string="Agendas Año pasado" name="agendas_anio_pasado" domain="[('date_begin','&gt;=',(context_today()-relativedelta(years=1)).strftime('%%Y-01-01')),('date_begin','&lt;',time.strftime('%%Y-01-01'))]" help="Historias programadas para el año pasado." />
+                        <filter string="Agendas Este Año" name="agendas_anio_actual" domain="[('date_begin','&lt;=', time.strftime('%%Y-12-31')),('date_begin','&gt;=',time.strftime('%%Y-01-01'))]" help="Agendas programadas para este año." />
+                     
+                    </group>
+                    <group expand="0" string="Filtros [Vista Tipo Lista]">
+                        
+           
+                        <filter name="FechaCreacion" string="Fecha Creación" domain="[]" context="{'group_by' : 'date_begin'}" />
+
+                        <separator />
+
+                        <filter name="Medico" string="Profesional de la Salud" domain="[]" context="{'group_by' : 'professional_id'}" />
+
+                 
+                    </group>
+                </search>
+            </field>
+        </record>        
 
 				<!-- schedule Form View -->
 				<record id="view_doctor_schedule_form_inherit" model="ir.ui.view">
