@@ -639,20 +639,16 @@
 						<field eval="7" name="priority"/>
 						<field name="inherit_id" ref="doctor.view_doctor_attentions_form"/>
 						<field name="arch" type="xml">
-								
+							
 
-
-
-
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/group[@colspan='4']/fieldset[1]/group[@col='2']/group[@col='1']/group[@col='2']" position="inside">
+	 							<xpath expr="//field[@name='patient_id']" position="after">
+	 								<br/>
 									<br/>
-									<br/>
-									<group colspan="6" col="2">
+									<group col='2'>
 										<field name='tdoc' style="width:10%%" nolabel="1"/>
-										<field name='ref' style="width:10%%" nolabel="1"/>
+										<field name='ref'  style="width:10%%" nolabel="1"/>
 									</group>
-								</xpath>									
-	
+                				</xpath>
 
 								<xpath expr="//form/group/group" position="after">
 								<group colspan='2' >
