@@ -1362,6 +1362,16 @@ class doctor_appointment_co(osv.osv):
 		})
 		return {'value' : values}
 
+	#esta funcion permite ocultar los campos aseguradora, plan y contrato cuando el tipo de usuario es particular -C
+	def onchange_tipousuario(self,cr,uid,ids,tipo_usuario_id,context=None):
+		values = {}
+		if tipo_usuario_id:
+			ids = self.pool.get('doctor.tipousuario.regimen').read( cr, uid, tipo_usuario_id, ['name'] )
+			objeto=ids.get('name')
+			if objeto=='Particular':
+			  	values.update({'tipo_usuario_ocultar': objeto,
+		})
+		return {'value' : values}
 
 	def onchange_checkPlan(self, cr, uid, ids, plan_id, contract_id, context=None):
 		"""

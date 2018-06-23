@@ -313,7 +313,7 @@
 
 										<field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id,ref)"/>
 										<field name="ref" />
-										<field name="tipo_usuario_id"/>
+										<field name="tipo_usuario_id" on_change="onchange_tipousuario(tipo_usuario_id)"/>
 										<field name="tipo_usuario_ocultar" invisible="1"/>
 									</group>    
 										<group colspan='4' col='6' attrs="{'invisible': [('tipo_usuario_ocultar', '=', 'Particular')]}">
