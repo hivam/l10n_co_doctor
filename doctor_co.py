@@ -2642,6 +2642,7 @@ class doctor_attentions_co(osv.osv):
 		
 		if context.get('type_id'):
 			res['type_id'] = context.get('type_id')
+
 		return res
 
 	def onchange_edad(self, cr, uid, ids, birth_date, context=None):
