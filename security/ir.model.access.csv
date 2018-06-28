@@ -24,6 +24,8 @@ access_assistant_espacios_assinstant,doctor.espacios,model_doctor_espacios,docto
 access_assistant_monitoring_assinstant,doctor.paraclinical_monitoring,model_doctor_paraclinical_monitoring,doctor.group_doctor_assistant,1,1,1,1
 access_doctor_insurer_plan_assistent,doctor.insurer.plan,model_doctor_insurer_plan,doctor.group_doctor_assistant,1,1,1,0
 access_doctor_insurer_assistent,doctor.insurer,model_doctor_insurer,doctor.group_doctor_assistant,1,1,1,0
+access_doctor_diseases_past_asistente,doctor.diseases.past,model_doctor_diseases_past,doctor.group_doctor_assistant,1,0,0,0
+access_doctor_diseases_asistente,doctor.diseases,model_doctor_diseases,doctor.group_doctor_assistant,1,0,0,0
 
 
 access_doctor_appointment_type_physician,doctor.appointment.type,model_doctor_appointment_type,doctor.group_doctor_physician,1,0,0,0
