@@ -2710,7 +2710,6 @@ class doctor_attentions_co(osv.osv):
 
 	def write(self, cr, uid, ids, vals, context=None):
 		
-
 		vals['activar_notas_confidenciales'] = False
 		paciente_id=None
 		antecedentes_ids = None
@@ -2883,8 +2882,12 @@ class doctor_attentions_co(osv.osv):
 						self.pool.get('doctor.attentions.past').create(cr, uid, {'past': antecedente_texto, 'patient_id': paciente_id, 'past_category': antecedente_id}, context=context)
 					
 			del vals['attentions_past_ids']
-				
 
+			if 'paciente_birth_date' in vals:
+				f_nacimiento = vals['paciente_birth_date']
+				vals['age_attention'] = self.calcular_edad(f_nacimiento)
+				vals['age_unit'] = self.calcular_age_unit(f_nacimiento)
+			
 		atencion_id = super(doctor_attentions_co,self).create(cr, uid, vals, context)
 		datos = self.pool.get('doctor.attentions.past').search(cr, uid, [('attentiont_id', '=', False)],context=context)
 		if datos:
