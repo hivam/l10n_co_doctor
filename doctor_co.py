@@ -4532,11 +4532,13 @@ class doctor_list_report(osv.osv):
 	def button_imprimir_algunos_informes(self, cr, uid, ids, context=None):
 
 		data = self.read(cr, uid, ids)[0]
-		_logger.info('Ver historia')
+		_logger.info('########################## Ver historia')
 		_logger.info(data)
 
 		if not data['attentions_ids']:
 			_logger.info('No hay atenciones de psicologia')
+		else:
+			_logger.info('Si hay atenciones de psicologia')
 
 		#Validamos si esta instalado el modulo de psicologia, de no estarlo se imprime la atencion de medicina general
 		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_psychology',context=context) == False:
@@ -4566,8 +4568,6 @@ class doctor_list_report(osv.osv):
 		if context is None:
 			context = {}
 		data = self.read(cr, uid, ids)[0]
-		_logger.info('entro')
-		_logger.info(data)
 		return {
 			'type': 'ir.actions.report.xml',
 			'report_name': name_report,
