@@ -114,7 +114,7 @@ class doctor_precription(report_sxw.rml_parse):
 
 		if ((int(frequency) ==0) or (int(duration) ==0)):
 			_logger.info('esta vacio')
-			indicaciones=indicacion_tomar
+			indicaciones=''
 		else:
 			indicaciones=indicacion_tomar + ' ' + measuring + ' cada ' + str(frequency) + ' ' + self.select_frequency_unit_n(frequency_unit_n) + ' durante ' + str(duration) + ' ' + self.select_duration_period_n(duration_period_n) + ' via ' + str(administration_route_id)
 		
