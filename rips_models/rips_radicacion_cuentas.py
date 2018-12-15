@@ -109,7 +109,7 @@ class radicacion_cuentas(osv.osv):
 
 	_columns = {
 		'cantidad_factura' : fields.integer('Cantidad facturas', readonly=True),
-		'cliente_id': fields.many2one('doctor.insurer', 'Cliente', required=True, help='Aseguradora'),
+		'cliente_id': fields.many2one('doctor.insurer', 'Cliente', required=False, help='Aseguradora'),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False, help='Contrato por el que se atiende al cliente.'),
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
 		#Facturas
@@ -126,10 +126,10 @@ class radicacion_cuentas(osv.osv):
 		'saldo' : fields.float('Saldo', readonly=True),
 		'secuencia' : fields.char(u'Cuenta N°', size=200 ),
 		'state': fields.selection([('draft','Borrador'),('confirmed','Confirmado'),('validated', 'Validado')], 'Status', readonly=True, required=False),
-		'tipo_usuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
+		'tipo_usuario_id' : fields.selection([('contributivo','Contributivo'),('subsidiado','Subsidiado'), ('vinculado','Vinculado'), ('particular','Particular'), ('otro','Otro'), ('todos','Todos')], u'Tipo Usuario', required=True),
 		'valor_total' : fields.float('Valor Total', readonly=True),
 		#Para RIPS directos
-		'rips_directos' : fields.boolean('Rips Directos', help=u'Esta opción permite generar Rips sin haber facturado atenciones.'),
+		'rips_directos' : fields.boolean('Rips sin facturas', help=u'Esta opción permite generar Rips sin haber facturado atenciones.'),
 		'cea' : fields.char('C.E.A', help=u'Código de entidad administradora'),
 		'valor_consulta' : fields.char('Valor Consulta'),
 		'tipo_archivo' : fields.selection([('txt','Txt'),('excel','Excel')], u'Formato Exportación', required=False),
@@ -139,7 +139,7 @@ class radicacion_cuentas(osv.osv):
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
 		'state' : 'draft',
-		'rips_tipo_archivo' : [3,10,1,6],
+		'rips_tipo_archivo' : [10], # 3,10,1,6
 		'rips_directos': False,
 	}
 
@@ -166,8 +166,12 @@ class radicacion_cuentas(osv.osv):
 		Esta funcion retorna las facturas que estan en el rango de fechas seleccionado y que cumplen con los criterios determinados
 		"""
 		if not rips_directos:
-			id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
-			id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
+			if cliente_id:
+				id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
+				id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
+			else:
+				id_partner = False	
+			
 			invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
 																	('contrato_id','=', contrato_id or False),
 																	('state', '=', 'open'),
@@ -195,12 +199,7 @@ class radicacion_cuentas(osv.osv):
 			
 			if atenciones_general:
 				for i in self.pool.get('doctor.attentions').browse(cr,uid,atenciones_general):
-					#consultando origen de atencion
-					origen = self.pool.get('doctor.appointment').search(cr, uid, [('number','=',i.origin)])
-					for j in self.pool.get('doctor.appointment').browse(cr,uid,origen):
-						if j:
-							_logger.info(j.insurer_id)
-					
+					_logger.info("==> %s" % i)
 			else:
 				_logger.info("No hay atenciones")
 			return True
@@ -572,110 +571,114 @@ class radicacion_cuentas(osv.osv):
 	def generar_rips_US(self, cr, uid, ids, context=None):
 		pacientes = []
 		for var in self.browse(cr, uid, ids):
-			archivo = StringIO.StringIO()
-			for factura in var.invoices_ids:
-				if factura.patient_id.id not in pacientes:
-					tipo_archivo = tipo_archivo_rips.get('10')
-					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
-					parent_id = self.getParentid(cr,uid,ids)[0]
-					#***********GET CAMPOS********
-					#Tipo de identificación del usuario
-					if factura.patient_id.tdoc:
-						archivo.write(str(tdoc_selection.get(factura.patient_id.tdoc) + ','))
-					else:
-						archivo.write(",")
-					#número de identificación del usuario
-					if factura.patient_id.ref:
-						archivo.write(factura.patient_id.ref+ ',')
-					else:
-						archivo.write(",")
-					#Código entidad administradora
-					if var.cliente_id:
-						archivo.write(var.cliente_id.code+ ',')
-					else:
-						archivo.write(",")
-					#Tipo de usuario
-					if factura.tipo_usuario_id:
-						archivo.write(str(factura.tipo_usuario_id.id)+ ',')
-					else:
-						archivo.write(",")
-					#Primer apellido del paciente
-					if factura.patient_id.lastname:
-						lastname = unicodedata.normalize('NFKD', factura.patient_id.lastname).encode('ASCII', 'ignore')
-						archivo.write(lastname+ ',')
-					else:
-						archivo.write(",")
-					#Segundo apellido del paciente
-					if factura.patient_id.surname:
-						surname = unicodedata.normalize('NFKD', factura.patient_id.surname).encode('ASCII', 'ignore')
-						archivo.write(surname+ ',')
-					else:
-						archivo.write(",")
-					#Primer nombre del paciente
-					if factura.patient_id.firstname:
-						firstname = unicodedata.normalize('NFKD', factura.patient_id.firstname).encode('ASCII', 'ignore')
-						archivo.write(firstname+ ',')
-					else:
-						archivo.write(",")
-					#Segundo nombre del paciente
-					if factura.patient_id.middlename:
-						firstname = unicodedata.normalize('NFKD', factura.patient_id.middlename).encode('ASCII', 'ignore')
-						archivo.write(firstname+ ',')
-					else:
-						archivo.write(",")
-					#Edad del paciente al momento de la prestación del servicio
-					origin_invoice = factura.origin
-					cr.execute("""SELECT da.age_attention, da.age_unit FROM account_invoice ai, doctor_attentions da, sale_order so WHERE  ai.origin=so.name and so.origin=da.origin and ai.origin=%s""", [origin_invoice] )
-					edad=cr.fetchall()
-					if edad:
-						archivo.write(str(edad[0][0])+',')
-						#Unidad de medida de edad paciente
-						archivo.write(str(edad[0][1])+',')
-					else:
-						archivo.write(',,')
-					#Sexo del paciente
-					sexo_paciente = factura.patient_id.sex.upper()
-					if sexo_paciente:
-						archivo.write(sexo_paciente+ ',')
-					else:
-						archivo.write(',')
-					#Codigo de departamento de residencia
-					ciudad_paciente = factura.patient_id.city_id
-					if ciudad_paciente:
-						archivo.write(str(ciudad_paciente.id)+ ',')
-					else:
-						archivo.write(',')
-					#codigo de municipio de residencia
-					estado_paciente = factura.patient_id.state_id
-					if estado_paciente:
-						archivo.write(str(estado_paciente.id)+ ',')
-					else:
-						archivo.write(',')
-					#zona de residencia 
-					zona_paciente = factura.patient_id.zona
-					if zona_paciente:
-						archivo.write(zona_paciente)
-					else:
-						archivo.write(',')
-					pacientes.append(factura.patient_id.id)
-					#salto de linea
-					archivo.write('\n')
-			output = base64.encodestring(archivo.getvalue())
-			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
-																			'datas_fname': nombre_archivo,
-																			'type': 'binary',
-																			'datas': output,
-																			'parent_id' : parent_id,
-																			'res_model' : 'rips.radicacioncuentas',
-																			'res_id' : ids[0]},
-																			context= context)
-			for actual in self.browse(cr, uid, ids):
-				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
-																  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
-																 'nombre_archivo': nombre_archivo,
-																 'f_inicio_radicacion': actual.rangofacturas_desde,
-																 'f_fin_radicacion' : actual.rangofacturas_hasta,
-																 'archivo' : output}, context=context)  
+			if var.rips_directos:
+				_logger.info('alo =>>>>>')
+			else:
+				archivo = StringIO.StringIO()
+				for factura in var.invoices_ids:
+					if factura.patient_id.id not in pacientes:
+						tipo_archivo = tipo_archivo_rips.get('10')
+						nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+						_logger.info("nombre archivo ==> %s" % s)
+						parent_id = self.getParentid(cr,uid,ids)[0]
+						#***********GET CAMPOS********
+						#Tipo de identificación del usuario
+						if factura.patient_id.tdoc:
+							archivo.write(str(tdoc_selection.get(factura.patient_id.tdoc) + ','))
+						else:
+							archivo.write(",")
+						#número de identificación del usuario
+						if factura.patient_id.ref:
+							archivo.write(factura.patient_id.ref+ ',')
+						else:
+							archivo.write(",")
+						#Código entidad administradora
+						if var.cliente_id:
+							archivo.write(var.cliente_id.code+ ',')
+						else:
+							archivo.write(",")
+						#Tipo de usuario
+						if factura.tipo_usuario_id:
+							archivo.write(str(factura.tipo_usuario_id.id)+ ',')
+						else:
+							archivo.write(",")
+						#Primer apellido del paciente
+						if factura.patient_id.lastname:
+							lastname = unicodedata.normalize('NFKD', factura.patient_id.lastname).encode('ASCII', 'ignore')
+							archivo.write(lastname+ ',')
+						else:
+							archivo.write(",")
+						#Segundo apellido del paciente
+						if factura.patient_id.surname:
+							surname = unicodedata.normalize('NFKD', factura.patient_id.surname).encode('ASCII', 'ignore')
+							archivo.write(surname+ ',')
+						else:
+							archivo.write(",")
+						#Primer nombre del paciente
+						if factura.patient_id.firstname:
+							firstname = unicodedata.normalize('NFKD', factura.patient_id.firstname).encode('ASCII', 'ignore')
+							archivo.write(firstname+ ',')
+						else:
+							archivo.write(",")
+						#Segundo nombre del paciente
+						if factura.patient_id.middlename:
+							firstname = unicodedata.normalize('NFKD', factura.patient_id.middlename).encode('ASCII', 'ignore')
+							archivo.write(firstname+ ',')
+						else:
+							archivo.write(",")
+						#Edad del paciente al momento de la prestación del servicio
+						origin_invoice = factura.origin
+						cr.execute("""SELECT da.age_attention, da.age_unit FROM account_invoice ai, doctor_attentions da, sale_order so WHERE  ai.origin=so.name and so.origin=da.origin and ai.origin=%s""", [origin_invoice] )
+						edad=cr.fetchall()
+						if edad:
+							archivo.write(str(edad[0][0])+',')
+							#Unidad de medida de edad paciente
+							archivo.write(str(edad[0][1])+',')
+						else:
+							archivo.write(',,')
+						#Sexo del paciente
+						sexo_paciente = factura.patient_id.sex.upper()
+						if sexo_paciente:
+							archivo.write(sexo_paciente+ ',')
+						else:
+							archivo.write(',')
+						#Codigo de departamento de residencia
+						ciudad_paciente = factura.patient_id.city_id
+						if ciudad_paciente:
+							archivo.write(str(ciudad_paciente.id)+ ',')
+						else:
+							archivo.write(',')
+						#codigo de municipio de residencia
+						estado_paciente = factura.patient_id.state_id
+						if estado_paciente:
+							archivo.write(str(estado_paciente.id)+ ',')
+						else:
+							archivo.write(',')
+						#zona de residencia 
+						zona_paciente = factura.patient_id.zona
+						if zona_paciente:
+							archivo.write(zona_paciente)
+						else:
+							archivo.write(',')
+						pacientes.append(factura.patient_id.id)
+						#salto de linea
+						archivo.write('\n')
+				output = base64.encodestring(archivo.getvalue())
+				id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																				'datas_fname': nombre_archivo,
+																				'type': 'binary',
+																				'datas': output,
+																				'parent_id' : parent_id,
+																				'res_model' : 'rips.radicacioncuentas',
+																				'res_id' : ids[0]},
+																				context= context)
+				for actual in self.browse(cr, uid, ids):
+					self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
+																	  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
+																	 'nombre_archivo': nombre_archivo,
+																	 'f_inicio_radicacion': actual.rangofacturas_desde,
+																	 'f_fin_radicacion' : actual.rangofacturas_hasta,
+																	 'archivo' : output}, context=context)  
 				
 		return True
 
@@ -797,7 +800,7 @@ class radicacion_cuentas(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		vals.update({'secuencia': self.getSecuencia(cr,uid), 'state': 'draft'})
-		if not vals['invoices_ids']:
+		if not vals['rips_directos'] and not vals['invoices_ids']:
 			raise osv.except_osv(_('Atención!'),
 							_('No se puede guardar esta radicación. No hay facturas o Atenciones para radicar.'))
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
@@ -815,26 +818,34 @@ class radicacion_cuentas(osv.osv):
 				_('Funcionalidad no implementada.'))
 
 	def onchange_contrato(self, cr, uid, ids, cliente,context=None):
-		res = {'value':{}}
-		modelo= self.pool.get('doctor.contract.insurer')
-		insurer_modelo= self.pool.get('doctor.insurer')
-		try:
-			code = insurer_modelo.browse(cr, uid, cliente).code
-		except:
-			_logger.info("No hay un codigo para la aseguradora")
-		
-		buscar = modelo.search(cr, uid, [('insurer_id', '=', cliente)] )
-		if code:
-			res['value']['cea'] =  code
-		if len(buscar) == 1:
-			res['value']['contrato_id'] =  buscar[0]
-		return res
-	
+		if cliente:
+			res = {'value':{}}
+			modelo= self.pool.get('doctor.contract.insurer')
+			insurer_modelo= self.pool.get('doctor.insurer')
+			try:
+				code = insurer_modelo.browse(cr, uid, cliente).code
+			except:
+				_logger.info("No hay un codigo para la aseguradora")
+			
+			buscar = modelo.search(cr, uid, [('insurer_id', '=', cliente)] )
+			if code:
+				res['value']['cea'] =  code
+			if len(buscar) == 1:
+				res['value']['contrato_id'] =  buscar[0]
+			return res
+		else:
+			return False
+
 	def onchange_tipousuario(self, cr, uid, ids, tipo_usuario_id, context=None):
 		res = {'value':{}}
 		modelo= self.pool.get('doctor.insurer')
-		buscar = modelo.search(cr, uid, [('tipousuario_id', '=', tipo_usuario_id)] )
-		if len(buscar) == 1:
-			res['value']['cliente_id'] =  buscar[0]	
+		buscar = modelo.search(cr, uid, [('insurer', '=', tipo_usuario_id)] )
+		buscarMinSalud = modelo.search(cr, uid, [('code', '=', 'SDS001')] )
+
+		if tipo_usuario_id =='todos':
+			res['value']['cliente_id'] =  buscarMinSalud[0]	
+		else:
+			res['value']['cliente_id'] =  False
 		return res				
+
 radicacion_cuentas()

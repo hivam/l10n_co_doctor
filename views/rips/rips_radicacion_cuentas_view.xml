@@ -30,18 +30,21 @@
           <group col="4" colspan="6">
           <div>  
             <h2>
-              <label for="cliente_id" string="Cliente" class="left-margin10"/>
-              <field name="cliente_id" style="width: 80%%" domain="[]" on_change="onchange_contrato(cliente_id)"/>
+              <label for="cliente_id"  attrs="{'invisible': [('tipo_usuario_id','=','particular')],}" string="Cliente" class="left-margin10"/>
+              <field name="cliente_id" style="width: 80%%" domain="[]" on_change="onchange_contrato(cliente_id)" attrs="{'readonly': [('tipo_usuario_id','=','particular')], 'required': [('tipo_usuario_id','!=','particular')]}"/>
             </h2>
           </div>
           <div>
             <h2>
-              <label for="contrato_id" string="Contrato"/>
-              <field name="contrato_id" style="width: 50%%" domain="[('insurer_id','=',cliente_id)]"/>
+              <label for="contrato_id" string="Contrato" attrs="{'invisible': [('tipo_usuario_id','=','particular')]}"/>
+              <field name="contrato_id" style="width: 50%%" attrs="{'invisible': [('tipo_usuario_id','=','particular')]}" domain="[('insurer_id','=',cliente_id)]"/>
             </h2>
           </div>
           </group>
           </group>
+          <group>
+              <field name="rips_directos" class="left-margin10"  />
+            </group>
           <group col="1">
             <group col="4" >
             <fieldset>
@@ -64,9 +67,6 @@
               <field name="valor_consulta"/>
               <field name="tipo_archivo"/>
             </group>
-            </group>
-            <group>
-              <field name="rips_directos" class="left-margin10"  />
             </group>
           </group>
           <notebook>
