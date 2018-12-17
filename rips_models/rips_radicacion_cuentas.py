@@ -570,9 +570,32 @@ class radicacion_cuentas(osv.osv):
 
 	def generar_rips_US(self, cr, uid, ids, context=None):
 		pacientes = []
+		
 		for var in self.browse(cr, uid, ids):
 			if var.rips_directos:
+				archivo = StringIO.StringIO()
+				parent_id = self.getParentid(cr,uid,ids)[0]
+				tipo_archivo = tipo_archivo_rips.get('10')
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+				_logger.info("nombre archivo ==> %s" % nombre_archivo)
 				_logger.info('alo =>>>>>')
+				cr.execute("SELECT login FROM res_users ORDER BY create_date DESC")
+				listFetch= cr.fetchall()		
+				
+				for a in listFetch:
+					_logger.info(a[0])
+					archivo.write(a[0]+',')
+
+				output = base64.encodestring(archivo.getvalue())
+				id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																				'datas_fname': nombre_archivo,
+																				'type': 'binary',
+																				'datas': output,
+																				'parent_id' : parent_id,
+																				'res_model' : 'rips.radicacioncuentas',
+																				'res_id' : ids[0]},
+																				context= context)
+
 			else:
 				archivo = StringIO.StringIO()
 				for factura in var.invoices_ids:
