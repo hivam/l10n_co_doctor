@@ -72,9 +72,7 @@ Location change for "Doctor" module in Colombia
               'data/l10n_neighborhood_co_data.xml',
               'data/l10n_dependencias_co_data.xml',
               'data/l10n_doctor_time_space_co_data.xml',
-              'doctor_report.xml',
-              
-
+              'doctor_report.xml'
     ],
     'installable': True,
     'qweb': ['static/src/xml/custom_access_login.xml'],
