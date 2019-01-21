@@ -146,6 +146,17 @@ class doctor_patient_co(osv.osv):
 	('6', 'Otros'),
 	]
 
+	#Discapacidad
+	data_stratum = [
+	('1', 'Bajo-bajo'),
+	('2', 'Bajo'),
+	('3', 'Medio-bajo'),
+	('4', 'Medio'),
+	('5', 'Medio-alto'),
+	('6', 'Alto')
+	]
+
+
 	def _get_edad(self, cr, uid, ids, field_name, arg, context=None):
 		res = {}
 		for datos in self.browse(cr, uid, ids):
@@ -258,6 +269,7 @@ class doctor_patient_co(osv.osv):
 		'codigo_prestador':fields.char('Codigo de prestador', size=12),
 		'ocupacion_actual': fields.char(u'Ocupación'),
 		'creencias': fields.char('Creencias'),
+		'stratum': fields.selection(data_stratum, 'Estrato Socioeconomico')
 	}
 
 	def onchange_ocupacion_id(self, cr, uid, ids, ocupacion_id, context=None):

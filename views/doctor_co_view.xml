@@ -160,15 +160,16 @@
 													<field name="zona" style="width: 45%%"/>
 											</group>
 
-									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'estu'), ('filter_ocupacion','!=', 'doc'),('filter_ocupacion','!=', 'egre'), ('filter_ocupacion','!=', 'emp'),('filter_ocupacion','!=', 'otro')]}">
+									<fieldset class="fieldset_margen">
 										<legend class="texto_legend">Datos Complementarios</legend>
 										<group col="2">
-											<field name="nivel_educativo" attrs="{'invisible': [('filter_ocupacion','=', 'otro')]}"/>
-											<field name="programa_id" attrs="{'invisible': [('filter_ocupacion','=', 'otro')]}"/>
+											<field name="nivel_educativo"/>
+											<field name="programa_id" attrs="{'invisible': [('filter_ocupacion','not in', ['estu', 'doc'])]}"/>
+											<field name="lateralidad_id"/>
+											<field name="stratum"/>
 											<field name="semestre_actual" attrs="{'invisible': [('filter_ocupacion','!=', 'estu')]}"/>
 											<field name="description_others" attrs="{'invisible': [('filter_ocupacion','!=', 'otro')]}"/>
 											<field name="dependencia_empleado_id" attrs="{'invisible': [('filter_ocupacion','!=', 'emp')]}"/>
-											<field name="lateralidad_id"/>
 										</group>
 									</fieldset>
 
