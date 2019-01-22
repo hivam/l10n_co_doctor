@@ -245,3 +245,46 @@ class doctor(osv.osv):
 				if x.past == False:
 					self.pool.get('doctor.attentions.past').unlink(cr, uid, x.id)
 		return True
+
+	#funcion para retornar la posicion del carater
+	def return_position_character(self, cadena, inicial, final):
+		psotion=0
+		for x in range(inicial, final):
+			if cadena[x] == '.':
+				position= x
+
+			if cadena[x] == ',':
+				position= x
+	 
+		return position + 1
+
+
+	def validation_text_large(self, cadena):
+
+		tamanio=200
+		data_text=[]
+
+		aux_tamanio= 0
+		if cadena:
+			if len(cadena) >= 300:
+				while tamanio <= len(cadena):
+					
+					position=self.return_position_character(cadena, aux_tamanio, tamanio)
+
+					print "arreglo[" + str(aux_tamanio) + ":" + str(tamanio) + "]"
+					data_text.append(str(cadena[aux_tamanio:position]))
+
+					aux_tamanio=position
+				
+					tamanio= 200 + aux_tamanio
+
+				if tamanio > len(cadena):
+
+					data_text.append(str(cadena[aux_tamanio:len(cadena)]))
+			else:
+				data_text.append(str(cadena))
+		else:
+			data_text.append("")
+				
+			
+		return data_text

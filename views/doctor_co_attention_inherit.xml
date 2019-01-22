@@ -57,6 +57,11 @@
           <field name="height" on_change="onchange_calcularImc(weight, height)"  nolabel="1"/>
           <div>cm</div>
         </xpath>
+
+        <xpath expr="//field[@name='weight']" position="attributes">
+          <attribute name="on_change">onchange_calcularImc(weight, height)</attribute>
+        </xpath>
+
         <xpath expr="//field[@name='body_mass_index']" position="after">
           <field name="interpretacion_imc"/>
           <div></div>
