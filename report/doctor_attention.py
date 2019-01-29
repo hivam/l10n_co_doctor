@@ -481,8 +481,6 @@ class doctor_attention(report_sxw.rml_parse):
 
 		data = self.pool.get('doctor.doctor').validation_text_large(cadena)
 
-		_logger.info(len(data))
-		_logger.info(data[0])
 		return data
 
 
