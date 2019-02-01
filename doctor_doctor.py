@@ -288,3 +288,14 @@ class doctor(osv.osv):
 				
 			
 		return data_text
+
+
+	def doctor_validate_group(self, cr, uid, permission, type_message, message):
+		
+		if permission:
+			permission='l10n_co_doctor.' + permission 
+
+			if self.pool['res.users'].has_group(cr, uid, permission) == False:
+				raise osv.except_osv(_('Lo Sentimos!'),_('Para poder %s %s, debera tener el permiso necesario para esta acción \n Ponganse en contacto con el administrador') %(type_message, message))
+		
+	

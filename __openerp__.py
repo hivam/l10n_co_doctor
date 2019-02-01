@@ -34,6 +34,8 @@ Location change for "Doctor" module in Colombia
     'license': 'AGPL-3',
     'depends' : ['doctor', 'knowledge', 'account_voucher'],
     'data' : [
+              'security/doctor_security.xml',
+              'security/ir.model.access.csv',
               'views/doctor_insurer_inherit.xml',
               'views/rips/rips_generados_view.xml',
               'views/rips/rips_radicacion_cuentas_view.xml',
@@ -48,7 +50,6 @@ Location change for "Doctor" module in Colombia
               'views/account_invoice_co_view.xml',
               'views/doctor_co_contract_insurer_view.xml',
               'views/doctor_co_insurer_plan_view.xml',
-              'security/ir.model.access.csv',
               'data/l10n_rips_tipo_archivo_data.xml',
               'data/l10n_doctor_co_tipousuario_regimen_data.xml',
               'data/l10n_doctor_patient_estadocivil.xml',
@@ -72,7 +73,8 @@ Location change for "Doctor" module in Colombia
               'data/l10n_neighborhood_co_data.xml',
               'data/l10n_dependencias_co_data.xml',
               'data/l10n_doctor_time_space_co_data.xml',
-              'doctor_report.xml'
+              'doctor_report.xml',
+            
     ],
     'installable': True,
     'qweb': ['static/src/xml/custom_access_login.xml'],

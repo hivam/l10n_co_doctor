@@ -532,6 +532,18 @@ class doctor_programa_academico(osv.osv):
 	_sql_constraints = [('programa_academico_code_constraint', 'unique(code)', u'Este código de programa académico ya existe en la base de datos.'),
 						('programa_academico_name_constraint', 'unique(name)', u'Este nombre de programa académico ya existe en la base de datos.') ]
 
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", u"un Programa Académico")
+		res = super(doctor_programa_academico,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", u"un Programa Académico")
+		res= super(doctor_programa_academico,self).write(cr, uid, ids, vals, context)
+		return res
+
 doctor_programa_academico()
 
 
@@ -546,6 +558,18 @@ class doctor_patient_co_estadocivil(osv.Model):
 	}
 	_sql_constraints = [('ec_constraint', 'unique(codigo)', 'Estado civil ya existe en la base de datos.')]
 
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Estado Civil")
+		res = super(doctor_patient_co_estadocivil,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Estado Civil")
+		res= super(doctor_patient_co_estadocivil,self).write(cr, uid, ids, vals, context)
+		return res
+
 doctor_patient_co_estadocivil()
 
 class doctor_patient_co_parentesco(osv.Model):
@@ -558,6 +582,18 @@ class doctor_patient_co_parentesco(osv.Model):
 
 	}
 	_sql_constraints = [('parentesco_constraint', 'unique(codigo)', 'Este parentesco ya existe en la base de datos.')]
+
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Parentesco")
+		res = super(doctor_patient_co_parentesco,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Parentesco")
+		res= super(doctor_patient_co_parentesco,self).write(cr, uid, ids, vals, context)
+		return res
 
 doctor_patient_co_parentesco()
 
@@ -572,6 +608,18 @@ class doctor_patient_co_ocupacion(osv.Model):
 		'name' : fields.char(u'Descripción',required = False )
 	}
 	_sql_constraints = [(u'ocupacion_constraint', 'unique(name)', u'Esta ocupación ya existe en la base de datos.')]
+
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", u"una Profesión")
+		res = super(doctor_patient_co_ocupacion,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", u"una Profesión")
+		res= super(doctor_patient_co_ocupacion,self).write(cr, uid, ids, vals, context)
+		return res
 
 doctor_patient_co_ocupacion()
 
@@ -3417,6 +3465,18 @@ class doctor_neighborhood(osv.Model):
 
 	_sql_constraints = [('codigo_constraint', 'unique(codigo)', 'El Barrio ya existe en la base de datos. \n Por favor ingrese otro código')]
 
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Barrio")
+		res = super(doctor_neighborhood,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Barrio")
+		res= super(doctor_neighborhood,self).write(cr, uid, ids, vals, context)
+		return res
+
 doctor_neighborhood()
 
 
@@ -5456,4 +5516,82 @@ class doctor_attentions_disability(osv.osv):
 		return res
 
 doctor_attentions_disability()
+
+
+
+class DoctorDiseasesnherit(osv.Model):
+
+	_inherit = 'doctor.diseases'
+
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Causa de Muerte")
+		res = super(DoctorDiseasesnherit,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "una Causa de Muerte")
+		res= super(DoctorDiseasesnherit,self).write(cr, uid, ids, vals, context)
+		return res
+
+DoctorDiseasesnherit()
+
+class DoctorResCountryInherit(osv.Model):
+
+	_inherit = 'res.country'
+
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", u"un País/Nación")
+		res = super(DoctorResCountryInherit,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", u"un País/Nación")
+		res= super(DoctorResCountryInherit,self).write(cr, uid, ids, vals, context)
+		return res
+
+DoctorResCountryInherit()
+
+
+class DoctorResCountryStateInherit(osv.Model):
+
+	_inherit = 'res.country.state'
+
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Departamento/Provincia")
+		res = super(DoctorResCountryStateInherit,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Departamento/Provincia")
+		res= super(DoctorResCountryStateInherit,self).write(cr, uid, ids, vals, context)
+		return res
+
+DoctorResCountryStateInherit()
+
+
+class DoctorResCountryStateCityInherit(osv.Model):
+
+	_inherit = 'res.country.state.city'
+
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Ciudad/Localidad")
+		res = super(DoctorResCountryStateCityInherit,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "una Ciudad/Localidad")
+		res= super(DoctorResCountryStateCityInherit,self).write(cr, uid, ids, vals, context)
+		return res
+
+DoctorResCountryStateCityInherit()
+
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

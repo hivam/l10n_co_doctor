@@ -36,6 +36,16 @@ class doctor_insurer_co_inherit(osv.osv):
 		'tipousuario_id' : fields.many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True),
 	}
 
+	def create(self, cr, uid, vals, context=None):
 	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Aseguradora")
+		res = super(doctor_insurer_co_inherit,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "una Aseguradora")
+		res= super(doctor_insurer_co_inherit,self).write(cr, uid, ids, vals, context)
+		return res	
 
 doctor_insurer_co_inherit()

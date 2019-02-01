@@ -37,8 +37,18 @@ class doctor_insurer_plan(osv.osv):
 		'procedimientos_ids': fields.one2many('doctor.insurer.plan.procedures', 'plan_id', 'Procedimientos'),
 	}
 
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Plan")
+		res= super(doctor_insurer_plan,self).write(cr, uid, ids, vals, context)
+		return res
+
 	# Create method overwritten to write plan_id
 	def create(self, cr, uid, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Plan")
+		
 		var = super(doctor_insurer_plan, self).create(cr, uid, vals, context)
 		self.write(cr, uid, var, {'plan_id': var}, context)
 		return var
