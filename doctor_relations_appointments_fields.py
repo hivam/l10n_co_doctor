@@ -58,14 +58,5 @@ class doctor_systems_category_inherit(osv.osv):
 
 		'past_past_id': fields.many2one('doctor.past.category', u'Tipo de antecedentes', required=False,
                                    ondelete='restrict'),
-
-
-
-		'appointment_pathology_past_id': fields.many2one('doctor.appointment.type', 'Pathological Past', required=False,
-                                           ondelete='restrict'),
-
-
-		'pathology_past_id': fields.many2one('doctor.diseases', u'Tipo de antecedentes Patológico', required=False,
-                           ondelete='restrict'),
 	}
 
