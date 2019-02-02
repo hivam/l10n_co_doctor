@@ -37,3 +37,4 @@ import doctor_co_insurer_plan_procedures
 import doctor_doctor
 import doctor_co_tipousuario_regimen
 import doctor_co_insurer_inherit
+import doctor_relations_appointments_fields

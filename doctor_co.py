@@ -1381,7 +1381,7 @@ class doctor_appointment_co(osv.osv):
 			ids = self.pool.get('doctor.tipousuario.regimen').read( cr, uid, tipo_usuario_id, ['name'] )
 			objeto=ids.get('name')
 			if objeto=='Particular':
-			  	values.update({'tipo_usuario_ocultar': objeto,
+				values.update({'tipo_usuario_ocultar': objeto,
 		})
 		return {'value' : values}
 
@@ -1945,6 +1945,12 @@ class doctor_appointment_type(osv.osv):
 	_columns = {
 		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud', ondelete='restrict'),
 		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|', ('author','=','TIX SAS'), '|',('author','=','Proyecto Evoluzion'), ('author','=','PROYECTO EVOLUZION') ]"),
+	
+		'systems_category_ids': fields.one2many('doctor.relation_appointments_fields', 'appointment_system_category_id', 'Procedimientos en Salud', ondelete='restrict'),
+		'physical_exam_ids': fields.one2many('doctor.relation_appointments_fields', 'appointment_physical_exam_id', u'Tipo examen fìsico', ondelete='restrict'),
+
+		'past_past_ids': fields.one2many('doctor.relation_appointments_fields', 'appointment_past_past_id', u'Antecedentes', ondelete='restrict'),
+
 	}
 
 
@@ -2583,13 +2589,90 @@ class doctor_attentions_co(osv.osv):
 
 	def default_get(self, cr, uid, fields, context):
 		res = super(doctor_attentions_co,self).default_get(cr, uid, fields, context=context)
+
+
+		modelo_permisos = self.pool.get('res.groups')
+		nombre_permisos = []
+		cr.execute("SELECT gid FROM res_groups_users_rel WHERE uid = %s" %(uid))
+
+		for i in cr.fetchall():
+			grupo_id = modelo_permisos.browse(cr, uid, i[0], context=context).name
+			nombre_permisos.append(grupo_id)
+
+
 		patient_id = self.obtener_paciente(context)
 		registro = []
 		arreglo_ago=[]
+
 		if patient_id:
 
 			patient_id = self.pool.get('doctor.patient').browse(cr, uid, patient_id, context=context).id
 			atenciones = self.pool.get('doctor.attentions').search(cr, uid, [('patient_id', '=', patient_id)])	
+
+
+			appointment_type = None
+
+			if context.get('type_id'):
+				appointment_type = self.pool.get('doctor.appointment.type').browse(cr, uid, context.get('type_id'), context = context)
+			
+			save_systems_category = False
+			save_physical_system = False
+			save_past = False
+			registros_categorias = []
+			registros_examenes_fisicos = []
+			registros_antecedentes = []
+
+
+			if appointment_type:
+
+				if appointment_type.systems_category_ids:
+
+					for i in appointment_type.systems_category_ids:
+						registros_categorias.append((0,0,{'system_category' : i.system_category_id.id,}))
+
+					save_systems_category = True
+
+				if appointment_type.physical_exam_ids:
+
+					for i in appointment_type.physical_exam_ids:
+						registros_examenes_fisicos.append((0,0,{'exam_category' : i.physical_exam_id.id,}))
+
+					save_physical_system = True            
+
+				if appointment_type.past_past_ids:
+
+					for i in appointment_type.past_past_ids:
+						registros_antecedentes.append((0,0,{'past_category' : i.past_past_id.id , 'patient_id' : patient_id}))
+
+					save_past = True  
+
+
+			if not appointment_type or not save_physical_system or not save_systems_category or not save_past:
+
+
+				if not save_systems_category:
+					#con esto cargams los items de revision por sistemas
+					ids = self.pool.get('doctor.systems.category').search(cr,uid,[('active','=',True)],context=context)
+			
+					for i in self.pool.get('doctor.systems.category').browse(cr,uid,ids,context=context):
+						registros_categorias.append((0,0,{'system_category' : i.id,}))
+
+					#fin carga item revision sistemas 
+
+				if not save_physical_system:
+
+					#con esto cargamos los examanes fisicos
+					ids_examenes_fisicos = self.pool.get('doctor.exam.category').search(cr,uid,[('active','=',True)],context=context)
+					for i in self.pool.get('doctor.exam.category').browse(cr,uid,ids_examenes_fisicos,context=context):
+						registros_examenes_fisicos.append((0,0,{'exam_category' : i.id}))
+					#fin carga item examanes fisicos
+
+					
+				if not save_past:
+					
+					ids_antecedentes = self.pool.get('doctor.past.category').search(cr,uid,[('active','=',True)],context=context)
+					for i in self.pool.get('doctor.past.category').browse(cr,uid,ids_antecedentes,context=context):
+						registros_antecedentes.append((0,0,{'past_category' : i.id , 'patient_id' : id_paciente}))
 
 			for otros_paciente in self.browse(cr, uid, atenciones, context=context):
 
@@ -2664,6 +2747,13 @@ class doctor_attentions_co(osv.osv):
 		
 		if context.get('type_id'):
 			res['type_id'] = context.get('type_id')
+
+
+		if 'Aux. enfermeria' not in nombre_permisos:
+			res['review_systems_id'] = registros_categorias
+			res['attentions_exam_ids'] = registros_examenes_fisicos
+			res['attentions_past_ids'] = registros_antecedentes
+
 
 		return res
 

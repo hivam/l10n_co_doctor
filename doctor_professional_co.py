@@ -53,7 +53,7 @@ class doctor_professional_co(osv.osv):
 								  ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')),
 								  'Tipo de Documento'),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
-
+		
 	}
 
 	def name_get(self, cr, uid, ids, context={}):

@@ -443,12 +443,38 @@
 						<field name="inherit_id" ref="doctor.view_doctor_appointment_type_form"/>
 						<field name="arch" type="xml">
 								<xpath expr="/form[@string='Appointment type']/group" position="after">
-										<field name="procedures_id" colspan="4" nolabel="1">
+
+									<notebook>
+										<page string="Procedimientos en salud">
+											<field name="procedures_id" colspan="4" nolabel="1">
 												<tree string="Procedimientos en salud" editable="bottom">
-														<field name="procedures_id"/>
-														<field name="quantity"/>
+													<field name="procedures_id"/>
+													<field name="quantity"/>
 												</tree>
-										</field>
+											</field>
+										</page>
+										<page string="Tipo revisión por sistemas">
+											<field name="systems_category_ids" colspan="4" nolabel="1">
+												<tree string="Tipo revisión por sistemas" editable="bottom">
+													<field name="system_category_id"/>
+												</tree>
+											</field>
+										</page>
+										<page string="Tipo examen físico">
+											<field name="physical_exam_ids" colspan="4" nolabel="1">
+												<tree string="Tipo revisión por sistemas" editable="bottom">
+													<field name="physical_exam_id"/>
+												</tree>
+											</field>
+										</page>
+										<page string="Antecedentes">
+											<field name="past_past_ids" colspan="4" nolabel="1">
+												<tree string="Antecedentes" editable="bottom">
+													<field name="past_past_id"/>
+												</tree>
+											</field>
+										</page>
+									</notebook>
 								</xpath>
 
 								<field name="procedures_id" position="before">
