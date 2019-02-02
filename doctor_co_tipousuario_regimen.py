@@ -41,6 +41,17 @@ class doctor_co_tipousuario_regimen(osv.osv):
 		'active' : True,
 	}
 
+	def create(self, cr, uid, vals, context=None):
+	
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Tipo de Usuario")
+		res = super(doctor_co_tipousuario_regimen,self).create(cr, uid, vals, context)
+		return res
+
+	def write(self, cr, uid, ids, vals, context=None):
+
+		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Tipo de Usuario")
+		res= super(doctor_co_tipousuario_regimen,self).write(cr, uid, ids, vals, context)
+		return res	
 	
 
 doctor_co_tipousuario_regimen()
