@@ -2672,7 +2672,7 @@ class doctor_attentions_co(osv.osv):
 					
 					ids_antecedentes = self.pool.get('doctor.past.category').search(cr,uid,[('active','=',True)],context=context)
 					for i in self.pool.get('doctor.past.category').browse(cr,uid,ids_antecedentes,context=context):
-						registros_antecedentes.append((0,0,{'past_category' : i.id , 'patient_id' : id_paciente}))
+						registros_antecedentes.append((0,0,{'past_category' : i.id , 'patient_id' : patient_id}))
 
 			for otros_paciente in self.browse(cr, uid, atenciones, context=context):
 
