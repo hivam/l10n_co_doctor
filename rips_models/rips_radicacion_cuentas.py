@@ -112,6 +112,8 @@ class radicacion_cuentas(osv.osv):
 		'cliente_id': fields.many2one('doctor.insurer', 'Cliente', required=False, help='Aseguradora'),
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False, help='Contrato por el que se atiende al cliente.'),
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
+		#atenciones
+		'attentions_ids': fields.one2many('doctor.attentions', 'radicacioncuentas_id', string='Attentions', required=False, ondelete='restrict', states={'done': [('readonly', True)]}),
 		#Facturas
 		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict', states={'done': [('readonly', True)]}),
 		'numero_radicado' : fields.char(u'N° Radicado', size=200 ),
@@ -161,7 +163,7 @@ class radicacion_cuentas(osv.osv):
 		dateuser = datetime.strftime(dateuser, "%Y-%m-%d")
 		return dateuser
 
-	def get_invoices(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos, context=None):
+	def get_invoices_or_attentions(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos, context=None):
 		"""
 		Esta funcion retorna las facturas que estan en el rango de fechas seleccionado y que cumplen con los criterios determinados
 		"""
@@ -180,47 +182,36 @@ class radicacion_cuentas(osv.osv):
 																	('residual', '<>', 0.0),
 																	('tipo_usuario_id', '=', tipo_usuario_id ),
 																	('radicada', '=', False)])
-			
-			#Forma antigua de hacer Rips 26/10/2016
-			# id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
-			# id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
-			# invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
-			# 														('contrato_id','=', contrato_id or False),
-			# 														('state', '=', 'open'),
-			# 														('date_invoice', '>=', rangofacturas_desde),
-			# 														('date_invoice', '<=', rangofacturas_hasta),
-			# 														('residual', '<>', 0.0),
-			# 														('tipo_usuario_id', '=', tipo_usuario_id ),
-			# 														('radicada', '=', False)])
+			return {'value': {'invoices_ids': invoices}}
 		else:
-			_logger.info("Entrando ---------------")
-			#medico general
-			atenciones_general = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
 			
-			if atenciones_general:
-				for i in self.pool.get('doctor.attentions').browse(cr,uid,atenciones_general):
-					_logger.info("==> %s" % i)
+			#medico general
+			attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
+			
+			if attentions:
+				return {'value': {'attentions_ids': attentions}}
+				
 			else:
-				_logger.info("No hay atenciones")
-			return True
 
-		return {'value': {'invoices_ids': invoices}}
+				raise osv.except_osv(_('Aviso Importante!'),
+						_('No hay atenciones que cumplan los criterios de entrada."'))
+
 
 
 	def getParentid(self, cr, uid, context=None):
 		"""
 		Esta funcion sirve para buscar la carpeta donde se alojaran los Rips. Es importante confirmar que la carpeta ya existe antes de generar Rips, de lo contrario hay que
 		"""
+
 		try:
 			parent_id = self.pool.get('document.directory').search(cr, uid, [('name', '=', 'Rips')])
 		except Exception as e:
 			raise osv.except_osv(_('Aviso Importante!'),
 					_('No hay un lugar donde almacenar el archivo RIPS.\n1. Habilite la opcion gestion de documentos en el menu Configuracion > Conocimiento\n2. Ir a Conocimiento (menu superior)> Documentos> Directorios y crear un directorio con el nombre "Rips"'))
 
-		if not parent_id:
-			asistenteadministrativo_id = self.pool.get("res.groups").get_object_reference(cr, uid, "doctor", "group_doctor_asistente_admin")[0]
-			parent_id = self.pool.get('document.directory').create(cr, uid, {'name' : 'Rips', 'parent_id' : 1, 'type': 'directory', 'group_ids': asistenteadministrativo_id})
+
 		return parent_id
+	
 
 	def getSecuencia(self, cr, uid, context=None):
 		"""
@@ -572,19 +563,104 @@ class radicacion_cuentas(osv.osv):
 		pacientes = []
 		
 		for var in self.browse(cr, uid, ids):
+
 			if var.rips_directos:
 				archivo = StringIO.StringIO()
 				parent_id = self.getParentid(cr,uid,ids)[0]
 				tipo_archivo = tipo_archivo_rips.get('10')
 				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
-				_logger.info("nombre archivo ==> %s" % nombre_archivo)
-				_logger.info('alo =>>>>>')
-				cr.execute("SELECT login FROM res_users ORDER BY create_date DESC")
-				listFetch= cr.fetchall()		
+
+				#cr.execute("SELECT login FROM res_users ORDER BY create_date DESC")
+				#listFetch= cr.fetchall()		
 				
-				for a in listFetch:
-					_logger.info(a[0])
-					archivo.write(a[0]+',')
+				for atencion in var.attentions_ids:
+					if atencion.patient_id.id not in pacientes:
+						#Tipo de identificación del usuario
+						if atencion.patient_id.tdoc:
+							archivo.write(str(tdoc_selection.get(atencion.patient_id.tdoc) + ','))
+						else:
+							archivo.write(",")
+
+						#número de identificación del usuario
+						if atencion.patient_id.ref:
+							archivo.write(atencion.patient_id.ref+ ',')
+						else:
+							archivo.write(",")
+
+						#Código entidad administradora
+						if var.cea:
+							archivo.write(var.cea+ ',')
+						else:
+							archivo.write(",")
+
+						#Tipo de usuario
+						if atencion.patient_id.tipo_usuario.id:
+							archivo.write(str(atencion.patient_id.tipo_usuario.id)+ ',')
+						else:
+							archivo.write(",")	
+
+						#Primer apellido del paciente
+						if atencion.patient_id.lastname:
+							lastname = unicodedata.normalize('NFKD', atencion.patient_id.lastname).encode('ASCII', 'ignore')
+							archivo.write(lastname+ ',')
+						else:
+							archivo.write(",")
+
+						#Segundo apellido del paciente
+						if atencion.patient_id.surname:
+							surname = unicodedata.normalize('NFKD', atencion.patient_id.surname).encode('ASCII', 'ignore')
+							archivo.write(surname+ ',')
+						else:
+							archivo.write(",")
+
+						#Primer nombre del paciente
+						if atencion.patient_id.firstname:
+							firstname = unicodedata.normalize('NFKD', atencion.patient_id.firstname).encode('ASCII', 'ignore')
+							archivo.write(firstname+ ',')
+						else:
+							archivo.write(",")
+
+						#Segundo nombre del paciente
+						if atencion.patient_id.middlename:
+							firstname = unicodedata.normalize('NFKD', atencion.patient_id.middlename).encode('ASCII', 'ignore')
+							archivo.write(firstname+ ',')
+						else:
+							archivo.write(",")
+
+						#Edad del paciente al momento de la prestación del servicio
+						cr.execute("""SELECT age_attention, age_unit FROM doctor_attentions WHERE id=%s""", [atencion.id] )
+						edad=cr.fetchall()
+						if edad:
+							archivo.write(str(edad[0][0])+',')
+							#Unidad de medida de edad paciente
+							archivo.write(str(edad[0][1])+',')
+						else:
+							archivo.write(',,')
+
+						#Sexo del paciente
+						sexo_paciente = atencion.patient_id.sex.upper()
+						if sexo_paciente:
+							archivo.write(sexo_paciente+ ',')
+						else:
+							archivo.write(',')
+
+						#Codigo de departamento de residencia
+						ciudad_paciente = atencion.patient_id.city_id
+						if ciudad_paciente:
+							archivo.write(str(ciudad_paciente.id)+ ',')
+						else:
+							archivo.write(',')
+
+						#codigo de municipio de residencia
+						estado_paciente = atencion.patient_id.state_id
+						if estado_paciente:
+							archivo.write(str(estado_paciente.id)+ ',')
+						else:
+							archivo.write(',')
+
+						pacientes.append(atencion.patient_id.id)
+						#salto de linea
+						archivo.write('\n')
 
 				output = base64.encodestring(archivo.getvalue())
 				id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
@@ -596,6 +672,15 @@ class radicacion_cuentas(osv.osv):
 																				'res_id' : ids[0]},
 																				context= context)
 
+				for actual in self.browse(cr, uid, ids):
+					self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
+																	  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
+																	 'nombre_archivo': nombre_archivo,
+																	 'f_inicio_radicacion': actual.rangofacturas_desde,
+																	 'f_fin_radicacion' : actual.rangofacturas_hasta,
+																	 'archivo' : output}, context=context)
+
+						
 			else:
 				archivo = StringIO.StringIO()
 				for factura in var.invoices_ids:

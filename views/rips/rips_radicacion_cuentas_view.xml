@@ -54,7 +54,7 @@
               <label for="rangofacturas_desde" string="Desde"/>
               <field name="rangofacturas_desde" class="oe_inline"/>
               <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
-              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices(cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos)" context=""/>
+              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices_or_attentions(cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos)" context=""/>
             </fieldset>
             <group col="4" attrs="{'invisible':[('rips_directos', '=', True)]}">
               <field name="numero_radicado"/>
@@ -77,10 +77,9 @@
             </page>
             <page string="Atenciones"  attrs="{'invisible': [('rips_directos','=',False)]}">
               <group>
-               
+                <field name="attentions_ids" nolabel="1" create="false"/>
               </group>
             </page>
-
             <page string="Rips"  attrs="">
               <div>
                 <group attrs="{'invisible': [('plano','=',False)]}">
