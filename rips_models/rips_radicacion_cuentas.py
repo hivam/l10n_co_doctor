@@ -141,7 +141,7 @@ class radicacion_cuentas(osv.osv):
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
 		'state' : 'draft',
-		'rips_tipo_archivo' : [10], # 3,10,1,6
+		'rips_tipo_archivo' : [10,1], # 3,10,1,6
 		'rips_directos': False,
 	}
 
@@ -194,7 +194,7 @@ class radicacion_cuentas(osv.osv):
 			else:
 
 				raise osv.except_osv(_('Aviso Importante!'),
-						_('No hay atenciones que cumplan los criterios de entrada."'))
+						_('No hay atenciones que cumplan los criterios de entrada.'))
 
 
 
@@ -202,14 +202,15 @@ class radicacion_cuentas(osv.osv):
 		"""
 		Esta funcion sirve para buscar la carpeta donde se alojaran los Rips. Es importante confirmar que la carpeta ya existe antes de generar Rips, de lo contrario hay que
 		"""
-
 		try:
 			parent_id = self.pool.get('document.directory').search(cr, uid, [('name', '=', 'Rips')])
 		except Exception as e:
 			raise osv.except_osv(_('Aviso Importante!'),
 					_('No hay un lugar donde almacenar el archivo RIPS.\n1. Habilite la opcion gestion de documentos en el menu Configuracion > Conocimiento\n2. Ir a Conocimiento (menu superior)> Documentos> Directorios y crear un directorio con el nombre "Rips"'))
 
-
+		if not parent_id:
+			asistenteadministrativo_id = self.pool.get("res.groups").get_object_reference(cr, uid, "doctor", "group_doctor_asistente_admin")[0]
+			parent_id = self.pool.get('document.directory').create(cr, uid, {'name' : 'Rips', 'parent_id' : 1, 'type': 'directory', 'group_ids': asistenteadministrativo_id})
 		return parent_id
 	
 
@@ -418,144 +419,153 @@ class radicacion_cuentas(osv.osv):
 		return True
 
 	def generar_rips_AC(self, cr, uid, ids, context=None):
+		pacientes = []
+
 		for var in self.browse(cr, uid, ids):
-			archivo = StringIO.StringIO()
-			for factura in var.invoices_ids:
-				tipo_archivo = tipo_archivo_rips.get('1')
-				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
-				parent_id = self.getParentid(cr,uid,ids)[0]
 
-				#Acceder a la atencion a la que pertenece la factura
-				sale_order = self.pool.get('sale.order').search(cr, uid, [('name', '=', factura.origin)])
-				sale_order_origin = self.pool.get('sale.order').browse(cr, uid, sale_order)[0].origin
-				appointments = self.pool.get('doctor.appointment').search(cr, uid, [('number', '=', sale_order_origin)])
-				appointment_number = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].number
-				doctor_attentions = self.pool.get('doctor.attentions').search(cr, uid, [('origin', '=', appointment_number)])
+			if var.rips_directos:
 
-				#***********GET CAMPOS********
-				#Número de la factura
-				if factura.number:
-					archivo.write(factura.number+ ',')
-				else:
-					archivo.write(",")
-				#codigo del prestador de servicios de salud
-				todos = self.pool.get('res.company').search(cr, uid, [])
-				invoices = self.pool.get('account.invoice')
-				company_id = self.pool.get('res.company').browse(cr, uid, todos[0])
-				cod_prestadorservicio = company_id.cod_prestadorservicio
-				if cod_prestadorservicio:
-					archivo.write(cod_prestadorservicio+ ',')
-				else:
-					archivo.write(",")
-				#Tipo de identificacion del usuario
-				if factura.patient_id.tdoc:
-					archivo.write(str(tdoc_selection.get(factura.patient_id.tdoc) + ','))
-				else:
-					archivo.write(",")
-				#Numero de identificacion del usuario
-				if factura.patient_id.ref:
-					archivo.write(factura.patient_id.ref+ ',')
-				else:
-					archivo.write(",")
-				#fecha de la consulta
-				try:                        
-					doctor_attention_date =  self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].date_attention
-					fecha_atencion_format =  datetime.strptime(doctor_attention_date, "%Y-%m-%d %H:%M:%S")
-					fecha_atencion_string =  fecha_atencion_format.strftime("%d/%m/%Y")
-					archivo.write(fecha_atencion_string + ',')
-				except Exception, e:
-					archivo.write(',')
+				
 
-				#Numero de autorizacion
-				try:
-					appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
-					codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].nro_autorizacion
-					archivo.write(codigo_consulta + ',')
-				except Exception, e:
-					archivo.write(',')
+			else:
 
-				#codigo de la consulta (CUPS)
-				realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].realiza_procedimiento
-				if realiza_procedimiento == False:
-					appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
-					codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].procedures_id.procedure_code
-					archivo.write(codigo_consulta + ",")
-				else:
-					return
-				#finalidad de la consulta
-				try:
-					finalidad_consulta = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].finalidad_consulta
-					archivo.write(finalidad_consulta + ',')
-				except Exception, e:
-					archivo.write(',')
+				archivo = StringIO.StringIO()
+				for factura in var.invoices_ids:
+					tipo_archivo = tipo_archivo_rips.get('1')
+					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+					parent_id = self.getParentid(cr,uid,ids)[0]
 
-				#Causa Externa
-				try:
-					causa_externa = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].causa_externa
-					archivo.write(causa_externa + ',')
-				except Exception, e:
-					archivo.write(',')
+					#Acceder a la atencion a la que pertenece la factura
+					sale_order = self.pool.get('sale.order').search(cr, uid, [('name', '=', factura.origin)])
+					sale_order_origin = self.pool.get('sale.order').browse(cr, uid, sale_order)[0].origin
+					appointments = self.pool.get('doctor.appointment').search(cr, uid, [('number', '=', sale_order_origin)])
+					appointment_number = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].number
+					doctor_attentions = self.pool.get('doctor.attentions').search(cr, uid, [('origin', '=', appointment_number)])
 
-				#Codigo del diagnostico principal
-				try:
-					pronosticos_ids = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].diseases_ids
-					for rec in pronosticos_ids:
-						principal = rec.diseases_type
-						if principal == 'main':
-							archivo.write(rec.diseases_id.code +',')
-				except Exception, e:
-					archivo.write(',')
-					
-				#Codigo del diagnósticos relacionados
-				try:
-					pronosticos_ids = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].diseases_ids
-					for rec in pronosticos_ids:
-						principal = rec.diseases_type
-						if principal == 'related':
-							archivo.write(rec.diseases_id.code +',')
-				except Exception, e:
-					pass
+					#***********GET CAMPOS********
+					#Número de la factura
+					if factura.number:
+						archivo.write(factura.number+ ',')
+					else:
+						archivo.write(",")
+					#codigo del prestador de servicios de salud
+					todos = self.pool.get('res.company').search(cr, uid, [])
+					invoices = self.pool.get('account.invoice')
+					company_id = self.pool.get('res.company').browse(cr, uid, todos[0])
+					cod_prestadorservicio = company_id.cod_prestadorservicio
+					if cod_prestadorservicio:
+						archivo.write(cod_prestadorservicio+ ',')
+					else:
+						archivo.write(",")
+					#Tipo de identificacion del usuario
+					if factura.patient_id.tdoc:
+						archivo.write(str(tdoc_selection.get(factura.patient_id.tdoc) + ','))
+					else:
+						archivo.write(",")
+					#Numero de identificacion del usuario
+					if factura.patient_id.ref:
+						archivo.write(factura.patient_id.ref+ ',')
+					else:
+						archivo.write(",")
+					#fecha de la consulta
+					try:                        
+						doctor_attention_date =  self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].date_attention
+						fecha_atencion_format =  datetime.strptime(doctor_attention_date, "%Y-%m-%d %H:%M:%S")
+						fecha_atencion_string =  fecha_atencion_format.strftime("%d/%m/%Y")
+						archivo.write(fecha_atencion_string + ',')
+					except Exception, e:
+						archivo.write(',')
 
-				#Valor de la consulta
-				try:
-					monto_consulta= factura.amount_untaxed
-					monto_consulta_impuesto = factura.amount_tax
-					suma = monto_consulta+monto_consulta_impuesto
-					archivo.write(str(suma)+ ',')
-				except Exception, e:
-					archivo.write(',')
+					#Numero de autorizacion
+					try:
+						appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
+						codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].nro_autorizacion
+						archivo.write(codigo_consulta + ',')
+					except Exception, e:
+						archivo.write(',')
 
-				#valor del copago del paciente
-				try:
-					copago_paciente= factura.amount_patient
-					archivo.write(str(copago_paciente)+ ',')
-				except Exception, e:
-					archivo.write(',')
+					#codigo de la consulta (CUPS)
+					realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointments)[0].realiza_procedimiento
+					if realiza_procedimiento == False:
+						appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointments)])
+						codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].procedures_id.procedure_code
+						archivo.write(codigo_consulta + ",")
+					else:
+						return
+					#finalidad de la consulta
+					try:
+						finalidad_consulta = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].finalidad_consulta
+						archivo.write(finalidad_consulta + ',')
+					except Exception, e:
+						archivo.write(',')
 
-				#valor neto a pagar
-				try:
-					valor_neto= factura.residual
-					archivo.write(str(valor_neto))
-				except Exception, e:
-					archivo.write(',')
+					#Causa Externa
+					try:
+						causa_externa = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].causa_externa
+						archivo.write(causa_externa + ',')
+					except Exception, e:
+						archivo.write(',')
+
+					#Codigo del diagnostico principal
+					try:
+						pronosticos_ids = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].diseases_ids
+						for rec in pronosticos_ids:
+							principal = rec.diseases_type
+							if principal == 'main':
+								archivo.write(rec.diseases_id.code +',')
+					except Exception, e:
+						archivo.write(',')
+						
+					#Codigo del diagnósticos relacionados
+					try:
+						pronosticos_ids = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].diseases_ids
+						for rec in pronosticos_ids:
+							principal = rec.diseases_type
+							if principal == 'related':
+								archivo.write(rec.diseases_id.code +',')
+					except Exception, e:
+						pass
+
+					#Valor de la consulta
+					try:
+						monto_consulta= factura.amount_untaxed
+						monto_consulta_impuesto = factura.amount_tax
+						suma = monto_consulta+monto_consulta_impuesto
+						archivo.write(str(suma)+ ',')
+					except Exception, e:
+						archivo.write(',')
+
+					#valor del copago del paciente
+					try:
+						copago_paciente= factura.amount_patient
+						archivo.write(str(copago_paciente)+ ',')
+					except Exception, e:
+						archivo.write(',')
+
+					#valor neto a pagar
+					try:
+						valor_neto= factura.residual
+						archivo.write(str(valor_neto))
+					except Exception, e:
+						archivo.write(',')
 
 
-		output = base64.encodestring(archivo.getvalue())
-		id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
-																		'datas_fname': nombre_archivo,
-																		'type': 'binary',
-																		'datas': output,
-																		'parent_id' : parent_id,
-																		'res_model' : 'rips.radicacioncuentas',
-																		'res_id' : ids[0]},
-																		context= context)
-		for actual in self.browse(cr, uid, ids):
-			self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
-															  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
-															 'nombre_archivo': nombre_archivo,
-															 'f_inicio_radicacion': actual.rangofacturas_desde,
-															 'f_fin_radicacion' : actual.rangofacturas_hasta,
-															 'archivo' : output}, context=context)  
+			output = base64.encodestring(archivo.getvalue())
+			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																			'datas_fname': nombre_archivo,
+																			'type': 'binary',
+																			'datas': output,
+																			'parent_id' : parent_id,
+																			'res_model' : 'rips.radicacioncuentas',
+																			'res_id' : ids[0]},
+																			context= context)
+			for actual in self.browse(cr, uid, ids):
+				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
+																  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
+																 'nombre_archivo': nombre_archivo,
+																 'f_inicio_radicacion': actual.rangofacturas_desde,
+																 'f_fin_radicacion' : actual.rangofacturas_hasta,
+																 'archivo' : output}, context=context)  
 				
 		return True
 
