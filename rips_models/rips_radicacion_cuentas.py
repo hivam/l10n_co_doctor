@@ -424,9 +424,7 @@ class radicacion_cuentas(osv.osv):
 		for var in self.browse(cr, uid, ids):
 
 			if var.rips_directos:
-
-				
-
+				_logger.info("en desarrollo ...")		
 			else:
 
 				archivo = StringIO.StringIO()
