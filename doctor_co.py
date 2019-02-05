@@ -2798,9 +2798,11 @@ class doctor_attentions_co(osv.osv):
 
 
 		if 'Aux. enfermeria' not in nombre_permisos:
-			res['review_systems_id'] = registros_categorias
-			res['attentions_exam_ids'] = registros_examenes_fisicos
-			res['attentions_past_ids'] = registros_antecedentes
+			
+			if patient_id:
+				res['review_systems_id'] = registros_categorias
+				res['attentions_exam_ids'] = registros_examenes_fisicos
+				res['attentions_past_ids'] = registros_antecedentes
 
 
 		return res
