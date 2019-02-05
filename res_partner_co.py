@@ -80,11 +80,20 @@ class res_partner_co(osv.osv):
 
     def buscar_campos(self, cr, uid, args, limit, context, operator, nombre_con_split, campo1, campo2):
         ids = []
+        _logger.info(nombre_con_split)
         if nombre_con_split:
-            for i in range(0, len(nombre_con_split), 1):
-                ids = self.search(cr, uid, ['|',(campo1, operator, (nombre_con_split[i])),
-                                                (campo2, operator, (nombre_con_split[i])), 
-                                                ('is_company', '=', False)] + args, limit=limit, context=context)
+
+            sql = """ 
+                SELECT id 
+                FROM res_partner
+                WHERE name ILIKE TRIM('%%(%(busqueda)s)%%')
+                AND is_company = false;
+            """%{
+                'busqueda': ' '.join(nombre_con_split).strip()
+            }
+            cr.execute(sql)
+            ids =  cr.fetchall()
+
         else:
             ids = self.search(cr, uid, [(campo1, operator, campo1),
                                             ('is_company', '=', False)] + args, limit=limit, context=context)
@@ -96,26 +105,13 @@ class res_partner_co(osv.osv):
         nombre_con_split = []
 
 
-        if name:
+        if name.strip():
 
             if name.isdigit():
                 ids = self.search(cr, uid, [('ref', 'ilike', name)] + args, limit=limit, context=context)
             elif name.split(" "):
                 nombre_con_split = name.split(" ")
-
                 ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'firtsname', 'lastname')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'firtsname', 'surname')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'firtsname', 'middlename')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'middlename', 'lastname')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'middlename', 'surname')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'middlename', 'firtsname')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'lastname', 'firtsname')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'lastname', 'surname')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'lastname', 'middlename')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'surname', 'lastname')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'surname', 'middlename')
-                ids += self.buscar_campos(cr, uid, args, limit, context, operator, nombre_con_split, 'surname', 'firtsname')
-
                 ids = list(set(ids))
 
             if not ids:
