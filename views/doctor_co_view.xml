@@ -9,6 +9,10 @@
 				<field name="arch" type="xml">
 				<search string="Search Patient" version="7.0">
 						<field name="patient"/>
+						<field name="firstname"/>
+						<field name="middlename"/>
+						<field name="lastname"/>
+						<field name="surname"/>
 						<field name="ref"/>
 						<field name="insurer"/>
 						<separator/>
