@@ -248,7 +248,7 @@ class doctor(osv.osv):
 
 	#funcion para retornar la posicion del carater
 	def return_position_character(self, cadena, inicial, final):
-		psotion=0
+		position=0
 		for x in range(inicial, final):
 			if cadena[x] == '.':
 				position= x
