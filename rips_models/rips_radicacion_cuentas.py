@@ -222,23 +222,32 @@ class radicacion_cuentas(osv.osv):
 		else:
 			# Si no hay registros en rips.generados buscamos en ir.attachment
 			try:
-				cr.execute("SELECT name FROM ir_attachment ORDER BY create_date DESC limit 1")
+				cr.execute("SELECT * FROM ir_attachment WHERE (file_type='text/plain' OR file_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') AND (name LIKE 'US%' OR name LIKE 'AC%' OR name like 'AU%' OR name like 'AP%' OR name like 'AH%'  OR name like 'AN%' OR name like 'AM%') order by id DESC LIMIT 1")
 				listFetch= cr.fetchall()
 				nombre= listFetch[0][0]
 				file_type= listFetch[0][1]
-				#si el ultimo archivo de ir.attachment es un txt/plano entonces lo obtenemos.
-				if  file_type == 'text/plain':
+				#si el ultimo archivo de ir.attachment es un txt/plano o excel entonces lo obtenemos.
+				if file_type:
 					nombre = listFetch[0][0]
 			except:
 				nombre = 'XX000000.txt'
+
+		_logger.info("======>>")	
+		_logger.info(nombre)
 		get_secuencia = int(nombre[2:8])
 		aumentando_secuencia = '{0:06}'.format(get_secuencia + 1)
 		return aumentando_secuencia
 
-	def getNombreArchivo(self, cr, uid, fileType, context=None):
+	def getNombreArchivo(self, cr, uid, fileType,extension, context=None):
+		_logger.info("======> filetype = %s" % fileType)
+		
 		if fileType:
-			nueva_secuencia = fileType + self.getSecuencia(cr,uid) +'.txt'
-			return nueva_secuencia
+			if extension == 'txt':
+				nueva_secuencia = fileType + self.getSecuencia(cr,uid) +'.txt'
+				return nueva_secuencia
+			elif extension == 'excel':
+				nueva_secuencia = fileType + self.getSecuencia(cr,uid) +'.xlsx'
+				return nueva_secuencia
 		else:
 			return 'known.txt'
 
@@ -269,7 +278,8 @@ class radicacion_cuentas(osv.osv):
 			archivo = StringIO.StringIO()
 			for factura in var.invoices_ids:
 				tipo_archivo = tipo_archivo_rips.get('6')
-				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+				extension= var.tipo_archivo #dice si es excel o txt
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
 				parent_id = self.getParentid(cr,uid,ids)[0]
 
 				#Acceder a la orden de venta, cita, atencion enlazad@ a la factura
@@ -426,7 +436,8 @@ class radicacion_cuentas(osv.osv):
 				archivo = StringIO.StringIO()
 				for factura in var.invoices_ids:
 					tipo_archivo = tipo_archivo_rips.get('1')
-					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+					extension= var.tipo_archivo #dice si es excel o txt
+					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
 					parent_id = self.getParentid(cr,uid,ids)[0]
 
 					#Acceder a la atencion a la que pertenece la factura
@@ -572,7 +583,8 @@ class radicacion_cuentas(osv.osv):
 				archivo = StringIO.StringIO()
 				parent_id = self.getParentid(cr,uid,ids)[0]
 				tipo_archivo = tipo_archivo_rips.get('10')
-				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+				extension= var.tipo_archivo #dice si es excel o txt
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
 
 				#cr.execute("SELECT login FROM res_users ORDER BY create_date DESC")
 				#listFetch= cr.fetchall()		
@@ -690,7 +702,8 @@ class radicacion_cuentas(osv.osv):
 				for factura in var.invoices_ids:
 					if factura.patient_id.id not in pacientes:
 						tipo_archivo = tipo_archivo_rips.get('10')
-						nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+						extension= var.tipo_archivo #dice si es excel o txt
+						nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
 						_logger.info("nombre archivo ==> %s" % s)
 						parent_id = self.getParentid(cr,uid,ids)[0]
 						#***********GET CAMPOS********
@@ -799,7 +812,8 @@ class radicacion_cuentas(osv.osv):
 			archivo = StringIO.StringIO()
 			for factura in var.invoices_ids:
 				tipo_archivo = tipo_archivo_rips.get('3')
-				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
+				extension= var.tipo_archivo #dice si es excel o txt
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
 				parent_id = self.getParentid(cr,uid,ids)[0]
 
 				#***********GET CAMPOS********
