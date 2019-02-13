@@ -249,12 +249,10 @@ class doctor(osv.osv):
 	#funcion para retornar la posicion del carater
 	def return_position_character(self, cadena, inicial, final):
 		position=0
-		for x in range(inicial, final):
-			if cadena[x] == '.':
+		for x in range(final,inicial, -1):
+			if cadena[x] == ' ':
 				position= x
-
-			if cadena[x] == ',':
-				position= x
+				break;
 	 
 		return position + 1
 
@@ -265,29 +263,26 @@ class doctor(osv.osv):
 		data_text=[]
 
 		aux_tamanio= 0
-		cadena = cadena.encode('utf-8')
+		cadena= cadena.encode('utf-8')
 		if cadena:
 			if len(cadena) >= 300:
 				while tamanio <= len(cadena):
 					
 					position=self.return_position_character(cadena, aux_tamanio, tamanio)
 
-					print "arreglo[" + str(aux_tamanio) + ":" + str(tamanio) + "]"
 					data_text.append(str(cadena[aux_tamanio:position]))
-
+					
 					aux_tamanio=position
 				
 					tamanio= 200 + aux_tamanio
 
-				if tamanio > len(cadena):
-
-					data_text.append(str(cadena[aux_tamanio:len(cadena)]))
+					if (tamanio+200) > len(cadena):
+						break;
 			else:
 				data_text.append(str(cadena))
 		else:
 			data_text.append("")
 				
-			
 		return data_text
 
 
