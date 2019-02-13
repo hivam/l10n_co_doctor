@@ -265,6 +265,7 @@ class doctor(osv.osv):
 		data_text=[]
 
 		aux_tamanio= 0
+		cadena = cadena.encode('utf-8')
 		if cadena:
 			if len(cadena) >= 300:
 				while tamanio <= len(cadena):
