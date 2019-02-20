@@ -266,7 +266,7 @@ class doctor(osv.osv):
 
 	def validation_text_large(self, cadena):
 
-		tamanio=200
+		tamanio=450
 		data_text=[]
 
 

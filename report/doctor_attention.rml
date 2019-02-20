@@ -174,6 +174,8 @@
           </blockTable>
     </section>
     <section>
+      [[(o.actual_disease) or removeParentNode('section') ]]           
+
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -182,13 +184,15 @@
      </tr>
     </blockTable>
 
-    <blockTable colWidths="534.0" style="Table6">
-        <tr>
-     <td>
-            <para style="P6">[[ o.actual_disease or removeParentNode('section') ]]</para>
-         </td>
-        </tr>
-      </blockTable>
+          <blockTable colWidths="534.0" style="Table6">
+            <tr>
+
+             <td>
+                [[repeatIn(print_text_large(o.actual_disease),'line')]]
+               <para style="P6">[[ line  ]]</para>
+              </td>
+            </tr>
+          </blockTable>
      </section>
 
     <section>
@@ -214,15 +218,26 @@
     </section>
 
     <section>
+
     [[o.otro_sintomas_revision_sistema or removeParentNode('section')]]
-    <blockTable colWidths="130.0,404.0" style="Table6">
+    <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="p6">Otros Síntomas</para>
+          <para style="P2">Otros Síntomas</para>
         </td>
+
+     </tr>
+    </blockTable>
+
+
+    [[o.otro_sintomas_revision_sistema or removeParentNode('section')]]
+    <blockTable colWidths="534.0" style="Table6">
+      <tr>
         <td>
-          <para style="p6">[[ (o.otro_sintomas_revision_sistema) or removeParentNode('blockTable')]] </para>
+          [[repeatIn(print_text_large(o.otro_sintomas_revision_sistema),'line')]]
+          <para style="P6">[[ line  ]]</para>
         </td>
+
      </tr>
     </blockTable>
     </section>
@@ -265,17 +280,28 @@
         </tr>
       </blockTable>
     </section>
+
     <section>
       [[o.otros_antecedentes or removeParentNode('section') ]]
-      <blockTable colWidths="130.0,404.0" style="Table6">
+      <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="p6">Otros Antecedentes</para>
+          <para style="P2">Otros Antecedentes</para>
         </td>
-        <td>
-          <para style="p6">[[ (o.otros_antecedentes) or removeParentNode('blockTable')]] </para>
-        </td>
-     </tr>
+     </tr>     
+    </blockTable>
+    </section>
+
+    <section>
+      [[o.otros_antecedentes or removeParentNode('section') ]]
+      <blockTable colWidths="534.0" style="Table6">
+
+        <tr>
+            <td>
+              [[repeatIn(print_text_large(o.otros_antecedentes),'line')]]
+             <para style="P6">[[ line  ]]</para>
+            </td>
+        </tr>
     </blockTable>
     </section>
 
@@ -430,19 +456,29 @@
           </blockTable>
         </section>
 
-    [[o.otros_hallazgos_examen_fisico or removeParentNode('blockTable') ]]
-      <blockTable colWidths="130.0,404.0" style="Table6">
+  <section>
+    [[o.otros_hallazgos_examen_fisico or removeParentNode('section') ]]
+      <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
-          <para style="p6">Otros hallazgos y signos clínicos en el examen físico</para>
+          <para style="P2">Otros hallazgos y signos clínicos en el examen físico</para>
         </td>
+      </tr>
+    </blockTable>
+   
+      <blockTable colWidths="534.0" style="Table6">
+
+      <tr>
+
         <td>
-          <para style="p6">[[ (o.otros_hallazgos_examen_fisico) or removeParentNode('blockTable')]] </para>
+          [[repeatIn(print_text_large(o.otros_hallazgos_examen_fisico),'line')]]
+          <para style="P6">[[ line  ]]</para>
         </td>
+
      </tr>
     </blockTable>
-
-
+  </section>
+  
     <section>
       <blockTable colWidths="534" style="Table6">
       <tr>
@@ -491,6 +527,7 @@
 
 
     <section>
+      [[ o.analysis or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -501,14 +538,16 @@
 
     <blockTable colWidths="534.0" style="Table6">
         <tr>
-     <td>
-            <para style="P6">[[ o.analysis or removeParentNode('section') ]]</para>
-         </td>
+            <td>
+              [[repeatIn(print_text_large(o.analysis),'line')]]
+             <para style="P6">[[ line  ]]</para>
+            </td>
         </tr>
       </blockTable>
     </section>
 
     <section>
+      [[ o.conduct or removeParentNode('section') ]]
     <blockTable colWidths="534.0" style="Table6">
       <tr>
         <td>
@@ -519,9 +558,10 @@
 
     <blockTable colWidths="534.0" style="Table6">
         <tr>
-     <td>
-            <para style="P6">[[ o.conduct or removeParentNode('section') ]]</para>
-         </td>
+            <td>
+              [[repeatIn(print_text_large(o.conduct),'line')]]
+             <para style="P6">[[ line  ]]</para>
+            </td>
         </tr>
       </blockTable>
     </section>

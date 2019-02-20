@@ -68,6 +68,7 @@ class doctor_attention_report_print(report_sxw.rml_parse):
 			'cargar_temperature': self.cargar_temperature,
 			'cargar_spodos': self.cargar_spodos,
 			'esconder_signos_vitales': self.esconder_signos_vitales,
+			'print_text_large': self.print_text_large,
 
 		})
 
@@ -476,7 +477,11 @@ class doctor_attention_report_print(report_sxw.rml_parse):
 		result="Cargando datos..."
 		return result
 
+	def print_text_large(self, cadena):
 
+		data = self.pool.get('doctor.doctor').validation_text_large(cadena)
+
+		return data
 
 report_sxw.report_sxw('report.doctor_attention_report_print', 'doctor.list_report_print',
 					  'addons/l10n_co_doctor/report/doctor_attention_report_print.rml',
