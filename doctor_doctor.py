@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 ##############################################################################
 #
 #   OpenERP, Open Source Management Solution
@@ -248,11 +249,17 @@ class doctor(osv.osv):
 
 	#funcion para retornar la posicion del carater
 	def return_position_character(self, cadena, inicial, final):
-		position=0
-		for x in range(final,inicial, -1):
+		psotion=0
+		for x in range(inicial, final):
+
 			if cadena[x] == ' ':
 				position= x
-				break;
+
+			if cadena[x] == '.':
+				position= x
+
+			if cadena[x] == ',':
+				position= x
 	 
 		return position + 1
 
@@ -262,27 +269,34 @@ class doctor(osv.osv):
 		tamanio=200
 		data_text=[]
 
-		aux_tamanio= 0
+
+		cadena= unicode(cadena)
 		cadena= cadena.encode('utf-8')
+
+
+		aux_tamanio= 0
 		if cadena:
 			if len(cadena) >= 300:
 				while tamanio <= len(cadena):
 					
 					position=self.return_position_character(cadena, aux_tamanio, tamanio)
 
+					print "arreglo[" + str(aux_tamanio) + ":" + str(tamanio) + "]"
 					data_text.append(str(cadena[aux_tamanio:position]))
-					
+
 					aux_tamanio=position
 				
 					tamanio= 200 + aux_tamanio
 
-					if (tamanio+200) > len(cadena):
-						break;
+				if tamanio > len(cadena):
+
+					data_text.append(str(cadena[aux_tamanio:len(cadena)]))
 			else:
 				data_text.append(str(cadena))
 		else:
 			data_text.append("")
 				
+			
 		return data_text
 
 
