@@ -119,7 +119,6 @@ class res_partner_co(osv.osv):
                 ids = list(set(ids))
 
             if not ids:
-                _logger.info("entre")
                 ids = self.search(cr, uid, [('name', operator, name)] + args, limit=limit, context=context)
         else:
             ids = self.search(cr, uid, args, limit=limit, context=context)

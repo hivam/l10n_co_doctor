@@ -62,8 +62,7 @@ tipo_archivo_rips = {
 	'6'  : 'AP',
 	'7'  : 'AT',
 	'8'  : 'AU',
-	'9'  : 'CT',
-	'10' : 'US',
+	'9'  : 'US',
 }
 
 class radicacion_cuentas(osv.osv):
@@ -73,6 +72,14 @@ class radicacion_cuentas(osv.osv):
 	_description='Modelo para la radicacion de cuentas de RIPS'
 	_name ='rips.radicacioncuentas'
 	_rec_name = 'secuencia'
+
+	_AC_num_registros=0
+	_AF_num_registros=0
+	_US_num_registros=0
+	_AP_num_registros=0
+
+	_secuencia=0
+
 
 	def _remove_accents(self, cr, uid, ids, string):
 		"""
@@ -113,9 +120,9 @@ class radicacion_cuentas(osv.osv):
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False, help='Contrato por el que se atiende al cliente.'),
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
 		#atenciones
-		'attentions_ids': fields.one2many('doctor.attentions', 'radicacioncuentas_id', string='Attentions', required=False, ondelete='restrict', states={'done': [('readonly', True)]}),
+		'attentions_ids': fields.one2many('doctor.attentions', 'radicacioncuentas_id', string='Attentions', required=False, ondelete='restrict', states={'confirmed': [('readonly', True)]}),
 		#Facturas
-		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict', states={'done': [('readonly', True)]}),
+		'invoices_ids': fields.one2many('account.invoice', 'radicacioncuentas_id', string='Invoices', required=True, ondelete='restrict', states={'confirmed': [('readonly', True)]}),
 		'numero_radicado' : fields.char(u'N° Radicado', size=200 ),
 		'plano' : fields.binary(string='Archivo RIP'),
 		'plano_nombre' : fields.char('File name', 40, readonly=True),
@@ -132,17 +139,22 @@ class radicacion_cuentas(osv.osv):
 		'valor_total' : fields.float('Valor Total', readonly=True),
 		#Para RIPS directos
 		'rips_directos' : fields.boolean('Rips sin facturas', help=u'Esta opción permite generar Rips sin haber facturado atenciones.'),
-		'cea' : fields.char('C.E.A', help=u'Código de entidad administradora'),
-		'valor_consulta' : fields.char('Valor Consulta'),
-		'tipo_archivo' : fields.selection([('txt','Txt'),('excel','Excel')], u'Formato Exportación', required=False),
+		'inicio_secuencia_facturas' : fields.integer('Inicio Secuencia Facturas', help="Ingrese el número donde debe iniciar el consecutivo de factura ej. 100. Las facturas irán numeradas así: 100,101,102,103 ... etc.", states={'confirmed': [('readonly', True)]}),
+		'cea' : fields.char('C.E.A', help=u'Código de entidad administradora', states={'confirmed': [('readonly', True)]}),
+		'valor_consulta' : fields.float('Valor Consulta', states={'confirmed': [('readonly', True)]}),
+		'tipo_archivo' : fields.selection([('txt','Txt'),('excel','Excel')], u'Formato Exportación', required=False, states={'confirmed': [('readonly', True)]}),
 		#'referencia' : fields.reference('Source Document', required=True, selection=_get_document_types),
 	}
 
 	_defaults = {
 		'f_radicacion' : fields.date.context_today,
 		'state' : 'draft',
-		'rips_tipo_archivo' : [10,1], # 3,10,1,6
-		'rips_directos': False,
+		'rips_tipo_archivo' : [1,3,9],
+		'valor_consulta':0.0,
+		'tipo_archivo':'txt',
+		'rips_directos': True,
+		'inicio_secuencia_facturas':1,
+
 	}
 
 	# def _get_document_types(self, cr, uid, context=None):
@@ -232,34 +244,44 @@ class radicacion_cuentas(osv.osv):
 			except:
 				nombre = 'XX000000.txt'
 
-		_logger.info("======>>")	
-		_logger.info(nombre)
 		get_secuencia = int(nombre[2:8])
 		aumentando_secuencia = '{0:06}'.format(get_secuencia + 1)
 		return aumentando_secuencia
 
-	def getNombreArchivo(self, cr, uid, fileType,extension, context=None):
-		_logger.info("======> filetype = %s" % fileType)
+	def getNumCuenta(self, cr, uid, context=None):
+		"""
+		Este metodo proporciona una secuencia para el registro actual
+		"""
+		try:
+			cr.execute("SELECT id FROM rips_radicacioncuentas order by id desc ")
+			listFetch= cr.fetchall()
+			id_actual= listFetch[0][0]
+			_logger.info(id_actual)			
+		except:
+			_logger.info("Ops! problemas fijando una secuencia para el número de cuenta")
+
 		
+		aumentando_secuencia = '{0:06}'.format(id_actual + 1)
+		return aumentando_secuencia
+
+	def getNombreArchivo(self, cr, uid, fileType,extension, context=None):
+
 		if fileType:
-			if extension == 'txt':
-				nueva_secuencia = fileType + self.getSecuencia(cr,uid) +'.txt'
+			if extension == 'excel':
+				nueva_secuencia = fileType + self._secuencia +'.xlsx'
 				return nueva_secuencia
-			elif extension == 'excel':
-				nueva_secuencia = fileType + self.getSecuencia(cr,uid) +'.xlsx'
+			else:
+				nueva_secuencia = fileType + self._secuencia +'.txt'
 				return nueva_secuencia
 		else:
 			return 'known.txt'
 
 	def generar_rips(self, cr, uid, ids, context=None):
 		
-		for var in self.browse(cr, uid, ids):
-			if not var.rips_tipo_archivo:
-				self.generar_rips_AF(cr, uid, ids, context=None)
-				self.generar_rips_US(cr, uid, ids, context=None)
-				self.generar_rips_AC(cr, uid, ids, context=None)
-				self.generar_rips_AP(cr, uid, ids, context=None)
-			else:
+		self._secuencia = self.getSecuencia(cr, uid)
+
+		for var in self.browse(cr, uid, ids): #en el registro actual de radicacion de cuentas
+			if var.rips_tipo_archivo: # revisamos que archivos rips eligió el usuario de la aplicación y procedemos a generarlo
 				tipo_archivo = var.rips_tipo_archivo
 				for rec in tipo_archivo:
 					generar_archivo = tipo_archivo_rips.get(str(rec.id))
@@ -271,15 +293,20 @@ class radicacion_cuentas(osv.osv):
 						self.generar_rips_AC(cr, uid, ids, context=None)
 					elif generar_archivo == 'AP':
 						self.generar_rips_AP(cr, uid, ids, context=None)
+				self.generar_rips_CT(cr, uid, ids, context=None)	
+			else:
+				raise osv.except_osv(_('Error!'),
+								_(u'Por favor ingrese algo en el campo "Archivos Rips a Generar"'))		
 
 
 	def generar_rips_AP(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
 			archivo = StringIO.StringIO()
 			for factura in var.invoices_ids:
+				self._AP_num_registros= self._AP_num_registros+1
+
 				tipo_archivo = tipo_archivo_rips.get('6')
-				extension= var.tipo_archivo #dice si es excel o txt
-				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo)
 				parent_id = self.getParentid(cr,uid,ids)[0]
 
 				#Acceder a la orden de venta, cita, atencion enlazad@ a la factura
@@ -430,15 +457,63 @@ class radicacion_cuentas(osv.osv):
 		for var in self.browse(cr, uid, ids):
 
 			if var.rips_directos:
-				_logger.info("en desarrollo ...")		
+				archivo = StringIO.StringIO()
+				tipo_archivo = tipo_archivo_rips.get('1')
+				extension= var.tipo_archivo #dice si es excel o txt
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
+				parent_id = self.getParentid(cr,uid,ids)[0]
+				
+				for atencion in var.attentions_ids:
+					self._AC_num_registros = self._AC_num_registros+1
+
+					#***********GET CAMPOS********
+					#Número de la factura
+					if atencion.number:
+						archivo.write(atencion.number+ ',')
+					else:
+						archivo.write(",")
+
+					#Código entidad administradora
+						if var.cea:
+							archivo.write(var.cea+ ',')
+						else:
+							archivo.write(",")
+
+					#Tipo de identificacion del usuario
+				
+					if atencion.patient_id.tdoc:
+						archivo.write(str(tdoc_selection.get(atencion.paciente_tdoc) + ','))
+					else:
+						archivo.write(",")
+
+					#Numero de identificacion del usuario
+					if atencion.ref:
+						archivo.write(atencion.ref+ ',')
+					else:
+						archivo.write(",")
+
+					#fecha de la consulta
+					try:                        
+						fecha_atencion_format =  datetime.strptime(atencion.date_attention, "%Y-%m-%d %H:%M:%S")
+						fecha_atencion_string =  fecha_atencion_format.strftime("%d/%m/%Y")
+						archivo.write(fecha_atencion_string + ',')
+					except Exception, e:
+						archivo.write(',')
+
+					#salto de linea
+					archivo.write('\n')
+
+						
 			else:
 
 				archivo = StringIO.StringIO()
+				tipo_archivo = tipo_archivo_rips.get('1')
+				extension= var.tipo_archivo #dice si es excel o txt
+				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
+				parent_id = self.getParentid(cr,uid,ids)[0]
+				
 				for factura in var.invoices_ids:
-					tipo_archivo = tipo_archivo_rips.get('1')
-					extension= var.tipo_archivo #dice si es excel o txt
-					nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
-					parent_id = self.getParentid(cr,uid,ids)[0]
+					self._AC_num_registros = self._AC_num_registros+1
 
 					#Acceder a la atencion a la que pertenece la factura
 					sale_order = self.pool.get('sale.order').search(cr, uid, [('name', '=', factura.origin)])
@@ -554,6 +629,9 @@ class radicacion_cuentas(osv.osv):
 					except Exception, e:
 						archivo.write(',')
 
+					#salto de linea
+					archivo.write('\n')
+
 
 			output = base64.encodestring(archivo.getvalue())
 			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
@@ -582,15 +660,16 @@ class radicacion_cuentas(osv.osv):
 			if var.rips_directos:
 				archivo = StringIO.StringIO()
 				parent_id = self.getParentid(cr,uid,ids)[0]
-				tipo_archivo = tipo_archivo_rips.get('10')
+				tipo_archivo = tipo_archivo_rips.get('9')
 				extension= var.tipo_archivo #dice si es excel o txt
 				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
-
-				#cr.execute("SELECT login FROM res_users ORDER BY create_date DESC")
-				#listFetch= cr.fetchall()		
 				
 				for atencion in var.attentions_ids:
+
 					if atencion.patient_id.id not in pacientes:
+
+						self._US_num_registros= self._US_num_registros+1
+
 						#Tipo de identificación del usuario
 						if atencion.patient_id.tdoc:
 							archivo.write(str(tdoc_selection.get(atencion.patient_id.tdoc) + ','))
@@ -678,33 +757,16 @@ class radicacion_cuentas(osv.osv):
 						#salto de linea
 						archivo.write('\n')
 
-				output = base64.encodestring(archivo.getvalue())
-				id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
-																				'datas_fname': nombre_archivo,
-																				'type': 'binary',
-																				'datas': output,
-																				'parent_id' : parent_id,
-																				'res_model' : 'rips.radicacioncuentas',
-																				'res_id' : ids[0]},
-																				context= context)
-
-				for actual in self.browse(cr, uid, ids):
-					self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
-																	  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
-																	 'nombre_archivo': nombre_archivo,
-																	 'f_inicio_radicacion': actual.rangofacturas_desde,
-																	 'f_fin_radicacion' : actual.rangofacturas_hasta,
-																	 'archivo' : output}, context=context)
-
-						
 			else:
 				archivo = StringIO.StringIO()
 				for factura in var.invoices_ids:
+
 					if factura.patient_id.id not in pacientes:
+						self._US_num_registros= self._US_num_registros+1
+
 						tipo_archivo = tipo_archivo_rips.get('10')
 						extension= var.tipo_archivo #dice si es excel o txt
 						nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
-						_logger.info("nombre archivo ==> %s" % s)
 						parent_id = self.getParentid(cr,uid,ids)[0]
 						#***********GET CAMPOS********
 						#Tipo de identificación del usuario
@@ -788,8 +850,10 @@ class radicacion_cuentas(osv.osv):
 						pacientes.append(factura.patient_id.id)
 						#salto de linea
 						archivo.write('\n')
-				output = base64.encodestring(archivo.getvalue())
-				id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+
+
+			output = base64.encodestring(archivo.getvalue())
+			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
 																				'datas_fname': nombre_archivo,
 																				'type': 'binary',
 																				'datas': output,
@@ -797,113 +861,218 @@ class radicacion_cuentas(osv.osv):
 																				'res_model' : 'rips.radicacioncuentas',
 																				'res_id' : ids[0]},
 																				context= context)
-				for actual in self.browse(cr, uid, ids):
-					self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
-																	  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
-																	 'nombre_archivo': nombre_archivo,
-																	 'f_inicio_radicacion': actual.rangofacturas_desde,
-																	 'f_fin_radicacion' : actual.rangofacturas_hasta,
-																	 'archivo' : output}, context=context)  
+			for actual in self.browse(cr, uid, ids):
+				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
+															'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
+															'nombre_archivo': nombre_archivo,
+															'f_inicio_radicacion': actual.rangofacturas_desde,
+															'f_fin_radicacion' : actual.rangofacturas_hasta,
+															'archivo' : output}, context=context)  
 				
 		return True
 
 	def generar_rips_AF(self, cr, uid, ids, context=None):
 		for var in self.browse(cr, uid, ids):
+
+			tipo_archivo = tipo_archivo_rips.get('3')
+			extension= var.tipo_archivo #dice si es excel o txt
+			nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
+			parent_id = self.getParentid(cr,uid,ids)[0]
 			archivo = StringIO.StringIO()
-			for factura in var.invoices_ids:
-				tipo_archivo = tipo_archivo_rips.get('3')
-				extension= var.tipo_archivo #dice si es excel o txt
-				nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
-				parent_id = self.getParentid(cr,uid,ids)[0]
+			consecutivo_factura = var.inicio_secuencia_facturas
 
-				#***********GET CAMPOS********
-				todos = self.pool.get('res.company').search(cr, uid, [])
-				invoices = self.pool.get('account.invoice')
-				company_id = self.pool.get('res.company').browse(cr, uid, todos[0])
-				cod_prestadorservicio = company_id.cod_prestadorservicio
-				#company_id
-				if cod_prestadorservicio:
-					archivo.write( cod_prestadorservicio + ',')
-				else:
-					raise osv.except_osv(_('Error!'),
-							_(u'El campo codigo prestador de servicio de la compañia está vacío.'))
+			if var.rips_directos:
 
-				#Razon social o apellidos y nombre del prestador de servicios
-				nombre_prestadorservicio = company_id.partner_id.name
-				archivo.write( nombre_prestadorservicio + ',')
-				#Tipo de identificación
-				tdoc_prestadorservicio = company_id.partner_id.tdoc
-				tdoc_nombre = tdoc_selection.get(tdoc_prestadorservicio)
-				archivo.write( tdoc_nombre + ',')
-				#Número de identificación
-				if company_id.partner_id.ref:
-					nro_identificacion = company_id.partner_id.ref
-				else:
-					raise osv.except_osv(_('Error!'),
-							_(u'El campo N° de Identificacion del tercero que corresponde a la compañia está vacío.'))
+				for atencion in var.attentions_ids:
+					self._AF_num_registros= self._AF_num_registros+1
 
-				archivo.write( nro_identificacion + ',')
-				#Número de la factura
-				numero_factura = factura.number
-				if numero_factura:
-					archivo.write( numero_factura + ',')
-				else:
-					archivo.write( '0' + ',')
-				#Fecha expedición de la factura
-				fecha_exp_factura = factura.date_invoice
-				fecha_exp_factura_date= datetime.strptime(fecha_exp_factura, "%Y-%m-%d")
-				fecha_exp_factura_string = fecha_exp_factura_date.strftime("%d/%m/%Y")
-				archivo.write( fecha_exp_factura_string + ',')
-			
-				#Fecha inicio Radicacion Cuentas
-				f_inicioradicacion= var.rangofacturas_desde 
-				f_inicioradicacion_format =  datetime.strptime(f_inicioradicacion, "%Y-%m-%d")
-				f_inicioradicacion_string = f_inicioradicacion_format.strftime("%d/%m/%Y")
-				archivo.write(f_inicioradicacion_string + ',')
-				#Fecha fin Radicacion Cuentas
-				f_finradicacion= var.rangofacturas_hasta 
-				f_finradicacion_format = datetime.strptime(f_inicioradicacion, "%Y-%m-%d")
-				f_finradicacion_string = f_finradicacion_format.strftime("%d/%m/%Y")
-				archivo.write(f_finradicacion_string + ',')
-				#codigo aseguradora
-				archivo.write( var.cliente_id.code + ',')
-				#nombre aseguradora
-				aux = var.cliente_id.insurer.name
-				nombre_aseguradora = self._remove_accents(cr, uid, ids, aux)
-				archivo.write(nombre_aseguradora.decode('utf-8', 'ignore') + ',')
-				#Numero de contrato
-				if var.contrato_id.contract_code:   
-					archivo.write( var.contrato_id.contract_code + ',')
-				else:
-					archivo.write(',')
-				#plan de beneficios
-				if var.tipo_usuario_id:
-					archivo.write((var.tipo_usuario_id.name).upper() + ',')
-				else:
-					archivo.write(',')
-				#Numero de poliza
-				if factura.patient_id.eps_predeterminada:
-					if factura.patient_id.nro_afiliacion != False:
-						archivo.write(factura.patient_id.nro_afiliacion+',')
+					#***********GET CAMPOS********
+					todos = self.pool.get('res.company').search(cr, uid, [])
+					invoices = self.pool.get('account.invoice')
+					company_id = self.pool.get('res.company').browse(cr, uid, todos[0])
+					cod_prestadorservicio = company_id.cod_prestadorservicio
+
+					#company_id
+					if cod_prestadorservicio:
+						archivo.write( cod_prestadorservicio + ',')
+					else:
+						raise osv.except_osv(_('Error!'),
+								_(u'El campo codigo prestador de servicio de la compañia está vacío.'))
+
+					#Razon social o apellidos y nombre del prestador de servicios
+					nombre_prestadorservicio = company_id.partner_id.name
+					if nombre_prestadorservicio:
+						archivo.write( nombre_prestadorservicio + ',')
 					else:
 						archivo.write(',')
-				elif factura.patient_id.prepagada_predeterminada:
-					if factura.patient_id.numero_poliza_afiliacion != False:
-						archivo.write(factura.patient_id.numero_poliza_afiliacion+',')
+
+					#Tipo de identificación de entidad prestadora de servicio
+					tdoc_prestadorservicio = company_id.partner_id.tdoc
+					tdoc_nombre = tdoc_selection.get(tdoc_prestadorservicio)
+					if tdoc_nombre:
+						archivo.write( tdoc_nombre + ',')
 					else:
 						archivo.write(',')
-				#valor total del pago copmartido (valor paciente)
-				archivo.write( str(format(factura.amount_patient, '.2f')) + ',')
-				#valor de comision
-				archivo.write(str(format(0,'.2f')) + ',')
-				#valor total de descuentos
-				archivo.write(str(format(0,'.2f')) + ',')
-				#valor neto a pagar por la entidad contratante
-				archivo.write( str(format(factura.amount_total, '.2f')))                                                            
-				#salto de linea
-				archivo.write('\n')
-				# actualizar factura a radicada
-				invoices.write(cr, uid, factura.id, {'radicada' : True})
+
+					#Número de identificación
+					if company_id.partner_id.ref:
+						nro_identificacion = company_id.partner_id.ref
+						archivo.write( nro_identificacion + ',')
+					else:
+						raise osv.except_osv(_('Error!'),
+								_(u'El campo N° de Identificacion del tercero que corresponde a la compañia está vacío.'))
+
+					#Número de la factura
+					archivo.write( str(consecutivo_factura) + ',')
+					consecutivo_factura = consecutivo_factura+1 
+
+					#Fecha expedición de la factura (misma fecha de la atención)
+					if atencion.date_attention:
+						date_attention = atencion.date_attention
+						fecha_exp_factura_date= datetime.strptime(date_attention, "%Y-%m-%d %H:%M:%S")
+						fecha_exp_factura_string = fecha_exp_factura_date.strftime("%d/%m/%Y")
+						archivo.write( fecha_exp_factura_string + ',')
+					else:
+						archivo.write(',')
+
+					#Fecha inicio Radicacion Cuentas
+					f_inicioradicacion= var.rangofacturas_desde 
+					f_inicioradicacion_format =  datetime.strptime(f_inicioradicacion, "%Y-%m-%d")
+					f_inicioradicacion_string = f_inicioradicacion_format.strftime("%d/%m/%Y")
+					archivo.write(f_inicioradicacion_string + ',')
+
+					#Fecha fin Radicacion Cuentas
+					f_finradicacion= var.rangofacturas_hasta 
+					f_finradicacion_format = datetime.strptime(f_finradicacion, "%Y-%m-%d")
+					f_finradicacion_string = f_finradicacion_format.strftime("%d/%m/%Y")
+					archivo.write(f_finradicacion_string + ',')
+
+					#codigo aseguradora
+					archivo.write( var.cliente_id.code + ',')
+
+					#nombre aseguradora (no requerido)
+					archivo.write(',')
+
+					#Numero de contrato (no requerido)
+					archivo.write(',')
+
+					#plan de beneficios (no requerido)
+					archivo.write(',')
+
+					#Numero de poliza (no requerido)
+					archivo.write(',') 
+
+					#valor total del pago compartido (valor paciente)
+					archivo.write( str(0.0) + ',')
+
+					#valor de comision (no requerido)
+					archivo.write(',')
+
+					#valor total de descuentos
+					archivo.write(',')
+
+					#valor neto a pagar por la entidad contratante
+					if var.valor_consulta:
+						archivo.write(str(var.valor_consulta) + ',')	
+					else:
+						archivo.write(str(0.0) + ',')	
+
+					#salto de linea
+					archivo.write('\n')
+
+			else:
+
+				for factura in var.invoices_ids:
+					self._AF_num_registros= self._AF_num_registros+1
+
+					#***********GET CAMPOS********
+					todos = self.pool.get('res.company').search(cr, uid, [])
+					invoices = self.pool.get('account.invoice')
+					company_id = self.pool.get('res.company').browse(cr, uid, todos[0])
+					cod_prestadorservicio = company_id.cod_prestadorservicio
+					#company_id
+					if cod_prestadorservicio:
+						archivo.write( cod_prestadorservicio + ',')
+					else:
+						raise osv.except_osv(_('Error!'),
+								_(u'El campo codigo prestador de servicio de la compañia está vacío.'))
+
+					#Razon social o apellidos y nombre del prestador de servicios
+					nombre_prestadorservicio = company_id.partner_id.name
+					archivo.write( nombre_prestadorservicio + ',')
+					#Tipo de identificación
+					tdoc_prestadorservicio = company_id.partner_id.tdoc
+					tdoc_nombre = tdoc_selection.get(tdoc_prestadorservicio)
+					archivo.write( tdoc_nombre + ',')
+					#Número de identificación
+					if company_id.partner_id.ref:
+						nro_identificacion = company_id.partner_id.ref
+						archivo.write( nro_identificacion + ',')
+					else:
+						raise osv.except_osv(_('Error!'),
+								_(u'El campo N° de Identificacion del tercero que corresponde a la compañia está vacío.'))
+					
+					#Número de la factura
+					numero_factura = factura.number
+					if numero_factura:
+						archivo.write( numero_factura[-4:] + ',')
+					else:
+						archivo.write( '0' + ',')
+					#Fecha expedición de la factura
+					fecha_exp_factura = factura.date_invoice
+					fecha_exp_factura_date= datetime.strptime(fecha_exp_factura, "%Y-%m-%d")
+					fecha_exp_factura_string = fecha_exp_factura_date.strftime("%d/%m/%Y")
+					archivo.write( fecha_exp_factura_string + ',')
+				
+					#Fecha inicio Radicacion Cuentas
+					f_inicioradicacion= var.rangofacturas_desde 
+					f_inicioradicacion_format =  datetime.strptime(f_inicioradicacion, "%Y-%m-%d")
+					f_inicioradicacion_string = f_inicioradicacion_format.strftime("%d/%m/%Y")
+					archivo.write(f_inicioradicacion_string + ',')
+					#Fecha fin Radicacion Cuentas
+					f_finradicacion= var.rangofacturas_hasta 
+					f_finradicacion_format = datetime.strptime(f_finradicacion, "%Y-%m-%d")
+					f_finradicacion_string = f_finradicacion_format.strftime("%d/%m/%Y")
+					archivo.write(f_finradicacion_string + ',')
+					#codigo aseguradora
+					archivo.write( var.cliente_id.code + ',')
+					#nombre aseguradora
+					aux = var.cliente_id.insurer.name
+					nombre_aseguradora = self._remove_accents(cr, uid, ids, aux)
+					archivo.write(nombre_aseguradora.decode('utf-8', 'ignore') + ',')
+					#Numero de contrato
+					if var.contrato_id.contract_code:   
+						archivo.write( var.contrato_id.contract_code + ',')
+					else:
+						archivo.write(',')
+					#plan de beneficios
+					if var.tipo_usuario_id:
+						archivo.write((var.tipo_usuario_id.name).upper() + ',')
+					else:
+						archivo.write(',')
+					#Numero de poliza
+					if factura.patient_id.eps_predeterminada:
+						if factura.patient_id.nro_afiliacion != False:
+							archivo.write(factura.patient_id.nro_afiliacion+',')
+						else:
+							archivo.write(',')
+					elif factura.patient_id.prepagada_predeterminada:
+						if factura.patient_id.numero_poliza_afiliacion != False:
+							archivo.write(factura.patient_id.numero_poliza_afiliacion+',')
+						else:
+							archivo.write(',')
+					#valor total del pago compartido (valor paciente)
+					archivo.write( str(format(factura.amount_patient, '.2f')) + ',')
+					#valor de comision
+					archivo.write(str(format(0,'.2f')) + ',')
+					#valor total de descuentos
+					archivo.write(str(format(0,'.2f')) + ',')
+					#valor neto a pagar por la entidad contratante
+					archivo.write( str(format(factura.amount_total, '.2f')))                                                            
+					#salto de linea
+					archivo.write('\n')
+					# actualizar factura a radicada
+					invoices.write(cr, uid, factura.id, {'radicada' : True})
 
 
 			output = base64.encodestring(archivo.getvalue())
@@ -924,8 +1093,81 @@ class radicacion_cuentas(osv.osv):
 																 'archivo' : output}, context=context)
 		return True
 
+
+	def generar_rips_CT(self, cr, uid, ids, context=None):
+		for var in self.browse(cr, uid, ids):
+
+			tipo_archivo = "CT"
+			extension= var.tipo_archivo #dice si es excel o txt
+			nombre_archivo = self.getNombreArchivo(cr,uid,tipo_archivo,extension)
+			parent_id = self.getParentid(cr,uid,ids)[0]
+			archivo = StringIO.StringIO()
+			consecutivo_factura = var.inicio_secuencia_facturas
+
+			if var.rips_directos:			
+
+				for rips in var.rips_tipo_archivo:
+
+						
+					#***********GET CAMPOS********
+					todos = self.pool.get('res.company').search(cr, uid, [])
+					company_id = self.pool.get('res.company').browse(cr, uid, todos[0])
+					cod_prestadorservicio = company_id.cod_prestadorservicio
+
+					#company_id
+					if cod_prestadorservicio:
+						archivo.write( cod_prestadorservicio + ',')
+					else:
+						raise osv.except_osv(_('Error!'),
+								_(u'El campo codigo prestador de servicio de la compañia está vacío.'))
+
+					#fecha remisión de datos
+					hoy = str(datetime.utcnow().date()- timedelta(hours=5))
+					f_format = datetime.strptime(hoy, "%Y-%m-%d")
+					f_string = f_format.strftime("%d/%m/%Y")
+					archivo.write(f_string + ',')
+
+					#Obtener los archivos rips generados para esta radicación de cuentas
+					nombre_archivo_rips = tipo_archivo_rips.get(str(rips.id))
+					archivo.write(nombre_archivo_rips + ',')
+
+
+					#averiguar cual es el archivo rips de esta iteracion
+					if nombre_archivo_rips == 'AF':
+						archivo.write(str(self._AF_num_registros) + ',')
+					elif nombre_archivo_rips == 'US':
+						archivo.write(str(self._US_num_registros) + ',')
+					elif nombre_archivo_rips == 'AC':
+						archivo.write(str(self._AC_num_registros) + ',')
+					elif nombre_archivo_rips == 'AP':
+						archivo.write(str(self._AP_num_registros) + ',') 
+
+					#salto de linea
+					archivo.write('\n')
+
+			output = base64.encodestring(archivo.getvalue())
+			id_attachment = self.pool.get('ir.attachment').create(cr, uid, {'name': nombre_archivo , 
+																			'datas_fname': nombre_archivo,
+																			'type': 'binary',
+																			'datas': output,
+																			'parent_id' : parent_id,
+																			'res_model' : 'rips.radicacioncuentas',
+																			'res_id' : ids[0]},
+																			context= context)
+			for actual in self.browse(cr, uid, ids):
+				self.pool.get('rips.generados').create(cr, uid, {'radicacioncuentas_id': ids[0],
+																  'f_generacion': self._date_to_dateuser(cr,uid, date.today().strftime("%Y-%m-%d %H:%M:%S")),
+																 'nombre_archivo': nombre_archivo,
+																 'f_inicio_radicacion': actual.rangofacturas_desde,
+																 'f_fin_radicacion' : actual.rangofacturas_hasta,
+																 'archivo' : output}, context=context)
+
+
+		return True
+
+
 	def create(self, cr, uid, vals, context=None):
-		vals.update({'secuencia': self.getSecuencia(cr,uid), 'state': 'draft'})
+		vals.update({'secuencia': self.getNumCuenta(cr,uid, context=None), 'state': 'draft'})
 		if not vals['rips_directos'] and not vals['invoices_ids']:
 			raise osv.except_osv(_('Atención!'),
 							_('No se puede guardar esta radicación. No hay facturas o Atenciones para radicar.'))
