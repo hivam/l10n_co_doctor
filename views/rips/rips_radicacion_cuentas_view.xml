@@ -20,8 +20,8 @@
             <field name="secuencia" style="width: 30%%" class="oe_inline" attrs="{'invisible': [('id','=', False)]}"/>
             <label for="tipo_usuario_id" string="Tipo Usuario" class="left-margin10"/>
             <field name="tipo_usuario_id" style="width: 40%%" class="oe_inline" on_change="onchange_tipousuario(tipo_usuario_id)"/>
-            <label for="f_radicacion" string="Fecha Radicación" class="left-margin10"/>
-            <field name="f_radicacion" class="oe_inline"/>
+            <label for="f_radicacion" string="Fecha Radicación" class="left-margin10" />
+            <field name="f_radicacion" class="oe_inline" attrs="{'readonly': [('state','=','confirmed')]}"/>
             <label for="rips_tipo_archivo" string="Archivos Rips a Generar" class="left-margin10" attrs="{'invisible': [('rips_tipo_archivo','=', False)]}"/>
             <field name="rips_tipo_archivo" widget="many2many_tags" class="oe_inline" />
           </div>
@@ -31,7 +31,7 @@
           <div>  
             <h2>
               <label for="cliente_id"  attrs="{'invisible': [('tipo_usuario_id','=','particular')],}" string="Cliente" class="left-margin10"/>
-              <field name="cliente_id" style="width: 80%%" domain="[]" on_change="onchange_contrato(cliente_id)" attrs="{'readonly': [('tipo_usuario_id','=','particular')], 'required': [('tipo_usuario_id','!=','particular')]}"/>
+              <field name="cliente_id" style="width: 80%%" domain="[]" on_change="onchange_contrato(cliente_id)" attrs="{'readonly': ['|',('tipo_usuario_id','=','particular'),('state','=','confirmed')], 'required': [('tipo_usuario_id','!=','particular')]}"/>
             </h2>
           </div>
           <div>
@@ -52,9 +52,9 @@
               <legend attrs="{'invisible':[('rips_directos', '=', True)]}" class="texto_legend">Rango de Facturas</legend>
               <field name="id" invisible="1"/>
               <label for="rangofacturas_desde" string="Desde"/>
-              <field name="rangofacturas_desde" class="oe_inline"/>
+              <field name="rangofacturas_desde" class="oe_inline" attrs="{'readonly': [('state','=','confirmed')]}"/>
               <label for="rangofacturas_hasta" string="Hasta" class="left-margin10"/>
-              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices_or_attentions(cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos)" context=""/>
+              <field name="rangofacturas_hasta" class="oe_inline" on_change="get_invoices_or_attentions(cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos)" attrs="{'readonly': [('state','=','confirmed')]}" context=""/>
             </fieldset>
             <group col="4" attrs="{'invisible':[('rips_directos', '=', True)]}">
               <field name="numero_radicado"/>

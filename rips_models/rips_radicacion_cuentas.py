@@ -117,7 +117,7 @@ class radicacion_cuentas(osv.osv):
 	_columns = {
 		'cantidad_factura' : fields.integer('Cantidad facturas', readonly=True),
 		'cliente_id': fields.many2one('doctor.insurer', 'Cliente', required=False, help='Aseguradora'),
-		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False, help='Contrato por el que se atiende al cliente.'),
+		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False, help='Contrato por el que se atiende al cliente.', states={'confirmed': [('readonly', True)]}),
 		'f_radicacion' : fields.date('Fecha Radicación', required=True),
 		#atenciones
 		'attentions_ids': fields.one2many('doctor.attentions', 'radicacioncuentas_id', string='Attentions', required=False, ondelete='restrict', states={'confirmed': [('readonly', True)]}),
@@ -130,12 +130,12 @@ class radicacion_cuentas(osv.osv):
 		'rangofacturas_hasta' : fields.date('Hasta', required=True),
 		#Rips
 		'rips_ids': fields.one2many('rips.generados', 'radicacioncuentas_id', string='RIPS', required=True, ondelete='restrict'),
-		'rips_tipo_archivo' : fields.one2many('rips.tipo.archivo','radicacioncuentas_id','Tipo Archivo', required=False),
+		'rips_tipo_archivo' : fields.one2many('rips.tipo.archivo','radicacioncuentas_id','Tipo Archivo', states={'confirmed': [('readonly', True)]}),
 		
 		'saldo' : fields.float('Saldo', readonly=True),
-		'secuencia' : fields.char(u'Cuenta N°', size=200 ),
+		'secuencia' : fields.char(u'Cuenta N°', size=200, readonly=True ),
 		'state': fields.selection([('draft','Borrador'),('confirmed','Confirmado'),('validated', 'Validado')], 'Status', readonly=True, required=False),
-		'tipo_usuario_id' : fields.selection([('contributivo','Contributivo'),('subsidiado','Subsidiado'), ('vinculado','Vinculado'), ('particular','Particular'), ('otro','Otro'), ('todos','Todos')], u'Tipo Usuario', required=True),
+		'tipo_usuario_id' : fields.selection([('contributivo','Contributivo'),('subsidiado','Subsidiado'), ('vinculado','Vinculado'), ('particular','Particular'), ('otro','Otro'), ('todos','Todos')], u'Tipo Usuario', required=True, states={'confirmed': [('readonly', True)]}),
 		'valor_total' : fields.float('Valor Total', readonly=True),
 		#Para RIPS directos
 		'rips_directos' : fields.boolean('Rips sin facturas', help=u'Esta opción permite generar Rips sin haber facturado atenciones.'),
@@ -256,8 +256,11 @@ class radicacion_cuentas(osv.osv):
 			cr.execute("SELECT id FROM rips_radicacioncuentas order by id desc ")
 			listFetch= cr.fetchall()
 			id_actual= listFetch[0][0]
+			id_actual = int(id_actual[2:6])
 			_logger.info(id_actual)			
 		except:
+			id_actual = '000000XX.txt'
+			id_actual = int(id_actual[2:6])
 			_logger.info("Ops! problemas fijando una secuencia para el número de cuenta")
 
 		
@@ -465,22 +468,24 @@ class radicacion_cuentas(osv.osv):
 				
 				for atencion in var.attentions_ids:
 					self._AC_num_registros = self._AC_num_registros+1
+					
 
 					#***********GET CAMPOS********
+					#obtener la cita que pertenece a la atención
+
 					#Número de la factura
-					if atencion.number:
-						archivo.write(atencion.number+ ',')
+					if atencion.number: 
+						archivo.write(str(atencion.number[-4:])+ ',')
 					else:
 						archivo.write(",")
 
 					#Código entidad administradora
-						if var.cea:
-							archivo.write(var.cea+ ',')
-						else:
-							archivo.write(",")
+					if var.cea:
+						archivo.write(var.cea+ ',')
+					else:
+						archivo.write(",")	
 
 					#Tipo de identificacion del usuario
-				
 					if atencion.patient_id.tdoc:
 						archivo.write(str(tdoc_selection.get(atencion.paciente_tdoc) + ','))
 					else:
@@ -499,6 +504,107 @@ class radicacion_cuentas(osv.osv):
 						archivo.write(fecha_atencion_string + ',')
 					except Exception, e:
 						archivo.write(',')
+
+					#numero de autorizacion
+					try:
+						appointment = self.pool.get('doctor.appointment').search(cr, uid, [('origin', '=', atencion.origin)])
+						appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointment)])
+						codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].nro_autorizacion
+						archivo.write(codigo_consulta + ',')
+					except Exception, e:
+						archivo.write(',')					
+
+					#codigo de la consulta (CUPS)
+					try:
+						appointment = self.pool.get('doctor.appointment').search(cr, uid, [('origin', '=', atencion.origin)])
+						realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointment)[0].realiza_procedimiento
+						if realiza_procedimiento == False:
+							appointment = self.pool.get('doctor.appointment').search(cr, uid, [('origin', '=', atencion.origin)])
+							appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointment)])
+							codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].procedures_id.procedure_code
+							archivo.write(codigo_consulta + ",")
+					except:
+						archivo.write(',')
+
+
+					#finalidad de consulta
+					try:
+						finalidad_consulta = atencion.finalidad_consulta
+						archivo.write(finalidad_consulta + ',')
+					except Exception, e:
+						archivo.write(',')
+
+					#causa externa
+					try:
+						causa_externa = atencion.causa_externa
+						archivo.write(causa_externa + ',')
+					except Exception, e:
+						archivo.write(',')
+
+					#codigo de diagnóstico principal
+					try:
+						pronosticos_ids = atencion.diseases_ids
+						for rec in pronosticos_ids:
+							principal = rec.diseases_type
+							if principal == 'main':
+								archivo.write(rec.diseases_id.code +',')
+								break
+							else:
+								archivo.write(',')
+								break
+					except:
+						archivo.write(',')
+
+					#Codigo del diagnóstico relacionado 1
+					archivo.write(',')
+
+					#Codigo del diagnóstico relacionado 2
+					archivo.write(',')	
+
+					#Codigo del diagnóstico relacionado 3
+					archivo.write(',')
+
+					#tipo de diagnóstico principal
+					try:
+						diagnostico_ids = atencion.diseases_ids
+						res = 0
+						for rec in diagnostico_ids:
+							principal = rec.diseases_type
+
+							if principal == 'main':
+								diagnostico = rec.status
+
+								if diagnostico == 'presumptive':
+									res = 1
+								elif diagnostico == 'confirm':
+									res = 2
+								elif diagnostico == 'recurrent':
+									res = 3
+								
+								archivo.write(str(res) +',')	
+								break
+							else:
+								archivo.write(',')
+					except:
+						archivo.write(',')
+
+					#Valor de la consulta
+					if var.valor_consulta:
+						archivo.write(str(var.valor_consulta) + ',')	
+					else:
+						archivo.write(str(0.0) + ',')	
+
+					#valor del copago del paciente
+					try:
+						archivo.write(str(0.0)+ ',')
+					except:
+						archivo.write(',')
+
+					#valor neto a pagar
+					if var.valor_consulta:
+						archivo.write(str(var.valor_consulta) + ',')	
+					else:
+						archivo.write(str(0.0) + ',')	
 
 					#salto de linea
 					archivo.write('\n')
@@ -525,7 +631,7 @@ class radicacion_cuentas(osv.osv):
 					#***********GET CAMPOS********
 					#Número de la factura
 					if factura.number:
-						archivo.write(factura.number+ ',')
+						archivo.write(str(factura.number[-4:])+ ',')
 					else:
 						archivo.write(",")
 					#codigo del prestador de servicios de salud
@@ -571,7 +677,7 @@ class radicacion_cuentas(osv.osv):
 						codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].procedures_id.procedure_code
 						archivo.write(codigo_consulta + ",")
 					else:
-						return
+						archivo.write(',')
 					#finalidad de la consulta
 					try:
 						finalidad_consulta = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].finalidad_consulta
@@ -593,18 +699,46 @@ class radicacion_cuentas(osv.osv):
 							principal = rec.diseases_type
 							if principal == 'main':
 								archivo.write(rec.diseases_id.code +',')
+								break
 					except Exception, e:
 						archivo.write(',')
 						
-					#Codigo del diagnósticos relacionados
+					#Codigo del diagnóstico relacionado 1
 					try:
 						pronosticos_ids = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].diseases_ids
 						for rec in pronosticos_ids:
-							principal = rec.diseases_type
-							if principal == 'related':
+							relacionado = rec.diseases_type
+							if relacionado == 'related':
 								archivo.write(rec.diseases_id.code +',')
-					except Exception, e:
-						pass
+					except:
+						archivo.write(',')
+
+					#Codigo del diagnóstico relacionado 2
+					archivo.write(',')	
+
+					#Codigo del diagnóstico relacionado 3
+					archivo.write(',')
+
+					#tipo de diagnóstico principal
+					try:
+						diagnostico_ids = self.pool.get('doctor.attentions').browse(cr, uid, doctor_attentions)[0].diseases_ids
+						res = 0
+						for rec in diagnostico_ids:
+							principal = rec.diseases_type
+							if principal == 'main':
+								tipo_diagnostico = rec.diseases_id.status
+								if tipo_diagnostico == 'presumptive':
+									res = 1
+									break
+								elif tipo_diagnostico == 'confirm':
+									res = 2
+									break
+								elif tipo_diagnostico == 'recurrent':
+									res = 3
+									break
+						archivo.write(res +',')		
+					except:
+						archivo.write(',')
 
 					#Valor de la consulta
 					try:
@@ -625,7 +759,7 @@ class radicacion_cuentas(osv.osv):
 					#valor neto a pagar
 					try:
 						valor_neto= factura.residual
-						archivo.write(str(valor_neto))
+						archivo.write(str(valor_neto-copago_paciente))
 					except Exception, e:
 						archivo.write(',')
 
