@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-##############################################################################
-#
-#    OpenERP, Open Source Management Solution
+penERP, Open Source Management Solution
 #    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -44,9 +41,8 @@ class doctor_attentions_co_inherit(osv.osv):
 		if not peso or not talla:
 			imc = 0.00 
 		try:
-			if peso and talla:
-				imc = (peso / (( talla / 100.0  ) ** 2 ))	
-				superficie_corporal= self.calcular_superficie_corporal(cr, uid, ids, peso, talla)
+			imc = (peso / (( talla / 100.0  ) ** 2 ))	
+			superficie_corporal= self.calcular_superficie_corporal(cr, uid, ids, peso, talla)
 		except:
 			_logger.info("error en la función onchange_calcularImc [doctor_attentions_co_inherit.py]")	
 		res['value']['body_mass_index'] = imc
@@ -104,6 +100,7 @@ class doctor_attentions_co_inherit(osv.osv):
 			type = 'char',
 			string = 'Documento identidad', readonly  = True),  
 		'interpretacion_imc' : fields.char(u'Interpretación', size=80, help=u'Interpretación de indice de masa corporal.', states={'closed': [('readonly', True)]}),
+		'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Cuenta'),
 	}
 
 doctor_attentions_co_inherit()
