@@ -451,6 +451,20 @@ class doctor_patient_co(osv.osv):
 
 	def write(self, cr, uid, ids, vals, context=None):
 		vals['ver_nc'] = False
+		patient_data = self.browse(cr,uid,ids)[0]
+		partner = patient_data.patient.id 
+
+		if 'ref' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'ref': vals['ref']})
+		if 'tdoc' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'tdoc': vals['tdoc']})
+		if 'email' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'email': vals['email']})
+		if 'telefono' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'phone': vals['telefono']})
+		if 'movil' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'mobile': vals['movil']})
+
 		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
 	_defaults = {
