@@ -257,11 +257,9 @@ class radicacion_cuentas(osv.osv):
 			listFetch= cr.fetchall()
 			id_actual= listFetch[0][0]
 			id_actual = int(id_actual[2:6])
-			_logger.info(id_actual)			
 		except:
 			id_actual = '000000XX.txt'
 			id_actual = int(id_actual[2:6])
-			_logger.info("Ops! problemas fijando una secuencia para el número de cuenta")
 
 		
 		aumentando_secuencia = '{0:06}'.format(id_actual + 1)
@@ -516,16 +514,20 @@ class radicacion_cuentas(osv.osv):
 
 					#codigo de la consulta (CUPS)
 					try:
-						appointment = self.pool.get('doctor.appointment').search(cr, uid, [('origin', '=', atencion.origin)])
-						realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointment)[0].realiza_procedimiento
-						if realiza_procedimiento == False:
-							appointment = self.pool.get('doctor.appointment').search(cr, uid, [('origin', '=', atencion.origin)])
+						appointment = self.pool.get('doctor.appointment').search(cr, uid, [('number', '=', atencion.origin)])
+						realiza_procedimiento = self.pool.get('doctor.appointment').browse(cr, uid, appointment)
+						
+						if  realiza_procedimiento[0].realiza_procedimiento != False:
+							archivo.write(str(realiza_procedimiento[0].realiza_procedimiento)+",")
+						else:
+							appointment = self.pool.get('doctor.appointment').search(cr, uid, [('number', '=', atencion.origin)])
 							appointment_id = self.pool.get('doctor.appointment.procedures').search(cr, uid, [('appointment_id', 'in', appointment)])
-							codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)[0].procedures_id.procedure_code
-							archivo.write(codigo_consulta + ",")
+							codigo_consulta = self.pool.get('doctor.appointment.procedures').browse(cr, uid, appointment_id)
+							if  codigo_consulta != False: #si hay código de consulta 
+								archivo.write(codigo_consulta[0].procedures_id.procedure_code + ",")								
 					except:
-						archivo.write(',')
-
+						archivo.write('890201' + ",")
+						
 
 					#finalidad de consulta
 					try:
@@ -543,17 +545,18 @@ class radicacion_cuentas(osv.osv):
 
 					#codigo de diagnóstico principal
 					try:
+						pronostico_elegido = None
 						pronosticos_ids = atencion.diseases_ids
 						for rec in pronosticos_ids:
-							principal = rec.diseases_type
-							if principal == 'main':
+							tipo_pronostico = rec.diseases_type
+							if tipo_pronostico == 'main':
 								archivo.write(rec.diseases_id.code +',')
+								pronostico_elegido = rec.diseases_id.code
 								break
-							else:
-								archivo.write(',')
-								break
+						if not pronostico_elegido:
+							archivo.write('Z00'+ ',')	
 					except:
-						archivo.write(',')
+						archivo.write('Z00'+ ',')
 
 					#Codigo del diagnóstico relacionado 1
 					archivo.write(',')
@@ -567,7 +570,7 @@ class radicacion_cuentas(osv.osv):
 					#tipo de diagnóstico principal
 					try:
 						diagnostico_ids = atencion.diseases_ids
-						res = 0
+						res = None
 						for rec in diagnostico_ids:
 							principal = rec.diseases_type
 
@@ -576,23 +579,29 @@ class radicacion_cuentas(osv.osv):
 
 								if diagnostico == 'presumptive':
 									res = 1
+									archivo.write(str(res) +',')
+									break
 								elif diagnostico == 'confirm':
 									res = 2
+									archivo.write(str(res) +',')
+									break
 								elif diagnostico == 'recurrent':
 									res = 3
-								
-								archivo.write(str(res) +',')	
-								break
-							else:
-								archivo.write(',')
+									archivo.write(str(res) +',')
+									break
+						if not res:
+							archivo.write('1'+',')							
 					except:
-						archivo.write(',')
+						archivo.write('1'+',')
 
 					#Valor de la consulta
-					if var.valor_consulta:
-						archivo.write(str(var.valor_consulta) + ',')	
-					else:
-						archivo.write(str(0.0) + ',')	
+					valor_consulta = '0.0'
+					if atencion.type_id: #si la atencion tiene tipo de cita miramos el precio del procedimiento
+						valor_consulta = atencion.type_id.procedures_id[0].procedures_id.list_price
+						archivo.write(str(valor_consulta) + ',')
+					else: # caso contrario miramos valor consulta definido para todas las atenciones 
+						valor_consulta = var.valor_consulta
+						archivo.write(str(valor_consulta) + ',')	
 
 					#valor del copago del paciente
 					try:
@@ -601,10 +610,7 @@ class radicacion_cuentas(osv.osv):
 						archivo.write(',')
 
 					#valor neto a pagar
-					if var.valor_consulta:
-						archivo.write(str(var.valor_consulta) + ',')	
-					else:
-						archivo.write(str(0.0) + ',')	
+					archivo.write(str(valor_consulta))	
 
 					#salto de linea
 					archivo.write('\n')
@@ -824,9 +830,22 @@ class radicacion_cuentas(osv.osv):
 
 						#Tipo de usuario
 						if atencion.patient_id.tipo_usuario.id:
-							archivo.write(str(atencion.patient_id.tipo_usuario.id)+ ',')
+							regimen = atencion.patient_id.tipo_usuario.name
+							tipo_usuario = None
+
+							if regimen == 'Contributivo':
+								tipo_usuario = 1
+							elif regimen == 'Subsidiado':
+								tipo_usuario = 2
+							elif regimen == 'Vinculado':
+								tipo_usuario = 3
+							elif regimen == 'Particular':
+								tipo_usuario = 4
+							elif regimen == 'Otro':
+								tipo_usuario = 5
+							archivo.write(str(tipo_usuario)+ ',')
 						else:
-							archivo.write(",")	
+							archivo.write(str(4) + ",")	
 
 						#Primer apellido del paciente
 						if atencion.patient_id.lastname:
@@ -874,18 +893,25 @@ class radicacion_cuentas(osv.osv):
 							archivo.write(',')
 
 						#Codigo de departamento de residencia
-						ciudad_paciente = atencion.patient_id.city_id
+						estado_paciente = atencion.patient_id.state_id
+						if estado_paciente:
+							archivo.write(str(estado_paciente.code)+ ',')
+						else:
+							archivo.write(',')
+
+						#codigo de municipio de residencia
+						ciudad_paciente = atencion.patient_id.state_id
 						if ciudad_paciente:
 							archivo.write(str(ciudad_paciente.id)+ ',')
 						else:
 							archivo.write(',')
 
-						#codigo de municipio de residencia
-						estado_paciente = atencion.patient_id.state_id
-						if estado_paciente:
-							archivo.write(str(estado_paciente.id)+ ',')
+						#zona de residencia 
+						zona_paciente = atencion.patient_id.zona
+						if zona_paciente:
+							archivo.write(zona_paciente)
 						else:
-							archivo.write(',')
+							archivo.write('U')
 
 						pacientes.append(atencion.patient_id.id)
 						#salto de linea
@@ -1106,10 +1132,15 @@ class radicacion_cuentas(osv.osv):
 					archivo.write(',')
 
 					#valor neto a pagar por la entidad contratante
-					if var.valor_consulta:
-						archivo.write(str(var.valor_consulta) + ',')	
+					valor_consulta = 0.0
+					if atencion.type_id:
+						archivo.write(str(atencion.type_id.procedures_id[0].procedures_id.list_price))
+						valor_consulta = atencion.type_id.procedures_id[0].procedures_id.list_price
+					elif var.valor_consulta:
+						archivo.write(str(var.valor_consulta))
+						valor_consulta = var.valor_consulta
 					else:
-						archivo.write(str(0.0) + ',')	
+						archivo.write(str(0.0))		
 
 					#salto de linea
 					archivo.write('\n')
