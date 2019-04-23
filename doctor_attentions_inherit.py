@@ -44,9 +44,8 @@ class doctor_attentions_co_inherit(osv.osv):
 		if not peso or not talla:
 			imc = 0.00 
 		try:
-			if peso and talla:
-				imc = (peso / (( talla / 100.0  ) ** 2 ))	
-				superficie_corporal= self.calcular_superficie_corporal(cr, uid, ids, peso, talla)
+			imc = (peso / (( talla / 100.0  ) ** 2 ))	
+			superficie_corporal= self.calcular_superficie_corporal(cr, uid, ids, peso, talla)
 		except:
 			_logger.info("error en la función onchange_calcularImc [doctor_attentions_co_inherit.py]")	
 		res['value']['body_mass_index'] = imc
