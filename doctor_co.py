@@ -453,6 +453,10 @@ class doctor_patient_co(osv.osv):
 		vals['ver_nc'] = False
 		patient_data = self.browse(cr,uid,ids)[0]
 		partner = patient_data.patient.id 
+		firstname = patient_data.patient.firtsname
+		middlename =  patient_data.patient.middlename
+		lastname = patient_data.patient.lastname
+		surname = patient_data.patient.surname
 
 		if 'ref' in vals:
 			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'ref': vals['ref']})
@@ -464,6 +468,14 @@ class doctor_patient_co(osv.osv):
 			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'phone': vals['telefono']})
 		if 'movil' in vals:
 			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'mobile': vals['movil']})
+		if 'firstname' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'firtsname': vals['firstname'],'name': surname+' '+lastname+' '+middlename+' '+vals['firstname']})
+		if 'middlename' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'middlename': vals['middlename']})
+		if 'lastname' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'lastname': vals['lastname']})
+		if 'surname' in vals:
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'surname': vals['surname']})
 
 		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
