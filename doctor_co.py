@@ -471,11 +471,11 @@ class doctor_patient_co(osv.osv):
 		if 'firstname' in vals:
 			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'firtsname': vals['firstname'],'name': surname+' '+lastname+' '+middlename+' '+vals['firstname']})
 		if 'middlename' in vals:
-			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'middlename': vals['middlename']})
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'middlename': vals['middlename'],'name': surname+' '+lastname+' '+vals['middlename']+' '+firstname})
 		if 'lastname' in vals:
-			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'lastname': vals['lastname']})
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'lastname': vals['lastname'],'name': surname+' '+vals['lastname']+' '+middlename+' '+firstname})
 		if 'surname' in vals:
-			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'surname': vals['surname']})
+			partner_data = self.pool.get('res.partner').write(cr, uid, partner, {'surname': vals['surname'],'name': vals['surname']+' '+lastname+' '+middlename+' '+firstname})
 
 		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
