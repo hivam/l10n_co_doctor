@@ -68,7 +68,6 @@ class doctor_attention(report_sxw.rml_parse):
 			'cargar_temperature': self.cargar_temperature,
 			'cargar_spodos': self.cargar_spodos,
 			'esconder_signos_vitales': self.esconder_signos_vitales,
-			'print_text_large': self.print_text_large,
 
 		})
 
@@ -476,12 +475,6 @@ class doctor_attention(report_sxw.rml_parse):
 			return result
 		result="Cargando datos..."
 		return result
-
-	def print_text_large(self, cadena):
-
-		data = self.pool.get('doctor.doctor').validation_text_large(cadena)
-
-		return data
 
 
 

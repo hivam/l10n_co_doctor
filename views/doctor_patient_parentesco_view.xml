@@ -6,7 +6,7 @@
       <field name="name">doctor.patient.parentesco.form</field>
       <field name="model">doctor.patient.parentesco</field>
       <field name="arch" type="xml">
-        <form string="Sample" version="7.0">
+        <form string="Sample" >
           <group>
             <field name="codigo"/>
             <field name="name"/>
@@ -37,7 +37,7 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Parentesco" parent="doctor.menu_doctor_config" id="doctor_patient_parentesco_action" action="doctor_patient_parentesco_act" groups="doctor.group_doctor_configuration"  />
+    <menuitem name="Parentesco" parent="doctor.menu_doctor_config" id="doctor_patient_parentesco_action" action="doctor_patient_parentesco_act" /> <!-- groups="doctor.group_doctor_configuration"  -->
 
     </data>
   </openerp>

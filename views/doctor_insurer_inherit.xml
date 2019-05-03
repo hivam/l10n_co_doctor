@@ -12,7 +12,7 @@
           <group col="2" colspan="4">
             <field name="code"></field>
             <field name="tipousuario_id"></field>  
-            <field name="insurer" ></field>
+            <field name="insurer"></field>
           </group>
         </xpath>
       </field>  

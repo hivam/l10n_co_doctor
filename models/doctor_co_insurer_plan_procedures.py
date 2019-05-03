@@ -23,35 +23,24 @@ _logger = logging.getLogger(__name__)
 import openerp
 import re
 import codecs
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from odoo import models, fields, api
+from odoo.tools.translate import _
 
+class doctor_insurer_plan_procedures(models.Model):
+	_name = "doctor.insurer.plan.procedures"
+	_rec_name="procedure_id"
 
-class doctor_co_tipousuario_regimen(osv.osv):
-
-	_name = "doctor.tipousuario.regimen"
-
-	_columns = {
-		'active' : fields.boolean('Activo', required=False),
-		'name' :	fields.char('Regimen', size=12, required=True),
-		'obligatorio' : fields.boolean('Regimen Obligatorio'),
-	}
-
-	_defaults = {
-		'active' : True,
-	}
-
-	def create(self, cr, uid, vals, context=None):
-	
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Tipo de Usuario")
-		res = super(doctor_co_tipousuario_regimen,self).create(cr, uid, vals, context)
+	@api.multi
+	def name_get(self):
+		if not len(ids):
+			return []
+		rec_name = 'procedure_id'
+		res = [(r['id'], r[rec_name][1])
+			for r in self.read([rec_name])]
 		return res
 
-	def write(self, cr, uid, ids, vals, context=None):
+	active = fields.Boolean('¿Activo?', help="Estado del procedimiento dentro del plan.",default=True)
+	plan_id = fields.Many2one('doctor.insurer.plan', 'Plan')
+	procedure_id = fields.Many2one('product.product', 'Procedimiento', required=True)
+	valor = fields.Float('Valor', digits=(3, 3), required=True)
 
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Tipo de Usuario")
-		res= super(doctor_co_tipousuario_regimen,self).write(cr, uid, ids, vals, context)
-		return res	
-	
-
-doctor_co_tipousuario_regimen()

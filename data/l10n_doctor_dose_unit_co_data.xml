@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data noupdate="1">
+<odoo noupdate="1">
         <record model='doctor.dose.unit' id='kg'>
                 <field name='code'>kg</field>
                 <field name='name'>kilogramos</field>
@@ -64,7 +63,6 @@
         <record model='doctor.dose.unit' id='DF'>
                 <field name='code'>DF</field>
                 <field name='name'>forma de dosificación</field>
-        </record> 
-    </data>
-</openerp>
+        </record>
+</odoo>
         

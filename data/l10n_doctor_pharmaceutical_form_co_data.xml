@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data noupdate="1">
+<odoo noupdate="1">
         <record model='doctor.pharmaceutical.form' id='AE'>
                 <field name='code'>AE</field>
                 <field name='name'>AEROSOLES</field>
@@ -313,6 +312,5 @@
                 <field name='code'>YS</field>
                 <field name='name'>SOLUCION INYECTABLE</field>
         </record> 
-    </data>
-</openerp>
+</odoo>
         

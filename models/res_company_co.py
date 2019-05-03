@@ -21,20 +21,17 @@
 import openerp
 import re
 import codecs
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from odoo import models, fields, api
+from odoo.tools.translate import _
 import logging
 _logger = logging.getLogger(__name__)
 
 
-class res_company_co(osv.osv):
+class res_company_co(models.Model):
 	'''
 	RES.COMPANY inherited to add a field.
 	'''
 	_name ='res.company'
 	_inherit='res.company'
 
-	_columns = {
-		'cod_prestadorservicio' : fields.char(u'Código Prestador Servicio', size=8 , help=u'Código de Prestador del Servicio')
-
-	}
+	cod_prestadorservicio = fields.Char(u'Código Prestador Servicio', size=8 , help=u'Código de Prestador del Servicio')

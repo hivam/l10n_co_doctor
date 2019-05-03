@@ -238,6 +238,3 @@ access_list_report_print_psicologia,doctor.list_report_print,model_doctor_list_r
 
 access_doctor_patient_ocupacion_medico,doctor.patient.ocupacion,model_doctor_patient_ocupacion,doctor.group_doctor_physician,1,1,1,0
 access_doctor_res_partner_medico,res.partner_medico,base.model_res_partner,doctor.group_doctor_physician,1,1,1,0
-
-
-access_doctor_relation_appointments_fields,doctor.relation_appointments_fields,model_doctor_relation_appointments_fields,,1,1,1,1

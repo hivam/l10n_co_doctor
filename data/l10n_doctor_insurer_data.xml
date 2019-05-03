@@ -6,603 +6,678 @@
             <field name="code">EMP017</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_0002" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_0002" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Cafesaludmedicina Prepagada S. A')]"/>
             <field name="code">EMP002</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_0003" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_0003" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Saludcoop E.P.S.')]"/>
             <field name="code">EPS013</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-            <record id="doctor_insurer_0004" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_0004" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Sanitas S.A. E.P.S.')]"/>
             <field name="code">EPS005</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-            <record id="doctor_insurer_0005" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_0005" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Servicio Occidental De Salud S.A. - Eps-S.O.S. S.A. Eps')]"/>
             <field name="code">EPS018</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-            <record id="doctor_insurer_0006" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_0006" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Coomeva Medicina Prepagada S. A.')]"/>
             <field name="code">EMP028</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_0007" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_0007" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Famisanar Ltda. Cafam -Colsubsidio E.P.S.')]"/>
             <field name="code">EPS017</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-            <record id="doctor_insurer_0008" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_0008" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Cruz Blanca Eps S.A.')]"/>
             <field name="code">EPS023</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-            <record id="doctor_insurer_009" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_009" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Compensar E.P.S.')]"/>
             <field name="code">EPS008</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-            <record id="doctor_insurer_0010" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_0010" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Salud Colpatria S.A Medicina Prepagada')]"/>
             <field name="code">EMP019</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00011" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00011" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Caja De Compensación Familiar Comfenalco Valle Del Cauca')]"/>
             <field name="code">EMP025</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00012" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00012" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Compañía De Medicina Prepagada Colsanitas')]"/>
             <field name="code">EMP023</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00013" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00013" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Vivir S.A. Medicina Prepagada')]"/>
             <field name="code">EMP022</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00014" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00014" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Humana Golden Cross S.A. Medicina Prepagada')]"/>
             <field name="code">EMP012</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00015" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00015" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Cia. Suramericana De Servicios De Salud S.A. Susalud Medicina Prepagada')]"/>
             <field name="code">EMP021</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00017" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00017" model="doctor.insurer">
             <field name="insurer" search="[('name','=','Medisánitas S.A Compañía De Medicina Prepagada')]"/>
             <field name="code">EPS015</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00018" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00018" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COLMEDICA ENTIDAD PROMOTORA DE SALUD S.A.')]"/>
             <field name="code">EPS001</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-            <record id="doctor_insurer_00019" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00019" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COLMENA RIESGOS PROFESIONALES S.A.')]"/>
             <field name="code">14-25</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00020" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00020" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMPAÑIA AGRICOLA DE SEGUROS DE VIDA S.A.')]"/>
             <field name="code">14-5</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00021" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00021" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR COMFENALCO CUNDINAMARCA')]"/>
             <field name="code">CCF23</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-    
-    <!--
+    </data>
+    <!--<data noupdate="0">
         <record id="doctor_insurer_00022" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR COMPENSAR')]"/>
             <field name="code">EPS008</field>
         </record>
-    -->
-    
+    </data>-->
+    <data noupdate="0">
         <record id="doctor_insurer_00023" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMFENALCO VALLE')]"/>
             <field name="code">EPS012</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-    
-   <!-- 
+    </data>
+   <!-- <data noupdate="0">
         <record id="doctor_insurer_00024" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SALUD COLPATRIA S.A.')]"/>
             <field name="code">EPS015</field>
         </record>
-    -->
-    
+    </data>-->
+    <data noupdate="0">
         <record id="doctor_insurer_00025" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SEGUROS DE VIDA COLPATRIA S.A.')]"/>
             <field name="code">14-4</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00026" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00026" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SEGUROS DE VIDA DEL ESTADO S.A.')]"/>
             <field name="code">14-19</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-            <record id="doctor_insurer_00027" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+        <record id="doctor_insurer_00027" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAFESALUD EPS')]"/>
             <field name="code">EPS003</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-    
-    <!--
+    </data>
+    <!--<data noupdate="0">
         <record id="doctor_insurer_00028" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CRUZ BLANCA S.A.')]"/>
             <field name="code">EPS023</field>
         </record>
-    -->
-    <!--
+    </data>-->
+    <!--<data noupdate="0">
         <record id="doctor_insurer_00029" model="doctor.insurer">
             <field name="insurer" search="[('name','=','E.P.S. FAMISANAR LTDA. CAFAM COLSUBSIDIO')]"/>
             <field name="code">EPS017</field>
         </record>
-    -->
-    
+    </data>-->
+    <data noupdate="0">
     <record id="doctor_insurer_00030" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SEGUROS BOLIVAR S.A.')]"/>
             <field name="code">14-7</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-    
-        
+    </data>
+        <data noupdate="0">
     <record id="doctor_insurer_00031" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMPAÑÍA DE SEGUROS DE VIDA AURORA S.A.')]"/>
             <field name="code">14-8</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-    
-   <!-- 
+    </data>
+   <!-- <data noupdate="0">
     <record id="doctor_insurer_00032" model="doctor.insurer">
             <field name="insurer" search="[('name','=','E.P.S. SANITAS S.A.')]"/>
             <field name="code">EPS005</field>
         </record>
-    -->
-    
+    </data>-->
+    <data noupdate="0">
     <record id="doctor_insurer_00032" model="doctor.insurer">
             <field name="insurer" search="[('name','=','LA PREVISORA VIDA S.A. COMPAÑÍA DE SEGUROS')]"/>
             <field name="code">14-23</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00033" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00033" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SALUDCOLOMBIA EPS S.A.')]"/>
             <field name="code">EPS034</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-    
-    <!--
+    </data>
+    <!--<data noupdate="0">
     <record id="doctor_insurer_00034" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SALUDCOOP EPS')]"/>
             <field name="code">EPS013</field>
         </record>
-    -->
-    
+    </data>-->
+    <data noupdate="0">
     <record id="doctor_insurer_00035" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SALUDVIDA S.A. EPS')]"/>
             <field name="code">EPS033</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-    
-    <!--
+    </data>
+    <!--<data noupdate="0">
     <record id="doctor_insurer_00036" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SERVICIO OCCIDENTAL DE SALUD S.A. S.O.S.')]"/>
             <field name="code">EPS018</field>
         </record>
-    -->
-    
+    </data>-->
+    <data noupdate="0">
     <record id="doctor_insurer_00037" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SOLIDARIA DE SALUD SOLSALUD S.A.')]"/>
             <field name="code">EPS026</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-    
-    <!--
+    </data>
+    <!--<data noupdate="0">
     <record id="doctor_insurer_00038" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SEGUROS BOLIVAR S.A.')]"/>
             <field name="code">14-7</field>
         </record>
-    -->
-    
+    </data>-->
+    <data noupdate="0">
     <record id="doctor_insurer_00039" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMFENALCO CARTAGENA')]"/>
             <field name="code">CCF08</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00040" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00040" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR COMFENALCO QUINDIO')]"/>
             <field name="code">CCF43</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00041" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00041" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE CARTAGO')]"/>
             <field name="code">CCF59</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00042" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00042" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DEL MAGDALENA')]"/>
             <field name="code">CCF33</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00043" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00043" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DEL NORTE DE SANTANDER COMFANORTE')]"/>
             <field name="code">CCF37</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00044" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00044" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DEL QUINDIO')]"/>
             <field name="code">CCF42</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00045" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00045" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DEL VALLE DEL CAUCA')]"/>
             <field name="code">CCF57</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00046" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00046" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMFAMILIAR HUILA')]"/>
             <field name="code">CCF32</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00047" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00047" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMFAMILIARES UNIDAS DEL VALLE')]"/>
             <field name="code">CCF61</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00048" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00048" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COOMEVA EPS S.A.')]"/>
             <field name="code">EPS016</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-        <record id="doctor_insurer_00049" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00049" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SEGUROS DE VIDA ALFA S.A.')]"/>
             <field name="code">14-17</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00050" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00050" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE BARRANCABERMEJA CAFABA')]"/>
             <field name="code">CCF38</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00051" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00051" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FLIAR DEL SUR DEL TOLIMA CAFASUR')]"/>
             <field name="code">CCF46</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00052" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00052" model="doctor.insurer">
             <field name="insurer" search="[('name','=','INSTITUTO DE SEGUROS SOCIALES')]"/>
             <field name="code">EPS006</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-        <record id="doctor_insurer_00053" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00053" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR CAJACOPI ATLANTICO')]"/>
             <field name="code">CCF05</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00054" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00054" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE BUENAVENTURA COMFAMAR')]"/>
             <field name="code">CCF51</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00055" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00055" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE CARTAGENA COMFAMILIAR')]"/>
             <field name="code">CCF09</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00056" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00056" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA SANTANDEREANA DE SUBSIDIO FAMILIAR CAJASAN')]"/>
             <field name="code">CCF39</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00057" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00057" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAPRECOM')]"/>
             <field name="code">EPS020</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-
-        <record id="doctor_insurer_00058" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00058" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMFAMILIAR AFIDRO')]"/>
             <field name="code">CCF18</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00059" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00059" model="doctor.insurer">
             <field name="insurer" search="[('name','=','ESCUELA SUPERIOR DE ADMINISTRACION PUBLICA ESAP')]"/>
             <field name="code">PAESAP</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-    
-    <!--
+    </data>
+    <!--<data noupdate="0">
     <record id="doctor_insurer_00060" model="doctor.insurer">
             <field name="insurer" search="[('name','=','ESCUELA SUPERIOR DE ADMINISTRACION PUBLICA ESAP CARTAGENA')]"/>
             <field name="code">PAESAP</field>
         </record>
-
-        <record id="doctor_insurer_00061" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00061" model="doctor.insurer">
             <field name="insurer" search="[('name','=','ESCUELA SUPERIOR DE ADMINISTRACION PUBLICA ESAP MEDELLIN')]"/>
             <field name="code">PAESAP</field>
         </record>
-    -->
-    
+    </data>-->
+    <data noupdate="0">
     <record id="doctor_insurer_00062" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE BARRANQUILLA COMBARRANQUILLA')]"/>
             <field name="code">CCF06</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00063" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00063" model="doctor.insurer">
             <field name="insurer" search="[('name','=','FONDO DE PENSIONES SANTANDER')]"/>
             <field name="code">230801</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00064" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00064" model="doctor.insurer">
             <field name="insurer" search="[('name','=','LIBERTY SEGUROS DE VIDA S.A.')]"/>
             <field name="code">14-18</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00065" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00065" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SALUD TOTAL S.A. EPS ARS')]"/>
             <field name="code">EPS002</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-        <record id="doctor_insurer_00066" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00066" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE AUXILIOS Y DE PRESTACIONES DE ACDAC CAXDAC')]"/>
             <field name="code">25-2</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00067" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00067" model="doctor.insurer">
             <field name="insurer" search="[('name','=','ASEGURADORA DE VIDA COLSEGUROS S.A.')]"/>
             <field name="code">14-1</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00068" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00068" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR CAMACOL COMFAMILIAR CAMACOL')]"/>
             <field name="code">CCF02</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00069" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00069" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR COMFENALCO ANTIOQUIA')]"/>
             <field name="code">EPS009</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-
-        <record id="doctor_insurer_01000" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_01000" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR COMFENALCO ANTIOQUIA')]"/>
             <field name="code">CCF03</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-    
+    </data>
 
-    
+    <data noupdate="0">
     <record id="doctor_insurer_00073" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE ANTIOQUIA COMFAMA')]"/>
             <field name="code">CCF04</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-    
+    </data>
 
-    
+    <data noupdate="0">
     <record id="doctor_insurer_00070" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE LA GUAJIRA')]"/>
             <field name="code">CCF30</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00071" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00071" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FLIAR. DEL CAUCA COMFACAUCA')]"/>
             <field name="code">CCF14</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00072" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00072" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA NACIONAL DE PREVISION SOCIAL')]"/>
             <field name="code">25-8</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-    
+    </data>
 
-    
+    <data noupdate="0">
     <record id="doctor_insurer_00074" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMFAMILIAR DEL ATLANTICO')]"/>
             <field name="code">CCF07</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00075" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00075" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMPAÑIA SURAMERICANA DE SERVICIOS DE SALUD S.A. SUSALUD')]"/>
             <field name="code">EPS010</field>
             <field name="tipousuario_id" search="[('name','=','Contributivo')]"/>
         </record>
-
-        <record id="doctor_insurer_00076" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00076" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SERVICIO NACIONAL DE APRENDIZAJE SENA')]"/>
             <field name="code">PASENA</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00077" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00077" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SURATEP SA')]"/>
             <field name="code">14-28</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00078" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00078" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DEL AMAZONAS')]"/>
             <field name="code">CCF65</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-
-        <record id="doctor_insurer_00079" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00079" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DEL PUTUMAYO')]"/>
             <field name="code">CCF63</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-
-        <record id="doctor_insurer_00080" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00080" model="doctor.insurer">
             <field name="insurer" search="[('name','=','FONDO DE PASIVO SOCIAL DE FERROCARRILES NACIONALES DE COLOMBIA')]"/>
             <field name="code">EAS027</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00081" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00081" model="doctor.insurer">
             <field name="insurer" search="[('name','=','MINISTERIO DE EDUCACION NACIONAL')]"/>
             <field name="code">PAMIED</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00082" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00082" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR CAFAM')]"/>
             <field name="code">CCF21</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-    
+    </data>
 
-    
+    <data noupdate="0">
     <record id="doctor_insurer_00084" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR CAMPESINA COMCAJA')]"/>
             <field name="code">CCF68</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00085" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00085" model="doctor.insurer">
             <field name="insurer" search="[('name','=','COMFACESAR')]"/>
             <field name="code">CCF15</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00086" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00086" model="doctor.insurer">
             <field name="insurer" search="[('name','=','HUMANA VIVIR S.A. EPS')]"/>
             <field name="code">EPS014</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-
-        <record id="doctor_insurer_00087" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00087" model="doctor.insurer">
             <field name="insurer" search="[('name','=','INSTITUTO COLOMBIANO DE BIENESTAR FAMILIAR I.C.B.F.')]"/>
             <field name="code">PAICBF</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00088" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00088" model="doctor.insurer">
             <field name="insurer" search="[('name','=','LA EQUIDAD SEGUROS DE VIDA')]"/>
             <field name="code">14-29</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00089" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00089" model="doctor.insurer">
             <field name="insurer" search="[('name','=','REDSALUD ATENCION HUMANA EPS S.A.')]"/>
             <field name="code">EPS035</field>
             <field name="tipousuario_id" search="[('name','=','Subsidiado')]"/>
         </record>
-
-        <record id="doctor_insurer_00090" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00090" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE LA DORADA COMFAMILIAR')]"/>
             <field name="code">CCF12</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00091" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00091" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DEL CHOCO')]"/>
             <field name="code">CCF29</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00092" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00092" model="doctor.insurer">
             <field name="insurer" search="[('name','=','EMPRESAS PUBLICAS DE MEDELLIN SERVICIOS MEDICOS')]"/>
             <field name="code">EAS016</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00093" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00093" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE CUNDINAMARCA COMFACUNDI')]"/>
             <field name="code">CCF26</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00094" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00094" model="doctor.insurer">
             <field name="insurer" search="[('name','=','UNISALUD')]"/>
             <field name="code">EAS021</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00095" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00095" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DEL TOLIMA COMFATOLIMA')]"/>
             <field name="code">CCF48</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00096" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00096" model="doctor.insurer">
             <field name="insurer" search="[('name','=','CAJA DE COMPENSACION FAMILIAR DE RISARALDA')]"/>
             <field name="code">CCF44</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00097" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00097" model="doctor.insurer">
             <field name="insurer" search="[('name','=','FOSYGA')]"/>
             <field name="code">MIN001</field>
             <field name="tipousuario_id" search="[('name','=','Otro')]"/>
         </record>
-
-        <record id="doctor_insurer_00098" model="doctor.insurer">
+    </data>
+    <data noupdate="0">
+    <record id="doctor_insurer_00098" model="doctor.insurer">
             <field name="insurer" search="[('name','=','SECRETARIA DE SALUD')]"/>
             <field name="code">SDS001</field>
-            <field name="tipousuario_id" search="[('name','=','Otro')]"/>
+            <field name="tipousuario_id" search="[('name','=','Particular')]"/>
     </record>
     </data>
 </openerp>

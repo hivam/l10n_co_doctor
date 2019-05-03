@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data noupdate="1">
-        <record model='doctor.speciality' id='001'>
-                <field name='code'>001</field>
-                <field name='name'>ACTIVIDAD FISICO TERAPEUTICA</field>
-        </record> 
+<odoo noupdate="0">
+
         <record model='doctor.speciality' id='020'>
                 <field name='code'>020</field>
                 <field name='name'>ANESTESIA CARDIOTORAXICA</field>
@@ -713,6 +709,5 @@
                 <field name='code'>999</field>
                 <field name='name'>OTRA ESPECIALIDAD NO CLASIFICADA</field>
         </record> 
-    </data>
-</openerp>
+</odoo>
         

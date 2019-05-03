@@ -26,6 +26,9 @@
         <field name="name">AU</field>
     </record>
     <record id="l10n_rips_tipo_archivo_0000009" model="rips.tipo.archivo">
+        <field name="name">CT</field>
+    </record>
+    <record id="l10n_rips_tipo_archivo_0000010" model="rips.tipo.archivo">
         <field name="name">US</field>
     </record>
   </data>

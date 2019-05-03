@@ -6,7 +6,7 @@
       <field name="name">doctor.insurer.plan.form</field>
       <field name="model">doctor.insurer.plan</field>
       <field name="arch" type="xml">
-        <form string="Contrato Aseguradora" version="7.0">
+        <form string="Contrato Aseguradora" >
           <sheet> 
             <fieldset>
               <field name="id" invisible="1"/>

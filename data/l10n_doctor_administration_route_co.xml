@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data noupdate="1">
+<odoo>
         <record model='doctor.administration.route' id='BU'>
                 <field name='code'>BU</field>
                 <field name='name'>BUCAL</field>
@@ -84,11 +83,13 @@
         <record model='doctor.administration.route' id='IS'>
                 <field name='code'>IS</field>
                 <field name='name'>INTRAVESICAL</field>
-        </record> 
+        </record>
+
         <record model='doctor.administration.route' id='PO'>
                 <field name='code'>PO</field>
                 <field name='name'>ORAL</field>
-        </record> 
+        </record>
+
         <record model='doctor.administration.route' id='OA'>
                 <field name='code'>OA</field>
                 <field name='name'>OTICO AURICULAR</field>
@@ -128,7 +129,6 @@
         <record model='doctor.administration.route' id='OT'>
                 <field name='code'>OT</field>
                 <field name='name'>OTRA</field>
-        </record> 
-    </data>
-</openerp>
+        </record>
+</odoo>
         

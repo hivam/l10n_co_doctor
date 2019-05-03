@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data noupdate="1">
+<odoo>
         <record model='doctor.atc' id='A01AA01'>
                 <field name='code'>A01AA01</field>
                 <field name='name'>FLUORURO DE SODIO</field>
@@ -1616,7 +1615,6 @@
         <record model='doctor.atc' id='V08CA01'>
                 <field name='code'>V08CA01</field>
                 <field name='name'>GADOPENTETICO ACIDO</field>
-        </record> 
-    </data>
-</openerp>
+        </record>
+</odoo>
         

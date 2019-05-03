@@ -23,32 +23,18 @@ _logger = logging.getLogger(__name__)
 import openerp
 import re
 import codecs
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
-
-class doctor_insurer_plan_procedures(osv.osv):
-	_name = "doctor.insurer.plan.procedures"
-	_rec_name="procedure_id"
-
-	def name_get(self, cr, uid, ids, context={}):
-		if not len(ids):
-			return []
-		rec_name = 'procedure_id'
-		res = [(r['id'], r[rec_name][1])
-			for r in self.read(cr, uid, ids, [rec_name], context)]
-		return res
+from odoo import models, fields, api
+from odoo.tools.translate import _
 
 
-	_columns = {
-		'active' : fields.boolean('¿Activo?', help="Estado del procedimiento dentro del plan."),
-		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan'),
-		'procedure_id':	fields.many2one('product.product', 'Procedimiento',required=True),
-		'valor' : 	fields.float('Valor',digits=(3,3), required=True),
-		
+class doctor_insurer_co_inherit(models.Model):
 
-	}
+	_name = "doctor.insurer"
+	_inherit = "doctor.insurer"
 
-	_defaults={
-		'active': True,
+	tipousuario_id = fields.Many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True)
 
-	}
+
+	
+
+doctor_insurer_co_inherit()

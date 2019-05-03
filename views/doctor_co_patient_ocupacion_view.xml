@@ -6,7 +6,7 @@
       <field name="name">doctor.patient.ocupacion.form</field>
       <field name="model">doctor.patient.ocupacion</field>
       <field name="arch" type="xml">
-        <form string="Ocupacion" version="7.0">
+        <form string="Ocupacion" >
           <group>
             <field name="codigo"/>
             <field name="name"/>
@@ -37,7 +37,7 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Ocupación" parent="doctor.menu_doctor_config" id="doctor_patient_ocupacion_item" action="doctor_patient_ocupacion_act" groups="doctor.group_doctor_configuration" />
+    <menuitem name="Ocupación" parent="doctor.menu_doctor_config" id="doctor_patient_ocupacion_item" action="doctor_patient_ocupacion_act"  /> <!-- groups="doctor.group_doctor_configuration" -->
 
   </data>
 </openerp>

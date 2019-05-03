@@ -23,32 +23,21 @@ _logger = logging.getLogger(__name__)
 import openerp
 import re
 import codecs
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from odoo import models, fields, api
+from odoo.tools.translate import _
 
-class doctor_insurer_plan(osv.osv):
+class doctor_insurer_plan(models.Model):
 	_name = "doctor.insurer.plan"
-	
-	_columns = {
-		'codigo' : fields.char('Codigo', size=30),
-		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=True),
-		'name' : fields.char('Nombre', size=30, required=False),
-		'plan_id' : fields.many2one('doctor.insurer.plan', 'Plan',required=False),
-		'procedimientos_ids': fields.one2many('doctor.insurer.plan.procedures', 'plan_id', 'Procedimientos'),
-	}
 
+	codigo = fields.Char('Codigo', size=30)
+	insurer_id = fields.Many2one('doctor.insurer', 'Aseguradora', required=True)
+	name = fields.Char('Nombre', size=30, required=False)
+	plan_id = fields.Many2one('doctor.insurer.plan', 'Plan', required=False)
+	procedimientos_ids = fields.One2many('doctor.insurer.plan.procedures', 'plan_id', 'Procedimientos')
 
-	def write(self, cr, uid, ids, vals, context=None):
-
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Plan")
-		res= super(doctor_insurer_plan,self).write(cr, uid, ids, vals, context)
-		return res
 
 	# Create method overwritten to write plan_id
 	def create(self, cr, uid, vals, context=None):
-
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Plan")
-		
 		var = super(doctor_insurer_plan, self).create(cr, uid, vals, context)
 		self.write(cr, uid, var, {'plan_id': var}, context)
 		return var

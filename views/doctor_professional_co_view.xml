@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
   <data>
-
 
   <record model="ir.ui.view" id="view_doctor_professional_co">
     <field name="name">Profesional de la salud Colombia</field>
@@ -68,4 +67,4 @@
 
 
 </data>
-</openerp>
+</odoo>

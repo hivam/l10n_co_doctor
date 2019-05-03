@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data>
 
         <!--City-->
@@ -7,7 +7,7 @@
             <field name="name">Cities</field>
             <field name="model">res.country.state.city</field>
             <field name="arch" type="xml">
-                <tree string="City" version="7.0">
+                <tree string="City" >
                     <field name="state_id"/>
                     <field name="name"/>
                     <field name="code"/>
@@ -19,7 +19,7 @@
             <field name="name">Cities</field>
             <field name="model">res.country.state.city</field>
             <field name="arch" type="xml">
-                <form string="City" version="7.0">
+                <form string="City" >
                     <group colspan="2" >
                     <field name="state_id" select="1"/>
                     <newline/>
@@ -40,7 +40,7 @@
             <field name="view_id" ref="view_country_city_tree"/>
         </record>
 
-        <menuitem action="action_country_city" id="menu_country_city_partner" parent="base.menu_localisation"/>
+        <menuitem action="action_country_city" id="menu_country_city_partner" parent="contacts.menu_localisation"/>
 
 <!--
         Hereda la vista de formulario para agregar los campos según la localización colombiana
@@ -101,10 +101,11 @@
                 <!-- Ocultar Campos -->
                 <field name="country_id" position="replace"/>
                 <field name="state_id" position="replace"/>
+                <!--
                 <field name="website" position="replace"/>
                 <field name="function" position="replace"/>
-                <field name="fax" position="replace"/>
                 <field name="title" position="replace"/>
+                -->
 
                 <field name="street2" position="replace">
                     <field invisible="1" name="street2"/>
@@ -135,7 +136,7 @@
         <!--
         Hereda la vista arbol para agregar la identificacion en la lista
         Inherits the tree view to add to the list identification
-        -->
+
         <record id="vista_partner_tree_co" model="ir.ui.view">
             <field name="name">Partner Colombia</field>
             <field name="model">res.partner</field>
@@ -147,6 +148,7 @@
             </field>
         </record>
 
+
         <record id="action_partner_formco" model="ir.actions.act_window">
             <field name="name">Terceros</field>
             <field name="type">ir.actions.act_window</field>
@@ -154,10 +156,11 @@
             <field name="view_type">form</field>
             <field name="view_id" ref="vista_partner_tree_co"/>
         </record>
+        -->
 
         <!--
         Hereda la vista búsqueda para agregar y reemplazar los filtros y agrupaciones.  base.view_res_partner_filter
-        -->
+
         <record id="res_inherit_partner_filters" model="ir.ui.view">
           <field name="name">Partner</field>
           <field name="model">res.partner</field>
@@ -186,6 +189,6 @@
         </record>
 
        <menuitem action="action_partner_formco" id="menu_partner_formco" parent="doctor.menu_doctor_config"/>
-
+        -->
     </data>
-</openerp>
+</odoo>

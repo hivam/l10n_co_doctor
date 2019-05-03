@@ -23,39 +23,35 @@ _logger = logging.getLogger(__name__)
 import openerp
 import re
 import codecs
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from odoo import models, fields, api
+from odoo.tools.translate import _
 from datetime import date, datetime, timedelta
 
 
-class doctor_contrato_aseguradora(osv.osv):
+class doctor_contrato_aseguradora(models.Model):
 	_name = "doctor.contract.insurer"
 	_rec_name="contract_code"
 
-	_columns = {
-		'active' : 		fields.boolean('¿Activo?'),
-		'contract_code' : 	fields.char('Codigo', size=5, required=True),
-		'f_inicio' :	fields.date('Fecha Inicio', required=True),
-		'f_fin' :		fields.date('Fecha Fin'),
-		'insurer_id' : 	fields.many2one('doctor.insurer', 'Aseguradora',required=False),
-		'plan_ids': fields.many2many('doctor.insurer.plan', id1='contract_ids', id2='plan_ids',
-										   string='Planes', required=False, ondelete='restrict'),
-		'valor' :		fields.float('Valor',digits=(3,3)),	
-	}
+	active = fields.Boolean('¿Activo?',default=True)
+	contract_code = fields.Char('Codigo', size=5, required=True)
+	f_inicio = fields.Date('Fecha Inicio', required=True, default=lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),)
+	f_fin = fields.Date('Fecha Fin')
+	insurer_id = fields.Many2one('doctor.insurer', 'Aseguradora', required=False)
+	plan_ids = fields.Many2many('doctor.insurer.plan', id1='contract_ids', id2='plan_ids',
+								 string='Planes', required=False, ondelete='restrict')
+	valor = fields.Float('Valor', digits=(3, 3))
 
 	"""
 	Create sobrescrito para convertir codigo del contrato en mayúscula.
 	"""
-	def create(self, cr, uid, vals, context=None):
+
+	@api.model
+	def create(self, vals):
 		vals.update({'contract_code': vals['contract_code'].upper()})
-		return super(doctor_contrato_aseguradora, self).create(cr, uid, vals, context)
+		return super(doctor_contrato_aseguradora, self).create(vals)
 
 
 	_sql_constraints = [('contract_code_constraint', 'unique(contract_code)', 'Este código de contrato ya existe en base de datos.')]
 
-	_defaults = {
-		'active' : True,
-		'f_inicio': lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-	}
 	
 doctor_contrato_aseguradora()

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
 		<data>
 				
 				<!-- Modificando la busqueda de los pacientes anadiendo filtros-->
@@ -7,12 +7,8 @@
 				<field name="name">Patient</field>
 				<field name="model">doctor.patient</field>
 				<field name="arch" type="xml">
-				<search string="Search Patient" version="7.0">
+				<search string="Search Patient" >
 						<field name="patient"/>
-						<field name="firstname"/>
-						<field name="middlename"/>
-						<field name="lastname"/>
-						<field name="surname"/>
 						<field name="ref"/>
 						<field name="insurer"/>
 						<separator/>
@@ -80,8 +76,10 @@
 											<field name="localidad_otros_paises_id" attrs="{'invisible': [('nacimiento_country_id','=', 50)]}"  context="{'nacimiento_country_id' : nacimiento_country_id,}">
 												<form>
 													<group col="2">
+														<!--
 														<field name="country_id" context="{'nacimiento_country_id' : nacimiento_country_id,}"/>
 														<field name="name"/>
+														-->
 													</group>
 												</form>
 											</field>
@@ -90,13 +88,15 @@
 
 								</xpath>
 
+								<field name="insurer" position="before" >
+										<field name="tipo_usuario"/>
+								</field>
+
 								<field name="insurer" position="replace" >
 									<field name="insurer" attrs="{'invisible': [('tipo_usuario','=', 4)]}" domain="[('tipousuario_id','=',tipo_usuario)]" />
 								</field>
 
-								<field name="insurer" position="before" >
-										<field name="tipo_usuario"/>
-								</field>
+
 
 								<field name="insurer" position="after" >
 										<field name="nro_afiliacion"/>
@@ -110,7 +110,7 @@
 										<field name="particular_predeterminada" on_change="onchange_seleccion_particular(particular_predeterminada)"/>
 								</field>
 								<!--attrs="{'invisible': [('tipo_usuario','=', 5)]}-->
-								<xpath expr="/form[@string='Patient']/sheet/group[2]/fieldset[@class='fieldset_margen']/group[@col='2']" position="after">
+								<xpath expr="/form[@name='Patient']/sheet/group[2]/fieldset[@class='fieldset_margen']/group[@col='2']" position="after">
 										<fieldset class="fieldset_margen">
 												<legend class="texto_legend">OTRAS</legend>
 												<group colspan="2" col="4">
@@ -164,19 +164,19 @@
 													<field name="zona" style="width: 45%%"/>
 											</group>
 
-									<fieldset class="fieldset_margen">
+									<fieldset class="fieldset_margen" attrs="{'invisible': [('filter_ocupacion','!=', 'estu'), ('filter_ocupacion','!=', 'doc'),('filter_ocupacion','!=', 'egre'), ('filter_ocupacion','!=', 'emp'),('filter_ocupacion','!=', 'otro')]}">
 										<legend class="texto_legend">Datos Complementarios</legend>
 										<group col="2">
-											<field name="nivel_educativo"/>
-											<field name="programa_id" attrs="{'invisible': [('filter_ocupacion','not in', ['estu', 'doc'])]}"/>
-											<field name="lateralidad_id"/>
-											<field name="stratum"/>
+											<field name="nivel_educativo" attrs="{'invisible': [('filter_ocupacion','=', 'otro')]}"/>
+											<field name="programa_id" attrs="{'invisible': [('filter_ocupacion','=', 'otro')]}"/>
 											<field name="semestre_actual" attrs="{'invisible': [('filter_ocupacion','!=', 'estu')]}"/>
 											<field name="description_others" attrs="{'invisible': [('filter_ocupacion','!=', 'otro')]}"/>
 											<field name="dependencia_empleado_id" attrs="{'invisible': [('filter_ocupacion','!=', 'emp')]}"/>
+											<field name="lateralidad_id"/>
 										</group>
 									</fieldset>
 
+									<!-- quitado
 									<fieldset class="fieldset_margen">
 										<legend class="texto_legend">Discapacidades y Población Especial</legend>
 										<group col="4">
@@ -184,11 +184,15 @@
 											<field name="seleccion_poblacion"/>
 										</group>
 									</fieldset>
+
+									-->
+
 								</fieldset>
 
 
 								</xpath>
 
+								<!-- quitado
 								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
 									<fieldset class="fieldset_margen" attrs="{'invisible': [('seleccion_discapacidad','=', False)]}">
 										<legend class="texto_legend">Discapacidades</legend>
@@ -202,6 +206,8 @@
 								</xpath>
 
 
+
+
 								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
 									<fieldset class="fieldset_margen" attrs="{'invisible': [('seleccion_poblacion','=', False)]}">
 										<legend class="texto_legend">Población Especial</legend>
@@ -213,7 +219,7 @@
 										</group>
 									</fieldset>
 								</xpath>
-
+								-->
 								<xpath expr="//group[@name='datos_personales_y_direccion']" position="inside">
 									<fieldset class="fieldset_margen">
 										<legend class="texto_legend">Datos del Acompañante</legend>
@@ -265,20 +271,22 @@
 
 
 
-								<xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']" position="before">
+								<xpath expr="/form[@name='Patient']/sheet/notebook[@colspan='4']" position="before">
 										<label for="notas_paciente" string="Notas"/>
 										<field name="notas_paciente" nolabel="1"/>
 								</xpath>
 
+								<!-- quitado saber que hace
 								<field name="notas_paciente" position="after">
 										<label for="ver_nc" string="Ver NC"/>
 										<field name="ver_nc" nolabel="1"/>
 										<field name="nc_paciente" attrs="{'invisible':[('ver_nc', '=', False)]}"/>
 								</field>
+								-->
 
 
 
-								<xpath expr="/form[@string='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@string='Attentions']" position="replace"/>
+								<xpath expr="/form[@name='Patient']/sheet/notebook[@colspan='4']/page[1]/field[@name='attentions_ids']/form[@name='Attentions']" position="replace"/>
 
 						</field>
 				</record>
@@ -317,7 +325,7 @@
 										<field name="attended" invisible="True"/>
 
 										<field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id,ref)"/>
-										<field name="ref" />
+										<!-- quitamos <field name="ref" /> -->
 										<field name="tipo_usuario_id" on_change="onchange_tipousuario(tipo_usuario_id)"/>
 										<field name="tipo_usuario_ocultar" invisible="1"/>
 									</group>    
@@ -404,19 +412,20 @@
 								</notebook>
 							
 
-								<xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[3]" position="after">
+								<xpath expr="/form[@name='Appointment']/notebook/page[@name='Health procedures']/field[@name='procedures_id']/tree[@name='Health procedures']//field[3]" position="after">
 										<field name="nro_autorizacion"/>
 								</xpath>
 
 
 
-								<xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']" position="attributes">
+								<xpath expr="/form[@name='Appointment']/notebook/page[@name='Health procedures']/field[@name='procedures_id']" position="attributes">
+										<!-- quitamos <attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute> -->
+								</xpath>
+								<!-- quitamos
+								<xpath expr="/form[@name='Appointment']/notebook/page[@name='Health procedures']/field[@name='procedures_id']/tree[@name='Health procedures']//field[2]" position="attributes">
 										<attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
 								</xpath>
-			
-								<xpath expr="/form[@string='Appointment']/notebook/page[@string='Health procedures']/field[@name='procedures_id']/tree[@string='Health procedures']//field[2]" position="attributes">
-										<attribute name="context">{'professional_id': professional_id, 'plan_id': plan_id}</attribute>
-								</xpath>
+								-->
 
 
 						</field>
@@ -446,39 +455,13 @@
 						<field eval="7" name="priority"/>
 						<field name="inherit_id" ref="doctor.view_doctor_appointment_type_form"/>
 						<field name="arch" type="xml">
-								<xpath expr="/form[@string='Appointment type']/group" position="after">
-
-									<notebook>
-										<page string="Procedimientos en salud">
-											<field name="procedures_id" colspan="4" nolabel="1">
+								<xpath expr="/form[@name='Appointment type']/group" position="after">
+										<field name="procedures_id" colspan="4" nolabel="1">
 												<tree string="Procedimientos en salud" editable="bottom">
-													<field name="procedures_id"/>
-													<field name="quantity"/>
+														<field name="procedures_id"/>
+														<field name="quantity"/>
 												</tree>
-											</field>
-										</page>
-										<page string="Tipo revisión por sistemas">
-											<field name="systems_category_ids" colspan="4" nolabel="1">
-												<tree string="Tipo revisión por sistemas" editable="bottom">
-													<field name="system_category_id"/>
-												</tree>
-											</field>
-										</page>
-										<page string="Tipo examen físico">
-											<field name="physical_exam_ids" colspan="4" nolabel="1">
-												<tree string="Tipo revisión por sistemas" editable="bottom">
-													<field name="physical_exam_id"/>
-												</tree>
-											</field>
-										</page>
-										<page string="Antecedentes">
-											<field name="past_past_ids" colspan="4" nolabel="1">
-												<tree string="Antecedentes" editable="bottom">
-													<field name="past_past_id"/>
-												</tree>
-											</field>
-										</page>
-									</notebook>
+										</field>
 								</xpath>
 
 								<field name="procedures_id" position="before">
@@ -540,7 +523,7 @@
 										<field name="patient_id" on_change="onchange_patient(patient_id,insurer_id,tipo_usuario_id)"/>
 								</field>
 
-
+								<!-- quitamos
 								<field name="patient_id" position="after" >
 										<field name="ref"/>
 								</field>
@@ -552,6 +535,7 @@
 								<field name="phone" position="after" >
 										<field name="notas_paciente_cita"/>
 								</field>
+								-->
 
 								<field name="aditional" position="after" >
 										<button string="Agregar Nota" name="asignar_nota" type="object" icon="gtk-index"/>
@@ -649,7 +633,7 @@
 													<field name="fecha_inicio" widget="time"/>
 													<field name="fecha_fin" widget="time"/>
 													<field name="estado_cita_espacio"/>
-													<button string="Asginar Cita" name="asignar_cita_espacio" type="object" groups="doctor.group_doctor_assistant" icon="gtk-jump-to" attrs="{'invisible': [('estado_cita_espacio', '=', 'Asignado')]}"/>
+													<button string="Asginar Cita" name="asignar_cita_espacio" type="object"  icon="gtk-jump-to" attrs="{'invisible': [('estado_cita_espacio', '=', 'Asignado')]}"/> <!-- groups="doctor.group_doctor_assistant" -->
 												</tree>
 											</field>
 									</page>
@@ -657,7 +641,7 @@
 						</field>
 				</record>
 
-				<!--  Remueve los espacios que no fueron asignados en las agendas-->
+				<!-- quitamos Remueve los espacios que no fueron asignados en las agendas
 				<record forcecreate="True" id="ir_cron_espacio" model="ir.cron">
 						<field name="name">Habilitar Espacios</field>
 						<field name="active" eval="True"/>
@@ -670,7 +654,7 @@
 						<field name="function" eval="'habilitar_espacios'"/>
 						<field name="args" eval="'()'"/>
 				</record>
-			
+				-->
 
 				<!-- doctor disability Form View -->
 				<record model="ir.ui.view" id="view_doctor_attentions_disability_form_inherit">
@@ -728,7 +712,7 @@
 								</xpath>
 
 
-								<xpath expr="/form[@string='Attentions']/header/button[@string='Finish attention']" position="after">
+								<xpath expr="/form[@name='Attentions']/header/button[@name='button_closed']" position="after">
 									<!--
 									<button string="Resumen historia" name="resumen_historia" type="object" class="oe_highlight" context="{'patient_id' : patient_id}"/>
 								-->
@@ -739,8 +723,8 @@
 
 									<button string="Última Atención" name="button_imprimir_ultimas_hc" type="object" class="oe_highlight" context="{'patient_id' : patient_id}" />
 								</xpath>
-								
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']" position="inside">	
+								<!-- quitado
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']" position="inside">
 									<page string="Adjuntos">
 										<field name="adjuntos_paciente_ids" nolabel="1" >
 				                            <tree string="Adjuntos" >
@@ -760,31 +744,34 @@
 										<label for="plantilla_sintomas_cuestionario_id" string="Plantillas"/>
 										<field name="plantilla_sintomas_cuestionario_id" on_change='onchange_plantillas(plantilla_sintomas_cuestionario_id, "otro_sintomas_revision_sistema")' domain="[('tipo_plantilla', '=', '04')]"/>
 								</field>
+								-->
 
 								<field name="attentions_past_ids" position="after">
 										<label for="otros_antecedentes" string="Otros Antecedentes"/>
 										<field name="otros_antecedentes" />
-										<label for="plantilla_cuestionario_antecedentes_id" string="Plantillas" groups="doctor.group_doctor_psicologo,doctor.group_doctor_physician"/>
-										<field name="plantilla_cuestionario_antecedentes_id" on_change='onchange_plantillas(plantilla_cuestionario_antecedentes_id, "otros_antecedentes")' groups="doctor.group_doctor_psicologo,doctor.group_doctor_physician" domain="[('tipo_plantilla', '=', '05')]"/>
+										<label for="plantilla_cuestionario_antecedentes_id" string="Plantillas" /> <!-- groups="doctor.group_doctor_psicologo,doctor.group_doctor_physician" -->
+										<field name="plantilla_cuestionario_antecedentes_id" on_change='onchange_plantillas(plantilla_cuestionario_antecedentes_id, "otros_antecedentes")' domain="[('tipo_plantilla', '=', '05')]"/>  <!-- groups="doctor.group_doctor_psicologo,doctor.group_doctor_physician" -->
 								</field>
 
-
+								<!-- quitado
 								<field name="pathological_past" position="after">
 										<label for="otros_antecedentes_patologicos" string="Otros Antecedentes Patológicos"/>
 										<field name="otros_antecedentes_patologicos"/>
 								</field>
 
+
+
 								<field name="drugs_past" position="after">
 										<label for="otros_antecedentes_patologicos" string="Otros Antecedentes farmacológicos"/>
 										<field name="otros_antecedentes_farmacologicos"/>
 								</field>
-
+								-->
 								<field name='actual_disease' position="after">
 									<group col="2"> 
-										<field name="activar_notas_confidenciales" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" attrs="{'invisible':[ ('inv','=',False)]}"  on_change='onchange_cargar_notas_confidenciales(activar_notas_confidenciales, professional_id, patient_id)'/>
+										<field name="activar_notas_confidenciales"  attrs="{'invisible':[ ('inv','=',False)]}"  on_change='onchange_cargar_notas_confidenciales(activar_notas_confidenciales, professional_id, patient_id)'/> <!-- groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" -->
 									</group>
 									<group col="1" colspan="2">
-										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo" /> 
+										<field name="notas_confidenciales" attrs="{'invisible':['|', ('activar_notas_confidenciales','=',False), ('inv','=',False)]}" nolabel="1" /> <!-- groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo"  -->
 									</group>
 
 
@@ -880,17 +867,19 @@
 									</page>
 								</notebook>
 								</field>
-								
+
+								<!-- quitado
 								<field name="attentions_exam_ids" position="after">
 										<label for="otros_hallazgos_examen_fisico" string="Otros hallazgos y signos clínicos en el examen físico"/>
 										<field name="otros_hallazgos_examen_fisico" />
 								</field>
 
+
 								<field name="otros_hallazgos_examen_fisico" position="after">
 										<label for="plantilla_examen_fisico_id" string="Plantillas"/>
 										<field name="plantilla_examen_fisico_id" on_change='onchange_plantillas(plantilla_examen_fisico_id, "otros_hallazgos_examen_fisico")' domain="[('tipo_plantilla', '=', '06')]"/>
 								</field>
-
+								-->
 
 								<xpath expr="//group[@id='group_conduct']" position="after">
 									<!--
@@ -918,8 +907,8 @@
 								<field name="conduct" position="after">
 										<field name="inv" invisible="1"/> 
 										<field name="inv_boton_edad" invisible="1"/> 
-										<label for="plantilla_conducta_id" string="Plantillas" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
-										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration"/>
+										<label for="plantilla_conducta_id" string="Plantillas" /> <!-- groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration" -->
+										<field name="plantilla_conducta_id" on_change='onchange_plantillas(plantilla_conducta_id, "conduct")' nolabel="1" domain="[('tipo_plantilla', '=', '08')]" /> <!-- groups="doctor.group_doctor_physician, doctor.group_doctor_psicologo, doctor.group_doctor_assistant, doctor.group_doctor_configuration" -->
 										<field name="numero_factura" invisible="1"/>
 										<field name="codigo_prestador" invisible="1"/>
 										<field name="numero_autorizacion" invisible="1"/>
@@ -934,7 +923,7 @@
 										<field name="plantilla_analisis_id" on_change='onchange_plantillas(plantilla_analisis_id, "analysis")' nolabel="1" domain="[('tipo_plantilla', '=', '07')]"/>
 								</field>
 								
-
+								<!-- quitamos aun no podemos
 								<xpath expr="//notebook/page[@string='Others']" position="after">
 										<page string="Recomendaciones">
 										<separator string="Recomendaciones" colspan="4"/>
@@ -975,11 +964,12 @@
 												</field>
 										</page>
 								</xpath>
+								-->
 
 
 								<!--añadiendo onchange a campo drugs_id de medicamentos-->
 						
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="attributes">
 
 										<attribute name="on_change">onchange_medicamento(drugs_id)</attribute>
 								</xpath>
@@ -988,70 +978,70 @@
 
 								<!--quitando campos de medicamentos-->
 								
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[3]/group[1]/div/label[@for='dose']" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[3]/group[1]/div//field[1]" position="attributes">
 										 <attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[2]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group//separator[2]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group//separator[1]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group//separator[1]" position="attributes">
 										<attribute name="string">Prescripcion</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div/label[@for='total_quantity']" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[1]/group[2]/div/label[@for='total_quantity']" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[2]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[1]/group[2]/div//field[2]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[2]/div//field[1]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[1]/group[2]/div//field[1]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]//group[2]" position="replace"/>
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[1]//group[2]" position="replace"/>
 								
 								<!-- ya esta listo -->
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="after">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[1]/group[1]/field[@name='drugs_id']" position="after">
 										<field name="cantidad_total"/>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[1]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[2]/group[1]/div//field[1]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>	
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[2]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[2]/group[1]/div//field[2]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]/group[1]/div//field[3]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[2]/group[1]/div//field[3]" position="attributes">
 										<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@string='Drugs prescription']/group/group[2]//group[1]" position="after">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/form[@name='Drugs prescription']/group/group[2]//group[1]" position="after">
 										<field name="indicacion_tomar" nolabel="1"/>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[2]" position="replace"/>
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@name='Drugs prescription']//field[2]" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@name='Drugs prescription']//field[@name='measuring_unit_qt']" position="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']//field[@name='administration_route_id']" posgition="replace"/>
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@name='Drugs prescription']//field[@name='administration_route_id']" posgition="replace"/>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']//page[2]" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']//page[2]" position="attributes">
 										 <attribute name="string">Prescripcion</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@string='Drugs prescription']" position="attributes">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[2]/field[@name='drugs_ids']/tree[@name='Drugs prescription']" position="attributes">
 										 <attribute name="string">Medicamentos</attribute>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']//page[2]" position="inside">
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']//page[2]" position="inside">
 										<page string="Otra Prescripcion"> 
 												<separator string="Otra Prescripción" colspan="4"/>
 												<field name="otros_medicamentos_ids" nolabel="1" context="{'tipo_plantilla' : '03'}">
@@ -1067,13 +1057,13 @@
 										</page>
 								</xpath>
 
-								<xpath expr="/form[@string='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[1]/field[@name='diseases_ids']" position="replace"/>
+								<xpath expr="/form[@name='Attentions']/group[@colspan='4']/notebook[@colspan='4']/page[4]/group[2]/notebook[@colspan='4']/page[1]/field[@name='diseases_ids']" position="replace"/>
 								
-								<xpath expr="//page[@string='Paraclínicos']" position="attributes">
+								<xpath expr="//page[@name='Paraclínicos']" position="attributes">
 									<attribute name="invisible">1</attribute>
 								</xpath>
 
-								<xpath expr="//page[@string='Anamnesis']" position="before">
+								<xpath expr="//page[@name='Anamnesis']" position="before">
 
 									<page string="Identificacion">
 										<group colspan='6' col='4'>
@@ -1083,7 +1073,9 @@
 											<field name="paciente_segundo_nombre"/>
 											<field name="paciente_primer_apellido"/>
 											<field name="paciente_segundo_apellido"/>
+											<!-- quitado
 											<field name="paciente_birth_date" on_change="onchange_edad(paciente_birth_date)"/>
+											-->
 											<field name="paciente_sexo"/>
 											<field name="paciente_edad_atencion"/>
 											<field name="paciente_unidad_edad"/>
@@ -1117,6 +1109,8 @@
 				</record>
 
 				<!-- Secuencia para la creacion de los nombres de los seguimientos paraclinicos -->
+
+				<!-- quitado
 				<record id="seq_type_name_paraclinical" model="ir.sequence.type">
 					 <field name="name">Nombre Segumiento</field>
 					 <field name="code">name.paraclinical</field>
@@ -1126,7 +1120,8 @@
 					 <field name="code">name.paraclinical</field>            
 					 <field name="padding">4</field>
 					 <field name="number_increment">1</field>
-				 </record> 
+				 </record>
+				 -->
 				 <!-- Fin de la secuencia -->
 
 
@@ -1135,7 +1130,7 @@
 						<field name="name">Resumen historia clinica</field>
 						<field name="model">doctor.attentions.resumen</field>
 						<field name="arch" type="xml">
-								<form string="Resumen historia clinica" version="7.0">
+								<form string="Resumen historia clinica" >
 									<group>
 										<legend class="texto_legend" id="titulo">Resumen ultimas 3 atenciones</legend>
 										<group colspan='2' col='4'>
@@ -1175,11 +1170,13 @@
 			                                    <field name="past"/>
 			                                </tree>
                             			</field>
+										<!-- quitado
                             			<field name="pathological_past" nolabel="1">
 			                                <tree string="Antecedentes Patológicos" editable="top">
 			                                    <field name="diseases_id"/>
 			                                </tree>
                             			</field>
+                            			-->
                             			<field name="drugs_past" nolabel="1">
 			                                <tree string="Add Past" editable="top">
 			                                    <field name="atc_id"/>
@@ -1208,7 +1205,7 @@
 						<field name="name">Configuración Espacios</field>
 						<field name="model">doctor.time_space</field>
 						<field name="arch" type="xml">
-								<form string="Configuración Espacios" version="7.0" create="false">
+								<form string="Configuración Espacios"  create="false">
 										<group colspan='3' col='2'>
 											<field name="tiempo_espacio"/>
 										</group>
@@ -1221,12 +1218,13 @@
 						<field name="name">Configuración Espacios</field>
 						<field name="model">doctor.time_space</field>
 						<field name="arch" type="xml">
-								<tree string="Configuración Espacios" version="7.0" create="false">
+								<tree string="Configuración Espacios"  create="false">
 									<field name="tiempo_espacio"/>
 								</tree>
 						</field>
 				</record>
 
+			<!-- quitado
 				<record id="seq_type_1" model="ir.sequence.type"> 
 				  <field name="name">REG Type</field> 
 				  <field name="code">reg_code</field> 
@@ -1237,7 +1235,7 @@
 				    <field name="prefix"></field> 
 				    <field name="padding">3</field> 
 				</record>
-
+			-->
 
 
 				<!-- doctor tiempo_espacio Form View -->
@@ -1245,7 +1243,7 @@
 						<field name="name">Notas Paciente</field>
 						<field name="model">doctor.patient_note</field>
 						<field name="arch" type="xml">
-							<form string="Notas Paciente" version="7.0">
+							<form string="Notas Paciente" >
 								<header>
                     				<button string="Confirmar" name="button_confirm_note" type="object" class="oe_highlight"/>
                				 	</header>		
@@ -1276,7 +1274,7 @@
 						<field name="name">Historia Clinica Completa</field>
 						<field name="model">doctor.list_report</field>
 						<field name="arch" type="xml">
-							<form string="Historia Clinica Completa" version="7.0">
+							<form string="Historia Clinica Completa" >
 								<header>
                     				<button string="Ver Historia" name="button_imprimir_algunos_informes" type="object" class="oe_highlight" attrs="{'invisible':[ ('ultimas_citas','=',True)]}"/>
                     				<button string="Ver Atenciones" name="button_cargar_ultimas_atenciones" type="object" class="oe_highlight" attrs="{'invisible':[ ('ultimas_citas','=',False)]}"/>
@@ -1309,7 +1307,9 @@
 				                            <tree string="Attentions" editable="bottom" default_order="sequence,date_attention asc">
 				                                <field name="date_attention"/>
 				                                <field name="professional_id"/>
+												<!-- quitado
 				                                <field name="speciality"/>
+				                                -->
 				                                <field name="state"/>
 				                            </tree>
 				                            <form string="Attentions" nolabel="1" default_order="sequence,date_attention asc">
@@ -1317,7 +1317,9 @@
 				                                    <field name="date_attention"/>
 				                                    <field name="number"/>
 				                                    <field name="professional_id"/>
+													<!-- quitado
 				                                    <field name="speciality"/>
+				                                    -->
 				                                    <field name="origin"/>
 				                                    <field name="state"/>
 				                                </group>
@@ -1334,7 +1336,7 @@
 						<field name="name">Últimas Atenciones</field>
 						<field name="model">doctor.list_report_print</field>
 						<field name="arch" type="xml">
-							<form string="Últimas Atenciones" version="7.0">
+							<form string="Últimas Atenciones" >
 								<header >
                     				<button string="Ver Atenciones" name="button_print_attention" type="object" class="oe_highlight"/>
                				 	</header>	
@@ -1348,7 +1350,9 @@
 		                            <tree string="Attentions" editable="bottom" limit="3">
 		                                <field name="date_attention"/>
 		                                <field name="professional_id"/>
+										<!-- quitado
 		                                <field name="speciality"/>
+		                                -->
 		                                <field name="state"/>
 		                            </tree>
 		                        </field>
@@ -1376,7 +1380,7 @@
 						<field name="view_mode">tree,form</field>
 				</record>
 
-				<menuitem id="menu_doctor_tiempo_espacio" name="Configuración Espacios" parent="doctor.menu_doctor_config" action="action_doctor_tiempo_espacio" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration"/>
+				<menuitem id="menu_doctor_tiempo_espacio" name="Configuración Espacios" parent="doctor.menu_doctor_config" action="action_doctor_tiempo_espacio" /> <!-- groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration" -->
 
 
 
@@ -1394,7 +1398,7 @@
 						<field name="name">Plantillas</field>
 						<field name="model">doctor.attentions.recomendaciones</field>
 						<field name="arch" type="xml">
-								<form string="Plantillas" version="7.0">
+								<form string="Plantillas" >
 										<group colspan='3' col='2'>
 												<field name="name"/>
 												<field name="cuerpo"/>
@@ -1410,7 +1414,7 @@
 						<field name="name">Plantillas</field>
 						<field name="model">doctor.attentions.recomendaciones</field>
 						<field name="arch" type="xml">
-								<tree string="Plantillas" version="7.0">
+								<tree string="Plantillas" >
 										<field name="name"/>
 										<field name="tipo_plantilla"/>
 										<field name="cuerpo"/>
@@ -1429,7 +1433,7 @@
 						<field name="view_mode">tree,form</field>
 				</record>
 
-				<menuitem id="menu_doctor_plantillas" name="Plantillas" parent="doctor.menu_doctor_config" action="action_doctor_plantillas" groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration"/>
+				<menuitem id="menu_doctor_plantillas" name="Plantillas" parent="doctor.menu_doctor_config" action="action_doctor_plantillas" /> <!-- groups="doctor.group_doctor_assistant,doctor.group_doctor_psicologo,doctor.group_doctor_physician,doctor.group_doctor_configuration" -->
 
 
 				<!-- herencia Form View de product -->
@@ -1496,6 +1500,7 @@
 				<!-- fin de herencia Form View de atc -->
 
 		<!-- invoice Form View -->
+			<!-- quitado aun no esta en doctor
 				<record id="invoice_form_view_inherit_doctor_co_invoice" model="ir.ui.view">
 						<field name="name">Doctor Invoice</field>
 						<field name="model">account.invoice</field>
@@ -1509,8 +1514,10 @@
 								</field>
 						</field>
 				</record>
+				-->
 
 		<!-- sales order Form View -->
+			<!-- quitado aun no esta en doctor
 				<record id="sales_order_form_view_inherit_doctor_co_sales_order" model="ir.ui.view">
 						<field name="name">Doctor Sales Order</field>
 						<field name="model">sale.order</field>
@@ -1527,13 +1534,14 @@
 
 						</field>
 				</record>
+				-->
 
 							 <!-- doctor speciality Form View -->
 				<record model="ir.ui.view" id="view_doctor_configuracion_form">
 						<field name="name">Precios de Procedimientos</field>
 						<field name="model">doctor.configuracion</field>
 						<field name="arch" type="xml">
-								<form string="Parametrización Contratos" version="7.0">
+								<form string="Parametrización Contratos" >
 										<label string="Aseguradora" for="aseguradora_id" class="texto"/>
 										<field name="aseguradora_id" on_change="on_change_cargadatos(aseguradora_id)"/>
 										<field name="parametrizacion_ids" nolabel="1" attrs="{'invisible': [('aseguradora_id', '=', False)] }">
@@ -1553,7 +1561,7 @@
 						<field name="name">Precios de Procedimientos</field>
 						<field name="model">doctor.configuracion</field>
 						<field name="arch" type="xml">
-								<tree string="Parametrizacion Contratos" version="7.0">
+								<tree string="Parametrizacion Contratos" >
 										<field name="aseguradora_id"/>
 								</tree>
 						</field>
@@ -1574,7 +1582,7 @@
 						<field name="name">Configuracion Procedimientos Institucion</field>
 						<field name="model">doctor.configuracion_procedimientos_institucion</field>
 						<field name="arch" type="xml">
-								<form string="Configuracion Procedimientos Institucion" version="7.0">
+								<form string="Configuracion Procedimientos Institucion" >
 										
 										<label string="Nombre Compañia" for="name" class="texto"/>
 										<field name="name"/>
@@ -1588,14 +1596,7 @@
 						</field>
 				</record>
 
-				<!-- doctor speciality Tree View -->
-				<record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_tree">
-						<field name="name">Configuracion Procedimientos Institucion</field>
-						<field name="model">doctor.configuracion_procedimientos_institucion</field>
-						<field name="arch" type="xml">
-								<field name="name"/>
-						</field>
-				</record>
+
 
 				<!-- doctor speciality Action -->
 				<record model="ir.actions.act_window" id="action_doctor_configuracion_procedimientos_institucion">
@@ -1605,7 +1606,19 @@
 						<field name="view_mode">tree,form</field>
 				</record>
 
+					<!-- doctor speciality Tree View -->
+				<record model="ir.ui.view" id="view_doctor_configuracion_procedimientos_institucion_tree">
+						<field name="name">Configuracion Procedimientos Institucion</field>
+						<field name="model">doctor.configuracion_procedimientos_institucion</field>
+						<field name="arch" type="xml">
+							<tree string="Parametrizacion Contratos" >
+										<field name="name"/>
+							</tree>
+
+						</field>
+				</record>
+
 				<menuitem id="menu_doctor_configuracion_procedimientos_institucion" name="Confi. Procedimientos Institucion" parent="doctor.menu_doctor_config" action="action_doctor_configuracion_procedimientos_institucion"/>
 
 		</data>
-</openerp>
+</odoo>
