@@ -148,12 +148,12 @@ class doctor_patient_co(osv.osv):
 
 	#Discapacidad
 	data_stratum = [
-	('1', 'Bajo-bajo'),
-	('2', 'Bajo'),
-	('3', 'Medio-bajo'),
-	('4', 'Medio'),
-	('5', 'Medio-alto'),
-	('6', 'Alto')
+	('1', '1'),
+	('2', '2'),
+	('3', '3'),
+	('4', '4'),
+	('5', '5'),
+	('6', '6')
 	]
 
 
