@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90d78a5d-9aa5-410f-b0f7-73ea36c34e35" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/l10n_co_doctor.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doctor_co.py" beforeDir="false" afterPath="$PROJECT_DIR$/doctor_co.py" afterDir="false" />
-    </list>
+    <list default="true" id="90d78a5d-9aa5-410f-b0f7-73ea36c34e35" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/doctor_co.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="155" column="11" selection-start-line="155" selection-start-column="11" selection-end-line="155" selection-end-column="11" />
+            <state relative-caret-position="1973">
+              <caret line="1199" column="33" selection-start-line="1199" selection-start-column="33" selection-end-line="1199" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -29,7 +23,7 @@
         <entry file="file://$PROJECT_DIR$/views/doctor_co_view.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="256">
-              <caret line="16" column="46" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
+              <caret line="556" column="87" selection-start-line="556" selection-start-column="87" selection-end-line="556" selection-end-column="87" />
             </state>
           </provider>
         </entry>
@@ -71,6 +65,9 @@
       <find>actualizar_eda</find>
       <find>'diseases_ago_ids</find>
       <find>load_attentions_disea</find>
+      <find>agregar</find>
+      <find>asignar_nota</find>
+      <find>Asiste</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -93,8 +90,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="36" />
-    <option name="y" value="99" />
+    <option name="x" value="28" />
+    <option name="y" value="119" />
     <option name="width" value="1346" />
     <option name="height" value="684" />
   </component>
@@ -108,7 +105,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -146,6 +143,14 @@
       <option name="presentableId" value="Default" />
       <updated>1560288184821</updated>
     </task>
+    <task id="LOCAL-00001" summary="cambiando estrato socioeconómico -C">
+      <created>1560654471388</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1560654471389</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -161,7 +166,7 @@
     <frame x="-4" y="-4" width="1374" height="732" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24460967" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.113754645" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -190,6 +195,10 @@
       </list>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="cambiando estrato socioeconómico -C" />
+    <option name="LAST_COMMIT_MESSAGE" value="cambiando estrato socioeconómico -C" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -202,20 +211,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/doctor_co.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="155" column="11" selection-start-line="155" selection-start-column="11" selection-end-line="155" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/doctor_co_view.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="16" column="46" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/doctor_co_attention_inherit.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2400">
@@ -235,6 +230,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/doctor_doctor.py">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/doctor_co_view.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="556" column="87" selection-start-line="556" selection-start-column="87" selection-end-line="556" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doctor_co.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1973">
+          <caret line="1199" column="33" selection-start-line="1199" selection-start-column="33" selection-end-line="1199" selection-end-column="33" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

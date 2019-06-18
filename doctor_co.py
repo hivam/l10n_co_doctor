@@ -585,8 +585,8 @@ class doctor_patient_co_estadocivil(osv.Model):
 	_sql_constraints = [('ec_constraint', 'unique(codigo)', 'Estado civil ya existe en la base de datos.')]
 
 	def create(self, cr, uid, vals, context=None):
-	
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Estado Civil")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Estado Civil")
 		res = super(doctor_patient_co_estadocivil,self).create(cr, uid, vals, context)
 		return res
 
@@ -610,8 +610,8 @@ class doctor_patient_co_parentesco(osv.Model):
 	_sql_constraints = [('parentesco_constraint', 'unique(codigo)', 'Este parentesco ya existe en la base de datos.')]
 
 	def create(self, cr, uid, vals, context=None):
-	
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Parentesco")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Parentesco")
 		res = super(doctor_patient_co_parentesco,self).create(cr, uid, vals, context)
 		return res
 
@@ -636,8 +636,8 @@ class doctor_patient_co_ocupacion(osv.Model):
 	_sql_constraints = [(u'ocupacion_constraint', 'unique(name)', u'Esta ocupación ya existe en la base de datos.')]
 
 	def create(self, cr, uid, vals, context=None):
-	
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", u"una Profesión")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", u"una Profesión")
 		res = super(doctor_patient_co_ocupacion,self).create(cr, uid, vals, context)
 		return res
 
@@ -5642,8 +5642,8 @@ class DoctorDiseasesnherit(osv.Model):
 	_inherit = 'doctor.diseases'
 
 	def create(self, cr, uid, vals, context=None):
-	
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Causa de Muerte")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Causa de Muerte")
 		res = super(DoctorDiseasesnherit,self).create(cr, uid, vals, context)
 		return res
 
@@ -5679,8 +5679,8 @@ class DoctorResCountryStateInherit(osv.Model):
 	_inherit = 'res.country.state'
 
 	def create(self, cr, uid, vals, context=None):
-	
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Departamento/Provincia")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "un Departamento/Provincia")
 		res = super(DoctorResCountryStateInherit,self).create(cr, uid, vals, context)
 		return res
 
@@ -5698,8 +5698,8 @@ class DoctorResCountryStateCityInherit(osv.Model):
 	_inherit = 'res.country.state.city'
 
 	def create(self, cr, uid, vals, context=None):
-	
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Ciudad/Localidad")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Ciudad/Localidad")
 		res = super(DoctorResCountryStateCityInherit,self).create(cr, uid, vals, context)
 		return res
 
