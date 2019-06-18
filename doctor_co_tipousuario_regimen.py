@@ -48,8 +48,8 @@ class doctor_co_tipousuario_regimen(osv.osv):
 		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
-
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Tipo de Usuario")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "un Tipo de Usuario")
 		res= super(doctor_co_tipousuario_regimen,self).write(cr, uid, ids, vals, context)
 		return res	
 	

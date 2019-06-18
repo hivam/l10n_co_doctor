@@ -37,14 +37,14 @@ class doctor_insurer_co_inherit(osv.osv):
 	}
 
 	def create(self, cr, uid, vals, context=None):
-	
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Aseguradora")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_create', "crear", "una Aseguradora")
 		res = super(doctor_insurer_co_inherit,self).create(cr, uid, vals, context)
 		return res
 
 	def write(self, cr, uid, ids, vals, context=None):
-
-		self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "una Aseguradora")
+		if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor', context=context) == True:
+			self.pool.get('doctor.doctor').doctor_validate_group(cr, uid, 'group_l10n_co_doctor_edit', "editar", "una Aseguradora")
 		res= super(doctor_insurer_co_inherit,self).write(cr, uid, ids, vals, context)
 		return res	
 
