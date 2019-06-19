@@ -34,4 +34,4 @@ class res_users_inherit(osv.osv):
 
     }
 
-doctor_atc_past_inherit()
+res_users_inherit()
