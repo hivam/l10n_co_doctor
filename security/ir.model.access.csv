@@ -26,7 +26,7 @@ access_doctor_insurer_plan_assistent,doctor.insurer.plan,model_doctor_insurer_pl
 access_doctor_insurer_assistent,doctor.insurer,model_doctor_insurer,doctor.group_doctor_assistant,1,1,1,0
 access_doctor_drugs_assistent,doctor.drugs_assistent,model_doctor_drugs,doctor.group_doctor_assistant,1,1,1,0
 access_doctor_atc_assistent,doctor.drugs_assistent,model_doctor_atc,doctor.group_doctor_assistant,1,1,1,0
-
+access_res_users,l10n_co_doctor.res_users,model_res_users,,1,1,1,0
 
 access_doctor_appointment_type_physician,doctor.appointment.type,model_doctor_appointment_type,doctor.group_doctor_physician,1,0,0,0
 access_doctor_doctor,access_doctor_doctor,model_doctor_doctor,doctor.group_doctor_physician,1,1,1,0
