@@ -51,7 +51,7 @@ class doctor_professional_co(osv.osv):
 								  ('41','Pasaporte'), ('42','Tipo de documento extranjero'),
 								  ('43','Para uso definido por la DIAN'), ('NU',u'Número único de identificación'),
 								  ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')),
-								  'Tipo de Documento'),
+								  'Tipo de Documento', required=True),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		
 	}
