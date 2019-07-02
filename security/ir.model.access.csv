@@ -1,6 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_doctor_city,doctor.city,model_res_country_state_city,doctor.group_doctor_configuration,1,1,1,0
 
+access_doctor_review_systems_assistant,doctor.review.systems,doctor.model_doctor_review_systems,doctor.group_doctor_assistant,1,1,1,1
 access_doctor_tipousuario_regimen_assistant,access_doctor_tipousuario_regimen,model_doctor_tipousuario_regimen,doctor.group_doctor_assistant,1,0,0,0
 access_rips_generados,access_rips_generados,model_rips_generados,doctor.group_doctor_assistant,1,1,1,0
 access_doctor_appointment_type,doctor.appointment.type,model_doctor_appointment_type,doctor.group_doctor_assistant,1,0,0,0

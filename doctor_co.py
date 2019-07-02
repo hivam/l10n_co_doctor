@@ -2018,7 +2018,7 @@ class doctor_appointment_type(osv.osv):
 
 	_columns = {
 		'procedures_id': fields.one2many('doctor.appointment.type_procedures', 'appointment_type_id', 'Procedimientos en Salud', ondelete='restrict'),
-		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|', ('author','=','TIX SAS'), '|',('author','=','Proyecto Evoluzion'), ('author','=','PROYECTO EVOLUZION') ]"),
+		'modulos_id': fields.many2one('ir.module.module', 'Historia asociada', domain="['|','|','|', ('author','=','TIX SAS'), ('author','=','Proyecto Evoluzion'), ('author','=','PROYECTO EVOLUZION'), ('author','=','DracoSoft')]"),
 	
 		'systems_category_ids': fields.one2many('doctor.relation_appointments_fields', 'appointment_system_category_id', 'Procedimientos en Salud', ondelete='restrict'),
 		'physical_exam_ids': fields.one2many('doctor.relation_appointments_fields', 'appointment_physical_exam_id', u'Tipo examen fìsico', ondelete='restrict'),
