@@ -1800,3 +1800,815 @@ msgstr ""
 #: report:doctor_attention_report_print:0
 msgid "ACTUAL DISEASE"
 msgstr "ENFERMEDAD ACTUAL"
+
+
+
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_administrative_data_kanban_view
+msgid ", Age:"
+msgstr ", Edad:"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,blood_type:0
+msgid "AB"
+msgstr "AB"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,document_type:0
+#: selection:doctor.doctor,document_type:0
+#: selection:doctor.patient,tdoc:0
+msgid "AS - Unidentified Adult"
+msgstr "AS - Adulto sin Identificación"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Accompany Person's Details"
+msgstr "Datos del Responsable y el Acompañante"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_accompany_phone
+msgid "Accompany Person's Phone Number"
+msgstr "Número de Teléfono de la Persona Acompañante"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_accompany_relationship
+msgid "Accompany Person's Relationship"
+msgstr "Acompañar la relación de la persona"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Address"
+msgstr "Dirección"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.act_window,name:l10n_co_doctor.action_doctor_administrative_data
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_doctor_administrative_data
+msgid "Patients"
+msgstr "Pacientes"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Administrative Data Form"
+msgstr "Formularios de datos administrativos"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_age
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Age"
+msgstr "Edad"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_insurer_plan_insurer_id
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_insurer_id
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_assurance_plan_filter
+msgid "Assurance Company"
+msgstr "Aseguradora"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_assurance_details
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Assurance Details"
+msgstr "Planes de Aseguradoras"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_assurance_plan
+msgid "Assurance Plan"
+msgstr "Gestionar Planes"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.assurance_plan_form
+msgid "Assurance Plan Form"
+msgstr "Formulario de planes - Aseguradora"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.assurance_plan_tree
+msgid "Assurance Plan Tree"
+msgstr "Lista de planes - Aseguradora"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.act_window,name:l10n_co_doctor.action_assurance_plan
+msgid "Assurance Plans"
+msgstr "Planes de Aseguradoras"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,accompany_relationship:0
+#: selection:doctor.patient,responsible_relationship:0
+msgid "Aunt"
+msgstr "Tia"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_birth_date
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Birth Date"
+msgstr "Fecha de Nacimiento"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_administrative_data_kanban_view
+msgid "Birth Date:"
+msgstr "Fecha de Nacimiento:"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_blood_type
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Blood Type"
+msgstr "Tipo de sangre"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_administrative_data_kanban_view
+msgid "Blood Type:"
+msgstr "Tipo de sangre:"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,document_type:0
+#: selection:doctor.doctor,document_type:0
+#: selection:doctor.patient,tdoc:0
+msgid "CC - ID Document"
+msgstr "CC - Cédula de ciudadanía"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,document_type:0
+#: selection:doctor.doctor,document_type:0
+#: selection:doctor.patient,tdoc:0
+msgid "CE - Aliens Certificate"
+msgstr "CE - Cédula de Extranjería"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,civil_state:0
+msgid "Casada/o"
+msgstr "Casada/o"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_civil_state
+msgid "Civil Status"
+msgstr "Estado Civil"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.act_window,help:l10n_co_doctor.action_doctor_administrative_data
+msgid "Click to create doctor datas."
+msgstr "Clic aquí para crear un paciente"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation_code
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_occupation_filter
+msgid "Code"
+msgstr "Código"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Contact Information"
+msgstr "Información de contacto"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,user_type:0
+msgid "Contributivo"
+msgstr "Contributivo"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Country"
+msgstr "País"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_birth_country_id
+msgid "Country of Birth"
+msgstr "País de nacimiento"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_assurance_plan_create_uid
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_create_uid
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor_create_uid
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_assurance_plan_create_date
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_create_date
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor_create_date
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation_create_date
+msgid "Created on"
+msgstr "Creado"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,age_meassure_unit:0
+msgid "Days"
+msgstr "Días"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Department"
+msgstr "Departamento"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation_name
+msgid "Description"
+msgstr "Descripción"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_assurance_plan_display_name
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_display_name
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor_display_name
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation_display_name
+msgid "Display Name"
+msgstr "Nombre Público"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_doctor_co
+msgid "Patients"
+msgstr "Pacientes"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.act_window,name:l10n_co_doctor.action_doctor_co
+msgid "Doctor"
+msgstr "Profesionales de la salud"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_administrative_data_tree
+msgid "Doctor Administrative Data Tree"
+msgstr "Doctor Administrative Data Tree"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Doctor Details"
+msgstr "Gestionar Profesionales"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_doctor_doctor_co
+msgid "Doctor Details"
+msgstr "Profesionales de la salud"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_doctor_tree
+msgid "Doctor Tree"
+msgstr "Doctor Tree"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_doctor
+msgid "Doctors"
+msgstr "Gestionar Profesionales"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_email
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor_email
+msgid "Email"
+msgstr "Email"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,accompany_relationship:0
+#: selection:doctor.patient,responsible_relationship:0
+msgid "Father"
+msgstr "Padre"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,sex:0
+#: selection:doctor.professional,sex:0
+msgid "Female"
+msgstr "Mujer"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_lastname
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_professional_lastname
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "First Last Name"
+msgstr "Primer Apellido"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_firstname
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_professional_firstname
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "First Name"
+msgstr "Primer Nombre"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,accompany_relationship:0
+#: selection:doctor.patient,responsible_relationship:0
+msgid "Friend"
+msgstr "Amigo/a"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_sex
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_professional_sex
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Gender"
+msgstr "Género"
+
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_sex
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_professional_sex
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Insurer:"
+msgstr "Aseguradora:"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_administrative_data_kanban_view
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Gender:"
+msgstr "Género:"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,accompany_relationship:0
+#: selection:doctor.patient,responsible_relationship:0
+msgid "Grand Father"
+msgstr "Abuelo"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,accompany_relationship:0
+#: selection:doctor.patient,responsible_relationship:0
+msgid "Grand Mother"
+msgstr "Abuela"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_assurance_plan_filter
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_administrative_data_filter
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_insurer_id
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_id
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_professional_id
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_photo
+msgid "Image"
+msgstr "Imagen"
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:69
+#: code:addons/l10n_co_doctor/models/doctor_co.py:282
+#, python-format
+msgid "Invalid Email ! Please enter a valid email address."
+msgstr "Email no válido! Por favor intente nuevamente."
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:256
+#, python-format
+msgid "Invalid birth date!"
+msgstr "Invalid birth date!"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_assurance_plan___last_update
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data___last_update
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor___last_update
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation___last_update
+msgid "Last Modified on"
+msgstr "Última Modificación el"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_assurance_plan_write_uid
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_write_uid
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor_write_uid
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation_write_uid
+msgid "Last Updated by"
+msgstr "Actualizado por"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_assurance_plan_write_date
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_write_date
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor_write_date
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation_write_date
+msgid "Last Updated on"
+msgstr "Actualizado"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Location/City/Town"
+msgstr "Municipio"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_birth_city_id
+msgid "Location/City/Town of Birth"
+msgstr "Municipio de nacimiento"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,document_type:0
+#: selection:doctor.doctor,document_type:0
+#: selection:doctor.patient,tdoc:0
+msgid "MS - Unidentified Minor"
+msgstr "MS - Menor sin Identificación"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,sex:0
+#: selection:doctor.doctor,sex:0
+msgid "Male"
+msgstr "Hombre"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_image_medium
+msgid "Medium-sized image"
+msgstr "Imagen de tamaño mediano"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,help:l10n_co_doctor.field_doctor_administrative_data_image_medium
+msgid "Medium-sized image of this contact. It is automatically resized as a 128x128px image, with aspect ratio preserved. Use this field in form views or some kanban views."
+msgstr "Imagen mediana de este contacto. Se redimensiona automáticamente a 128x128px, con el ratio de aspecto preservado. Se usa este campo en las vistas formulario y en algunas vistas kanban."
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,age_meassure_unit:0
+msgid "Months"
+msgstr "Meses"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,accompany_relationship:0
+#: selection:doctor.patient,responsible_relationship:0
+msgid "Mother"
+msgstr "Madre"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_accompany_name
+msgid "Name of the companion"
+msgstr "Nombre del Acompañante"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_name
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_administrative_data_filter
+msgid "Number ID"
+msgstr "Número de Identificación"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_numberid_integer
+msgid "Number ID for TI or CC Documents"
+msgstr "Number ID for TI or CC Documents"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_occupation
+msgid "Occupation"
+msgstr "Ocupación"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,accompany_relationship:0
+#: selection:doctor.patient,responsible_relationship:0
+msgid "Other"
+msgstr "Otro Cual"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_other_accompany_relationship
+msgid "Other Accompany Person's Relationship"
+msgstr "Relación de otra persona acompañante"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Other Personal Information"
+msgstr "Otros Datos Personales"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Other Relationship"
+msgstr "Other Relationship"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_other_responsible_relationship
+msgid "Other Responsible Person's Relationship"
+msgstr "Other Responsible Person's Relationship"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,document_type:0
+#: selection:doctor.doctor,document_type:0
+#: selection:doctor.patient,tdoc:0
+msgid "PA - Passport"
+msgstr "PA - Pasaporte"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,help:l10n_co_doctor.field_doctor_patient_partner_id
+msgid "Partner-related data of administrative data "
+msgstr "Partner-related data of administrative data "
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,help:l10n_co_doctor.field_doctor_doctor_partner_id
+msgid "Partner-related data of doctor "
+msgstr "Partner-related data of doctor "
+
+#. module: l10n_co_doctor
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_patient_details
+msgid "Patient Details"
+msgstr "Patient Details"
+
+#. module: l10n_co_doctor
+#: model:ir.actions.act_window,name:l10n_co_doctor.action_doctor_patient_occupation
+#: model:ir.ui.menu,name:l10n_co_doctor.menu_patient_profession
+msgid "Patient Occupation"
+msgstr "Patient Occupation"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_patient_occupation_form
+msgid "Patient Occupation Form"
+msgstr "Patient Occupation Form"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_patient_occupation_tree
+msgid "Patient Occupation Tree"
+msgstr "Patient Occupation Tree"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Phone"
+msgstr "Teléfono"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_phone
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_professional_phone
+msgid "Phone Number"
+msgstr "Número de Teléfono"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Place of Birth"
+msgstr "Lugar de Nacimiento"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Place of Residence"
+msgstr "Lugar de Residencia"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_insurer_plan_name
+msgid "Plan"
+msgstr "Nombre Plan"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_insurer_plan_code
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_assurance_plan_filter
+msgid "Plan Code"
+msgstr "Código Plan"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_assurance_plan_filter
+msgid "Plans"
+msgstr "Planes"
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:288
+#, python-format
+msgid "Please enter non zero value for Number ID"
+msgstr "Please enter non zero value for Number ID"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_occupation_filter
+msgid "Profession"
+msgstr "Profesión"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,document_type:0
+#: selection:doctor.doctor,document_type:0
+#: selection:doctor.patient,tdoc:0
+msgid "RC - Civil Registry"
+msgstr "RC - Registro Civil"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Related Contact"
+msgstr "Related Contact"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_partner_id
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor_partner_id
+msgid "Related Partner"
+msgstr "Empresa relacionada"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Relationship"
+msgstr "Parentesco"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_residence_address
+msgid "Residence Address"
+msgstr "Dirección de residencia"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_residence_country_id
+msgid "Residence Country"
+msgstr "País de Residencia"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_residence_department_id
+msgid "Residence Department"
+msgstr "Departamento de residencia"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_residence_city_id
+msgid "Residence Location/City/Town"
+msgstr "Residencia municipio"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+msgid "Responsible Person's Details"
+msgstr "Datos de la Persona Responsable"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_responsible_name
+msgid "Responsible Person's Name"
+msgstr "Nombre del Responsable"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_responsible_phone
+msgid "Responsible Person's Phone Number"
+msgstr "Número de Teléfono de la Persona Responsable"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_responsible_relationship
+msgid "Responsible Person's Relationship"
+msgstr "Relación de la persona responsable"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_blood_rh
+msgid "Rh"
+msgstr "Rh"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_administrative_data_filter
+msgid "Search Administrative Data"
+msgstr "Search Administrative Data"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_assurance_plan_filter
+msgid "Search Assurancen Plans"
+msgstr "Buscar Planes Assurancen"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_doctor_filter
+msgid "Search Doctor"
+msgstr "Search Doctor"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_occupation_filter
+msgid "Search Patient Occupation"
+msgstr "Search Patient Occupation"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_surname
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_professional_surname
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_administrative_data_tree
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_doctor_tree
+msgid "Second Last Name"
+msgstr "Segundo Apellido"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_middlename
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_professional_middlename
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_administrative_data_tree
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_doctor_tree
+msgid "Second Name"
+msgstr "Segundo Nombre"
+
+#. module: l10n_co_doctor
+#: selection:l10n_co_doctor,civil_state:0
+msgid "Separada/o"
+msgstr "Separada/o"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_photo_small
+msgid "Small-sized image"
+msgstr "Imagen de tamaño pequeño"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,help:l10n_co_doctor.field_doctor_patient_photo_small
+msgid "Small-sized image of this contact. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
+msgstr "Imagen de tamaño pequeño de este contacto. Se redimensiona automáticamente a 64x64px, con el ratio de aspecto preservado. Use este campo donde se requiera una imagen pequeña."
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,civil_state:0
+msgid "Soltera/o"
+msgstr "Soltera/o"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,user_type:0
+msgid "Subsidiado"
+msgstr "Subsidiado"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,document_type:0
+#: selection:doctor.doctor,document_type:0
+#: selection:doctor.patient,tdoc:0
+msgid "TI - Identity Card"
+msgstr "TI - Tarjeta de Identidad"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,help:l10n_co_doctor.field_doctor_administrative_data_image
+msgid "This field holds the image used as avatar for this contact, limited to 1024x1024px"
+msgstr "Este campo contiene la imagen utilizada como avatar para este contacto, limitada a 1024x1024px"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_doctor_id
+msgid "Treating Doctor"
+msgstr "Médico Tratante"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_document_type
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_doctor_document_type
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_patient_form_inherit
+#: model:ir.ui.view,arch_db:l10n_co_doctor.view_doctor_administrative_data_filter
+msgid "Type of Document"
+msgstr "Tipo de Documento"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,accompany_relationship:0
+#: selection:doctor.patient,responsible_relationship:0
+msgid "Uncle"
+msgstr "Tio"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_administrative_data_age_meassure_unit
+msgid "Unit of Measure of Age"
+msgstr "Unidad de Medida de la edad"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,civil_state:0
+msgid "Unión libre"
+msgstr "Unión libre"
+
+#. module: l10n_co_doctor
+#: model:ir.model.fields,field_description:l10n_co_doctor.field_doctor_patient_user_type
+msgid "User Type"
+msgstr "Tipo de Usuario"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,user_type:0
+msgid "Vinculado"
+msgstr "Vinculado"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,civil_state:0
+msgid "Viuda/o"
+msgstr "Viuda/o"
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:267
+#, python-format
+msgid "Warning!"
+msgstr "Warning!"
+
+#. module: l10n_co_doctor
+#: selection:doctor.patient,age_meassure_unit:0
+msgid "Years"
+msgstr "Años"
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:305
+#, python-format
+msgid "You can choose 'AS' document only if the age is greater than 17 years."
+msgstr "You can choose 'AS' document only if the age is greater than 17 years."
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:303
+#, python-format
+msgid "You can only choose 'MS' document for age between 1 to 30 days."
+msgstr "You can only choose 'MS' document for age between 1 to 30 days."
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:297
+#, python-format
+msgid "You can only choose 'RC' or 'MS' documents, for age less than 1 month."
+msgstr "You can only choose 'RC' or 'MS' documents, for age less than 1 month."
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:406
+#, python-format
+msgid "You cannot choose 'CC', 'TI' or 'AS' document types for age less than 1 year."
+msgstr "No puede seleccionar 'CC', 'TI' debe seleccioar un tipo de documento para menos de 12 meses."
+
+#. module: l10n_co_doctor
+#: code:addons/l10n_co_doctor/models/doctor_co.py:299
+#, python-format
+msgid "You cannot choose 'RC' or 'MS' document types for age greater than 17 years."
+msgstr "You cannot choose 'RC' or 'MS' document types for age greater than 17 years."
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_assurance_plan
+msgid "assurance.plan"
+msgstr "assurance.plan"
+
+#. module: l10n_co_doctor
+#: model:ir.ui.view,arch_db:l10n_co_doctor.doctor_doctor_form
+msgid "doctor Form"
+msgstr "doctor Form"
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_doctor_administrative_data
+msgid "doctor.patient"
+msgstr "doctor.patient"
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_doctor_doctor
+msgid "doctor.doctor"
+msgstr "doctor.doctor"
+
+#. module: l10n_co_doctor
+#: model:ir.model,name:l10n_co_doctor.model_doctor_patient_occupation
+msgid "doctor.patient.occupation"
+msgstr "doctor.patient.occupation"
+
+
+
+
+
+
+

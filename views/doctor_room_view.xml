@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="doctor_room_form_view" model="ir.ui.view">
+      <field name="name">doctor.room.form.view</field>
+      <field name="model">doctor.room</field>
+      <field name="arch" type="xml">
+        <form string="Doctor Room">
+          <sheet>
+            <legend class="texto_legend">Crear Consultorio</legend><br></br>
+            <group>
+              <field name="codigo" style="width: 50%%" />
+              <field name="name" style="width: 50%%"/>
+              <field name="multi_paciente" style="width: 50%%"/>
+              <field name="numero_pacientes" style="width: 50%%" attrs="{'invisible': [('multi_paciente', '=', False)]}"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="doctor_room_tree_view" model="ir.ui.view">
+      <field name="name">doctor.room.tree.view</field>
+      <field name="model">doctor.room</field>
+      <field name="arch" type="xml">
+        <tree string="Doctor Room">
+          <field name="codigo" />
+          <field name="name"/>
+          <field name="multi_paciente"/>
+          <field name="numero_pacientes"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_doctor_room" model="ir.actions.act_window">
+      <field name="name">Consultorios</field>
+      <field name="res_model">doctor.room</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+     <!-- schedule Calendar View -->
+    <record id="view_doctor_schedule_calendar_inherit" model="ir.ui.view">
+        <field name="name">Schedule</field>
+        <field name="model">doctor.schedule</field>
+        <field eval="7" name="priority"/>
+        <field name="inherit_id" ref="doctor.view_doctor_schedule_calendar"/>
+        <field name="arch" type="xml">
+        <xpath expr="//field[@name='professional_id']" position="before">
+                  <field name="consultorio_id"/>
+        </xpath>
+        </field>
+    </record>
+
+    <menuitem action="action_doctor_room" id="item_doctor_room" name="Consultorios" parent="doctor.menu_doctor_config" sequence="41"/> <!-- groups="doctor.group_doctor_configuration" -->
+</odoo>

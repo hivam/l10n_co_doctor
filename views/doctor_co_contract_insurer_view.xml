@@ -12,11 +12,12 @@
               <legend class="texto_legend">Contrato</legend>
                 <group col="4" colspan="6">
                   <field name="contract_code"/>
-                  <field name="insurer_id"/>
+                  <field name="insurer_id" string="Aseguradora"/>
                   <field name="f_inicio"/>
                   <field name="f_fin"/>
                   <field name="valor"/>
                   <field name="active"/>
+                  <field name="valor_ejecutado"/>
                   <field name="id" invisible="1"/>
                 </group>
             </fieldset>

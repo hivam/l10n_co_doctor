@@ -23,8 +23,15 @@ _logger = logging.getLogger(__name__)
 import openerp
 import re
 import codecs
-from odoo import models, fields, api
+from odoo import models, fields, api, tools, SUPERUSER_ID
 from odoo.tools.translate import _
+
+
+import datetime as dt
+from datetime import datetime
+from dateutil import relativedelta
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
+
 
 
 class doctor_professional_co(models.Model):
@@ -37,27 +44,242 @@ class doctor_professional_co(models.Model):
 
 	city_id = fields.Many2one('res.country.state.city', 'Ciudad', required=False,
 							   domain="[('state_id','=',state_id)]")
-	firtsname = fields.Char('Primer Nombre', size=25, required=True)
+	firstname = fields.Char('Primer Nombre', size=25, required=True)
 	lastname = fields.Char('Primer Apellido', size=25, required=True)
 	middlename = fields.Char('Segundo Nombre', size=25)
-	nombreUsuario = fields.Char('Nombre Usuario', size=40, required=True)
+	nombreUsuario = fields.Char('Nombre Usuario', size=40, required=False)
 	ref = fields.Char(u'Número Identificación', size=15, required=True)
 	state_id = fields.Many2one('res.country.state', 'Departamento', required=False)
 	street = fields.Char(u'Dirección', required=False)
 	surname = fields.Char('Segundo Apellido', size=25)
-	tdoc = fields.Selection((('11', 'Registro civil'), ('12', 'Tarjeta de identidad'),
-							  ('13', u'Cédula de ciudadanía'), ('21', u'Tarjeta de extranjería'),
-							  ('22', u'Cédula de extranjería'), ('31', 'NIT'),
-							  ('41', 'Pasaporte'), ('42', 'Tipo de documento extranjero'),
-							  ('43', 'Para uso definido por la DIAN'), ('NU', u'Número único de identificación'),
-							  ('AS', u'Adulto sin identificación'), ('MS', u'Menor sin identificación')),
-							 'Tipo de Documento')
+	tdoc = fields.Selection([('cc', 'CC - ID Document'), ('ce', 'CE - Aliens Certificate'),
+							 ('pa', 'PA - Passport'), ('rc', 'RC - Civil Registry'), ('ti', 'TI - Identity Card'),
+							 ('as', 'AS - Unidentified Adult'), ('ms', 'MS - Unidentified Minor')],
+							string='Type of Document')
+
 	zona =  fields.Selection((('U', 'Urbana'), ('R', 'Rural')), 'Zona de residencia', required=True)
+
+	@api.multi
+	@api.depends('birth_date')
+	def _compute_age_meassure_unit(self):
+		for data in self:
+			if data.birth_date:
+				today_datetime = datetime.today()
+				today_date = today_datetime.date()
+				birth_date_format = datetime.strptime(data.birth_date, DF).date()
+				date_difference = today_date - birth_date_format
+				difference = int(date_difference.days)
+				month_days = calendar.monthrange(today_date.year, today_date.month)[1]
+				date_diff = relativedelta.relativedelta(today_date, birth_date_format)
+				if difference < 30:
+					data.age_unit = '3'
+					data.age = int(date_diff.days)
+				elif difference < 365:
+					data.age_unit = '2'
+					data.age = int(date_diff.months)
+				else:
+					data.age_unit = '1'
+					data.age = int(date_diff.years)
+
+	def _check_birth_date(self, birth_date):
+		warn_msg = ''
+		today_datetime = datetime.today()
+		today_date = today_datetime.date()
+		birth_date_format = datetime.strptime(birth_date, DF).date()
+		date_difference = today_date - birth_date_format
+		difference = int(date_difference.days)
+		if difference < 0:
+			warn_msg = _('Invalid birth date!')
+		return warn_msg
+
+	@api.onchange('birth_date', 'age_unit')
+	def onchange_birth_date(self):
+		if self.age_unit == '3':
+			self.tdoc = 'rc'
+		if self.birth_date:
+			warn_msg = self._check_birth_date(self.birth_date)
+			if warn_msg:
+				warning = {
+					'title': _('Warning!'),
+					'message': warn_msg,
+				}
+				return {'warning': warning}
+
+	@api.onchange('ref', 'tdoc')
+	def onchange_ref(self):
+		if self.ref:
+			self.name = str(self.ref)
+		if self.tdoc and self.tdoc in ['cc', 'ti'] and self.ref == 0:
+			self.name = str(0)
+
+	def _check_email(self, email):
+		if not tools.single_email_re.match(email):
+			raise ValidationError(_('Invalid Email ! Please enter a valid email address.'))
+		else:
+			return True
+
+	def _check_assign_numberid(self, ref):
+		if ref == 0:
+			raise ValidationError(_('Please enter non zero value for Number ID'))
+		else:
+			numberid = str(ref)
+			return numberid
+
+	@api.multi
+	def _check_tdocs(self):
+		for data in self:
+			if data.age_unit == '3' and data.tdoc not in ['rc', 'ms']:
+				raise ValidationError(_("You can only choose 'RC' or 'MS' documents, for age less than 1 month."))
+			if data.age > 17 and data.age_unit == '1' and data.tdoc in ['rc', 'ms']:
+				raise ValidationError(_("You cannot choose 'RC' or 'MS' document types for age greater than 17 years."))
+			if data.age_unit in ['2', '3'] and data.tdoc in ['cc', 'as', 'ti']:
+				raise ValidationError(
+					_("You cannot choose 'CC', 'TI' or 'AS' document types for age less than 1 year."))
+			if data.tdoc == 'ms' and data.age_unit != '3':
+				raise ValidationError(_("You can only choose 'MS' document for age between 1 to 30 days."))
+			if data.tdoc == 'as' and data.age_unit == '1' and data.age <= 17:
+				raise ValidationError(_("You can choose 'AS' document only if the age is greater than 17 years."))
+
+	@api.multi
+	def _get_related_partner_vals(self, vals):
+		## code for updating partner with change in administrative data
+		## administrative data will not get updated with partner changes
+		for data in self:
+			partner_vals = {}
+			if 'firstname' in vals or 'lastname' in vals or 'middlename' in vals or 'surname' in vals:
+				firstname = data.firstname or ''
+				lastname = data.lastname or ''
+				middlename = data.middlename or ''
+				surname = data.surname or ''
+				if 'firstname' in vals:
+					firstname = vals.get('firstname', False) or ''
+					partner_vals.update({'x_name1': vals.get('firstname', False)})
+				if 'lastname' in vals:
+					lastname = vals.get('lastname', False) or ''
+					partner_vals.update({'x_lastname1': vals.get('lastname', False)})
+				if 'middlename' in vals:
+					middlename = vals.get('middlename', False) or ''
+					partner_vals.update({'x_name2': vals.get('middlename', False)})
+				if 'surname' in vals:
+					surname = vals.get('surname', False) or ''
+					partner_vals.update({'x_lastname2': vals.get('surname', False)})
+				nameList = [
+					firstname.strip(),
+					middlename.strip(),
+					lastname.strip(),
+					surname.strip()
+				]
+				formatedList = []
+				name = ''
+				for item in nameList:
+					if item is not '':
+						formatedList.append(item)
+					name = ' '.join(formatedList).title()
+				partner_vals.update({'name': name})
+			if 'birth_date' in vals:
+				partner_vals.update({'xbirthday': vals.get('birth_date', False)})
+			if 'email' in vals:
+				partner_vals.update({'email': vals.get('email', False)})
+			if 'phone' in vals:
+				partner_vals.update({'phone': vals.get('phone', False)})
+			if 'mobile' in vals:
+				partner_vals.update({'mobile': vals.get('mobile', False)})
+			if 'image' in vals:
+				partner_vals.update({'image': vals.get('image', False)})
+			if 'residence_district' in vals:
+				partner_vals.update({'street2': vals.get('residence_district', False)})
+			if 'residence_department_id' in vals:
+				partner_vals.update({'state_id': vals.get('residence_department_id', False)})
+			if 'residence_country_id' in vals:
+				partner_vals.update({'country_id': vals.get('residence_country_id', False)})
+			if 'residence_address' in vals:
+				partner_vals.update({'street': vals.get('residence_address', False)})
+
+			if 'tdoc' in vals:
+				if vals.get('tdoc') == 'cc':
+					partner_vals.update({'doctype': 13})
+
+				elif vals.get('tdoc') == 'rc':
+					partner_vals.update({'doctype': 11})
+				else:
+					partner_vals.update({'doctype': 1})
+
+			partner_vals.update({'es_paciente': False})
+			partner_vals.update({'xidentification': vals.get('ref', False)})
+			partner_vals.update({'es_profesional_salud': True})
+
+			return partner_vals
+
+	@api.model
+	def create(self, vals):
+		if vals.get('email', False):
+			self._check_email(vals.get('email'))
+		if vals.get('tdoc', False) and vals['tdoc'] in ['cc', 'ti']:
+			ref = 0
+			if vals.get('ref', False):
+				ref = vals['ref']
+			numberid = self._check_assign_numberid(ref)
+			vals.update({'name': numberid})
+		if vals.get('birth_date', False):
+			warn_msg = self._check_birth_date(vals['birth_date'])
+			if warn_msg:
+				raise ValidationError(warn_msg)
+
+		res_user_id = self.env['res.users'].search([('id', '=', self._uid)])
+
+		for compania in self.env['res.users'].browse(res_user_id.id):
+			codigo_prestador = compania.company_id.cod_prestadorservicio
+
+		if codigo_prestador:
+			vals['codigo_prestador'] = codigo_prestador
+
+		tools.image_resize_images(vals)
+		res = super(doctor_professional_co, self).create(vals)
+		#res._check_tdocs()
+		partner_vals = res._get_related_partner_vals(vals)
+		# partner_vals.update({'tdoc': 1})
+		partner = self.env['res.partner'].create(partner_vals)
+		res.partner_id = partner.id
+		return res
+
+	@api.multi
+	def write(self, vals):
+		if vals.get('email', False):
+			self._check_email(vals.get('email'))
+		tools.image_resize_images(vals)
+		if vals.get('tdoc', False) or vals.get('ref', False):
+			if vals.get('tdoc', False):
+				tdoc = vals['tdoc']
+			else:
+				tdoc = self.tdoc
+			if tdoc in ['cc', 'ti']:
+				if vals.get('ref', False):
+					ref = vals['ref']
+				else:
+					ref = self.ref
+				numberid = self._check_assign_numberid(ref)
+		if vals.get('birth_date', False):
+			warn_msg = self._check_birth_date(vals['birth_date'])
+			if warn_msg:
+				raise ValidationError(warn_msg)
+		tools.image_resize_images(vals)
+		res = super(doctor_professional_co, self).write(vals)
+		#self._check_tdocs()
+		if 'firstname' in vals or 'lastname' in vals or 'middlename' in vals or 'surname' in vals \
+				or 'birth_date' in vals or 'email' in vals or 'phone' in vals or 'mobile' in vals or 'image' in vals \
+				or 'residence_district' in vals or 'residence_department_id' in vals or 'residence_country_id' in vals or 'residence_address' in vals:
+			for data in self:
+				if data.partner_id:
+					partner_vals = data._get_related_partner_vals(vals)
+					data.partner_id.write(partner_vals)
+		return res
+
+
 
 	def name_get(self):
 		if not len(self._ids):
 			return []
-		rec_name = 'nombreUsuario'
+		rec_name = 'firstname'
 		res = [(r['id'], r[rec_name] or '')
 			for r in self.read([rec_name])]
 		return res
@@ -95,7 +317,7 @@ class doctor_professional_co(models.Model):
 		elif ref_ids:
 			return False
 		return True
-
+	"""
 	@api.model
 	def create(self):
 		vals.update({'name' : "%s %s %s %s" % (vals['lastname'] , vals['surname'] or '' , vals['firtsname'] , vals['middlename'] or '')})
@@ -122,7 +344,7 @@ class doctor_professional_co(models.Model):
 		#se crea paciente
 		paciente = self.env['doctor.patient'].create({'ref' : vals[u'ref'], 'tdoc': vals[u'tdoc'], 'middlename' : vals[u'middlename'] or '', 'surname' : vals[u'surname'] or '',  'lastname': vals[u'lastname'], 'firstname': vals[u'firtsname'], 'city_id': vals[u'city_id'], 'state_id': vals[u'state_id'], 'street': vals[u'street'], 'zona' : vals[u'zona'], 'photo' : vals[u'photo'], 'telefono': vals[u'work_phone'], 'movil' : vals[u'work_mobile'], 'es_profesionalsalud' : 1, 'sex' : 'm', 'birth_date' : '1970-01-01', 'patient' : partner_id})
 		return super(doctor_professional_co, self).create(vals)
-
+	"""
 
 	_constraints = [
 		(_check_ident, '¡Error! Número de identificación debe tener entre 2 y 10 dígitos', ['ref']),

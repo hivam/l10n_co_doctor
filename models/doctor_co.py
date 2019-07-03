@@ -27,7 +27,6 @@ import codecs
 #from odoo import setup_modifiers
 
 from odoo import models, fields, api
-from odoo.tools.translate import _
 
 
 from lxml import etree
@@ -46,6 +45,18 @@ from dateutil.relativedelta import relativedelta
 import math
 
 from odoo import SUPERUSER_ID, tools
+
+from odoo import models, fields, api, _
+from odoo import tools
+import datetime as dt
+from datetime import datetime
+from dateutil import relativedelta
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
+import calendar
+from odoo.modules.module import get_module_resource
+from odoo.exceptions import ValidationError
+import base64
+
 
 #import sale
 #import netsvc
@@ -148,10 +159,100 @@ class doctor_patient_co(models.Model):
     ('6', 'Otros'),
     ]
 
+    @api.model
+    def _default_image(self):
+        image_path = get_module_resource('l10n_co_doctor', 'static/src/img', 'default_image.png')
+        return tools.image_resize_image_big(base64.b64encode(open(image_path, 'rb').read()))
+
+    name = fields.Char(string='Number ID')
+    ref = fields.Integer(string='Number ID for TI or CC Documents')
+    tdoc = fields.Selection([('cc', 'CC - ID Document'), ('ce', 'CE - Aliens Certificate'),
+                             ('pa', 'PA - Passport'), ('rc', 'RC - Civil Registry'), ('ti', 'TI - Identity Card'),
+                             ('as', 'AS - Unidentified Adult'), ('ms', 'MS - Unidentified Minor')],
+                            string='Type of Document')
+    photo = fields.Binary("Image", attachment=True, default=_default_image,
+                          help="This field holds the image used as avatar for this contact, limited to 1024x1024px",
+                          copy=False)
+    photo_medium = fields.Binary("Medium-sized image", attachment=True,
+                                 help="Medium-sized image of this contact. It is automatically " \
+                                      "resized as a 128x128px image, with aspect ratio preserved. " \
+                                      "Use this field in form views or some kanban views.", copy=False)
+    photo_small = fields.Binary("Small-sized image", attachment=True,
+                                help="Small-sized image of this contact. It is automatically " \
+                                     "resized as a 64x64px image, with aspect ratio preserved. " \
+                                     "Use this field anywhere a small image is required.", copy=False)
+    firstname = fields.Char(string='First Name')
+    lastname = fields.Char(string='First Last Name')
+    middlename = fields.Char(string='Second Name')
+    surname = fields.Char(string='Second Last Name')
+    sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Gender')
+    birth_date = fields.Date(string='Birth Date')
+    blood_type = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Type')
+    blood_rh = fields.Selection([('positive', '+'), ('negative', '-')], string='Rh')
+    age = fields.Integer(string='Age', compute='_compute_age_meassure_unit')
+    age_unit = fields.Selection([('1', 'Years'), ('2', 'Months'), ('3', 'Days')], string='Unit of Measure of Age',
+                                compute='_compute_age_meassure_unit')
+    birth_country_id = fields.Many2one('res.country', string='Country of Birth')
+    #     birth_department_id = fields.Many2one('res.country.state', string='Department of Birth Place')
+    birth_city_id = fields.Many2one('res.country.state.city', string='Location/City/Town of Birth')
+    #     birth_district = fields.Char(string='Districts/localties/areas of Birth Place')
+    #     birth_neighborhood = fields.Char(string='Neighborhood of Birth Place')
+    #     birth_address = fields.Text(string="Address of Birth Place")
+    residence_country_id = fields.Many2one('res.country', string='Residence Country')
+    residence_department_id = fields.Many2one('res.country.state', string='Residence Department')
+    residence_city_id = fields.Many2one('res.country.state.city', string='Residence Location/City/Town')
+    #     residence_district = fields.Char(string='Residence Districts/localties/areas')
+    #     residence_neighborhood = fields.Char(string='Residence Neighborhood')
+    residence_address = fields.Text(string="Residence Address")
+    civil_state = fields.Selection([('separated', 'Separada/o'), ('single', 'Soltera/o'), ('married', 'Casada/o'),
+                                    ('free_union', 'Unión libre'), ('widow', 'Viuda/o')], string='Civil Status')
+    #     beliefs = fields.Text(string="Beliefs")
+    occupation = fields.Char("Occupation")
+    #     profession_id = fields.Char(string='Profession')
+    email = fields.Char(string='Email')
+    phone = fields.Char(string='Phone Number')
+    #     mobile = fields.Char('Mobile Number')
+    accompany_name = fields.Char("Name of the companion")
+    accompany_relationship = fields.Selection(
+        [('mother', 'Mother'), ('father', 'Father'), ('grand_father', 'Grand Father'),
+         ('grand_mother', 'Grand Mother'), ('uncle', 'Uncle'), ('aunt', 'Aunt'),
+         ('friend', 'Friend'), ('other', 'Other')], string="Accompany Person's Relationship")
+    other_accompany_relationship = fields.Char(string="Other Accompany Person's Relationship")
+    accompany_phone = fields.Char("Accompany Person's Phone Number")
+    responsible_name = fields.Char("Responsible Person's Name")
+    responsible_relationship = fields.Selection(
+        [('mother', 'Mother'), ('father', 'Father'), ('grand_father', 'Grand Father'),
+         ('grand_mother', 'Grand Mother'), ('uncle', 'Uncle'), ('aunt', 'Aunt'),
+         ('friend', 'Friend'), ('other', 'Other')], string="Responsible Person's Relationship")
+    other_responsible_relationship = fields.Char(string="Other Responsible Person's Relationship")
+    responsible_phone = fields.Char("Responsible Person's Phone Number")
+    #     father_name = fields.Char(string="Father's Name")
+    #     father_occupation = fields.Char(string="Father's Occupation")
+    #     father_address = fields.Text(string="Father's Address")
+    #     father_phone = fields.Char(string="Father's Phone Number")
+    #     mother_name = fields.Char(string="Mother's Name")
+    #     mother_occupation = fields.Char(string="Mother's Occupation")
+    #     mother_address = fields.Text(string="Mother's Address")
+    #     mother_phone = fields.Char(string="Mother's Phone Number")
+    user_type = fields.Selection(
+        [('contributory', 'Contributivo'), ('subsidized', 'Subsidiado'), ('linked', 'Vinculado')], string="User Type")
+    #     primary_payer =  fields.Selection([('private_user','Usuario Particular'),('eps','EPS'),
+    #                                        ('another_insurer','Otra Aseguradora'),('mixed','Pago Mixto')], string="Primary Payer")
+    insurer_id = fields.Many2one('res.partner', string='Assurance Company')
+    #     assurance_plan_id = fields.Many2one('assurance.plan', string='Assurer Plans')
+    #     other_assurance_partner_id = fields.Many2one('res.partner',string='Other Assurance Company')
+    #     other_assurance_plan_id = fields.Many2one('assurance.plan', string='Other Assurer Plans')
+    doctor_id = fields.Many2one('doctor.professional', ondelete='restrict', string='Treating Doctor')
+    partner_id = fields.Many2one('res.partner', copy=False, ondelete='restrict', string='Related Partner',
+                                 help='Partner-related data of administrative data ')
+
+
+
+    #old data
+
     city_id =  fields.Many2one('res.country.state.city', 'Ciudad/Localidad', required=False, domain="[('state_id','=',state_id)]")
     edad_calculada = fields.Integer(compute='_get_edad', type="integer", store=True,
                                       readonly=True, string='Edad Actual')
-    email = fields.Char('Email')
     estadocivil_id =  fields.Many2one('doctor.patient.estadocivil', 'Estado Civil', required=False)
     es_profesionalsalud = fields.Boolean('Es profesional de la salud?',
                                           help="Marcar cuando el paciente a crear ya existe como profesional de la salud.")
@@ -176,16 +277,11 @@ class doctor_patient_co(models.Model):
     ocupacion_padre =  fields.Many2one('doctor.patient.ocupacion', u'Ocupación Padre', required=False)
     parentesco_id =  fields.Many2one('doctor.patient.parentesco', 'Parentesco', required=False)
     parentesco_acompaniante_id = fields.Many2one('doctor.patient.parentesco', 'Parentesco', required=False)
-    ref =  fields.Char(u'Identificación', required=True, )
     state_id = fields.Many2one('res.country.state', 'Departamento/Provincia', required=False,
                                 domain="[('country_id','=',country_id)]")
     country_id = fields.Many2one('res.country', u'País/Nación')
     street =  fields.Char(u'Dirección', required=False)
-    tdoc = fields.Selection((('11', 'Registro civil'), ('12', 'Tarjeta de identidad'),
-                              ('13', u'Cédula de ciudadanía'), ('21', u'Cédula de extranjería'), ('41', 'Pasaporte'),
-                              ('NU', u'Número único de identificación'), ('AS', u'Adulto sin identificación'),
-                              ('MS', u'Menor sin identificación')),
-                             'Tipo de Documento', required=True)
+
     telefono = fields.Char(u'Teléfono', size=12)
     telefono_acompaniante = fields.Char(u'Teléfono', size=12)
     telefono_responsable = fields.Char(u'Teléfono', size=12)
@@ -194,7 +290,7 @@ class doctor_patient_co(models.Model):
                                              selection=SELECTION_LIST, string='Unidad de la edad', readonly=True,
                                              store=True)
     ver_nc = fields.Boolean('Ver Nc', store=False)
-    zona =  fields.Selection((('U', 'Urbana'), ('R', 'Rural')), 'Zona de residencia', required=True)
+    zona =  fields.Selection((('U', 'Urbana'), ('R', 'Rural')), 'Zona de residencia', required=False)
     nro_afiliacion = fields.Char(u'Nº de Afiliación')
 
     poliza_medicina_prepagada = fields.Boolean(u'Tiene Póliza de medicina prepagada')
@@ -236,6 +332,251 @@ class doctor_patient_co(models.Model):
     codigo_prestador = fields.Char('Codigo de prestador', size=12)
     ocupacion_actual = fields.Char(u'Ocupación')
     creencias = fields.Char('Creencias')
+
+    @api.multi
+    def name_get(self):
+        return [
+            (partner.id, '%s%s' % (partner.ref and '[%s] ' % partner.ref or '', partner.nombre))
+            for partner in self]
+
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        args = args or []
+        ids = []
+        if name:
+            ids = self.search([('ref', 'ilike', name)] + args, limit=limit)
+            if not ids:
+                ids = self.search([('nombre', operator, name)] + args, limit=limit)
+        else:
+            ids = self.search(args, limit=limit)
+        return ids.name_get()
+
+    @api.multi
+    @api.depends('birth_date')
+    def _compute_age_meassure_unit(self):
+        for data in self:
+            if data.birth_date:
+                today_datetime = datetime.today()
+                today_date = today_datetime.date()
+                birth_date_format = datetime.strptime(data.birth_date, DF).date()
+                date_difference = today_date - birth_date_format
+                difference = int(date_difference.days)
+                month_days = calendar.monthrange(today_date.year, today_date.month)[1]
+                date_diff = relativedelta.relativedelta(today_date, birth_date_format)
+                if difference < 30:
+                    data.age_unit = '3'
+                    data.age = int(date_diff.days)
+                elif difference < 365:
+                    data.age_unit = '2'
+                    data.age = int(date_diff.months)
+                else:
+                    data.age_unit = '1'
+                    data.age = int(date_diff.years)
+
+    def _check_birth_date(self, birth_date):
+        warn_msg = ''
+        today_datetime = datetime.today()
+        today_date = today_datetime.date()
+        birth_date_format = datetime.strptime(birth_date, DF).date()
+        date_difference = today_date - birth_date_format
+        difference = int(date_difference.days)
+        if difference < 0:
+            warn_msg = _('Invalid birth date!')
+        return warn_msg
+
+    @api.onchange('birth_date', 'age_unit')
+    def onchange_birth_date(self):
+        if self.age_unit == '3':
+            self.tdoc = 'rc'
+        if self.birth_date:
+            warn_msg = self._check_birth_date(self.birth_date)
+            if warn_msg:
+                warning = {
+                    'title': _('Warning!'),
+                    'message': warn_msg,
+                }
+                return {'warning': warning}
+
+    @api.onchange('ref', 'tdoc')
+    def onchange_ref(self):
+        if self.ref:
+            self.name = str(self.ref)
+        if self.tdoc and self.tdoc in ['cc', 'ti'] and self.ref == 0:
+            self.name = str(0)
+
+    def _check_email(self, email):
+        if not tools.single_email_re.match(email):
+            raise ValidationError(_('Invalid Email ! Please enter a valid email address.'))
+        else:
+            return True
+
+    def _check_assign_numberid(self, ref):
+        if ref == 0:
+            raise ValidationError(_('Please enter non zero value for Number ID'))
+        else:
+            numberid = str(ref)
+            return numberid
+
+    @api.multi
+    def _check_tdocs(self):
+        for data in self:
+            if data.age_unit == '3' and data.tdoc not in ['rc', 'ms']:
+                raise ValidationError(_("You can only choose 'RC' or 'MS' documents, for age less than 1 month."))
+            if data.age > 17 and data.age_unit == '1' and data.tdoc in ['rc', 'ms']:
+                raise ValidationError(_("You cannot choose 'RC' or 'MS' document types for age greater than 17 years."))
+            if data.age_unit in ['2', '3'] and data.tdoc in ['cc', 'as', 'ti']:
+                raise ValidationError(
+                    _("You cannot choose 'CC', 'TI' or 'AS' document types for age less than 1 year."))
+            if data.tdoc == 'ms' and data.age_unit != '3':
+                raise ValidationError(_("You can only choose 'MS' document for age between 1 to 30 days."))
+            if data.tdoc == 'as' and data.age_unit == '1' and data.age <= 17:
+                raise ValidationError(_("You can choose 'AS' document only if the age is greater than 17 years."))
+
+    @api.multi
+    def _get_related_partner_vals(self, vals):
+        ## code for updating partner with change in administrative data
+        ## administrative data will not get updated with partner changes
+        for data in self:
+            partner_vals = {}
+            if 'firstname' in vals or 'lastname' in vals or 'middlename' in vals or 'surname' in vals:
+                firstname = data.firstname or ''
+                lastname = data.lastname or ''
+                middlename = data.middlename or ''
+                surname = data.surname or ''
+                if 'firstname' in vals:
+                    firstname = vals.get('firstname', False) or ''
+                    partner_vals.update({'x_name1': vals.get('firstname', False)})
+                if 'lastname' in vals:
+                    lastname = vals.get('lastname', False) or ''
+                    partner_vals.update({'x_lastname1': vals.get('lastname', False)})
+                if 'middlename' in vals:
+                    middlename = vals.get('middlename', False) or ''
+                    partner_vals.update({'x_name2': vals.get('middlename', False)})
+                if 'surname' in vals:
+                    surname = vals.get('surname', False) or ''
+                    partner_vals.update({'x_lastname2': vals.get('surname', False)})
+                nameList = [
+                    firstname.strip(),
+                    middlename.strip(),
+                    lastname.strip(),
+                    surname.strip()
+                ]
+                formatedList = []
+                name = ''
+                for item in nameList:
+                    if item is not '':
+                        formatedList.append(item)
+                    name = ' '.join(formatedList).title()
+                partner_vals.update({'name': name})
+            if 'birth_date' in vals:
+                partner_vals.update({'xbirthday': vals.get('birth_date', False)})
+            if 'email' in vals:
+                partner_vals.update({'email': vals.get('email', False)})
+            if 'phone' in vals:
+                partner_vals.update({'phone': vals.get('phone', False)})
+            if 'mobile' in vals:
+                partner_vals.update({'mobile': vals.get('mobile', False)})
+            if 'image' in vals:
+                partner_vals.update({'image': vals.get('image', False)})
+            if 'residence_district' in vals:
+                partner_vals.update({'street2': vals.get('residence_district', False)})
+            if 'residence_department_id' in vals:
+                partner_vals.update({'state_id': vals.get('residence_department_id', False)})
+            if 'residence_country_id' in vals:
+                partner_vals.update({'country_id': vals.get('residence_country_id', False)})
+            if 'residence_address' in vals:
+                partner_vals.update({'street': vals.get('residence_address', False)})
+
+
+
+            if 'tdoc' in vals:
+                if vals.get('tdoc') == 'cc':
+                    partner_vals.update({'doctype': 13})
+
+                elif vals.get('tdoc') == 'rc':
+                    partner_vals.update({'doctype': 11})
+                else:
+                    partner_vals.update({'doctype': 1})
+
+            partner_vals.update({'es_paciente':True})
+            partner_vals.update({'xidentification':vals.get('ref', False)})
+            partner_vals.update({'es_profesional_salud': False})
+
+
+            return partner_vals
+
+    @api.model
+    def create(self, vals):
+        if vals.get('email', False):
+            self._check_email(vals.get('email'))
+        if vals.get('tdoc', False) and vals['tdoc'] in ['cc', 'ti']:
+            ref = 0
+            if vals.get('ref', False):
+                ref = vals['ref']
+            numberid = self._check_assign_numberid(ref)
+            vals.update({'name': numberid})
+        if vals.get('birth_date', False):
+            warn_msg = self._check_birth_date(vals['birth_date'])
+            if warn_msg:
+                raise ValidationError(warn_msg)
+
+        res_user_id = self.env['res.users'].search([('id', '=', self._uid)])
+
+        for compania in self.env['res.users'].browse(res_user_id.id):
+            codigo_prestador = compania.company_id.cod_prestadorservicio
+
+        if codigo_prestador:
+            vals['codigo_prestador'] = codigo_prestador
+
+        vals.update({'name': "%s %s %s %s" % (
+            vals['lastname'], vals['surname'] or '', vals['firstname'], vals['middlename'] or '')})
+        vals.update({'nombre': vals['name'].upper()})
+
+        tools.image_resize_images(vals)
+        res = super(doctor_patient_co, self).create(vals)
+        res._check_tdocs()
+        partner_vals = res._get_related_partner_vals(vals)
+        #partner_vals.update({'tdoc': 1})
+        partner = self.env['res.partner'].create(partner_vals)
+        res.partner_id = partner.id
+        return res
+
+    @api.multi
+    def write(self, vals):
+        if vals.get('email', False):
+            self._check_email(vals.get('email'))
+        tools.image_resize_images(vals)
+        if vals.get('tdoc', False) or vals.get('ref', False):
+            if vals.get('tdoc', False):
+                tdoc = vals['tdoc']
+            else:
+                tdoc = self.tdoc
+            if tdoc in ['cc', 'ti']:
+                if vals.get('ref', False):
+                    ref = vals['ref']
+                else:
+                    ref = self.ref
+                numberid = self._check_assign_numberid(ref)
+        if vals.get('birth_date', False):
+            warn_msg = self._check_birth_date(vals['birth_date'])
+            if warn_msg:
+                raise ValidationError(warn_msg)
+        tools.image_resize_images(vals)
+        res = super(doctor_patient_co, self).write(vals)
+        self._check_tdocs()
+        if 'firstname' in vals or 'lastname' in vals or 'middlename' in vals or 'surname' in vals \
+                or 'birth_date' in vals or 'email' in vals or 'phone' in vals or 'mobile' in vals or 'image' in vals \
+                or 'residence_district' in vals or 'residence_department_id' in vals or 'residence_country_id' in vals or 'residence_address' in vals:
+            for data in self:
+                if data.partner_id:
+                    partner_vals = data._get_related_partner_vals(vals)
+                    data.partner_id.write(partner_vals)
+        return res
+
+
+
+
+    #datos viejas
 
     @api.multi
     def _get_edad(self):
@@ -313,6 +654,7 @@ class doctor_patient_co(models.Model):
 
         return res
 
+    """
     @api.model
     def create(self,vals):
         _logger.info(vals)
@@ -366,7 +708,7 @@ class doctor_patient_co(models.Model):
 
         return super(doctor_patient_co,self).create(vals)
 
-
+    """
 
     def onchange_completar_datos(self, cr, uid, ids,id_parentesco, completar_datos_acompaniante,nom_acompanante, tel_acompaniante, context=None):
         res={'value':{}}
@@ -661,6 +1003,10 @@ class doctor_appointment_co(models.Model):
     appointmet_note_ids=fields.One2many('doctor.patient_note', 'appointmet_note_id', 'Notas Paciente')
     notas_paciente_cita=fields.Text('Notas')
     cita_eliminada=fields.Boolean('cita Eliminada',default=False)
+    user_type = fields.Selection(
+        [('contributory', 'Contributivo'), ('subsidized', 'Subsidiado'), ('linked', 'Vinculado')], string="User Type")
+
+    consultorio_id = fields.Many2one('doctor.room', 'Consultorio')
 
 
     def fields_view_get(self, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
@@ -700,13 +1046,29 @@ class doctor_appointment_co(models.Model):
         return res
 
 
+    def valor_procedimientos(self,plan_id,procedimiento):
 
-    def create(self, cr, uid, vals, context=None):
+
+        procedimiento_valor = self.env['doctor.insurer.plan.procedures'].search([('plan_id', '=', plan_id),('procedure_id', '=', procedimiento)]).valor
+
+        if procedimiento_valor:
+            total = procedimiento_valor
+        else:
+            total = 0
+
+        return total
+
+
+    @api.model
+    def create(self, vals):
 
         schedule_id_appoitment=vals['schedule_id']
+        _logger.info('creando o o o o')
+        _logger.info(schedule_id_appoitment)
         appointment_date_begin= vals['time_begin']
         appointment_date_end= vals['time_end']
         type_id_appointment= vals['type_id']
+        _logger.info(type_id_appointment)
         professional_appointment_id= vals['professional_id']
         patient_id_appointment=vals['patient_id']
         repetir_cita=vals['repetir_cita']
@@ -726,26 +1088,73 @@ class doctor_appointment_co(models.Model):
         validar_espacio_multipaciente=False
         espacio_cita_multipaciente=False
 
-        id_type = self.pool.get('doctor.appointment.type').search(cr, uid, [('id', '=', type_id_appointment)])
+        id_type = self.env['doctor.appointment.type'].search([('id', '=', type_id_appointment)])
 
         if consultorio_id_appointment:
-            consultorio_id= self.pool.get('doctor.room').browse(cr, uid, consultorio_id_appointment, context=context)
+            consultorio_id= self.env['doctor.room'].browse(consultorio_id_appointment)
             consultorio_multipaciente= consultorio_id.multi_paciente
             consultorio_numero_pacientes=consultorio_id.numero_pacientes
         else:
             consultorio_multipaciente = None
 
-        for duration_appointment_id in self.pool.get('doctor.appointment.type').browse(cr, uid, id_type, context=context):
-            duration_appointment=duration_appointment_id.duration
+        for duration_appointment_id in self.env['doctor.appointment.type'].browse([id_type]):
+            _logger.info('duration')
+            _logger.info(duration_appointment_id)
+            _logger.info(id_type)
+            _logger.info(id_type.id)
+            _logger.info(id_type.duration)
+            duration_appointment=id_type.duration
 
         tiempo_espacios=0
 
-        for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+        for record in self.env['doctor.time_space'].browse([1]):
             tiempo_espacios= int(record.tiempo_espacio)
 
         if (tiempo_espacios * (duration_appointment/tiempo_espacios)) != duration_appointment:
             raise osv.except_osv(_('Lo Sentimos!'),
                 _('Para poder crear la cita, el tiempo de la cita debe ser como minimo %s minutos. O el tiempo del espacio debe ser multiplo del tiempo de la cita (%s, %s, %s...). \n\n Para cambiar el tiempo de los espacios se debe dirigir a: \n -> Configuración Espacios \n -> Modificar el tiempo del espacio')% (tiempo_espacios, tiempo_espacios, (tiempo_espacios*2), (tiempo_espacios*3)) )
+
+
+        try:
+            plan_id = vals['plan_id']
+        except Exception as e:
+            plan_id = None
+
+        try:
+            procedures_id = vals['procedures_id']
+        except Exception as e:
+            procedures_id = None
+
+        if plan_id:
+            _logger.info('plan id')
+            _logger.info('plan id')
+            _logger.info(plan_id)
+            valor_cita = 0
+            if procedures_id:
+                contrato = self.env['doctor.contract.insurer'].search([('id','=',vals['contract_id'])])
+                valor_ejecutado_actual = contrato.valor_ejecutado
+                valor_total = contrato.valor
+                tarifario = self.env['doctor.insurer.plan'].search([('id','=',plan_id)])
+                procedimiento_valor = self.env['doctor.insurer.plan.procedures'].search([('id','=',plan_id)])
+                for data in procedures_id:
+                    if self.valor_procedimientos(plan_id,data[2]['procedures_id']) == 0:
+                        raise ValidationError(
+                            _("El procedimiento seleccionado no se encuentra en el Plan tarifario" ))
+
+                    valor_cita += self.valor_procedimientos(plan_id,data[2]['procedures_id'])
+                    _logger.info(data[2])
+                    _logger.info(data[2]['procedures_id'])
+                    _logger.info(valor_cita)
+                valor_ejecutado_actual += valor_cita
+                if valor_ejecutado_actual >= valor_total:
+                    raise ValidationError(
+                        _("El valor del contrato se a eccedido, llame a su aseguradora"))
+                contrato.write({'valor_ejecutado':valor_ejecutado_actual})
+
+
+
+        #raise ValidationError(_("You can choose 'AS' document only if the age is greater than 17 years."))
+
 
         fecha_hora = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
         fecha_hora_act = datetime.strptime(fecha_hora, "%Y-%m-%d %H:%M:%S")
@@ -803,10 +1212,11 @@ class doctor_appointment_co(models.Model):
                     if not repetir_cita and not consultorio_multipaciente:
                         _logger.info('Entro en la cita normal')
                         #Buscamos en los espacios cuales de estos cumplen la condicion
-                        id_sechedule_espacio=self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)], context=context)
-
+                        id_sechedule_espacio=self.env['doctor.espacios'].search([('schedule_espacio_id', '=', schedule_id_appoitment), ('fecha_inicio', '>=', appointment_date_begin), ('fecha_fin', '<=', appointment_date_end)])
+                        _logger.info('idschedule')
+                        _logger.info(id_sechedule_espacio)
                         #Recorremos los ids para saber el estado de dichos espacios
-                        for espacios in self.pool.get('doctor.espacios').browse(cr, uid, id_sechedule_espacio, context=context):
+                        for espacios in id_sechedule_espacio:
                             fecha= espacios.fecha_inicio
                             fecha_otra= espacios.fecha_fin
                             estado= espacios.estado_cita_espacio
@@ -825,7 +1235,7 @@ class doctor_appointment_co(models.Model):
                                 res_editar['patient_id']=''
                                 res_editar['schedule_espacio_id']=''
                                 #Ejecutamos la modificacion del espacio
-                                self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio, res_editar, context)
+                                id_sechedule_espacio.write({'estado_cita_espacio': '','fecha_inicio': None,'schedule_espacio_id': ''})
 
                                 res['estado_cita_espacio']= 'Asignado'
                                 res['fecha_inicio']= appointment_date_begin
@@ -833,18 +1243,21 @@ class doctor_appointment_co(models.Model):
                                 res['patient_id']=patient_id_appointment
                                 res['schedule_espacio_id']=schedule_id_appoitment
 
-                            self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
+                            id_sechedule_espacio.write(res)
 
-                            id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', '')])
+                            id_espacios= self.env['doctor.espacios'].search([('estado_cita_espacio', '=', '')])
 
-                            self.pool.get('doctor.espacios').unlink(cr, uid, id_espacios, context)
+                            id_espacios.unlink()
+
+                            #self.pool.get('doctor.espacios').unlink(self._cr, self._uid, id_espacios)
+
                         else:
                             raise osv.except_osv(_('Aviso importante!'),_('En este horario ya se ha asignado una cita.\n\n Por favor escoja otro horario para la cita.'))
                 else:
                     raise osv.except_osv(_('Aviso importante!'),_('No se puede asignar la cita en esta hora.\n Sólo se puede en intervalos de cinco minutos'))
 
         if not repetir_cita:
-            cita_id= super(doctor_appointment_co,self).create(cr, uid, vals, context=context)
+            cita_id= super(doctor_appointment_co,self).create(vals)
 
         return cita_id
 
@@ -1224,7 +1637,9 @@ class doctor_appointment_co(models.Model):
 
         return self.pool.get('doctor.espacios').create(cr, uid, res_schedule, context=context)
 
-    def write(self, cr, uid, ids, vals, context=None):
+
+    @api.multi
+    def write(self, vals):
         state_appointment=None
         if 'state' in vals:
             state_appointment= vals['state']
@@ -1232,9 +1647,9 @@ class doctor_appointment_co(models.Model):
         date_end=None
         res={}
 
-        if not isinstance(ids, list):
-            ids = [ids]
-        for i in self.browse(cr, uid, ids):
+        if not isinstance(self._ids, list):
+            ids = [self._ids]
+        for i in self.browse(self._ids):
             date_begin=i.time_begin
             date_end=i.time_end
             schedule_id_appointment= i.schedule_id.id
@@ -1250,53 +1665,54 @@ class doctor_appointment_co(models.Model):
             id_agenda= vals['schedule_id']
             _logger.info('Editando cita: Entro caso 1')
             #Eliminamos el espacio de la agenda actual
-            self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
+            self.pool.get('doctor.espacios').eliminar_espacios_agenda(self._cr, self._uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
 
             #Creamos los espacios en la agenda actual, ya que la cita que habia fue eliminada
-            self.actualizar_agenda_espacios(cr, uid, ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
+            self.actualizar_agenda_espacios(self._cr, self._uid, self._ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
 
             #Creamos el espacio en la nueva agenda que vamos a crear la cita
-            self.crear_espacios(cr,uid, ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, patient_id)
+            self.crear_espacios(self._cr,self._uid, self._ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, patient_id)
 
             #Eliminamos el espacio de la agenda de la nueva cita
-            self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, vals['time_begin'], vals['time_end'], vals['schedule_id'], 'Sin asignar')
+            self.pool.get('doctor.espacios').eliminar_espacios_agenda(self._cr, self._uid, vals['time_begin'], vals['time_end'], vals['schedule_id'], 'Sin asignar')
         #caso 2:
         # #Si cambio de paciente de la cita
         if 'patient_id' in vals and 'schedule_id' not in vals and 'time_begin' not in vals and 'time_end' not in vals:
             _logger.info('Editando cita: Entro caso 2')
 
-            ids_espacio_actualizar= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id_appointment)])
+            ids_espacio_actualizar= self.env['doctor.espacios'].search([('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id_appointment)])
             res['patient_id']=vals['patient_id']
-            self.pool.get('doctor.espacios').write(cr, uid, ids_espacio_actualizar, res, context)
+            ids_espacio_actualizar.write(res)
+            #self.pool.get('doctor.espacios').write(cr, uid, ids_espacio_actualizar, res, context)
 
         #caso 3:
         # #Si cambio la hora de la cita
         if 'time_begin' in vals and 'time_end' in vals and 'schedule_id' not in vals and 'patient_id' not in vals:
             _logger.info('Editando cita: Entro caso 3')
             #Eliminamos el espacio de la agenda actual
-            self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
+            self.pool.get('doctor.espacios').eliminar_espacios_agenda(self._cr, self._uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
 
             #Creamos los espacios en la agenda actual, ya que la cita que habia fue eliminada
-            self.actualizar_agenda_espacios(cr, uid, ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
+            self.actualizar_agenda_espacios(self._cr, self._uid, self._ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
 
             #Creamos el espacio en la nueva agenda que vamos a crear la cita
-            self.crear_espacios(cr,uid, ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, patient_id)
+            self.crear_espacios(self._cr,self._uid, self._ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, patient_id)
 
         #caso 4:
         #Si cambio la cita para otro dia (agenda) y el paciente
         if 'time_begin' in vals and 'time_end' in vals and 'patient_id' in vals and 'schedule_id' in vals:
             _logger.info('Editando cita: Entro caso 4')
             #Eliminamos el espacio de la agenda actual
-            self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
+            self.pool.get('doctor.espacios').eliminar_espacios_agenda(self._cr, self._uid, str(date_begin_cita), str(date_fin_cita), schedule_id_appointment, 'Asignado')
 
             #Creamos los espacios en la agenda actual, ya que la cita que habia fue eliminada
-            self.actualizar_agenda_espacios(cr, uid, ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
+            self.actualizar_agenda_espacios(self._cr, self._uid, self._ids, date_begin_cita, date_fin_cita, schedule_id_appointment, res)
 
             #Creamos el espacio en la nueva agenda que vamos a crear la cita
-            self.crear_espacios(cr,uid, ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, None)
+            self.crear_espacios(self._cr,self._uid, self._ids, vals, date_begin_cita, date_fin_cita, schedule_id_appointment, None)
 
             #Eliminamos el espacio de la agenda de la nueva cita
-            self.pool.get('doctor.espacios').eliminar_espacios_agenda(cr, uid, vals['time_begin'], vals['time_end'], vals['schedule_id'], 'Sin asignar')
+            self.pool.get('doctor.espacios').eliminar_espacios_agenda(self._cr, self._uid, vals['time_begin'], vals['time_end'], vals['schedule_id'], 'Sin asignar')
 
 
         if 'state' in vals:
@@ -1318,12 +1734,12 @@ class doctor_appointment_co(models.Model):
                     res['schedule_espacio_id']= schedule_id_appointment
                     res['estado_cita_espacio']= 'Sin asignar'
 
-                    self.pool.get('doctor.espacios').create(cr, uid, res, context=context)
+                    self.env['doctor.espacios'].create(res)
 
-                id_espacio= id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('estado_cita_espacio', '=', 'Asignado')])
-                self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+                id_espacio= id_espacios= self.env['doctor.espacios'].search([('fecha_inicio', '=', str(date_begin_cita)),('fecha_fin', '=', str(date_fin_cita)),('estado_cita_espacio', '=', 'Asignado')])
+                id_espacio.unlink()
 
-        return super(doctor_appointment_co,self).write(cr, uid, ids, vals, context)
+        return super(doctor_appointment_co,self).write(vals)
 
 
     def onchange_patient(self, cr, uid, ids, patient_id, insurer_id, tipo_usuario_id, ref, context=None):
@@ -1395,24 +1811,28 @@ class doctor_appointment_co(models.Model):
         })
         return {'value' : values}
 
-    def onchange_checkPlan(self, cr, uid, ids, plan_id, contract_id, context=None):
+
+    @api.onchange('contract_id')
+    def onchange_checkPlan(self):
         """
         Esta funcion comprueba si el plan seleccionado hace parte del contrato seleccionado.
         """
-        if contract_id:
-            model= self.pool.get('doctor.contract.insurer')
-            buscar = model.search(cr, uid, [('id', '=', contract_id)] )
-            if buscar:
-                planes_contrato = model.browse(cr, uid, buscar)[0].plan_ids
-                _logger.info(planes_contrato)
-                if  planes_contrato:
-                    for rec in planes_contrato:
-                        if rec.id == int(plan_id):
-                            return True
-            _logger.info(plan_id)
-            #self.onchange_limpiarformulario(cr, uid, ids, plan_id)
-            raise osv.except_osv(_('Aviso importante!'),_('El plan seleccionado no hace parte de este contrato o es posible que no esté vigente.\n\nComuníquese con la aseguradora para más información.'))
-        return True
+
+        model= self.env['doctor.contract.insurer']
+        buscar = model.search([('id', '=', self.contract_id.id)] )
+        if buscar:
+            planes_contrato = model.browse(buscar)
+            _logger.info(planes_contrato)
+            _logger.info(buscar.plan_ids)
+
+            groups = [a.id for a in planes_contrato]
+            _logger.info(groups)
+
+
+            self.plan_id = buscar.plan_ids
+
+
+
 
 
     def procedimiento_doctor_plan(self, cr, uid, plan_id, type_id, professional_id, tipo_usuario_id, context=None):
@@ -1556,7 +1976,7 @@ class doctor_appointment_co(models.Model):
 
 
         if id_sechedule_consultorio:
-            if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
+            if self.env['doctor.doctor'].modulo_instalado( 'doctor_multiroom'):
                 if agenda_duracion.consultorio_id.multi_paciente:
                     max_pacientes = agenda_duracion.consultorio_id.numero_pacientes
             else:
@@ -1862,7 +2282,7 @@ class doctor_appointment_co(models.Model):
         return order_id
 
     #Funcion para eliminar la cita
-    def button_delete_appointment(self, cr, uid, ids, context=None):
+    def button_delete_appointment(self):
 
         test = {}
         tiempo_espacios=0
@@ -1874,14 +2294,15 @@ class doctor_appointment_co(models.Model):
         fecha_inicio= None
         res={}
         res['cita_eliminada']= True
+        res['state']= 'cancel'
 
         #self.unlink(cr, uid, ids, context)
 
         #Nos permite obtner el tiempo de los espacios de la agenda, es decir, si son de 10, 20, 30 minutos
-        for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+        for record in self.env['doctor.time_space'].browse([1]):
             tiempo_espacios= record.tiempo_espacio
 
-        for data in self.browse(cr,uid, ids , context):
+        for data in self.browse(self._ids):
             agenda_id= data.schedule_id.id
             fecha_inicio_espacio= data.time_begin
             fecha_fin_espacio= data.time_end
@@ -1896,7 +2317,7 @@ class doctor_appointment_co(models.Model):
 
 
         if duracion_horas%int(tiempo_espacios) == 0:
-            for i in range(0, duracion_horas, int(tiempo_espacios)):
+            for i in range(0, int(duracion_horas), int(tiempo_espacios)):
                 fecha_espacio=fecha_inicio_espacio + timedelta(minutes=i)
                 fecha_espacio_fin=fecha_inicio_espacio + timedelta(minutes=i+ int(tiempo_espacios))
 
@@ -1905,14 +2326,14 @@ class doctor_appointment_co(models.Model):
                 test['schedule_espacio_id']= agenda_id
                 test['estado_cita_espacio']= 'Sin asignar'
 
-                self.pool.get('doctor.espacios').create(cr, uid, test, context=context)
+                self.env['doctor.espacios'].create(test)
         _logger.info('Estas son las fechas')
         _logger.info(str(fecha_inicio_espacio))
         _logger.info(str(fecha_fin_espacio))
-        id_espacio= self.pool.get('doctor.espacios').search(cr, uid, [('schedule_espacio_id', '=', agenda_id),('fecha_inicio', '=', str(fecha_inicio_espacio)),('fecha_fin', '=', str(fecha_fin_espacio)),('estado_cita_espacio', '=', 'Asignado')])
+        id_espacio= self.env['doctor.espacios'].search([('schedule_espacio_id', '=', agenda_id),('fecha_inicio', '=', str(fecha_inicio_espacio)),('fecha_fin', '=', str(fecha_fin_espacio)),('estado_cita_espacio', '=', 'Asignado')])
         _logger.info(id_espacio)
-        self.write(cr, uid, ids, res, context)
-        return self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+        self.write(res)
+        return id_espacio.unlink()
 
     #Funcion para seleccionar y no seleccionar los dias de la semana y meses. Haciendo uso de la funcion que se encuentra en doctor.schedule
     def onchange_calcular_hora_inicio_con_agenda(self, cr, uid, ids, agenda_id, time_begin, context=None):
@@ -2001,7 +2422,7 @@ class doctor_attentions_co(models.Model):
         ('14','Enfermedad profesional'),
         ('15','Otra'),
     ]
-    
+
     def obtener_paciente(self, context):
 
         id_paciente = None
@@ -2444,7 +2865,7 @@ class doctor_attentions_co(models.Model):
             if adjuntos_id:
                 res[datos.id] = adjuntos_id
         return res
-        
+
     activar_notas_confidenciales = fields.Boolean(u'NC', states={'closed': [('readonly', True)]}, default=True)
     causa_externa = fields.Selection(causa_externa, u'Causa Externa',states={'closed': [('readonly', True)]})
     certificados_ids = fields.One2many('doctor.attentions.certificado', 'attentiont_id', u'Certificados',states={'closed': [('readonly', True)]}),
@@ -2705,7 +3126,8 @@ class doctor_attentions_co(models.Model):
         _logger.info(res)
         return res
 
-    def write(self, cr, uid, ids, vals, context=None):
+    @api.multi
+    def write(self, vals):
         vals['activar_notas_confidenciales'] = False
         paciente_id=None
         antecedentes_ids = None
@@ -2787,7 +3209,7 @@ class doctor_attentions_co(models.Model):
         self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
         return attentions_past
 
-    def create(self, cr, uid, vals, context=None):
+    def create(self, vals):
         #Eliminando espacios
         self.pool.get('doctor.doctor').eliminar_antecedentes_vacios(cr, uid)
         vals['activar_notas_confidenciales'] = False
@@ -3449,6 +3871,7 @@ class doctor_co_schedule_inherit(models.Model):
     todos_los_meses = fields.Boolean('Marcar Todo')
     schedule_espacios_ids = fields.One2many('doctor.espacios', 'schedule_espacio_id', 'Espacios')
     schedule_note_ids = fields.One2many('doctor.patient_note', 'schedule_note_id', 'Notas Paciente')
+    consultorio_id = fields.Many2one('doctor.room', 'Consultorio')
 
     _defaults = {
         'fecha_inicio' : lambda *a: datetime.now().strftime('%Y-%m-%d 13:00:00'),
@@ -3474,6 +3897,24 @@ class doctor_co_schedule_inherit(models.Model):
             'fecha_fin': date_end.strftime("%Y-%m-%d %H:%M:%S"),
         })
         return {'value': values}
+
+    @api.onchange('fecha_inicio', 'duracion_agenda')
+    def onchange_fecha_inicio(self):
+        values = {}
+        res = {}
+        if not self.fecha_inicio and not self.fecha_fin:
+            return res
+        schedule_begin = datetime.strptime(self.fecha_inicio, "%Y-%m-%d %H:%M:%S")
+        duration = self.duracion_agenda
+        date_end = schedule_begin + timedelta(hours=duration)
+        values.update({
+            'fecha_fin': date_end.strftime("%Y-%m-%d %H:%M:%S"),
+        })
+        return {'value': values}
+
+
+
+
 
     def calcular_proxima_cita(self, cr, uid, ids, context=None):
         agenda_id=''
@@ -3524,34 +3965,38 @@ class doctor_co_schedule_inherit(models.Model):
                 'target': 'new'
             }
 
-    def create(self, cr, uid, vals, context=None):
+    @api.model
+    def create(self, vals):
 
         fecha_excepciones = []
         agenda_id = 0
         #self.pool.get('doctor.espacios').search
         tiempo_espacios=0
+        _logger.info('entramos prueba2')
+        _logger.info('entramos prueba')
 
-        for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+        for record in self.env['doctor.time_space'].browse([1]):
             tiempo_espacios= record.tiempo_espacio
 
         test = {}
         duracion_horas= vals['schedule_duration']
 
-
-        fecha_inicio = datetime.strptime(vals['fecha_inicio'], "%Y-%m-%d %H:%M:%S")
-        fecha_fin = datetime.strptime(vals['fecha_fin'], "%Y-%m-%d %H:%M:%S")
-        fecha_begining= datetime.strptime(vals['date_begin'], "%Y-%m-%d %H:%M:%S")
-        fecha_fin_schedule= datetime.strptime(vals['date_end'], "%Y-%m-%d %H:%M:%S")
+        if vals['repetir_agenda']:
+            fecha_inicio = datetime.strptime(vals.get('fecha_inicio'), "%Y-%m-%d %H:%M:%S")
+            fecha_fin = datetime.strptime(vals.get('fecha_fin'), "%Y-%m-%d %H:%M:%S")
+            validar_hora_repetir_agenda = int(str(fecha_inicio)[15:16])
+            validar_hora_repetir_agenda_fin = int(str(fecha_fin)[15:16])
+        fecha_begining= datetime.strptime(vals.get('date_begin'), "%Y-%m-%d %H:%M:%S")
+        fecha_fin_schedule= datetime.strptime(vals.get('date_end'), "%Y-%m-%d %H:%M:%S")
 
         validar_hora= int(str(fecha_begining)[15:16])
         validar_hora_fin= int(str(fecha_fin_schedule)[15:16])
-        validar_hora_repetir_agenda= int(str(fecha_inicio)[15:16])
-        validar_hora_repetir_agenda_fin= int(str(fecha_fin)[15:16])
+
 
         if (validar_hora != 0) or (validar_hora != 5):
             if (validar_hora == 0) or (validar_hora == 5):
-                fecha_begining= datetime.strptime(vals['date_begin'], "%Y-%m-%d %H:%M:%S")
-                fecha_fin_schedule= datetime.strptime(vals['date_end'], "%Y-%m-%d %H:%M:%S")
+                fecha_begining= datetime.strptime(vals.get('date_begin'), "%Y-%m-%d %H:%M:%S")
+                fecha_fin_schedule= datetime.strptime(vals.get('date_end'), "%Y-%m-%d %H:%M:%S")
             else:
                 fecha_begining = fecha_begining + timedelta(minutes=((-validar_hora)+10))
                 fecha_fin_schedule = fecha_fin_schedule + timedelta(minutes=((-validar_hora_fin)+10))
@@ -3565,13 +4010,15 @@ class doctor_co_schedule_inherit(models.Model):
                 else:
                     fecha_inicio = fecha_inicio + timedelta(minutes=((-validar_hora_repetir_agenda)+10))
                     fecha_fin = fecha_fin + timedelta(minutes=((-validar_hora_repetir_agenda_fin)+10))
-
-            if vals['dias_excepciones_id']:
-                for i in range(0,len(vals['dias_excepciones_id']),1):
-                    if not datetime.strptime(vals['dias_excepciones_id'][i][2]['dias_excepciones'], "%Y-%m-%d") < datetime.today():
-                        fecha_excepciones.append(vals['dias_excepciones_id'][i][2]['dias_excepciones'])
-                    else:
-                        raise osv.except_osv(_('Error!'),_('Las fechas excepcionales no deben ser fechas menores a la actual'))
+            try:
+                if vals['dias_excepciones_id']:
+                    for i in range(0,len(vals['dias_excepciones_id']),1):
+                        if not datetime.strptime(vals['dias_excepciones_id'][i][2]['dias_excepciones'], "%Y-%m-%d") < datetime.today():
+                            fecha_excepciones.append(vals['dias_excepciones_id'][i][2]['dias_excepciones'])
+                        else:
+                            raise osv.except_osv(_('Error!'),_('Las fechas excepcionales no deben ser fechas menores a la actual'))
+            except:
+                _logger.info('prueba')
 
             dia_semana = [
                 'lunes', 'martes', 'miercoles',
@@ -3657,21 +4104,24 @@ class doctor_co_schedule_inherit(models.Model):
                     u['noviembre'] = vals['noviembre']
                     u['diciembre'] = vals['diciembre']
 
-                    agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, u, context)
+                    agenda_id = super(doctor_co_schedule_inherit,self).create(u)
 
-                    self.generar_espacios(cr, uid, agenda_id, dias_inicia_trabaja,dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda']), vals['duracion_agenda'], test, tiempo_espacios, context=None)
+                    self.generar_espacios(agenda_id, dias_inicia_trabaja,dias_inicia_trabaja + timedelta(hours=vals['duracion_agenda']), vals['duracion_agenda'], test, tiempo_espacios)
 
         if not vals['repetir_agenda']:
             vals['date_begin']=fecha_begining
             vals['date_end']= fecha_fin_schedule
-            agenda_id = super(doctor_co_schedule_inherit,self).create(cr, uid, vals, context)
-            self.generar_espacios(cr, uid, agenda_id, fecha_begining,fecha_fin_schedule, duracion_horas, test, tiempo_espacios, context=None)
+
+            _logger.info('entramos prueba')
+            _logger.info('entramos prueba')
+            agenda_id = super(doctor_co_schedule_inherit,self).create(vals)
+            self.generar_espacios(agenda_id, fecha_begining,fecha_fin_schedule, duracion_horas, test, tiempo_espacios)
 
         return agenda_id
 
-    def unlink(self, cr, uid, ids, context=None):
+    def unlink(self):
 
-        for i in self.browse(cr, uid, ids, context=context):
+        for i in self:
             time_begin=i.date_begin
             time_end=i.date_end
             schedule_id= i.id
@@ -3679,37 +4129,12 @@ class doctor_co_schedule_inherit(models.Model):
         date_begin_cita= datetime.strptime(time_begin, "%Y-%m-%d %H:%M:%S")
         date_fin_cita= datetime.strptime(time_end, "%Y-%m-%d %H:%M:%S")
 
-        id_espacio= self.pool.get('doctor.espacios').search(cr, uid, [('fecha_inicio', '>=', str(date_begin_cita)),('fecha_fin', '<=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id)])
-        self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
+        id_espacio= self.env['doctor.espacios'].search([('fecha_inicio', '>=', str(date_begin_cita)),('fecha_fin', '<=', str(date_fin_cita)),('schedule_espacio_id', '=', schedule_id)])
+        id_espacio.unlink()
 
-        return super(doctor_co_schedule_inherit, self).unlink(cr, uid, ids, context=context)
+        return super(doctor_co_schedule_inherit, self).unlink()
 
-    def generar_espacios(self, cr, uid, agenda_id, fecha_inicio,fecha_fin, duracion_horas, test, tiempo_espacios, context=None):
-
-        test={}
-
-        fecha_inicio_espacio=str(fecha_inicio)[11:13]
-        fecha_fin_espacio=str(fecha_fin)[11:13]
-
-        duracion_agenda_espacio=int(fecha_fin_espacio)-int(fecha_inicio_espacio)
-
-        duracion_horas = duracion_horas * 60
-        _logger.info(duracion_horas)
-
-        if duracion_horas%int(tiempo_espacios) == 0:
-            for i in range(0, int(duracion_horas), int(tiempo_espacios)):
-                fecha_espacio=fecha_inicio + timedelta(minutes=i)
-                fecha_espacio_fin=fecha_inicio + timedelta(minutes=i+ int(tiempo_espacios))
-
-                test['fecha_inicio'] = str(fecha_espacio)
-                test['fecha_fin'] = str(fecha_espacio_fin)
-                test['schedule_espacio_id']= agenda_id
-                test['estado_cita_espacio']= 'Sin asignar'
-
-                self.pool.get('doctor.espacios').create(cr, uid, test, context=context)
-        else:
-            raise osv.except_osv(_('Error al Crear los Espacios de la Agenda!'),_('Para poder crear la agenda debe de cambiar el tiempo de los espacios. \n Ya que el calculo de las citas sobre salen de la agenda'))
-
+   
     def onchange_seleccionar_todo(self, cr, uid, ids, marcar_todo, seleccion, context=None):
         res={'value':{}}
         if marcar_todo:
@@ -3759,23 +4184,24 @@ class doctor_co_schedule_inherit(models.Model):
 
         return res
 
-    def default_get(self, cr, uid, fields, context=None):
-        res = super(doctor_co_schedule_inherit,self).default_get(cr, uid, fields, context=context)
-        if 'default_date_begin' in context:
+    @api.model
+    def default_get(self,fields):
+        res = super(doctor_co_schedule_inherit,self).default_get(fields)
+        if 'default_date_begin' in self._context:
             fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
             fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
-            fecha_inicio_agenda = datetime.strptime(context['default_date_begin'], "%Y-%m-%d %H:%M:%S")
+            fecha_inicio_agenda = datetime.strptime(self._context['default_date_begin'], "%Y-%m-%d %H:%M:%S")
             fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
             fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
             if fecha_inicio_agenda < fecha_hora_actual:
                 if not 'consultorio_id' in fields:
-                    f_ini = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_ini, context)
-                    f_fin = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_fin, context)
-                    agenda_ids = self.search(cr,uid,[('date_begin','>=', f_ini), ('date_end', '<=', f_fin)],context=None)
+                    f_ini = self.env['doctor.doctor'].fecha_UTC(fecha_usuario_ini)
+                    f_fin = self.env['doctor.doctor'].fecha_UTC(fecha_usuario_fin)
+                    agenda_ids = self.search([('date_begin','>=', f_ini), ('date_end', '<=', f_fin)])
                     ultima_agenda_id = agenda_ids and max(agenda_ids)
 
                     if ultima_agenda_id:
-                        hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
+                        hora_inicio_agenda = self.browse(ultima_agenda_id).date_end
                         diff = int(hora_inicio_agenda[17:])
                         if diff > 0:
                             diff = 60 - diff
@@ -3801,7 +4227,7 @@ class doctor_co_schedule_inherit(models.Model):
 
     def asignar_cita(self, cr, uid, ids, context=None):
 
-        for id_agenda in self.browse(cr,uid,ids):
+        for id_agenda in self:
                 agenda_id = id_agenda.id
 
         if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
@@ -3841,10 +4267,11 @@ class doctor_co_schedule_inherit(models.Model):
                 'target': 'new'
             }
 
-    def write(self, cr, uid, ids, vals, context=None):
+    @api.multi
+    def write(self, vals):
         #Funcion que nos permitira modificar los espacios de la agenda, cada vez que sea editada
-        self.validar_agenda_editada(cr, uid, ids, vals)
-        return super(doctor_co_schedule_inherit,self).write(cr, uid, ids, vals, context)
+        self.validar_agenda_editada(vals)
+        return super(doctor_co_schedule_inherit,self).write(vals)
 
     #Funcion que permite validar los espacios asignados en la agenda
     def verificar_citas_agenda(self, cr, uid, date_begin_schedule, date_fin_schedule, context=None):
@@ -3861,11 +4288,11 @@ class doctor_co_schedule_inherit(models.Model):
         return self.pool.get('doctor.espacios').unlink(cr, uid, id_espacio, context)
 
     #Funcion que permite llenar los espacios de la agenda dependiendo de la fecha inicial y final
-    def llenar_espacios_agenda_editada(self, cr, uid, agenda_id, date_begin_schedule, date_fin_schedule, duracion_horas, test, tiempo_espacios, context=None):
+    def llenar_espacios_agenda_editada(self, agenda_id, date_begin_schedule, date_fin_schedule, duracion_horas, test, tiempo_espacios):
         if date_begin_schedule and date_fin_schedule:
             fecha_fin_antigua= datetime.strptime(date_begin_schedule, "%Y-%m-%d %H:%M:%S")
             fecha_fin_nueva= datetime.strptime(date_fin_schedule, "%Y-%m-%d %H:%M:%S")
-            return self.generar_espacios(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios, context=None)
+            return self.generar_espacios(agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios)
         return False
     #Funcion que permite calcular la cantidad de horas nuevas en la agenda
     def calcular_hora_agenda_editada(self, cr, uid, date_begin_schedule, date_fin_schedule, context=None):
@@ -3880,7 +4307,7 @@ class doctor_co_schedule_inherit(models.Model):
         return False
 
     #Verificar antes de actualizar o modificar la agenda que no hayan citas que queden por fuera de la modificacion de la nueva hora establecida
-    def validar_agenda_editada(self, cr, uid, ids, vals, context=None):
+    def validar_agenda_editada(self, vals):
 
         fecha_inicio_nueva=None
         fecha_fin_nueva=None
@@ -3896,11 +4323,11 @@ class doctor_co_schedule_inherit(models.Model):
         duracion_horas=0
 
         #Nos permite obtner el tiempo de los espacios de la agenda, es decir, si son de 10, 20, 30 minutos
-        for record in self.pool.get('doctor.time_space').browse(cr, uid, [1], context=context):
+        for record in self.env['doctor.time_space'].browse([1]):
             tiempo_espacios= record.tiempo_espacio
 
         #Nos permite obtener los datos de la agenda actual
-        for data in self.pool.get('doctor.schedule').browse(cr, uid, ids, context=context):
+        for data in self:
             fecha_inicio_antigua=data.date_begin
             fecha_fin_antigua=data.date_end
             agenda_id=data.id
@@ -3926,12 +4353,12 @@ class doctor_co_schedule_inherit(models.Model):
         #caso 1: Añadir tiempo a la agenda,solamente al final o cuando la agenda esta vacia
         if fecha_inicio_nueva==None and fecha_fin_nueva > fecha_inicio_antigua:
             _logger.info('Entro caso 1')
-            self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios)
+            self.llenar_espacios_agenda_editada(agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_horas, test, tiempo_espacios)
 
         #Caso 2: Añade espacios al principio de la agenda, cuando esta vacia o llena la agenda
         if fecha_inicio_nueva and fecha_inicio_nueva < fecha_inicio_antigua and fecha_fin_antigua == fecha_fin_nueva:
             _logger.info('Entro caso 2')
-            self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_horas, test, tiempo_espacios)
+            self.llenar_espacios_agenda_editada(agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_horas, test, tiempo_espacios)
 
         #Caso 3: Restar tiempo desde el inicio de la agenda para correr la hora, es decir, la agenda esta de 2 a 4, entrando a este caso
         #quedaria de 3 a 4
@@ -3953,9 +4380,9 @@ class doctor_co_schedule_inherit(models.Model):
             duracion_fin= self.calcular_hora_agenda_editada(cr, uid, fecha_fin_antigua, fecha_fin_nueva)
 
             #Llena los espacios al principio de la agenda
-            self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_inicial, test, tiempo_espacios)
+            self.llenar_espacios_agenda_editada(agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_inicial, test, tiempo_espacios)
             #Lena los espacios al final de la agenda
-            self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_fin, test, tiempo_espacios)
+            self.llenar_espacios_agenda_editada(agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_fin, test, tiempo_espacios)
 
         #Caso 6: Resta el tiempo de la agenda al inicio y al final
         if fecha_inicio_nueva > fecha_inicio_antigua and fecha_fin_nueva < fecha_fin_antigua:
@@ -3974,7 +4401,7 @@ class doctor_co_schedule_inherit(models.Model):
 
             duracion_inicial= self.calcular_hora_agenda_editada(cr, uid, fecha_inicio_nueva, fecha_inicio_antigua)
             #Llena los espacios al principio de la agenda
-            self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_inicial, test, tiempo_espacios)
+            self.llenar_espacios_agenda_editada(agenda_id, fecha_inicio_nueva, fecha_inicio_antigua, duracion_inicial, test, tiempo_espacios)
 
         #Caso 8: Resta el tiempo inicial de la agenda y aumenta el tiempo al final
         if fecha_inicio_nueva > fecha_inicio_antigua and fecha_fin_nueva > fecha_fin_antigua:
@@ -3984,9 +4411,54 @@ class doctor_co_schedule_inherit(models.Model):
 
             duracion_fin= self.calcular_hora_agenda_editada(cr, uid, fecha_fin_antigua, fecha_fin_nueva)
             #Lena los espacios al final de la agenda
-            self.llenar_espacios_agenda_editada(cr, uid, agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_fin, test, tiempo_espacios)
+            self.llenar_espacios_agenda_editada(agenda_id, fecha_fin_antigua, fecha_fin_nueva, duracion_fin, test, tiempo_espacios)
 
         return True
+
+    def _check_schedule(self):
+        return True
+
+    @api.constrains('consultorio_id')
+    def _check_consultorio_disponible(self):
+        _logger.info('entro consultorioooo')
+        _logger.info('entro consultorioooo')
+        _logger.info('entro consultorioooo')
+        _logger.info('entro consultorioooo')
+        _logger.info('entro consultorioooo')
+        _logger.info('entro consultorioooo')
+        _logger.info('entro consultorioooo')
+        for record in self:
+            schedule_ids = self.search(
+                                       [('date_begin', '<', record.date_end), ('date_end', '>', record.date_begin), '&',
+                                        ('id', '<>', record.id), ('consultorio_id', '=', record.consultorio_id.id)])
+            _logger.info(schedule_ids)
+            if schedule_ids:
+                raise ValidationError(_('El consultorio seleccionado no está disponible en la fecha/hora especificada.'))
+        return True
+
+
+    @api.constrains('professional_id')
+    def _check_medico_disponible(self):
+        for record in self:
+            if record.professional_id.multi_consultorio:
+                return True
+            else:
+                doctors_ids = self.search(
+                                          [('date_begin', '<', record.date_end), ('date_end', '>', record.date_begin),
+                                           '&', ('id', '<>', record.id),
+                                           ('professional_id', '=', record.professional_id.id)])
+                if doctors_ids:
+                    raise ValidationError(
+                        _('El doctor seleccionado no está disponible en la fecha/hora especificada.'))
+        return True
+
+    _constraints = [
+        (_check_schedule, 'Error ! The Office Doctor is busy.', ['date_begin', 'date_end']),
+        (_check_consultorio_disponible, 'El consultorio seleccionado no está disponible en la fecha/hora especificada.',
+         ['Consultorio']),
+        (_check_medico_disponible, 'El doctor seleccionado no está disponible en la fecha/hora especificada.',
+         ['Doctor']),
+    ]
 
 doctor_co_schedule_inherit()
 
@@ -4017,23 +4489,26 @@ class doctor_espacios(models.Model):
     patient_id = fields.Many2one('doctor.patient', 'Paciente')
     estado_cita_espacio = fields.Char('Estado')
 
-    def asignar_cita_espacio(self, cr, uid, ids, context=None):
+    @api.cr_uid_ids_context
+    def asignar_cita_espacio(self):
         agenda_id=''
-        for id_agenda in self.browse(cr,uid,ids):
+        for id_agenda in self.browse(self._ids):
             agenda_id = id_agenda.schedule_espacio_id.id
             date_begin= id_agenda.fecha_inicio
+            doctor_id= id_agenda.schedule_espacio_id.professional_id.id
 
-        if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'doctor_multiroom', context=context):
+
+        if self.env['doctor.doctor'].modulo_instalado('doctor_multiroom'):
             data_obj = self.pool.get('ir.model.data')
-            result = data_obj._get_id(cr, uid, 'doctor_multiroom', 'view_doctor_appointment')
-            view_id = data_obj.browse(cr, uid, result).res_id
+            result = data_obj._get_id('doctor_multiroom', 'view_doctor_appointment')
+            view_id = data_obj.browse(result).res_id
 
-            for id_agenda in self.browse(cr,uid,ids):
+            for id_agenda in self.browse(self._ids):
                 agenda_id = id_agenda.schedule_espacio_id.id
                 date_begin= id_agenda.fecha_inicio
 
-            context['default_schedule_id'] = agenda_id
-            context['default_time_begin']= str(date_begin)
+            self._context['default_schedule_id'] = agenda_id
+            self._context['default_time_begin']= str(date_begin)
 
 
             return {
@@ -4043,14 +4518,23 @@ class doctor_espacios(models.Model):
                 'view_mode': 'form',
                 'res_id': False,
                 'res_model': 'doctor.appointment',
-                'context': context or None,
+                'context': self._context or None,
                 'view_id': [view_id] or False,
                 'nodestroy': False,
                 'target': 'new'
             }
         else:
-            context['default_schedule_id'] = agenda_id
-            context['default_time_begin']= str(date_begin)
+
+            _logger.info('antesde error')
+            _logger.info(agenda_id)
+            _logger.info(str(date_begin))
+
+            self.env.context = dict(self.env.context)
+            self._context.update({'default_schedule_id': agenda_id})
+            self._context.update({'default_professional_id': doctor_id})
+            self._context.update({'default_time_begin': str(date_begin)})
+            #self._context['default_schedule_id'] = agenda_id
+            #self._context['default_time_begin']= str(date_begin)
 
             return {
                 'type': 'ir.actions.act_window',
@@ -4059,7 +4543,7 @@ class doctor_espacios(models.Model):
                 'view_mode': 'form',
                 'res_id': False,
                 'res_model': 'doctor.appointment',
-                'context': context or None,
+                'context': self._context or None,
                 'view_id': False,
                 'nodestroy': False,
                 'target': 'new'
@@ -4642,6 +5126,11 @@ class doctor_otra_prescripcion(models.Model):
 
         return ids
 
+
+
+
+
+    """
     def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
         args = args or []
         ids = []
@@ -4678,6 +5167,8 @@ class doctor_otra_prescripcion(models.Model):
                 ids_procedimientos = self.parte_name_search(cr, uid, name, None, args, operator, context=context, limit=100)
 
         return self.name_get(cr, uid, ids_procedimientos, context)
+        
+    """
 
 doctor_otra_prescripcion()
 
@@ -4689,6 +5180,8 @@ class doctor_professional(models.Model):
 
     multi_consultorio = fields.Boolean('Multi Consultorio')
 
+
+    """
     def create(self, cr, uid, vals, context=None):
         crear = super(doctor_professional, self).create(cr, uid, vals, context=context)
         especialidad_id= vals['speciality_id']
@@ -4707,7 +5200,8 @@ class doctor_professional(models.Model):
                     cr.execute("UPDATE res_groups_users_rel SET gid = %s WHERE gid = %s AND uid= %s " %(psicologo_grupo_id[0], profesional_grupo_id[0], user_id))
 
         return crear
-
+    
+   
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         res = super(doctor_professional, self).fields_view_get(view_id=view_id, view_type=view_type,  toolbar=toolbar, submenu=submenu)
         doc = etree.XML(res['arch'])
@@ -4724,6 +5218,7 @@ class doctor_professional(models.Model):
                 node.set('domain', repr(dominio))
                 res['arch'] = etree.tostring(doc)
         return res
+    """
 
 doctor_professional()
 
@@ -4921,7 +5416,7 @@ class doctor_prescription(models.Model):
         modelo_crear = self.pool.get('doctor.measuring.unit')
         numero = ''
 
-        if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+        if self.env['doctor.doctor'].modulo_instalado('l10n_co_doctor'):
 
             if drugs_id:
 
@@ -4971,7 +5466,7 @@ class doctor_review_systems(models.Model):
     _inherit = 'doctor.review.systems'
 
     def create(self, cr, uid, vals, context=None):
-        if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+        if self.env['doctor.doctor'].modulo_instalado( 'l10n_co_doctor'):
             if 'active_model' in context:
                 if 'review_systems' in vals:
                     if vals['review_systems']:
@@ -4988,17 +5483,19 @@ class doctor_attentions_past(models.Model):
     _name = 'doctor.attentions.past'
     _inherit = 'doctor.attentions.past'
 
-    def create(self, cr, uid, vals, context=None):
 
-        if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+    @api.model
+    def create(self, vals):
+
+        if self.env['doctor.doctor'].modulo_instalado('l10n_co_doctor'):
 
             if 'active_model' in context:
                 if 'past' in vals:
                     if vals['past']:
-                        return super(doctor_attentions_past,self).create(cr, uid,vals, context=context)
+                        return super(doctor_attentions_past,self).create(vals)
 
             if not 'active_model' in context:
-                return super(doctor_attentions_past,self).create(cr, uid, vals, context=context)
+                return super(doctor_attentions_past,self).create(vals)
 
 
 class doctor_appointment_procedures(models.Model):
@@ -5100,7 +5597,8 @@ class doctor_configuracion(models.Model):
     parametrizacion_ids = fields.One2many('doctor.parametrizacion', 'doctor_configuracion_id',
                                            'Agregar parametrizacion')
 
-    def on_change_cargadatos(self, cr, uid, ids, aseguradora_id, context=None):
+
+    def on_change_cargadatos(self, cr, uid, ids, aseguradora_id):
         res={'value':{}}
         modelo_contrato = self.pool.get("doctor.contract.insurer")
         modelo_configuracion_inst_proc = self.pool.get("doctor.configuracion_procedimientos_institucion")
@@ -5109,9 +5607,9 @@ class doctor_configuracion(models.Model):
         planes = []
         valor = 0
         if aseguradora_id:
-            contratos_ids = modelo_contrato.search(cr, uid, [("insurer_id", "=", aseguradora_id)], context=context)
-            config_aseg_proc_ids = modelo_configuracion_inst_proc.search(cr, uid,[], context=context)
-            proce_asegu_ids = modelo_aseg_proce.search(cr, uid, [("aseguradora_procedimiento_id", "in", config_aseg_proc_ids)], context=context)
+            contratos_ids = modelo_contrato.search(cr, uid, [("insurer_id", "=", aseguradora_id)])
+            config_aseg_proc_ids = modelo_configuracion_inst_proc.search(cr, uid,[])
+            proce_asegu_ids = modelo_aseg_proce.search(cr, uid, [("aseguradora_procedimiento_id", "in", config_aseg_proc_ids)])
 
             if contratos_ids:
                 for contrato in modelo_contrato.browse(cr, uid, contratos_ids, context=context):
@@ -5153,8 +5651,9 @@ class doctor_configuracion(models.Model):
                 return {'value': res, 'warning': warning}
         return res
 
-    def create(self, cr, uid, vals, context=None):
-        if self.pool.get('doctor.doctor').modulo_instalado(cr, uid, 'l10n_co_doctor',context=context):
+    @api.model
+    def create(self, vals):
+        if self.env['doctor.doctor'].modulo_instalado('l10n_co_doctor'):
             datos = {}
             for dato in range(0, len(vals['parametrizacion_ids']), 1):
 
@@ -5162,16 +5661,21 @@ class doctor_configuracion(models.Model):
                 datos['procedure_id'] = vals['parametrizacion_ids'][dato][2]['procedures_id']
                 datos['valor'] = vals['parametrizacion_ids'][dato][2]['valor']
                 datos['active'] = True
-                self.pool.get('doctor.insurer.plan.procedures').create(cr, uid, datos, context=context)
+                self.env['doctor.insurer.plan.procedures'].create(datos)
 
-        return super(doctor_configuracion,self).create(cr, uid, vals, context=context)
+        return super(doctor_configuracion,self).create(vals)
 
-    def write(self, cr, uid, ids, vals, context=None):
-        modelo_asegur_plan = self.pool.get('doctor.insurer.plan.procedures')
-        modelo_datos_cambio = self.pool.get("doctor.parametrizacion")
+    @api.multi
+    def write(self, vals):
+        _logger.info("entro a write1")
+        _logger.info("entro a write1")
+        modelo_asegur_plan = self.env['doctor.insurer.plan.procedures']
+        _logger.info("entro a write2")
+        modelo_datos_cambio = self.env["doctor.parametrizacion"]
         id_asegur_plan = 0
         dato = {}
         ejecu_write = True
+        _logger.info("entro a write")
         for i in range(0, len(vals['parametrizacion_ids']),1):
 
             try:
@@ -5183,14 +5687,14 @@ class doctor_configuracion(models.Model):
                 if not 'aseguradora_id' in vals:
                     if valor:
                         dato['valor'] = valor
-                        buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('id', '=', id_modifico)], context=context)
-                        for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
-                            id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
-                            modelo_asegur_plan.write(cr, uid, id_asegur_plan, dato, context=context)
+                        buscar_cambio_id = modelo_datos_cambio.search([('id', '=', id_modifico)])
+                        for j in modelo_datos_cambio.browse(buscar_cambio_id):
+                            id_asegur_plan = modelo_asegur_plan.search( [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)])
+                            modelo_asegur_plan.write(id_asegur_plan, dato)
                 else:
-                    buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('plan_id', '=', vals['parametrizacion_ids'][i][2]['plan_id']),
+                    buscar_cambio_id = modelo_datos_cambio.search([('plan_id', '=', vals['parametrizacion_ids'][i][2]['plan_id']),
                                  ('contract_id', '=', vals['parametrizacion_ids'][i][2]['contract_id']),
-                                 ('procedures_id', '=', vals['parametrizacion_ids'][i][2]['procedures_id'])], context=context)
+                                 ('procedures_id', '=', vals['parametrizacion_ids'][i][2]['procedures_id'])])
 
 
                     if not buscar_cambio_id:
@@ -5198,42 +5702,48 @@ class doctor_configuracion(models.Model):
                         dato['procedure_id'] = vals['parametrizacion_ids'][i][2]['procedures_id']
                         dato['valor'] = vals['parametrizacion_ids'][i][2]['valor']
                         dato['active'] = True
-                        modelo_asegur_plan.create(cr, uid, dato, context=context)
+                        modelo_asegur_plan.create(dato)
                         dato['doctor_configuracion_id']=ids[0]
                         dato['procedures_id'] = dato['procedure_id']
                         dato['contract_id']=vals['parametrizacion_ids'][i][2]['contract_id']
                         del dato['procedure_id']
                         dato['procedures_id'] = vals['parametrizacion_ids'][i][2]['procedures_id']
-                        modelo_datos_cambio.create(cr, uid, dato, context=context)
+                        modelo_datos_cambio.create(dato)
                         ejecu_write = False
 
 
             if vals['parametrizacion_ids'][i][0] == 2:
-                buscar_cambio_id = modelo_datos_cambio.search(cr, uid, [('id', '=', vals['parametrizacion_ids'][i][1])], context=context)
-                for j in modelo_datos_cambio.browse(cr, uid, buscar_cambio_id, context=context):
-                    id_asegur_plan = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)], context=context)
-                    for k in modelo_asegur_plan.browse(cr, uid, id_asegur_plan, context=context):
-                        modelo_asegur_plan.unlink(cr, uid, k.id, context=context)
-
+                buscar_cambio_id = modelo_datos_cambio.search( [('id', '=', vals['parametrizacion_ids'][i][1])])
+                for j in modelo_datos_cambio.browse(buscar_cambio_id):
+                    id_asegur_plan = modelo_asegur_plan.search([('plan_id', '=', j.plan_id.id), ('procedure_id', '=', j.procedures_id.id)])
+                    for k in modelo_asegur_plan.browse(id_asegur_plan):
+                        modelo_asegur_plan.unlink(k.id)
+        _logger.info("no modifica22")
         if ejecu_write:
-            confi = super(doctor_configuracion,self).write(cr, uid, ids, vals, context)
+            confi = super(doctor_configuracion,self).write(vals)
 
         return True
-
-    def unlink(self, cr, uid, ids, context=None):
-        modelo_asegur_plan = self.pool.get('doctor.insurer.plan.procedures')
-        modelo_datos_cambio = self.pool.get("doctor.parametrizacion")
-        if ids:
-            datos_param_eli_id = modelo_datos_cambio.search(cr, uid, [('doctor_configuracion_id', '=', ids)], context=context)
+    """
+    @api.multi
+    def unlink(self):
+        modelo_asegur_plan = self.env['doctor.insurer.plan.procedures']
+        modelo_datos_cambio = self.env["doctor.parametrizacion"]
+        if self._ids:
+            datos_param_eli_id = modelo_datos_cambio.search([('doctor_configuracion_id', '=', self._ids)])
             if datos_param_eli_id:
-                for i in modelo_datos_cambio.browse(cr, uid, datos_param_eli_id, context=context):
-                    elimi_proce_plan_id = modelo_asegur_plan.search(cr, uid, [('plan_id', '=', i.plan_id.id), ('procedure_id', '=', i.procedures_id.id), ('valor', '=', i.valor)], context=context)
-                    modelo_datos_cambio.unlink(cr, uid, i.id, context=context)
+                for i in modelo_datos_cambio.browse(datos_param_eli_id):
+                    elimi_proce_plan_id = modelo_asegur_plan.search([('plan_id', '=', i.plan_id.id), ('procedure_id', '=', i.procedures_id.id), ('valor', '=', i.valor)])
+                    modelo_datos_cambio.unlink(i.id)
                     if elimi_proce_plan_id:
-                        for j in modelo_asegur_plan.browse(cr, uid, elimi_proce_plan_id, context=context):
-                            modelo_asegur_plan.unlink(cr, uid, j.id, context=context)
+                        for j in modelo_asegur_plan.browse(elimi_proce_plan_id):
+                            modelo_asegur_plan.unlink(j.id)
 
-            return super(doctor_configuracion, self).unlink(cr, uid, ids, context=context)
+            return super(doctor_configuracion, self).unlink(self._ids)
+    """
+
+    @api.multi
+    def unlink(self):
+        return super(doctor_configuracion, self).unlink()
 
     _sql_constraints = [('ec_constraint', 'unique(aseguradora_id)', 'Ya hay un registro para esta aseguradora por favor si desea modificarlo editelo')]
 
@@ -5254,14 +5764,13 @@ doctor_parametrizacion()
 class doctor_configuracion_procedimientos_institucion(models.Model):
     _name = "doctor.configuracion_procedimientos_institucion"
 
-    def _get_nombre(self, cr, uid, ids, field_name, arg, context=None):
+    @api.multi
+    def _get_nombre(self):
         res = {}
-        for dato in self.browse(cr, uid, ids):
-            nombre_compania = self.pool.get("res.users").browse(cr, uid, uid, context=context).company_id.name
-            res[dato.id] = nombre_compania
-        return res
-
-    name = fields.Char(compute='_get_nombre', type=" Char", store=False,
+        for dato in self.browse(self._ids):
+            nombre_compania = self.env["res.users"].browse(self._uid).company_id.name
+            self.name = nombre_compania
+    name = fields.Char(compute='_get_nombre', type="Char", store=False,
                             readonly=True, method=True, string=u'Nombre Compañia', )
     procedures_id = fields.One2many('doctor.aseguradora.procedimiento', 'aseguradora_procedimiento_id',
                                      'Procedimientos en Salud',
@@ -5271,8 +5780,8 @@ class doctor_configuracion_procedimientos_institucion(models.Model):
 	#	"name": lambda self, cr, uid, context: self.pool.get('doctor.doctor').company_nombre(cr, uid, context=None),
 	# }
 
-    def _check_registro_creado(self, cr, uid, ids, context=None):
-        ids_procedimientos = self.search(cr, uid, [], context=context)
+    def _check_registro_creado(self, cr, uid, ids):
+        ids_procedimientos = self.search(cr, uid, [])
         if len(ids_procedimientos) == 1:
             return True
         else:
@@ -5299,7 +5808,7 @@ class doctor_attentions_disability(models.Model):
     date_end = fields.Date('Hasta', required=True, ondelete='restrict')
 
     #Funcion para calcular los dias de incapacidad del paciente
-    def onchange_disability(self, cr, uid, ids, date_begin, date_end, context=None):
+    def onchange_disability(self, cr, uid, ids, date_begin, date_end):
         res={'value':{}}
 
         if not date_begin:

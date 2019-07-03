@@ -93,7 +93,8 @@
         <record model='doctor.administration.route' id='OA'>
                 <field name='code'>OA</field>
                 <field name='name'>OTICO AURICULAR</field>
-        </record> 
+        </record>
+
         <record model='doctor.administration.route' id='PA'>
                 <field name='code'>PA</field>
                 <field name='name'>PARENTERAL</field>

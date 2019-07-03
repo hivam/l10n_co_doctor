@@ -11,11 +11,25 @@
         <xpath expr="//form/group" position="replace">
           <group col="2" colspan="4">
             <field name="code"></field>
-            <field name="tipousuario_id"></field>  
-            <field name="insurer"></field>
+            <field name="user_type"></field>
+            <field name="insurer" domain="[('is_company','=',True)]" options="{'no_create_edit': True}"></field>
           </group>
         </xpath>
       </field>  
+    </record>
+
+    <!--doctor insurer inherit-->
+    <record id="doctor_co_insurer_inherit_tree" model="ir.ui.view">
+      <field name="name">doctor_co_insurer_inherit_tree</field>
+      <field name="model">doctor.insurer</field>
+      <field name="inherit_id" ref="doctor.view_doctor_insurer_tree"/>
+      <field name="arch" type="xml">
+
+        <field name="insurer" position="after">
+         <field name="user_type" string="Tipo Usuario"></field>
+        </field>
+
+      </field>
     </record>
   </data>
 </openerp>

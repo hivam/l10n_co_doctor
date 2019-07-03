@@ -37,7 +37,7 @@ class CountryStateCity(models.Model):
     code = fields.Char('City Code', size=5, help='Código DANE -5 dígitos-', required=True)
     name = fields.Char('City Name', size=64, required=True)
     state_id = fields.Many2one('res.country.state', 'State', required=True)
-
+    """
     def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=80):
         if not args:
             args = []
@@ -47,6 +47,7 @@ class CountryStateCity(models.Model):
         if not ids:
             ids = self.search(cr, user, [('name', operator, name)] + args, limit=limit, context=context)
         return self.name_get(cr, user, ids, context)
+    """
 
     _order = 'code'
 
@@ -58,23 +59,23 @@ CountryStateCity()
 class res_partner_co(models.Model):
     _name = 'res.partner'
     _inherit = 'res.partner'
-    city_id = fields.Many2one('res.country.state.city', 'Ciudad', required=False, domain="[('state_id','=',state_id)]")
-    dv = fields.Char('dv', size=1, help='Digito de verificación')
+    #city_id = fields.Many2one('res.country.state.city', 'Ciudad', required=False, domain="[('state_id','=',state_id)]")
+    #dv = fields.Char('dv', size=1, help='Digito de verificación')
     es_paciente =fields.Boolean('Es paciente',default=False)
     es_profesional_salud = fields.Boolean('Es Profesional de la Salud')
-    firtsname = fields.Char('firtsname', size=25)
-    lastname = fields.Char('lastname', size=25)
-    middlename = fields.Char('middlename', size=25)
-    surname = fields.Char('surname', size=25)
-    tdoc = fields.Selection((('11', 'Registro civil'), ('12', 'Tarjeta de identidad'),
-                              ('13', 'Cédula de ciudadanía'), ('21', 'Tarjeta de extranjería'),
-                              ('22', 'Cédula de extranjería'), ('31', 'NIT'),
-                              ('41', 'Pasaporte'), ('42', 'Tipo de documento extranjero'),
-                              ('43', 'Para uso definido por la DIAN'), ('NU', 'Número único de identificación'),
-                              ('AS', 'Adulto sin identificación'), ('MS', 'Menor sin identificación')),
-                             'Tipo de Documento',default='13')
+    #firtsname = fields.Char('firtsname', size=25)
+    #lastname = fields.Char('lastname', size=25)
+    #middlename = fields.Char('middlename', size=25)
+    #surname = fields.Char('surname', size=25)
+    #tdoc = fields.Selection((('11', 'Registro civil'), ('12', 'Tarjeta de identidad'),
+      #                        ('13', 'Cédula de ciudadanía'), ('21', 'Tarjeta de extranjería'),
+      #                        ('22', 'Cédula de extranjería'), ('31', 'NIT'),
+       #                       ('41', 'Pasaporte'), ('42', 'Tipo de documento extranjero'),
+        #                      ('43', 'Para uso definido por la DIAN'), ('NU', 'Número único de identificación'),
+         #                     ('AS', 'Adulto sin identificación'), ('MS', 'Menor sin identificación')),
+         #                    'Tipo de Documento',default='13')
 
-
+    """
     def buscar_campos(self, cr, uid, args, limit, context, operator, nombre_con_split, campo1, campo2):
         ids = []
         if nombre_con_split:
@@ -227,7 +228,7 @@ class res_partner_co(models.Model):
         (_check_dv, '¡Error! El digito de verificación es incorrecto',['dv']),
         (_check_ident_num, '¡Error! El número de identificación sólo permite números', ['ref']),
         ]
-
+    """
 res_partner_co()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

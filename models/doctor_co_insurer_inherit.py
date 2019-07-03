@@ -32,7 +32,9 @@ class doctor_insurer_co_inherit(models.Model):
 	_name = "doctor.insurer"
 	_inherit = "doctor.insurer"
 
-	tipousuario_id = fields.Many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=True)
+	tipousuario_id = fields.Many2one('doctor.tipousuario.regimen', 'Tipo usuario', required=False)
+	user_type = fields.Selection(
+		[('contributory', 'Contributivo'), ('subsidized', 'Subsidiado'), ('linked', 'Vinculado')], string="User Type")
 
 
 	

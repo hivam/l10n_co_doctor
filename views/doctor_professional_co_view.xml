@@ -22,16 +22,44 @@
         </group>
       </xpath>
 
-      <xpath expr="//group[@name='cabecera']" position="inside">
-        <field name="photo" widget="image" nolabel="1" options="{&quot;size&quot;: [170, 150]}" />
+      <xpath expr="//group[@name='globalCo']" position="before">
+        <field name="photo" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
+        <div class="oe_title">
+            <div>
+                <div>
+                    <label for="tdoc" string="Type of Document"/>
+                    <field name="tdoc" placeholder="Type of Document" required="1"/>
+                </div>
+
+                <div>
+                    <label  for="ref" string="Number ID"/>
+                    <field name="ref" placeholder="Number ID" attrs="{'required': [('tdoc','in',['cc','ti'])]}"/>
+                </div>
+            </div>
+        </div>
+           <group name='group_personal_info'>
+            <group name='group_personal_info_sub1'>
+                <field name="lastname" required="1" placeholder="First Last Name" string="First Last Name"/>
+                <field name="surname" placeholder="Second Last Name" string="Second Last Name"/>
+                <field name="firstname" required="1" placeholder="First Name" string="First Name"/>
+                <field name="middlename" placeholder="Second Name" string="Second Name"/>
+            </group>
+            <group name='group_personal_info_sub2'>
+
+                <field name="speciality_id"/>
+                <field name="professional_card"/>
+                <field name="authority"/>
+
+<!--             				<field name="blood_type"/> -->
+
+            </group>
+           </group>
       </xpath>
 
+
+
       <xpath expr="//group[@name='globalCo']" position="inside">
-        <field name="lastname" placeholder="Primer Apellido" nolabel="1" />
-        <field name="surname" placeholder="Segundo Apellido" nolabel="1" />
-        <field name="tdoc"/>
-        <field name="professional_card"/>
-        <field name="authority"/>
+
         <field name="city_id"/>
         <field name="street"/>
         <field name="work_phone"/>
@@ -39,15 +67,10 @@
 
       <xpath expr="//group[@name='globalCo']" position="after">
         <group>
-          <field name="firtsname" placeholder="Primer Nombre" nolabel="1"/>
-          <field name="middlename" placeholder="Segundo Nombre" nolabel="1"/>
-          <field name="ref" />
-          <field name="speciality_id"/>
           <field name="state_id"/>
           <field name="zona"/>
           <field name="work_email"/>
           <field name="work_mobile"/>
-
         </group>
       </xpath>
 

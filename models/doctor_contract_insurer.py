@@ -40,6 +40,7 @@ class doctor_contrato_aseguradora(models.Model):
 	plan_ids = fields.Many2many('doctor.insurer.plan', id1='contract_ids', id2='plan_ids',
 								 string='Planes', required=False, ondelete='restrict')
 	valor = fields.Float('Valor', digits=(3, 3))
+	valor_ejecutado = fields.Float('Valor Ejecutado', digits=(3, 3))
 
 	"""
 	Create sobrescrito para convertir codigo del contrato en mayúscula.

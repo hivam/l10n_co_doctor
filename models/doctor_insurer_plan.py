@@ -37,15 +37,16 @@ class doctor_insurer_plan(models.Model):
 
 
 	# Create method overwritten to write plan_id
-	def create(self, cr, uid, vals, context=None):
-		var = super(doctor_insurer_plan, self).create(cr, uid, vals, context)
-		self.write(cr, uid, var, {'plan_id': var}, context)
+	@api.model
+	def create(self, vals):
+		var = super(doctor_insurer_plan, self).create(vals)
+		var.write({'plan_id': var.id})
 		return var
 
 	# Función para evitar nombre de plan duplicado
-	def _check_unique_name(self, cr, uid, ids, context=None):
-		for record in self.browse(cr, uid, ids):
-			ref_ids = self.search(cr, uid, [('name', '=', record.name), ('id', '<>', record.id), ('insurer_id', '=', record.insurer_id.id)])
+	def _check_unique_name(self):
+		for record in self.browse(self._ids):
+			ref_ids = self.search([('name', '=', record.name), ('id', '<>', record.id), ('insurer_id', '=', record.insurer_id.id)])
 			if ref_ids:
 				raise osv.except_osv(_('¡Mensaje de Error!'), _('Este nombre de plan ya existe en el sistema'))
 		return True

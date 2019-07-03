@@ -48,6 +48,7 @@ Location change for "Doctor" module in Colombia
               #'views/account_invoice_co_view.xml',
               'views/doctor_co_contract_insurer_view.xml',
               'views/doctor_co_insurer_plan_view.xml',
+              'views/doctor_room_view.xml',
               #'security/ir.model.access.csv',
               #'data/l10n_rips_tipo_archivo_data.xml',
               #'data/l10n_doctor_co_tipousuario_regimen_data.xml',

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo>
+<odoo noupdate="1">
         <record model='doctor.diseases' id='A000'>
                 <field name='code'>A000</field>
                 <field name='name'>COLERA DEBIDO A VIBRIO CHOLERAE O1 BIOTIPO CHOLERAE</field>

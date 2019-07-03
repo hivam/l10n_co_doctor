@@ -44,7 +44,8 @@ class doctor(models.Model):
     _name = 'doctor.doctor'
     test = fields.Char('test')
 
-    def fecha_UTC(self,fecha_usuario,context=None):
+    @api.one
+    def fecha_UTC(self,fecha_usuario):
 
         if not context:
             context = {}
