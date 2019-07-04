@@ -92,7 +92,10 @@ class radicacion_cuentas(osv.osv):
 		esta funcion cuenta las facturas filtradas en radicacion de cuentas 
 		"""
 		for po in self.browse(cr, uid, ids, context = context):
-			return len(po.invoices_ids)
+			if po.rips_directos:
+				return len(po.attentions_ids)
+			else:
+				return len(po.invoices_ids)
 
 	def _valor_total(self, cr, uid, ids, context=None):
 		"""
@@ -182,7 +185,7 @@ class radicacion_cuentas(osv.osv):
 		if not rips_directos:
 			if cliente_id:
 				id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
-				id_partner= self.pool.get("doctor.insurer").browse(cr, uid, id_insurer).id
+				id_partner= self.pool.get("res.partner").browse(cr, uid, id_insurer).id
 			else:
 				id_partner = False	
 			
@@ -196,9 +199,11 @@ class radicacion_cuentas(osv.osv):
 																	('radicada', '=', False)])
 			return {'value': {'invoices_ids': invoices}}
 		else:
-			
-			#medico general
-			attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
+
+			if cliente_id:
+
+				#medico general
+				attentions = self.pool.get('doctor.attentions').search(cr, uid, ['&','&',('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id)])
 			
 			if attentions:
 				return {'value': {'attentions_ids': attentions}}
@@ -1066,7 +1071,8 @@ class radicacion_cuentas(osv.osv):
 								_(u'El campo codigo prestador de servicio de la compañia está vacío.'))
 
 					#Razon social o apellidos y nombre del prestador de servicios
-					nombre_prestadorservicio = company_id.partner_id.name
+					nombre_prestadorservicio = unicodedata.normalize('NFKD', company_id.partner_id.name).encode('ASCII', 'ignore')
+
 					if nombre_prestadorservicio:
 						archivo.write( nombre_prestadorservicio + ',')
 					else:
@@ -1117,7 +1123,14 @@ class radicacion_cuentas(osv.osv):
 					archivo.write( var.cliente_id.code + ',')
 
 					#nombre aseguradora (no requerido)
-					archivo.write(',')
+					if var.cliente_id:
+						id_insurer = var.cliente_id.insurer.id
+						name_partner= self.pool.get("res.partner").browse(cr, uid, id_insurer).name
+						name_normalized = unicodedata.normalize('NFKD', name_partner).encode('ASCII', 'ignore')
+
+						archivo.write(name_normalized + ',')
+					else:
+						archivo.write(',')
 
 					#Numero de contrato (no requerido)
 					archivo.write(',')

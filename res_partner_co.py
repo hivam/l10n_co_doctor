@@ -193,7 +193,7 @@ class res_partner_co(osv.osv):
     def _check_unique_ident(self, cr, uid, ids, context=None):
         for record in self.browse(cr, uid, ids):
             ref = record.ref
-            ref_ids = self.search(cr, uid, [('ref', '=', record.ref), ('id', '<>', record.id)])
+            ref_ids = self.search(cr, uid, ['&','&',('ref', '=', record.ref), ('id', '<>', record.id), ('tdoc', '=', record.tdoc)])
             if not ref:
                 return True
             elif ref_ids:

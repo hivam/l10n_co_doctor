@@ -406,8 +406,11 @@ class doctor_patient_co(osv.osv):
 		if ref:
 			registros = self.pool.get('res.partner').search(cr, uid,[])
 			for record in self.pool.get('res.partner').browse(cr, uid, registros):
-				if ref == record.ref: #comparando si la identificacion digitada es igual a la de un paciente existente                  res['value']['lastname'] = record.lastname.upper()
-					if record.es_paciente == False:
+
+				if ref == record.ref and record.tdoc!='31' and record.tdoc!='43' : #comparando si la identificacion digitada es igual a la de un paciente existente                  res['value']['lastname'] = record.lastname.upper()
+
+					#si el numero de documento coincide y no es nit o número de Dian
+					if record.es_paciente:
 						res['value']['lastname'] = record.lastname.upper()
 						if record.surname:
 							res['value']['surname'] = record.surname.upper()
@@ -426,7 +429,7 @@ class doctor_patient_co(osv.osv):
 						return res
 					else:
 						raise osv.except_osv(_('Error!'),
-								 _('El paciente %s ya fue registrado.') % record.firtsname)
+								 _('El paciente %s %s ya fue registrado.') % (record.lastname, record.firtsname))
 		return True
 
 	def onchange_patient_data(self, cr, uid, ids, patient, photo, ref, dpto, mun, direccion, context=None):
@@ -2634,7 +2637,7 @@ class doctor_attentions_co(osv.osv):
 								string=u'Telefono responsable'), 
 		'paciente_ocupacion_id': fields.function(_get_profesion, fnct_inv=_set_profesion , type="many2one", store= False, 
 								string=u'Profesión', relation='doctor.patient.ocupacion'), 
-		'paciente_insurer_prepagada_id': fields.function(_get_insurer, fnct_inv=_set_insurer , type="many2one", store= False, 
+		'paciente_insurer_prepagada_id': fields.function(_get_insurer, fnct_inv=_set_insurer , type="many2one", store= True, 
 								string=u'Aseguradora', relation='doctor.insurer'),
 		'paciente_parentesco_id': fields.function(_get_parentesco, fnct_inv=_set_parentesco , type="many2one", store= False, 
 								string=u'Parentesco', relation='doctor.patient.parentesco'), 
