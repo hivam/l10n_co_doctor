@@ -200,15 +200,12 @@ class radicacion_cuentas(osv.osv):
 			return {'value': {'invoices_ids': invoices}}
 		else:
 			code_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).code
-			_logger.info('>>>>>>>>>>>>>>>>>')
-			_logger.info(code_insurer)
 
 			if code_insurer != 'SDS001': #si no es la secretaría de salud filtramos
-				_logger.info('>>>>>>>>>>>>>>>>>')
-				_logger.info("esta adentro")
-				#medico general
+				#aseguradoras
 				attentions = self.pool.get('doctor.attentions').search(cr, uid, ['&','&',('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id)])
 			else:
+				#secretaria digital
 				attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
 
 			if attentions:
