@@ -608,12 +608,13 @@ class radicacion_cuentas(osv.osv):
 					#Valor de la consulta
 					valor_consulta = '0.0'
 					if atencion.type_id: #si la atencion tiene tipo de cita miramos el precio del procedimiento
-						valor_consulta = atencion.type_id.procedures_id[0].procedures_id.list_price
-						archivo.write(str(valor_consulta) + ',')
-					else: # caso contrario miramos valor consulta definido para todas las atenciones 
-						valor_consulta = var.valor_consulta
-						archivo.write(str(valor_consulta) + ',')	
-
+						try:
+							valor_consulta = atencion.type_id.procedures_id[0].procedures_id.list_price
+							archivo.write(str(valor_consulta) + ',')
+						except:# caso contrario miramos valor consulta definido para todas las atenciones
+							valor_consulta = var.valor_consulta
+							archivo.write(str(valor_consulta) + ',')
+							
 					#valor del copago del paciente
 					try:
 						archivo.write(str(0.0)+ ',')
