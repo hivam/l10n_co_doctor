@@ -1157,11 +1157,10 @@ class radicacion_cuentas(osv.osv):
 					#valor neto a pagar por la entidad contratante
 					valor_consulta = 0.0
 					if atencion.type_id:
-						archivo.write(str(atencion.type_id.procedures_id[0].procedures_id.list_price))
-						valor_consulta = atencion.type_id.procedures_id[0].procedures_id.list_price
+						if atencion.type_id.procedures_id[0].procedures_id.list_price:
+							archivo.write(str(atencion.type_id.procedures_id[0].procedures_id.list_price))
 					elif var.valor_consulta:
 						archivo.write(str(var.valor_consulta))
-						valor_consulta = var.valor_consulta
 					else:
 						archivo.write(str(0.0))		
 
