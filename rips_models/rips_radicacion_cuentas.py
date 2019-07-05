@@ -1161,9 +1161,9 @@ class radicacion_cuentas(osv.osv):
 						valor_consulta = 0.0
 					if atencion.type_id:
 						try:
-    						archivo.write(str(atencion.type_id.procedures_id[0].procedures_id.list_price))
+							archivo.write(str(atencion.type_id.procedures_id[0].procedures_id.list_price))
 						except IndexError:
-    						archivo.write(str(var.valor_consulta))
+							archivo.write(str(var.valor_consulta))
 
 					#salto de linea
 					archivo.write('\n')
