@@ -1164,6 +1164,8 @@ class radicacion_cuentas(osv.osv):
 							archivo.write(str(atencion.type_id.procedures_id[0].procedures_id.list_price))
 						except IndexError:
 							archivo.write(str(var.valor_consulta))
+					else:
+						archivo.write(str(var.valor_consulta))
 
 					#salto de linea
 					archivo.write('\n')
