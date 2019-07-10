@@ -614,6 +614,8 @@ class radicacion_cuentas(osv.osv):
 						except:# caso contrario miramos valor consulta definido para todas las atenciones
 							valor_consulta = var.valor_consulta
 							archivo.write(str(valor_consulta) + ',')
+					else:
+						archivo.write(str(valor_consulta) + ',')
 							
 					#valor del copago del paciente
 					try:
@@ -1359,7 +1361,7 @@ class radicacion_cuentas(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		vals.update({'secuencia': self.getNumCuenta(cr,uid, context=None), 'state': 'draft'})
-		if not vals['rips_directos'] and not vals['invoices_ids']:
+		if not vals['attentions_ids'] and not vals['invoices_ids']:
 			raise osv.except_osv(_('Atención!'),
 							_('No se puede guardar esta radicación. No hay facturas o Atenciones para radicar.'))
 		return super(radicacion_cuentas, self).create(cr, uid, vals, context)
