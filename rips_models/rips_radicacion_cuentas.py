@@ -615,6 +615,7 @@ class radicacion_cuentas(osv.osv):
 							valor_consulta = var.valor_consulta
 							archivo.write(str(valor_consulta) + ',')
 					else:
+						valor_consulta = var.valor_consulta
 						archivo.write(str(valor_consulta) + ',')
 							
 					#valor del copago del paciente
