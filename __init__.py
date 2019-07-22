@@ -39,3 +39,4 @@ import doctor_co_tipousuario_regimen
 import doctor_co_insurer_inherit
 import doctor_relations_appointments_fields
 import res_users_inherit
+import doctor_attentions_diseases_inherit
