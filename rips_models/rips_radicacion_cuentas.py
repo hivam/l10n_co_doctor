@@ -205,7 +205,7 @@ class radicacion_cuentas(osv.osv):
 				#aseguradoras
 				attentions = self.pool.get('doctor.attentions').search(cr, uid, ['&','&',('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id)])
 			else:
-				#secretaria digital
+				#secretaria distrital
 				attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
 
 			if attentions:

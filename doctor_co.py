@@ -5324,6 +5324,17 @@ class doctor_invoice_co (osv.osv):
 		'contrato_id' : fields.many2one('doctor.contract.insurer', 'Contrato', required=False), 
 	}
 
+	def on_change_paciente(self, cr, uid, ids, patient_id):
+		res = {'value':{}}
+		
+		if patient_id:
+			partnerObj = self.pool.get('doctor.patient').read(cr, uid, patient_id,['ref','tipo_usuario'])
+			if partnerObj:
+				res['value']['ref'] = partnerObj.get('ref')
+				res['value']['tipo_usuario_id'] = partnerObj.get('tipo_usuario')
+
+		return res
+
 doctor_invoice_co()
 
 class doctor_sales_order_co (osv.osv):

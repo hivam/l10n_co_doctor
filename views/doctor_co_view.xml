@@ -1510,6 +1510,17 @@
 						</field>
 				</record>
 
+				<record model="ir.ui.view" id="invoice_form_view_inherit_doctor_co_invoice_xpath">
+        			<field name="name">Doctor Invoice</field>
+        			<field name="model">account.invoice</field>
+        			<field name="inherit_id" ref="doctor.invoice_form_view_inherit_doctor_invoice"/>
+        			<field name="arch" type="xml">
+            			<xpath expr="//field[@name='patient_id']" position="attributes">
+                		<attribute name="on_change">on_change_paciente(patient_id)</attribute>
+            			</xpath>
+        			</field>
+    			</record> 
+
 		<!-- sales order Form View -->
 				<record id="sales_order_form_view_inherit_doctor_co_sales_order" model="ir.ui.view">
 						<field name="name">Doctor Sales Order</field>
