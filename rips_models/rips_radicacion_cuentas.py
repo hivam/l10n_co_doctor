@@ -147,6 +147,8 @@ class radicacion_cuentas(osv.osv):
 		'valor_consulta' : fields.float('Valor Consulta', states={'confirmed': [('readonly', True)]}),
 		'tipo_archivo' : fields.selection([('txt','Txt'),('excel','Excel')], u'Formato Exportación', required=False, states={'confirmed': [('readonly', True)]}),
 		#'referencia' : fields.reference('Source Document', required=True, selection=_get_document_types),
+		'profesional_salud' : fields.many2one('doctor.professional', 'Profesional Salud', required=False, help='Filtrar por profesional de la salud que atiende'),
+		'cargar_atenciones_facturas' : fields.boolean('Cargar atenciones o facturas', states={'confirmed': [('readonly', True)]})
 	}
 
 	_defaults = {
@@ -178,43 +180,55 @@ class radicacion_cuentas(osv.osv):
 		dateuser = datetime.strftime(dateuser, "%Y-%m-%d")
 		return dateuser
 
-	def get_invoices_or_attentions(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos, context=None):
+	def get_invoices_or_attentions(self, cr, uid, ids, cliente_id, rangofacturas_desde, rangofacturas_hasta, tipo_usuario_id, contrato_id, rips_directos, profesional_salud, context=None):
 		"""
 		Esta funcion retorna las facturas que estan en el rango de fechas seleccionado y que cumplen con los criterios determinados
 		"""
-		if not rips_directos:
-			if cliente_id:
-				id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
-				id_partner= self.pool.get("res.partner").browse(cr, uid, id_insurer).id
-			else:
-				id_partner = False
 
-			invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
-																	('contrato_id','=', contrato_id or False),
-																	('state', '=', 'open'),
-																	('date_invoice', '>=', rangofacturas_desde),
-																	('date_invoice', '<=', rangofacturas_hasta),
-																	('residual', '<>', 0.0),
-																	('radicada', '=', False)])
-			return {'value': {'invoices_ids': invoices}}
+		if rangofacturas_desde and rangofacturas_hasta and cliente_id and tipo_usuario_id :
+
+			if not rips_directos:
+				if cliente_id:
+					id_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).insurer.id
+					id_partner= self.pool.get("res.partner").browse(cr, uid, id_insurer).id
+				else:
+					id_partner = False
+
+				invoices = self.pool.get('account.invoice').search(cr, uid, [('partner_id', '=', id_partner),
+																		('contrato_id','=', contrato_id or False),
+																		('state', '=', 'open'),
+																		('date_invoice', '>=', rangofacturas_desde),
+																		('date_invoice', '<=', rangofacturas_hasta),
+																		('residual', '<>', 0.0),
+																		('radicada', '=', False)])
+				return {'value': {'invoices_ids': invoices}}
+			else:
+				code_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).code
+
+				if code_insurer != 'SDS001': #si no es la secretaría de salud filtramos
+					if profesional_salud:
+						#aseguradoras
+						attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id),('professional_id','=', profesional_salud)])
+					else:
+						attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id)])
+
+				else:
+					if profesional_salud:
+						#secretaria distrital
+						attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('professional_id','=', profesional_salud)])
+					else:
+						#secretaria distrital
+						attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
+
+				if attentions:
+					return {'value': {'attentions_ids': attentions}}
+					
+				else:
+
+					raise osv.except_osv(_('Aviso Importante!'),
+							_('No hay atenciones que cumplan los criterios de entrada.'))
 		else:
-			code_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).code
-
-			if code_insurer != 'SDS001': #si no es la secretaría de salud filtramos
-				#aseguradoras
-				attentions = self.pool.get('doctor.attentions').search(cr, uid, ['&','&',('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id)])
-			else:
-				#secretaria distrital
-				attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
-
-			if attentions:
-				return {'value': {'attentions_ids': attentions}}
-				
-			else:
-
-				raise osv.except_osv(_('Aviso Importante!'),
-						_('No hay atenciones que cumplan los criterios de entrada.'))
-
+			return True
 
 
 	def getParentid(self, cr, uid, context=None):
