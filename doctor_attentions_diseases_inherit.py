@@ -60,8 +60,8 @@ class doctor_attentions_diseases(osv.osv):
         return True
 
     _constraints = [
-        (_check_main_disease, u'Hay más de un diagnóstico seleccionado como Principal. Por favor seleccione uno como Principal y los demás como Relacionados.', [u'\n\nTipo de Diagnóstico\n\n']),
-        (_check_duplicated_disease, u'Hay uno o más diagnósticos duplicados.', [u'\n\nDiagnósticos\n\n'])
+        #(_check_main_disease, u'Hay más de un diagnóstico seleccionado como Principal. Por favor seleccione uno como Principal y los demás como Relacionados.', [u'\n\nTipo de Diagnóstico\n\n']),
+        #(_check_duplicated_disease, u'Hay uno o más diagnósticos duplicados.', [u'\n\nDiagnósticos\n\n'])
     ]
 
 doctor_attentions_diseases()
