@@ -492,13 +492,9 @@
      </tr>
     </blockTable>
 
-    <blockTable colWidths="534.0" style="Table6">
-        <tr>
-     <td>
             <para style="P6">[[ code.analysis or removeParentNode('section') ]]</para>
-         </td>
-        </tr>
-      </blockTable>
+       
+
     </section>
 
     <section>
