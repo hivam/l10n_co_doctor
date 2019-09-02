@@ -123,17 +123,32 @@
      </tr>
     </blockTable>
 
-    <blockTable colWidths="204.0,330.0" style="Table6">
+    <blockTable colWidths="267.0,267.0" style="Table6">
       <tr>
-		    <td>
-            <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
-            <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
-          </td>
-          <td>
-            <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
-            <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
-            <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
-		      </td>
+
+        <td>
+          <para style="P6">Nombre: [[ (o.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Género: [[ (return_sex(o.patient_id.sex) or removeParentNode('para'))]]</para>
+          <para style="P6">Tipo de usuario: [[ select_type(o.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
+          <para style="P6">Insurer: [[ (o.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Lugar Nacimiento: [[ (return_street_home(o.patient_id.nacimiento_country_id.name, None, o.patient_id.nacimiento_city_id.name) or removeParentNode('para'))]]</para> 
+          <para style="P6">Teléfono: [[ (return_number_phone(o.patient_id.movil, o.patient_id.telefono) or removeParentNode('para'))]]</para>
+          <para style="P6">Correo: [[ (o.patient_id.email or removeParentNode('para'))]]</para>
+        </td>
+
+
+        <td>
+
+          <para style="P6">Documento: [[ (o.patient_id.ref or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Fecha de Nacimiento: [[ (o.patient_id.birth_date or removeParentNode('para'))]]</para>
+          <para style="P6">Edad: [[ (o.age_attention or (removeParentNode('para'))) ]] [[ (select_age(o.age_unit) or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Lugar Residencia: [[ (return_street_home(o.patient_id.country_id.name, o.patient_id.state_id.name, o.patient_id.city_id.name) or removeParentNode('para'))]]</para>  
+          <para style="P6">Dirección: [[ (o.patient_id.street or removeParentNode('para'))]]</para> 
+          <para style="P6">Nombre Acompañante: [[ (o.patient_id.nombre_acompaniante or removeParentNode('para'))]]</para> 
+          <para style="P6">Teléfono Acompañante: [[ (o.patient_id.telefono_acompaniante or removeParentNode('para'))]]</para> 
+        </td>
+
+
       </tr>
     </blockTable>
 

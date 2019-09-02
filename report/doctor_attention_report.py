@@ -67,7 +67,84 @@ class doctor_attention_report(report_sxw.rml_parse):
 			'cargar_spodos': self.cargar_spodos,
 			'esconder_signos_vitales': self.esconder_signos_vitales,
 			'print_text_large': self.print_text_large,
+			'return_street_home': self.return_street_home,
+			'return_number_phone': self.return_number_phone,
+			'return_sex': self.return_sex,
+			'return_street_home': self.return_street_home,
+			'return_number_phone': self.return_number_phone,
+			'return_sex': self.return_sex
+
 		})
+
+	def return_street_home(self, country, state, city):
+
+		street = ""
+
+		if country:
+			street += country.title() + " - "
+
+		if state:
+			street += state.title() + " - "
+		
+		if city:
+			street += city.title() + " - "
+
+		return street[:len(street) -2]
+
+	def return_number_phone(self, phone, mobile):
+
+		return_phone = ""
+
+		if phone:
+			return_phone += phone + " - "
+
+		if mobile:
+			return_phone += mobile + " - "
+
+		return return_phone[:len(return_phone)-2]
+
+
+	def return_sex(self, sex):
+		if sex == 'm':
+			return "Masculino"
+		return "Femenino"
+		
+	def return_street_home(self, country, state, city):
+
+		street = ""
+
+		if country:
+			street += country.title() + " - "
+
+		if state:
+			street += state.title() + " - "
+		
+		if city:
+			street += city.title() + " - "
+
+
+		_logger.info('esto es street')
+		_logger.info(street)
+
+		return street[:len(street) -2]
+
+	def return_number_phone(self, phone, mobile):
+
+		return_phone = ""
+
+		if phone:
+			return_phone += phone + " - "
+
+		if mobile:
+			return_phone += mobile + " - "
+
+		return return_phone[:len(return_phone)-2]
+
+
+	def return_sex(self, sex):
+		if sex == 'm':
+			return "Masculino"
+		return "Femenino"
 
 	def select_type(self, tipo_usuario):
 		if tipo_usuario:
