@@ -37,8 +37,44 @@ class doctor_precription(report_sxw.rml_parse):
 			'select_frequency_unit_n': self.select_frequency_unit_n,
 			'select_duration_period_n': self.select_duration_period_n,
 			'select_prescription_drugs': self.select_prescription_drugs,
+			'return_street_home': self.return_street_home,
+			'return_number_phone': self.return_number_phone,
+			'return_sex': self.return_sex
+
 		})
 
+	def return_street_home(self, country, state, city):
+
+		street = ""
+
+		if country:
+			street += country.title() + " - "
+
+		if state:
+			street += state.title() + " - "
+		
+		if city:
+			street += city.title() + " - "
+
+		return street[:len(street) -2]
+
+	def return_number_phone(self, phone, mobile):
+
+		return_phone = ""
+
+		if phone:
+			return_phone += phone + " - "
+
+		if mobile:
+			return_phone += mobile + " - "
+
+		return return_phone[:len(return_phone)-2]
+
+
+	def return_sex(self, sex):
+		if sex == 'm':
+			return "Masculino"
+		return "Femenino"
 	def select_type(self, tipo_usuario):
 		if tipo_usuario:
 			tipo = self.pool.get('doctor.tipousuario.regimen').browse(self.cr, self.uid, tipo_usuario).name

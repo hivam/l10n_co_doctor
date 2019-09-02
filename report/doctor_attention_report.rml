@@ -126,17 +126,32 @@
      </tr>
     </blockTable>
 
-    <blockTable colWidths="204.0,330.0" style="Table6">
+    <blockTable colWidths="267.0,267.0" style="Table6">
       <tr>
-        <td>
-          <para style="P6">Documento: [[ (code.patient_id.ref or (removeParentNode('para'))) ]]</para>
-          <para style="P6">Tipo de usuario: [[ select_type(code.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
-        </td>
+
         <td>
           <para style="P6">Nombre: [[ (code.patient_id.patient.name or (removeParentNode('para'))) ]]</para>
-          <para style="P6">Edad: [[ (code.age_attention or (removeParentNode('para'))) ]] [[ (select_age(code.age_unit) or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Género: [[ (return_sex(code.patient_id.sex) or removeParentNode('para'))]]</para>
+          <para style="P6">Tipo de usuario: [[ select_type(code.patient_id.tipo_usuario.id) or removeParentNode('para')]]</para>
           <para style="P6">Insurer: [[ (code.patient_id.insurer.insurer.name or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Lugar Nacimiento: [[ (return_street_home(code.patient_id.nacimiento_country_id.name, None, code.patient_id.nacimiento_city_id.name) or removeParentNode('para'))]]</para> 
+          <para style="P6">Teléfono: [[ (return_number_phone(code.patient_id.movil, code.patient_id.telefono) or removeParentNode('para'))]]</para>
+          <para style="P6">Correo: [[ (code.patient_id.email or removeParentNode('para'))]]</para>
         </td>
+
+
+        <td>
+
+          <para style="P6">Documento: [[ (code.patient_id.ref or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Fecha de Nacimiento: [[ (code.patient_id.birth_date or removeParentNode('para'))]]</para>
+          <para style="P6">Edad: [[ (code.age_attention or (removeParentNode('para'))) ]] [[ (select_age(code.age_unit) or (removeParentNode('para'))) ]]</para>
+          <para style="P6">Lugar Residencia: [[ (return_street_home(code.patient_id.country_id.name, code.patient_id.state_id.name, code.patient_id.city_id.name) or removeParentNode('para'))]]</para>  
+          <para style="P6">Dirección: [[ (code.patient_id.street or removeParentNode('para'))]]</para> 
+          <para style="P6">Nombre Acompañante: [[ (code.patient_id.nombre_acompaniante or removeParentNode('para'))]]</para> 
+          <para style="P6">Teléfono Acompañante: [[ (code.patient_id.telefono_acompaniante or removeParentNode('para'))]]</para> 
+        </td>
+
+
       </tr>
     </blockTable>
     <section>
