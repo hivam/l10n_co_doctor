@@ -189,7 +189,7 @@ class doctor_patient_co(osv.osv):
 		return res  
 	
 	_columns = {
-		'city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]", required=True),
+		'city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', domain="[('state_id','=',state_id)]", required=True),
 		'edad_calculada' : fields.function(_get_edad, type="integer", store= True, 
 								readonly=True, method=True, string='Edad Actual',),
 		'email' : fields.char('Email'),
@@ -217,7 +217,7 @@ class doctor_patient_co(osv.osv):
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 		'parentesco_acompaniante_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 		'ref' :  fields.char(u'Identificación', required=True, ),
-		'state_id' : fields.many2one('res.country.state', 'Departamento/Provincia', required=False, domain="[('country_id','=',country_id)]", required=True),
+		'state_id' : fields.many2one('res.country.state', 'Departamento/Provincia', domain="[('country_id','=',country_id)]", required=True),
 		'country_id':fields.many2one('res.country', u'País/Nación', required=True),
 		'street' :  fields.char(u'Dirección', required=False),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
