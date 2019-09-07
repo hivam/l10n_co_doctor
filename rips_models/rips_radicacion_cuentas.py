@@ -184,7 +184,7 @@ class radicacion_cuentas(osv.osv):
 		Esta funcion retorna las facturas que estan en el rango de fechas seleccionado y que cumplen con los criterios determinados
 		"""
 
-		if rangofacturas_desde and rangofacturas_hasta and cliente_id and tipo_usuario_id :
+		if rangofacturas_desde and rangofacturas_hasta and tipo_usuario_id :
 
 			if not rips_directos:
 				if cliente_id:
@@ -202,22 +202,32 @@ class radicacion_cuentas(osv.osv):
 																		('radicada', '=', False)])
 				return {'value': {'invoices_ids': invoices}}
 			else:
-				code_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).code
-
-				if code_insurer != 'SDS001': #si no es la secretaría de salud filtramos
-					if profesional_salud:
-						#aseguradoras
-						attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id),('professional_id','=', profesional_salud)])
-					else:
-						attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id)])
-
+				#checkea si hay cliente o no
+				if cliente_id:
+					code_insurer = self.pool.get("doctor.insurer").browse(cr, uid, cliente_id).code
 				else:
-					if profesional_salud:
-						#secretaria distrital
-						attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('professional_id','=', profesional_salud)])
-					else:
-						#secretaria distrital
-						attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
+					code_insurer = ''
+
+				if code_insurer == 'SDS001' and profesional_salud:
+					_logger.info(" 1. --Secretaría de salud filtrado por profesional---")
+					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('professional_id','=', profesional_salud)])
+				if code_insurer == 'SDS001' and not profesional_salud:
+					_logger.info(" 2. => Secretaría de salud---")
+					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta)])
+				if cliente_id and code_insurer!='SDS001' and  profesional_salud:
+					_logger.info(" 3. => Aseguradora filtrada por profesional---")
+					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id),('professional_id','=', profesional_salud)])
+				if cliente_id and code_insurer!='SDS001' and not profesional_salud:
+					_logger.info(" 4. => Aseguradora---")
+					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('paciente_insurer_prepagada_id','=',cliente_id)])	
+				if not cliente_id and tipo_usuario_id=='particular' and profesional_salud:
+					_logger.info(" 5. => Particular filtrado por profesional---")
+					tipo_regimen = self.pool.get('doctor.tipousuario.regimen').search(cr, uid,[('name','=','Particular')])
+					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('professional_id','=', profesional_salud),('tipousuario_id','=',tipo_regimen)])
+				if not cliente_id and tipo_usuario_id=='particular' and not profesional_salud:
+					_logger.info(" 6. => Particular---")
+					tipo_regimen = self.pool.get('doctor.tipousuario.regimen').search(cr, uid,[('name','=','Particular')])
+					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('tipousuario_id','=',tipo_regimen)])	
 
 				if attentions:
 					return {'value': {'attentions_ids': attentions}}
@@ -1417,7 +1427,10 @@ class radicacion_cuentas(osv.osv):
 		buscarMinSalud = modelo.search(cr, uid, [('code', '=', 'SDS001')] )
 
 		if tipo_usuario_id =='todos':
-			res['value']['cliente_id'] =  buscarMinSalud[0]	
+			res['value']['cliente_id'] =  buscarMinSalud[0]
+		elif tipo_usuario_id == 'particular':
+			res['value']['cea'] =  ''
+			res['value']['cliente_id'] =  False	
 		else:
 			res['value']['cliente_id'] =  False
 		return res				

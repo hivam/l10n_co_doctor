@@ -104,6 +104,7 @@ class doctor_attentions_co_inherit(osv.osv):
 			string = 'Documento identidad', readonly  = True),  
 		'interpretacion_imc' : fields.char(u'Interpretación', size=80, help=u'Interpretación de indice de masa corporal.', states={'closed': [('readonly', True)]}),
 		'radicacioncuentas_id': fields.many2one('rips.radicacioncuentas', 'Cuenta'),
+		'tipousuario_id' : fields.related('patient_id', 'tipo_usuario', type="integer", relation="doctor.patient", string=u'Tipo Usuario'),
 	}
 
 doctor_attentions_co_inherit()
