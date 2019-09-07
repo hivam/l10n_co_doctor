@@ -72,8 +72,8 @@ class res_partner_co(osv.osv):
                                   ('13','Cédula de ciudadanía'), ('21','Tarjeta de extranjería'),
                                   ('22','Cédula de extranjería'), ('31','NIT'),
                                   ('41','Pasaporte'), ('42','Tipo de documento extranjero'),
-                                  ('43','Para uso definido por la DIAN'), ('NU','Número único de identificación'),
-                                  ('AS','Adulto sin identificación'), ('MS','Menor sin identificación')),
+                                  ('43','Para uso definido por la DIAN'), ('AS','Adulto sin identificación'), 
+                                  ('MS','Menor sin identificación')),
                                   'Tipo de Documento'),
     }
 

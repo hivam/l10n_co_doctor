@@ -189,7 +189,7 @@ class doctor_patient_co(osv.osv):
 		return res  
 	
 	_columns = {
-		'city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]"),
+		'city_id' : fields.many2one('res.country.state.city', 'Ciudad/Localidad', required=False , domain="[('state_id','=',state_id)]", required=True),
 		'edad_calculada' : fields.function(_get_edad, type="integer", store= True, 
 								readonly=True, method=True, string='Edad Actual',),
 		'email' : fields.char('Email'),
@@ -217,12 +217,12 @@ class doctor_patient_co(osv.osv):
 		'parentesco_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 		'parentesco_acompaniante_id': fields.many2one('doctor.patient.parentesco' , 'Parentesco' , required=False),
 		'ref' :  fields.char(u'Identificación', required=True, ),
-		'state_id' : fields.many2one('res.country.state', 'Departamento/Provincia', required=False, domain="[('country_id','=',country_id)]"),
-		'country_id':fields.many2one('res.country', u'País/Nación'),
+		'state_id' : fields.many2one('res.country.state', 'Departamento/Provincia', required=False, domain="[('country_id','=',country_id)]", required=True),
+		'country_id':fields.many2one('res.country', u'País/Nación', required=True),
 		'street' :  fields.char(u'Dirección', required=False),
 		'tdoc': fields.selection((('11','Registro civil'), ('12','Tarjeta de identidad'),
 								  ('13',u'Cédula de ciudadanía'), ('21',u'Cédula de extranjería'), ('41','Pasaporte'),
-								  ('NU',u'Número único de identificación'), ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')),
+								  ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')),
 								  'Tipo de Documento', required=True),
 		'telefono' : fields.char(u'Teléfono', size=12),
 		'telefono_acompaniante' : fields.char(u'Teléfono', size=12),
@@ -2616,7 +2616,7 @@ class doctor_attentions_co(osv.osv):
 								string=u'Segundo Apellido',),
 		'paciente_tdoc': fields.function(_get_tdoc, fnct_inv=_set_tdoc, type='selection', selection=[('11','Registro civil'), ('12','Tarjeta de identidad'),
 								  ('13',u'Cédula de ciudadanía'), ('21',u'Cédula de extranjería'), ('41','Pasaporte'),
-								  ('NU',u'Número único de identificación'), ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')],
+								  ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')],
 								  string='Tipo Documento', store=False, required=True, readonly=True),		
 		'paciente_sexo': fields.function(_get_sexo,fnct_inv=_set_sexo, type='selection', selection=[('m', 'Masculino'), ('f', 'Femenino'),], string='Sexo',
 									store=False, required=True, readonly=True),

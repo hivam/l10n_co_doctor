@@ -49,8 +49,8 @@ class doctor_professional_co(osv.osv):
 								  ('13',u'Cédula de ciudadanía'), ('21',u'Tarjeta de extranjería'),
 								  ('22',u'Cédula de extranjería'), ('31','NIT'),
 								  ('41','Pasaporte'), ('42','Tipo de documento extranjero'),
-								  ('43','Para uso definido por la DIAN'), ('NU',u'Número único de identificación'),
-								  ('AS',u'Adulto sin identificación'), ('MS',u'Menor sin identificación')),
+								  ('43','Para uso definido por la DIAN'), ('AS',u'Adulto sin identificación'), 
+								  ('MS',u'Menor sin identificación')),
 								  'Tipo de Documento', required=True),
 		'zona':  fields.selection ((('U','Urbana'), ('R','Rural')), 'Zona de residencia', required=True),
 		

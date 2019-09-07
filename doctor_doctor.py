@@ -176,8 +176,6 @@ class doctor(osv.osv):
 			nombre_tipo = 'CE'
 		elif tipo == '41':
 			nombre_tipo = 'Pasaporte'
-		elif tipo == 'NU':
-			nombre_tipo = 'NU'
 		elif tipo == 'AS':
 			nombre_tipo = 'AS'
 		elif tipo == 'MS':
