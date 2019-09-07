@@ -223,11 +223,11 @@ class radicacion_cuentas(osv.osv):
 				if not cliente_id and tipo_usuario_id=='particular' and profesional_salud:
 					_logger.info(" 5. => Particular filtrado por profesional---")
 					tipo_regimen = self.pool.get('doctor.tipousuario.regimen').search(cr, uid,[('name','=','Particular')])
-					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('professional_id','=', profesional_salud),('tipousuario_id','=',tipo_regimen)])
+					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('professional_id','=', profesional_salud),('tipousuario_id','in',tipo_regimen)])
 				if not cliente_id and tipo_usuario_id=='particular' and not profesional_salud:
 					_logger.info(" 6. => Particular---")
 					tipo_regimen = self.pool.get('doctor.tipousuario.regimen').search(cr, uid,[('name','=','Particular')])
-					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('tipousuario_id','=',tipo_regimen)])	
+					attentions = self.pool.get('doctor.attentions').search(cr, uid, [('date_attention','>=',rangofacturas_desde),('date_attention','<=',rangofacturas_hasta),('tipousuario_id','in',tipo_regimen)])	
 
 				if attentions:
 					return {'value': {'attentions_ids': attentions}}
