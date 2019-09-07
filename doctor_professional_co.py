@@ -119,8 +119,12 @@ class doctor_professional_co(osv.osv):
 		group_id = self.pool.get('res.groups').search(cr, uid,[('name','=', 'Profesional en salud')], context=context)
 		id_grupo = self.pool.get('res.groups').browse(cr, uid, company_id).id
 
-		#se crea el tercero
-		partner_id=self.pool.get('res.partner').create(cr, uid, {'ref': vals['ref'], 'tdoc': vals['tdoc'], 'middlename' : vals['middlename'] or '', 'surname' : vals['surname'] or '',  'lastname': vals['lastname'], 'es_profesional_salud' : True , 'es_paciente' : False , 'firtsname': vals['firtsname'], 'image': vals['photo'], 'city_id': vals['city_id'], 'state_id': vals['state_id'], 'street': vals['street'], 'phone': vals['work_phone'], 'mobile': vals['work_mobile'], 'email': vals['work_email'], 'name': vals['name']}, context)
+		if vals['prestador_independiente']: # Es prestador independiente
+			partner_id = self.pool.get('res.company').browse(cr,uid,user['company_id'][0]).partner_id.id
+		else:
+			#se crea el tercero
+			partner_id=self.pool.get('res.partner').create(cr, uid, {'ref': vals['ref'], 'tdoc': vals['tdoc'], 'middlename' : vals['middlename'] or '', 'surname' : vals['surname'] or '',  'lastname': vals['lastname'], 'es_profesional_salud' : True , 'es_paciente' : False , 'firtsname': vals['firtsname'], 'image': vals['photo'], 'city_id': vals['city_id'], 'state_id': vals['state_id'], 'street': vals['street'], 'phone': vals['work_phone'], 'mobile': vals['work_mobile'], 'email': vals['work_email'], 'name': vals['name']}, context)
+
 		#se crea el usuario del sistema
 		usuario_sistema= self.pool.get('res.users').create(cr, uid, {'partner_id': partner_id, 'login': login, 'password': 'admin', 'company_id': company_id, 'groups_id' : [(6, 0, group_id)]} , context )
 		vals.update({'user_id': usuario_sistema})

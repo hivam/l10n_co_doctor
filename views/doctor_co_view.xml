@@ -1454,10 +1454,14 @@
 						<field eval="7" name="priority"/>
 						<field name="inherit_id" ref="doctor.view_doctor_professional_form"/>
 						<field name="arch" type="xml">
-							<field name="work_phone" position="after">
-								<field name="multi_consultorio"/> 
+							<field name="work_mobile" position="after">
+								<field name="multi_consultorio"/>
 							</field>       
-						</field>
+							
+							<field name="work_phone" position="after">
+								<field name="prestador_independiente"/>
+							</field>       
+							</field>
 				</record>
 				<!-- herencia Form View de drugs -->
 				<record id="drugs_form_view_inherit_doctor_co_drugs" model="ir.ui.view">

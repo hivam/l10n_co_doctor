@@ -4949,7 +4949,7 @@ class doctor_professional(osv.osv):
 
 	_columns = {
 		'multi_consultorio': fields.boolean('Multi Consultorio'),
-
+		'prestador_independiente' : fields.boolean('Es prestador independiente - No es IPS?'),
 	}
 
 

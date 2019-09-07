@@ -1148,8 +1148,11 @@ class radicacion_cuentas(osv.osv):
 					f_finradicacion_string = f_finradicacion_format.strftime("%d/%m/%Y")
 					archivo.write(f_finradicacion_string + ',')
 
-					#codigo aseguradora
-					archivo.write( var.cliente_id.code + ',')
+					if var.cliente_id:
+						#codigo aseguradora
+						archivo.write( var.cliente_id.code + ',')
+					else:
+						archivo.write(',')
 
 					#nombre aseguradora (no requerido)
 					if var.cliente_id:
