@@ -99,14 +99,14 @@ class doctor(osv.osv):
 
 	def finalidad_consulta_db(self, cr, uid, context=None):
 		
-		finalidad_consulta = '07'
+		finalidad_consulta = '10'
 		
-		if cr.dbname == 'DraConstanzaCastilla':
-			finalidad_consulta = '04'
-		if cr.dbname == 'Tomatis':
-			finalidad_consulta = '10'
-		if cr.dbname == 'DrCaceres':
-			finalidad_consulta = '08'
+		# if cr.dbname == 'DraConstanzaCastilla':
+		# 	finalidad_consulta = '04'
+		# if cr.dbname == 'Tomatis':
+		# 	finalidad_consulta = '10'
+		# if cr.dbname == 'DrCaceres':
+		# 	finalidad_consulta = '08'
 
 		return finalidad_consulta
 

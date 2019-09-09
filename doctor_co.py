@@ -483,6 +483,9 @@ class doctor_patient_co(osv.osv):
 		return super(doctor_patient_co,self).write(cr, uid, ids, vals, context)
 
 	_defaults = {
+		'country_id' :  lambda self, cr, uid, context: self.pool.get('res.country').browse(cr, uid, self.pool.get('res.country').search(cr, uid, [('code','=','CO')]))[0].id,
+		'state_id' : lambda self, cr, uid, context: self.pool.get('res.country.state').browse(cr, uid, self.pool.get('res.country.state').search(cr, uid, [('code','=','11')]))[0].id,
+		'city_id' : lambda self, cr, uid, context: self.pool.get('res.country.state.city').browse(cr, uid, self.pool.get('res.country.state.city').search(cr, uid, [('code','=','1')]))[0].id,
 		'zona' : 'U',
 		'eps_predeterminada': True,
 		'nacimiento_country_id': lambda self, cr, uid, context: self.pool.get('doctor.doctor')._model_default_get(cr, uid, 'res.country', [('name', '=', 'Colombia')]),

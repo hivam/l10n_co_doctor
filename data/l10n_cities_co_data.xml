@@ -1348,7 +1348,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128010">
             <field name="code">1</field>
             <field name="name">USAQUEN</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">1</field>
         </record>
@@ -1356,7 +1355,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128011">
             <field name="code">2</field>
             <field name="name">CHAPINERO</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">2</field>
         </record>
@@ -1364,7 +1362,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128012">
             <field name="code">3</field>
             <field name="name">SANTAFE</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">3</field>
         </record>
@@ -1372,7 +1369,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128013">
             <field name="code">4</field>
             <field name="name">SAN CRISTOBAL</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">4</field>
         </record>
@@ -1380,7 +1376,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128014">
             <field name="code">5</field>
             <field name="name">USME</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">5</field>
         </record>
@@ -1388,7 +1383,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128015">
             <field name="code">6</field>
             <field name="name">TUNJUELITO</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">6</field>
         </record>
@@ -1396,7 +1390,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128016">
             <field name="code">7</field>
             <field name="name">BOSA</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">7</field>
         </record>
@@ -1404,7 +1397,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128017">
             <field name="code">8</field>
             <field name="name">KENNEDY</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">8</field>
         </record>
@@ -1412,7 +1404,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128018">
             <field name="code">9</field>
             <field name="name">FONTIBON</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">9</field>
         </record>
@@ -1420,7 +1411,6 @@
         <record model="res.country.state.city" id="res_country_state_co_1128019">
             <field name="code">10</field>
             <field name="name">ENGATIVA</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">10</field>
         </record>
@@ -1428,7 +1418,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280110">
             <field name="code">11</field>
             <field name="name">SUBA</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">11</field>
         </record>
@@ -1436,7 +1425,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280111">
             <field name="code">12</field>
             <field name="name">BARRIOS UNIDOS</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">12</field>
         </record>
@@ -1444,7 +1432,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280112">
             <field name="code">13</field>
             <field name="name">TEUSAQUILLO</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">13</field>
         </record>
@@ -1452,7 +1439,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280113">
             <field name="code">14</field>
             <field name="name">LOS MARTIRES</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">14</field>
         </record>
@@ -1460,7 +1446,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280114">
             <field name="code">15</field>
             <field name="name">ANTONIO NARIÑO</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">15</field>
         </record>
@@ -1468,7 +1453,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280115">
             <field name="code">16</field>
             <field name="name">PUENTE ARANDA</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">16</field>
         </record>
@@ -1476,7 +1460,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280116">
             <field name="code">17</field>
             <field name="name">LA CANDELARIA</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">17</field>
         </record>
@@ -1484,7 +1467,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280117">
             <field name="code">18</field>
             <field name="name">RAFAEL URIBE</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">18</field>
         </record>
@@ -1492,7 +1474,6 @@
         <record model="res.country.state.city" id="res_country_state_co_11280118">
             <field name="code">19</field>
             <field name="name">CIUDAD BOLIVAR</field>
-            <field search="[('code','=','CO')]" model="res.country" name="country_id"/>
             <field search="[('code','=','11')]" model="res.country.state" name="state_id"/>
             <field name="code">19</field>
         </record>
