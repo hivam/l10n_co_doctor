@@ -897,7 +897,7 @@ class doctor_appointment_co(osv.osv):
 								res['patient_id']=patient_id_appointment
 								res['schedule_espacio_id']=schedule_id_appoitment
 
-							self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
+								self.pool.get('doctor.espacios').write(cr, uid, id_sechedule_espacio[0], res, context)
 
 							id_espacios= self.pool.get('doctor.espacios').search(cr, uid, [('estado_cita_espacio', '=', '')])
 
